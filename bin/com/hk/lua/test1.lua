@@ -1,0 +1,1 @@
+print('stuff' .. 1)

@@ -1,0 +1,3 @@
+tbl = main()
+
+return var
