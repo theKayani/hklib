@@ -47,6 +47,11 @@ public class LuaStatementTest extends TestCase
 			assertEquals(interp.require(StringUtil.repeat("do ", 100) + test + StringUtil.repeat(" end", 100)), interp.require(test));
 	}
 	
+	public void testNumericFor()
+	{
+		
+	}
+	
 	protected void tearDown()
 	{
 		interp = null;
