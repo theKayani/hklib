@@ -1,3 +1,0 @@
-tbl = main()
-
-return var
