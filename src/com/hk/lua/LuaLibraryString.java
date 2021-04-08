@@ -381,7 +381,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 		}
 	};
 	
-	private final LuaObject func;
+	final LuaObject func;
 	
 	private LuaLibraryString()
 	{

@@ -512,13 +512,18 @@ public class Tokenizer implements Tokens
 		boolean isFloat = false;
 		int n;
 		double decimal = 0;
+		long integer = 0;
 		
 		while((n = num(c)) < 10)
 		{
 			sb.append(c);
 			
 			decimal *= 10;
+			integer *= 10;
 			decimal += n;
+			integer += n;
+			if(integer < 0)
+				isFloat = true;
 			
 			rdr.mark(1);
 			c = (char) rdr.read();
@@ -575,16 +580,18 @@ public class Tokenizer implements Tokens
 				exponent += n;
 			}
 			
-			decimal *= Math.pow(10, neg ? -exponent : exponent);
+			exponent = Math.pow(10, neg ? -exponent : exponent);
+			decimal *= exponent;
+						
 			isFloat = true;
 		}
 
 		rdr.reset();
 
-		if(!isFloat && decimal == (double) (long) decimal)
-			return (long) decimal;
-		else
+		if(isFloat)
 			return decimal;
+		else
+			return integer;
 	}
 	
 	private Number readHex(StringBuilder sb) throws IOException

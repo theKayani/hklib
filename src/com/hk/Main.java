@@ -8,7 +8,6 @@ import com.hk.lua.Lua;
 import com.hk.lua.LuaFactory;
 import com.hk.lua.LuaInterpreter;
 import com.hk.lua.LuaLibrary;
-import com.hk.lua.LuaLibraryJson;
 
 public class Main
 {
@@ -54,7 +53,7 @@ public class Main
 //	}
 	
 	public static void main(String[] args) throws IOException
-	{
+	{		
 		LuaInterpreter interp;
 		LuaFactory factory = Lua.factory(new File("src/com/hk/lua/array sort.lua"));
 
