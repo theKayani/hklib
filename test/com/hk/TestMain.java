@@ -1,6 +1,8 @@
 package com.hk;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +14,20 @@ import junit.textui.TestRunner;
 
 public class TestMain
 {
-	public static void main(String[] args) throws ClassNotFoundException
+	public static void main(String[] args) throws ClassNotFoundException, IOException
 	{
+		File argfile = new File("argfile.txt");
+		
+		boolean exists = argfile.exists();
+		System.out.println("Argfile exists: " + exists);
+		if(exists)
+		{
+			List<String> lst = Files.readAllLines(argfile.toPath());
+			
+			for(String s : lst)
+				System.out.println(s);
+		}
+		
 		TestSuite suite = new TestSuite();
 		
 		File dir = new File(System.getProperty("user.dir"), "testbin");
