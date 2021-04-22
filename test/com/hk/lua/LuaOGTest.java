@@ -34,7 +34,7 @@ public class LuaOGTest extends TestCase
 	public void testNil()
 	{
 		String base = "return nil";
-		assertEquals(interp.require(base), Lua.nil());
+		assertEquals(Lua.nil(), interp.require(base));
 		
 		assertEquals(interp.require(base), interp.require(base));
 	}
@@ -42,8 +42,8 @@ public class LuaOGTest extends TestCase
 	public void testBoolean()
 	{
 		String base = "return true";
-		assertEquals(interp.require(base), Lua.newBoolean(true));
-		assertEquals(interp.require("return false"), Lua.newBoolean(false));
+		assertEquals(Lua.newBoolean(true), interp.require(base));
+		assertEquals(Lua.newBoolean(false), interp.require("return false"));
 		
 		assertEquals(interp.require(base), interp.require(base));
 	}
@@ -51,12 +51,12 @@ public class LuaOGTest extends TestCase
 	public void testString()
 	{
 		String base = "return ''";
-		assertEquals(interp.require(base), Lua.newString(""));
-		assertEquals(interp.require("return 'Hello world!'"), Lua.newString("Hello world!"));
-		assertEquals(interp.require("return '123'"), Lua.newString("123"));
-		assertEquals(interp.require("return \"quotes\""), Lua.newString("quotes"));
-		assertEquals(interp.require("return '6'"), Lua.newString('6'));
-		assertEquals(interp.require("return nil"), Lua.newString((String) null));
+		assertEquals(Lua.newString(""), interp.require(base));
+		assertEquals(Lua.newString("Hello world!"), interp.require("return 'Hello world!'"));
+		assertEquals(Lua.newString("123"), interp.require("return '123'"));
+		assertEquals(Lua.newString("quotes"), interp.require("return \"quotes\""));
+		assertEquals(Lua.newString('6'), interp.require("return '6'"));
+		assertEquals(Lua.newString((String) null), interp.require("return nil"));
 		
 		assertEquals(interp.require(base), interp.require(base));
 	}
@@ -65,33 +65,33 @@ public class LuaOGTest extends TestCase
 	{
 		String base = "return 0";
 
-		assertEquals(interp.require("return -2"), Lua.newNumber(-2));
-		assertEquals(interp.require("return -1"), Lua.newNumber(-1));
-		assertEquals(interp.require(base), Lua.newNumber(0));
-		assertEquals(interp.require("return 1"), Lua.newNumber(1));
-		assertEquals(interp.require("return 2"), Lua.newNumber(2));
-		assertEquals(interp.require("return 5"), Lua.newNumber(5));
+		assertEquals(Lua.newNumber(-2), interp.require("return -2"));
+		assertEquals(Lua.newNumber(-1), interp.require("return -1"));
+		assertEquals(Lua.newNumber(0), interp.require(base));
+		assertEquals(Lua.newNumber(1), interp.require("return 1"));
+		assertEquals(Lua.newNumber(2), interp.require("return 2"));
+		assertEquals(Lua.newNumber(5), interp.require("return 5"));
 
-		assertEquals(interp.require("return -2"), Lua.newNumber(-2.0));
-		assertEquals(interp.require("return -1"), Lua.newNumber(-1.0));
-		assertEquals(interp.require(base), Lua.newNumber(0.0));
-		assertEquals(interp.require("return 1"), Lua.newNumber(1.0));
-		assertEquals(interp.require("return 2"), Lua.newNumber(2.0));
-		assertEquals(interp.require("return 5"), Lua.newNumber(5.0));
+		assertEquals(Lua.newNumber(-2.0), interp.require("return -2"));
+		assertEquals(Lua.newNumber(-1.0), interp.require("return -1"));
+		assertEquals(Lua.newNumber(0.0), interp.require(base));
+		assertEquals(Lua.newNumber(1.0), interp.require("return 1"));
+		assertEquals(Lua.newNumber(2.0), interp.require("return 2"));
+		assertEquals(Lua.newNumber(5.0), interp.require("return 5"));
 
-		assertEquals(interp.require("return -2.0"), Lua.newNumber(-2));
-		assertEquals(interp.require("return -1.0"), Lua.newNumber(-1));
-		assertEquals(interp.require("return 0.0"), Lua.newNumber(0));
-		assertEquals(interp.require("return 1.0"), Lua.newNumber(1));
-		assertEquals(interp.require("return 2.0"), Lua.newNumber(2));
-		assertEquals(interp.require("return 5.0"), Lua.newNumber(5));
+		assertEquals(Lua.newNumber(-2), interp.require("return -2.0"));
+		assertEquals(Lua.newNumber(-1), interp.require("return -1.0"));
+		assertEquals(Lua.newNumber(0), interp.require("return 0.0"));
+		assertEquals(Lua.newNumber(1), interp.require("return 1.0"));
+		assertEquals(Lua.newNumber(2), interp.require("return 2.0"));
+		assertEquals(Lua.newNumber(5), interp.require("return 5.0"));
 
-		assertEquals(interp.require("return -2.0"), Lua.newNumber(-2.0));
-		assertEquals(interp.require("return -1.0"), Lua.newNumber(-1.0));
-		assertEquals(interp.require("return 0.0"), Lua.newNumber(0.0));
-		assertEquals(interp.require("return 1.0"), Lua.newNumber(1.0));
-		assertEquals(interp.require("return 2.0"), Lua.newNumber(2.0));
-		assertEquals(interp.require("return 5.0"), Lua.newNumber(5.0));
+		assertEquals(Lua.newNumber(-2.0), interp.require("return -2.0"));
+		assertEquals(Lua.newNumber(-1.0), interp.require("return -1.0"));
+		assertEquals(Lua.newNumber(0.0), interp.require("return 0.0"));
+		assertEquals(Lua.newNumber(1.0), interp.require("return 1.0"));
+		assertEquals(Lua.newNumber(2.0), interp.require("return 2.0"));
+		assertEquals(Lua.newNumber(5.0), interp.require("return 5.0"));
 		
 		assertEquals(interp.require(base), interp.require(base));
 	}
@@ -99,12 +99,12 @@ public class LuaOGTest extends TestCase
 	public void testInteger()
 	{
 		String base = "return 9223372036854775807";
-		assertEquals(interp.require("return 2147483647"), Lua.newNumber(2147483647L));
-		assertEquals(interp.require("return -2147483647"), Lua.newNumber(-2147483647L));
-		assertEquals(interp.require("return 2147483648"), Lua.newNumber(2147483648L));
-		assertEquals(interp.require("return -2147483648"), Lua.newNumber(-2147483648L));
-		assertEquals(interp.require(base), Lua.newNumber(9223372036854775807L));
-		assertEquals(interp.require("return -9223372036854775807"), Lua.newNumber(-9223372036854775807L));
+		assertEquals(Lua.newNumber(2147483647L), interp.require("return 2147483647"));
+		assertEquals(Lua.newNumber(-2147483647L), interp.require("return -2147483647"));
+		assertEquals(Lua.newNumber(2147483648L), interp.require("return 2147483648"));
+		assertEquals(Lua.newNumber(-2147483648L), interp.require("return -2147483648"));
+		assertEquals(Lua.newNumber(9223372036854775807L), interp.require(base));
+		assertEquals(Lua.newNumber(-9223372036854775807L), interp.require("return -9223372036854775807"));
 
 		assertEquals(interp.require(base), interp.require(base));
 	}
@@ -112,7 +112,7 @@ public class LuaOGTest extends TestCase
 	public void testFloat()
 	{
 		String base = "return 1E99";
-		assertEquals(interp.require(base), Lua.newNumber(1E99D));
+		assertEquals(Lua.newNumber(1E99D), interp.require(base));
 		
 		assertEquals(interp.require(base), interp.require(base));
 	}
@@ -121,7 +121,7 @@ public class LuaOGTest extends TestCase
 	{
 		String base = "return {}";
 		
-		assertEquals(((LuaTable) interp.require(base)).map, Collections.<LuaObject, LuaObject>emptyMap());
+		assertEquals(Collections.<LuaObject, LuaObject>emptyMap(), ((LuaTable) interp.require(base)).map);
 
 		assertEquals(((LuaTable) interp.require(base)).map, ((LuaTable) interp.require(base)).map);
 	}
@@ -129,7 +129,7 @@ public class LuaOGTest extends TestCase
 	public void testFunction()
 	{
 		String base = "return string.byte";
-		assertEquals(interp.require(base), LuaLibraryString._byte.func);
+		assertEquals(LuaLibraryString._byte.func, interp.require(base));
 		
 		assertEquals(interp.require(base), interp.require(base));
 	}

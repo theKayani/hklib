@@ -112,8 +112,7 @@ public class LuaInterpreter implements Tokens
 	
 	public LuaObject require(String source, Reader reader)
 	{
-		LuaObject src = new LuaString(source);
-		LuaObject result = source == null ? null : required.get(src);
+		LuaObject result = source == null ? null : required.get(new LuaString(source));
 		if(result == null)
 		{
 			LuaChunk chunk;
@@ -125,8 +124,10 @@ public class LuaInterpreter implements Tokens
 			{
 				throw new UncheckedIOException(e);
 			}
-			
-			required.put(src, result = (LuaObject) chunk.execute(this));
+
+			result = (LuaObject) chunk.execute(this);
+			if(source != null)
+				required.put(new LuaString(source), result);
 		}
 		return result;
 	}
