@@ -2,5 +2,7 @@ dist: xenial
 language: java
 jdk:
   - openjdk8
+install:
+  - ls -la bin
 script:
-  - java -cp testbin/:bin/:junit.3.8.1.jar com.hk.Main
+  - java -cp testbin/:bin/:junit.3.8.1.jar com.hk.TestMain

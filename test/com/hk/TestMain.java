@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-public class Main
+public class TestMain
 {
 	public static void main(String[] args) throws ClassNotFoundException
 	{
