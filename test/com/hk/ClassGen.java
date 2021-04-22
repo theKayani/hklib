@@ -21,11 +21,8 @@ public class ClassGen
 	
 	public static void main(String[] args) throws Exception
 	{
-		System.out.println((byte) 0xB0);
-		System.out.println((byte) 0x0B);
-//		File p = new File(dir, "src");
-////		list(new File(dir, "test"), p.toPath(), p);
-//		list(new File(dir, "test"), p.toPath(), p);
+		File p = new File(dir, "src");
+		list(new File(dir, "test"), p.toPath(), p);
 	}
 	
 	private static void list(File dest, Path parent, File file) throws Exception
@@ -138,31 +135,29 @@ public class ClassGen
 				}
 			}
 		}
-//		else
-//		{
-			String name;
-			for(Map.Entry<String, List<Method>> ent : map.entrySet())
+
+		String name;
+		for(Map.Entry<String, List<Method>> ent : map.entrySet())
+		{
+			name = ent.getKey();
+			txt.pr("public void test").wr(name.substring(0, 1).toUpperCase()).wr(name.substring(1));
+			txt.wrln("()");
+
+			txt.openBrace();
+			lst = ent.getValue();
+			for(int j = 0; j < lst.size(); j++)
 			{
-				name = ent.getKey();
-				txt.pr("public void test").wr(name.substring(0, 1).toUpperCase()).wr(name.substring(1));
-				txt.wrln("()");
-	
-				txt.openBrace();
-				lst = ent.getValue();
-				for(int j = 0; j < lst.size(); j++)
-				{
-					Method mth = lst.get(j);
-					txt.pr("// TODO: ").wr(clazz.getSimpleName()).wr(".").wr(name).wr("(");
-					writeParams(txt, mth.getParameters());
-					txt.wrln(")");
-					
-					if(j < lst.size() - 1)
-						txt.ln();
-				}
-				txt.closeBrace();
-				txt.ln();
+				Method mth = lst.get(j);
+				txt.pr("// TODO: ").wr(clazz.getSimpleName()).wr(".").wr(name).wr("(");
+				writeParams(txt, mth.getParameters());
+				txt.wrln(")");
+				
+				if(j < lst.size() - 1)
+					txt.ln();
 			}
-//		}
+			txt.closeBrace();
+			txt.ln();
+		}
 
 		txt.prln("@Override");
 		txt.prln("public void tearDown()");

@@ -12,9 +12,22 @@ public class ArrayUtilTest extends TestCase
 
 	public void testToBooleanArray()
 	{
+		boolean[] bs;
 		// TODO: ArrayUtil.toBooleanArray(java.util.List)
 
 		// TODO: ArrayUtil.toBooleanArray(boolean[])
+		
+		bs = ArrayUtil.toBooleanArray();
+		
+		assertEquals(0, bs.length);
+		
+		bs = ArrayUtil.toBooleanArray(true);
+		
+		assertEquals(1, bs.length);
+		
+		bs = ArrayUtil.toBooleanArray(false);
+		
+		assertEquals(1, bs.length);
 	}
 
 	public void testToCharArray()
