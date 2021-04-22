@@ -3,14 +3,15 @@ language: java
 jdk:
   - openjdk8
 install:
-  - rm -rf bin
-  - rm -rf testbin
-  - rm -f @argfile.txt
+  - rm -f argfile.txt
   - find src -name "*.java" > argfile.txt
+  - rm -rf bin
   - mkdir bin
-  - javac -verbose -sourcepath src -d bin @argfile.txt
-  - rm -f @argfile.txt
+  - javac -sourcepath src -d bin @argfile.txt
+
+  - rm -f argfile.txt
   - find test -name "*.java" > argfile.txt
+  - rm -rf testbin
   - mkdir testbin
   - javac -verbose -classpath "./bin/:./dist/junit.3.8.1.jar" -sourcepath test -d testbin @argfile.txt
 script:
