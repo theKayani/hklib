@@ -1,7 +1,6 @@
 dist: xenial
 language: java
-install:
-  - skip
+jdk:
+  - openjdk8
 script:
-  - jdk_switcher use oraclejdk7
   - java -cp testbin/;bin/;junit.3.8.1.jar com.hk.Main
