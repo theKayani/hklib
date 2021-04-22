@@ -8,11 +8,10 @@ install:
   - rm -rf bin
   - mkdir bin
   - javac -sourcepath src -d bin @argfile.txt
-
   - rm -f argfile.txt
   - find test -name "*.java" > argfile.txt
   - rm -rf testbin
   - mkdir testbin
-  - javac -verbose -classpath "./bin/:./dist/junit.3.8.1.jar" -sourcepath test -d testbin @argfile.txt
+  - javac -classpath "./bin/:./dist/junit3.8.1.jar" -sourcepath test -d testbin @argfile.txt
 script:
-  - java -cp ./testbin/:./bin/:./dist/junit.3.8.1.jar com.hk.TestMain
+  - java -classpath ./testbin/:./bin/:./dist/junit3.8.1.jar com.hk.TestMain
