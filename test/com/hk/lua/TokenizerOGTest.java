@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
-public class TokenizerTest extends TestCase
+public class TokenizerOGTest extends TestCase
 {
 	public void testInteger() throws IOException
 	{

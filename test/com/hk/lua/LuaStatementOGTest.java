@@ -4,7 +4,7 @@ import com.hk.str.StringUtil;
 
 import junit.framework.TestCase;
 
-public class LuaStatementTest extends TestCase
+public class LuaStatementOGTest extends TestCase
 {
 	private LuaInterpreter interp;
 	

@@ -1,8 +1,8 @@
-package com.hk;
+package com.hk.math.expression;
 
 import junit.framework.TestCase;
 
-public class MainTest extends TestCase
+public class ExpressionTest extends TestCase
 {
 	@Override
 	public void setUp()
@@ -10,9 +10,9 @@ public class MainTest extends TestCase
 		// TODO: create or delete
 	}
 
-	public void testMain()
+	public void testExpression()
 	{
-		// TODO: Main.main(String[])
+		// TODO: Expression(String)
 	}
 
 	@Override

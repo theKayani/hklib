@@ -16,10 +16,10 @@ import com.hk.func.BiConsumer;
 public class LuaInterpreter implements Tokens
 {
 	private final Map<String, Object> extraData;
-	private final Map<String, LuaChunk> required;
 	private final String mainSrc;
 	private LuaChunk mainChunk;
 	private Reader reader;
+	final Map<LuaObject, LuaObject> required;
 	final Stack<LuaThread> threads;
 	final Environment global;
 	Environment env;
@@ -112,21 +112,23 @@ public class LuaInterpreter implements Tokens
 	
 	public LuaObject require(String source, Reader reader)
 	{
-		LuaChunk chunk = source == null ? null : required.get(source);
-		if(chunk == null)
+		LuaObject src = new LuaString(source);
+		LuaObject result = source == null ? null : required.get(src);
+		if(result == null)
 		{
+			LuaChunk chunk;
 			try
 			{
-				required.put(source, chunk = readLua(reader, source == null ? Lua.STDIN : source, new Environment(this, global, true), true));
+				chunk = readLua(reader, source == null ? Lua.STDIN : source, new Environment(this, global, true), true);
 			}
 			catch(IOException e)
 			{
 				throw new UncheckedIOException(e);
 			}
 			
-			return (LuaObject) chunk.execute(this);
+			required.put(src, result = (LuaObject) chunk.execute(this));
 		}
-		return null;
+		return result;
 	}
 	
 	public <T extends Enum<T> & BiConsumer<Environment, LuaObject>> void importLib(LuaLibrary<T> lib)

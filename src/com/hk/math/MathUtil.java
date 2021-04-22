@@ -291,12 +291,25 @@ public class MathUtil extends Fibonacci
 			for(float f : fs)
 			{
 				if(f > max)
-				{
 					max = f;
-				}
 			}
 		}
 		return max;
+	}
+
+	public static float min(float... fs)
+	{
+		float min = 0;
+		if(fs.length > 0)
+		{
+			min = fs[0];
+			for(float f : fs)
+			{
+				if(f < min)
+					min = f;
+			}
+		}
+		return min;
 	}
 
 	public static double max(double... ds)
@@ -308,12 +321,25 @@ public class MathUtil extends Fibonacci
 			for(double d : ds)
 			{
 				if(d > max)
-				{
 					max = d;
-				}
 			}
 		}
 		return max;
+	}
+
+	public static double min(double... ds)
+	{
+		double min = 0;
+		if(ds.length > 0)
+		{
+			min = ds[0];
+			for(double d : ds)
+			{
+				if(d < min)
+					min = d;
+			}
+		}
+		return min;
 	}
 
 	public static double sigmoid(double t)

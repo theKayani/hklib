@@ -1,8 +1,8 @@
-package com.hk;
+package com.hk.json;
 
 import junit.framework.TestCase;
 
-public class MainTest extends TestCase
+public class JsonBooleanTest extends TestCase
 {
 	@Override
 	public void setUp()
@@ -10,9 +10,9 @@ public class MainTest extends TestCase
 		// TODO: create or delete
 	}
 
-	public void testMain()
+	public void testValueOf()
 	{
-		// TODO: Main.main(String[])
+		// TODO: JsonBoolean.valueOf(boolean)
 	}
 
 	@Override
