@@ -4,7 +4,7 @@ jdk:
   - openjdk8
 install:
 #  - rm -rf bin
-  - rm -rf testbin
+#  - rm -rf testbin
 #  - rm -f @argfile.txt
 #  - find src -name "*.java" > argfile.txt
 #  - mkdir bin
@@ -13,6 +13,9 @@ install:
 #  - find test -name "*.java" > argfile.txt
 #  - mkdir testbin
 #  - javac -classpath "bin/:dist/junit.3.8.1.jar;" -sourcepath test -d testbin @argfile.txt
+  - rm -rf testbin
+  - rm -f @argfile.txt
+  - find test -name "*.java" > argfile.txt
   - mkdir testbin
   - javac -cp dist/*.jar -sourcepath test -d testbin @argfile.txt
 script:
