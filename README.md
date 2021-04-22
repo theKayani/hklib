@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/theKayani/hklib.svg?branch=main)](https://travis-ci.com/theKayani/hklib)
+
 # hklib
 This is a collection of useful classes and functionalities that I found myself in need of over my years as a developer.
 
