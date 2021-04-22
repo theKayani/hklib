@@ -1,7 +1,8 @@
 dist: xenial
 language: java
 install:
-  - cd theKayani/hklib
+  - pwd
+  - ls -la
   - jdk_switcher use openjdk7
 script:
   - java -cp testbin/;bin/;junit.3.8.1.jar com.hk.Main
