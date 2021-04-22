@@ -1,12 +1,9 @@
 package com.hk;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -16,50 +13,22 @@ public class TestMain
 {
 	public static void main(String[] args) throws ClassNotFoundException, IOException
 	{
-		File argfile = new File("argfile.txt");
-		
-		boolean exists = argfile.exists();
-		System.out.println("Argfile exists: " + exists);
-		if(exists)
-		{
-			List<String> lst = Files.readAllLines(argfile.toPath());
-			
-			for(String s : lst)
-				System.out.println(s);
-		}
-		
 		TestSuite suite = new TestSuite();
 		
-		File dir = new File(System.getProperty("user.dir"), "testbin");
+		File argfile = new File("argfile.txt");
+		BufferedReader rdr = new BufferedReader(new FileReader(argfile));
+		String line;
 		
-		Path path = dir.toPath();
-		List<String> clss = new ArrayList<>();
-		Stack<File> dirs = new Stack<>();
-		dirs.push(dir);
-		
-		while(!dirs.isEmpty())
+		while((line = rdr.readLine()) != null)
 		{
-			File[] fs = dirs.pop().listFiles();
-			
-			for(File f : fs)
+			if(line.startsWith("test/") && line.endsWith("Test.java"))
 			{
-				if(f.isDirectory())
-				{
-					dirs.push(f);
-				}
-				else if(f.getName().endsWith("Test.class"))
-				{
-					String s = path.relativize(f.toPath()).toString();
-					s = s.substring(0, s.length() - 6);
-					s = s.replace(File.separator, ".");
-					clss.add(s);
-				}
+				line = line.substring(5, line.length() - 5).replace('/', '.');
+				suite.addTestSuite(Class.forName(line).asSubclass(TestCase.class));
 			}
-		
 		}
 		
-		for(String cls : clss)
-			suite.addTestSuite(Class.forName(cls).asSubclass(TestCase.class));
+		rdr.close();
 
 		TestRunner.run(suite);
 	}
