@@ -12,6 +12,6 @@ install:
   - rm -f @argfile.txt
   - find test -name "*.java" > argfile.txt
   - mkdir testbin
-  - javac -cp bin/;junit.3.8.1.jar -sourcepath test -d testbin @argfile.txt
+  - javac -cp bin/:test/junit.3.8.1.jar -sourcepath test -d testbin @argfile.txt
 script:
-  - java -cp testbin/;bin/;junit.3.8.1.jar com.hk.TestMain
+  - java -cp testbin/:bin/:test/junit.3.8.1.jar com.hk.TestMain
