@@ -5,7 +5,7 @@ import java.util.Random;
 
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
-import com.hk.math.MathUtil;
+import com.hk.math.PrimitiveUtil;
 import com.hk.math.Rand;
 
 public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMethod
@@ -232,21 +232,21 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 			if(args.length >= 1)
 			{
 				Lua.checkArgs(name(), args, LuaType.NUMBER);
-				MathUtil.longToBytes(Double.doubleToRawLongBits(args[0].getFloat()), seed, 0);
+				PrimitiveUtil.longToBytes(Double.doubleToRawLongBits(args[0].getFloat()), seed, 0);
 				if(args.length > 1)
 				{
 					Lua.checkArgs(name(), args, LuaType.NUMBER, LuaType.NUMBER);
-					MathUtil.longToBytes(Double.doubleToRawLongBits(args[1].getFloat()), seed, 8);
+					PrimitiveUtil.longToBytes(Double.doubleToRawLongBits(args[1].getFloat()), seed, 8);
 				}
 			}
 			else
 			{
-				MathUtil.longToBytes(Rand.nextLong(), seed, 0);
-				MathUtil.longToBytes(Rand.nextLong(), seed, 8);
+				PrimitiveUtil.longToBytes(Rand.nextLong(), seed, 0);
+				PrimitiveUtil.longToBytes(Rand.nextLong(), seed, 8);
 			}
 			rng = new SecureRandom(seed);
 
-			return new LuaArgs(LuaInteger.valueOf(MathUtil.bytesToLong(0, seed)), LuaInteger.valueOf(MathUtil.bytesToLong(8, seed)));
+			return new LuaArgs(LuaInteger.valueOf(PrimitiveUtil.bytesToLong(0, seed)), LuaInteger.valueOf(PrimitiveUtil.bytesToLong(8, seed)));
 		}
 	},
 	sin() {

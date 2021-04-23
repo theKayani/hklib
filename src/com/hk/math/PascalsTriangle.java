@@ -1,6 +1,6 @@
 package com.hk.math;
 
-class PascalsTriangle extends PrimitiveUtil
+public class PascalsTriangle
 {
     public static int factorial(int a)
     {
@@ -77,7 +77,6 @@ class PascalsTriangle extends PrimitiveUtil
         return "^" + (s.length() == 1 ? s : "(" + s + ")");
     }
 
-    PascalsTriangle()
-    {
-    }
+    private PascalsTriangle()
+    {}
 }

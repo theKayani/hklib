@@ -170,15 +170,30 @@ public class Concat
 
 	public static String concatStrings(String[]... arrs)
 	{
-		String s = "";
+		int len = 0;
 		for (String[] arr : arrs)
 		{
 			for (String str : arr)
 			{
-				s += str;
+				if(str != null)
+					len += str.length();
 			}
 		}
-		return s;
+		
+		char[] chs = new char[len];
+		len = 0;
+		for (String[] arr : arrs)
+		{
+			for (String str : arr)
+			{
+				if(str != null)
+				{
+					System.arraycopy(str.toCharArray(), 0, chs, len, str.length());
+					len += str.length();
+				}
+			}
+		}
+		return new String(chs);
 	}
 
 	public static int sumOfInts(int[]... arrs)

@@ -3,7 +3,7 @@ package com.hk.math;
 import com.hk.array.ArrayUtil;
 import com.hk.array.ImmutableArray;
 
-class Fibonacci extends PascalsTriangle
+public class Fibonacci
 {
 	public static final ImmutableArray<Integer> fibonacciInt = ArrayUtil.immutableArrayOf(getIntFibonnaciArray(47));
 	public static final ImmutableArray<Long> fibonacciLong = ArrayUtil.immutableArrayOf(getLongFibonnaciArray(93));
@@ -42,6 +42,6 @@ class Fibonacci extends PascalsTriangle
 		return fibonacciLong.get(index);
 	}
 
-	Fibonacci()
+	private Fibonacci()
 	{}
 }

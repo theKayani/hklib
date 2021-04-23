@@ -1,6 +1,6 @@
 package com.hk.math;
 
-class PrimitiveUtil
+public class PrimitiveUtil
 {
 	public static short bytesToShort(int off, byte... arr)
 	{
@@ -152,6 +152,6 @@ class PrimitiveUtil
 		return arr;
 	}
 
-	PrimitiveUtil()
+	private PrimitiveUtil()
 	{}
 }

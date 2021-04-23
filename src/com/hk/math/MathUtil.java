@@ -2,7 +2,7 @@ package com.hk.math;
 
 import com.hk.util.Requirements;
 
-public class MathUtil extends Fibonacci
+public class MathUtil
 {
 	//	private static Point2D getCross(Line2D lineA, Line2D lineB)
 	//	{

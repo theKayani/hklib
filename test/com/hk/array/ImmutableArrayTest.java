@@ -12,7 +12,8 @@ public class ImmutableArrayTest extends TestCase
 
 	public void testImmutableArray()
 	{
-		// TODO: ImmutableArray(Object)
+		ImmutableArray<String> strArr = new ImmutableArray<>(new String[0]);
+		assertEquals(0, strArr.length);
 	}
 
 	public void testIterator()
