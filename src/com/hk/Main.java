@@ -55,7 +55,7 @@ public class Main
 	public static void main(String[] args) throws IOException
 	{		
 		LuaInterpreter interp;
-		LuaFactory factory = Lua.factory(new File("src/com/hk/lua/array sort.lua"));
+		LuaFactory factory = Lua.factory(new File("src/com/hk/lua/main.lua"));
 
 		factory.compile();
 		factory.addLibrary(LuaLibrary.BASIC);
@@ -75,11 +75,11 @@ public class Main
 		interp.getGlobals().setVar("arr", Lua.newTable(Arrays.asList(Lua.newNumber(3), Lua.newNumber(2), Lua.newNumber(1))));
 		time(interp);
 
-		interp = factory.build();
-		interp.getGlobals().setVar("arr", Lua.newTable(Arrays.asList(Lua.newNumber(4), Lua.newNumber(32), Lua.newNumber(-1), Lua.newNumber(3), Lua.newNumber(2), Lua.newNumber(1))));
-		time(interp);
-		
-		time(factory.build());
+//		interp = factory.build();
+//		interp.getGlobals().setVar("arr", Lua.newTable(Arrays.asList(Lua.newNumber(4), Lua.newNumber(32), Lua.newNumber(-1), Lua.newNumber(3), Lua.newNumber(2), Lua.newNumber(1))));
+//		time(interp);
+//		
+//		time(factory.build());
 	}
 	
 	private static void time(LuaInterpreter interp)
@@ -87,8 +87,11 @@ public class Main
 		long start = System.nanoTime();
 		Object obj = interp.execute();
 		double executeTime = (System.nanoTime() - start) / 1E6D;
-		
-		System.out.println(obj);
+
+		if(obj instanceof Object[])
+			System.out.println(Arrays.deepToString((Object[]) obj));
+		else
+			System.out.println(obj);
 		System.out.println(executeTime + "ms");
 	}
 }

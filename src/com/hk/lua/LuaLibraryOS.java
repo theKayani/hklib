@@ -52,6 +52,9 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 			try
 			{
 				Process proc = Runtime.getRuntime().exec(cmd);
+				do
+				{}
+				while(proc.isAlive());
 				return new LuaArgs(LuaBoolean.TRUE, LuaInteger.valueOf(proc.exitValue()));
 			}
 			catch (IOException e)
