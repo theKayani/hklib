@@ -4,7 +4,7 @@ public class JsonBoolean extends JsonValue
 {
 	private final boolean value;
 
-	public JsonBoolean(boolean value)
+	private JsonBoolean(boolean value)
 	{
 		this.value = value;
 	}
@@ -23,11 +23,6 @@ public class JsonBoolean extends JsonValue
 	{
 		return value;
 	}
-	
-	public static JsonBoolean valueOf(boolean b)
-	{
-		return b ? TRUE : FALSE;
-	}
 
 	@Override
 	public int hashCode()
@@ -44,6 +39,11 @@ public class JsonBoolean extends JsonValue
 	public String toString()
 	{
 		return Boolean.toString(value);
+	}
+	
+	public static JsonBoolean valueOf(boolean b)
+	{
+		return b ? TRUE : FALSE;
 	}
 
 	public static final JsonBoolean TRUE = new JsonBoolean(true);

@@ -16,14 +16,36 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.hk.io.StringBuilderWriter;
 
 public class Json
 {
+	static final Set<JsonAdapter<?>> globalAdapters = new TreeSet<>();
+	
+	public static JsonAdapter<?> registerAdapter(JsonAdapter<?> adapter)
+	{
+		globalAdapters.add(adapter);
+		return adapter;
+	}
+
+	public static JsonAdapter<?> unregisterAdapter(JsonAdapter<?> adapter)
+	{
+		globalAdapters.remove(adapter);
+		return adapter;
+	}
+
+	public static Set<JsonAdapter<?>> getGlobalAdapters()
+	{
+		return Collections.unmodifiableSet(globalAdapters);
+	}
+	
 	public static JsonValue read(Reader rdr) throws JsonFormatException
 	{
 		JsonReader jr = reader(rdr);
@@ -139,10 +161,17 @@ public class Json
 	{
 		return new JsonWriter(wtr);
 	}
-	
+
 	public static String write(JsonValue value)
 	{
 		return write(new StringBuilder(), value).toString();
+	}
+	
+	public static String writePretty(JsonValue value)
+	{
+		StringBuilder sb = new StringBuilder();
+		writer(sb).setPrettyPrint().put(value).close();
+		return sb.toString();
 	}
 	
 	public static StringBuilder write(StringBuilder sb, JsonValue value)
@@ -210,23 +239,19 @@ public class Json
 	public static Object fromJson(JsonValue val)
 	{
 		if(val == null || val.isNull())
-		{
 			return null;
-		}
 		else if(val.isBoolean())
-		{
 			return val.getBoolean();
-		}
 		else if(val.isString())
-		{
 			return val.getString();
-		}
 		else if(val.isNumber())
-		{
 			return val.getNumber();
-		}
-		else
-			throw new Error();
+		else if(val.isArray())
+			return val.getArray().list;
+		else if(val.isObject())
+			return val.getObject().map;
+
+		throw new JsonAdaptationException();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -281,10 +306,12 @@ public class Json
 			}
 			return o;
 		}
-		else
-			throw new Error();
+
+		for(JsonAdapter<? extends Object> adapter : globalAdapters)
+		{
+			if(adapter.getObjClass().isAssignableFrom(obj.getClass()))
+				return adapter.tryTo(obj);
+		}
+		throw new JsonAdaptationException();
 	}
-	
-	private Json()
-	{}
 }

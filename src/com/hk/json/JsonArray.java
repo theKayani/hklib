@@ -8,16 +8,36 @@ import java.util.Objects;
 
 public class JsonArray extends JsonValue implements Iterable<JsonValue>
 {
-	final List<JsonValue> values;
+	public final List<JsonValue> list;
 
 	public JsonArray()
 	{
-		values = new ArrayList<>();
+		list = new ArrayList<>();
+	}
+
+	public JsonArray(int initialCapacity)
+	{
+		list = new ArrayList<>(initialCapacity);
+	}
+	
+	public JsonArray(List<JsonValue> values)
+	{
+		this.list = new ArrayList<>(values);
+	}
+	
+	public JsonArray(JsonArray copy)
+	{
+		list = new ArrayList<>(copy.list);
 	}
 	
 	public JsonType getType()
 	{
 		return JsonType.ARRAY;
+	}
+	
+	public <T> JsonArray add(T obj, JsonAdapter<T> adapter)
+	{
+		return add(adapter.toJson(obj));
 	}
 	
 	public JsonArray add(Object obj)
@@ -30,13 +50,13 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 		if (this == value)
 			throw new IllegalArgumentException("Can't add this to this");
 		
-		values.add(value == null ? JsonNull.NULL : value);
+		list.add(value == null ? JsonNull.NULL : value);
 		return this;
 	}
 
 	public JsonArray add(String value)
 	{
-		return add(new JsonString(value));
+		return add(value == null ? null : new JsonString(value));
 	}
 
 	public JsonArray add(double value)
@@ -61,36 +81,172 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 		return this;
 	}
 	
+	public <T> JsonArray addAll(Iterable<T> vals, JsonAdapter<T> adapter)
+	{
+		for(T val : vals)
+			add(adapter.toJson(val));
+		return this;
+	}
+	
+	public <T> JsonArray addAll(Iterable<T> vals, Class<T> cls)
+	{		
+		for(JsonAdapter<?> adapter : Json.globalAdapters)
+		{
+			if(adapter.getObjClass().isAssignableFrom(cls))
+			{
+				for(T val : vals)
+					add(adapter.tryTo(val));
+				return this;
+			}
+		}
+
+		throw new JsonAdaptationException("No adapter for " + cls.getName());
+	}
+	
 	public JsonArray addAll(JsonValue... vals)
 	{
 		for(JsonValue val : vals)
 			add(val);
 		return this;
 	}
+	
+	public JsonArray addAll(Object... vals)
+	{
+		for(Object val : vals)
+			add(Json.toJson(val));
+
+		return this;
+	}
 
 	public int size()
 	{
-		return values.size();
+		return list.size();
 	}
 
 	public JsonValue get(int i)
 	{
-		return values.get(i);
+		return list.get(i);
+	}
+
+	public JsonArray add(int i, JsonValue value)
+	{
+		list.add(i, value == null ? JsonNull.NULL : value);
+		return this;
+	}
+
+	public <T> JsonArray add(int i, T value, JsonAdapter<T> adapter)
+	{
+		return add(i, adapter.toJson(value));
+	}
+
+	public JsonArray add(int i, Object value)
+	{
+		return add(i, Json.toJson(value));
+	}
+
+	public JsonArray add(int i, String value)
+	{
+		return add(i, new JsonString(value));
+	}
+
+	public JsonArray add(int i, double value)
+	{
+		return add(i, new JsonNumber(value));
+	}
+
+	public JsonArray add(int i, long value)
+	{
+		return add(i, new JsonNumber(value));
+	}
+
+	public JsonArray add(int i, boolean value)
+	{
+		return add(i, JsonBoolean.valueOf(value));
+	}
+
+	public JsonValue set(int i, JsonValue value)
+	{
+		return list.set(i, value == null ? JsonNull.NULL : value);
+	}
+
+	public <T> JsonValue set(int i, T value, JsonAdapter<T> adapter)
+	{
+		return set(i, adapter.toJson(value));
+	}
+
+	public JsonValue set(int i, Object value)
+	{
+		return set(i, Json.toJson(value));
+	}
+
+	public JsonValue set(int i, String value)
+	{
+		return set(i, new JsonString(value));
+	}
+
+	public JsonValue set(int i, double value)
+	{
+		return set(i, new JsonNumber(value));
+	}
+
+	public JsonValue set(int i, long value)
+	{
+		return set(i, new JsonNumber(value));
+	}
+
+	public JsonValue set(int i, boolean value)
+	{
+		return set(i, JsonBoolean.valueOf(value));
 	}
 
 	public JsonValue remove(int i)
 	{
-		return values.remove(i);
+		return list.remove(i);
+	}
+	
+	public JsonArray removeAll()
+	{
+		list.clear();
+		return this;
 	}
 
 	public boolean isEmpty()
 	{
-		return values.isEmpty();
+		return list.isEmpty();
 	}
 
 	public boolean contains(JsonValue value)
 	{
-		return values.contains(value);
+		return list.contains(value);
+	}
+	
+	public <T> List<T> toList(JsonAdapter<T> adapter)
+	{
+		List<T> list = new ArrayList<>(size());
+		
+		for(JsonValue value : this.list)
+			list.add(adapter.fromJson(value));
+		
+		return list;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> List<T> toList(Class<T> cls)
+	{
+		for(JsonAdapter<?> adapter : Json.globalAdapters)
+		{
+			if(adapter.getObjClass().isAssignableFrom(cls))
+			{
+				List<T> list = new ArrayList<>(size());
+				
+				for(JsonValue value : this.list)
+					list.add((T) adapter.fromJson(value));
+				
+				return list;
+			}
+		}
+		
+		throw new JsonAdaptationException("No adapter for " + cls.getName());
 	}
 	
 	public boolean isArray()
@@ -105,24 +261,24 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	
 	public ListIterator<JsonValue> listIterator()
 	{
-		return values.listIterator();
+		return list.listIterator();
 	}
 
 	@Override
 	public Iterator<JsonValue> iterator()
 	{
-		return values.iterator();
+		return list.iterator();
 	}
 
 	@Override
 	public boolean equals(Object o)
 	{
-		return o instanceof JsonArray && Objects.equals(values, ((JsonArray) o).values);
+		return o instanceof JsonArray && Objects.equals(list, ((JsonArray) o).list);
 	}
 
 	@Override
 	public int hashCode()
 	{
-		return 53 + values.hashCode();
+		return 53 + list.hashCode();
 	}
 }

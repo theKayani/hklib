@@ -1,5 +1,6 @@
 package com.hk.json;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -12,6 +13,21 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	public JsonObject()
 	{
 		map = new LinkedHashMap<>();
+	}
+
+	public JsonObject(int initialCapacity)
+	{
+		map = new LinkedHashMap<>(initialCapacity);
+	}
+
+	public JsonObject(Map<String, JsonValue> map)
+	{
+		this.map = new LinkedHashMap<>(map);
+	}
+
+	public JsonObject(JsonObject copy)
+	{
+		map = new LinkedHashMap<>(copy.map);
 	}
 	
 	public JsonType getType()
@@ -172,6 +188,35 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	public int size()
 	{
 		return map.size();
+	}
+	
+	public <T> Map<String, T> toMap(JsonAdapter<T> adapter)
+	{
+		Map<String, T> map = new HashMap<>();
+		
+		for(Map.Entry<String, JsonValue> ent : this)
+			map.put(ent.getKey(), adapter.fromJson(ent.getValue()));
+		
+		return map;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T> Map<String, T> toMap(Class<T> cls)
+	{
+		for(JsonAdapter<?> adapter : Json.globalAdapters)
+		{
+			if(adapter.getObjClass().isAssignableFrom(cls))
+			{
+				Map<String, T> map = new HashMap<>();
+				
+				for(Map.Entry<String, JsonValue> ent : this)
+					map.put(ent.getKey(), (T) adapter.fromJson(ent.getValue()));
+				
+				return map;
+			}
+		}
+
+		throw new JsonAdaptationException("No adapter for " + cls.getName());
 	}
 	
 	public boolean isObject()

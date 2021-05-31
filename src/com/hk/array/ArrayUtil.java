@@ -23,7 +23,24 @@ public class ArrayUtil
 	 */
 	public static <T> ImmutableArray<T> immutableArrayOf(Object array)
 	{
-		return new ImmutableArray<>(array);
+		if(array instanceof boolean[])
+			return new ImmutableArray<>((boolean[]) array);
+		else if(array instanceof byte[])
+			return new ImmutableArray<>((byte[]) array);
+		else if(array instanceof short[])
+			return new ImmutableArray<>((short[]) array);
+		else if(array instanceof char[])
+			return new ImmutableArray<>((char[]) array);
+		else if(array instanceof int[])
+			return new ImmutableArray<>((int[]) array);
+		else if(array instanceof float[])
+			return new ImmutableArray<>((float[]) array);
+		else if(array instanceof long[])
+			return new ImmutableArray<>((long[]) array);
+		else if(array instanceof double[])
+			return new ImmutableArray<>((double[]) array);
+		else
+			return new ImmutableArray<>((Object[]) array);
 	}
 
 	/**

@@ -6,19 +6,70 @@ import java.util.Iterator;
 public final class ImmutableArray<T> implements Iterable<T>
 {
 	private final Object array;
+	private final Class<?> type;
 	public final int length;
 
-	public ImmutableArray(Object array)
+	public ImmutableArray(boolean[] array)
 	{
-		if (array.getClass().getComponentType() != null)
-		{
-			this.array = array;
-			this.length = Array.getLength(array);
-		}
-		else
-		{
-			throw new IllegalArgumentException("array must actually be an array, " + array);
-		}
+		this.array = array;
+		this.length = array.length;
+		this.type = boolean.class;
+	}
+
+	public ImmutableArray(byte[] array)
+	{
+		this.array = array;
+		this.length = array.length;
+		this.type = byte.class;
+	}
+
+	public ImmutableArray(short[] array)
+	{
+		this.array = array;
+		this.length = array.length;
+		this.type = Short.class;
+	}
+
+	public ImmutableArray(char[] array)
+	{
+		this.array = array;
+		this.length = array.length;
+		this.type = Character.class;
+	}
+
+	public ImmutableArray(int[] array)
+	{
+		this.array = array;
+		this.length = array.length;
+		this.type = Integer.class;
+	}
+
+	public ImmutableArray(float[] array)
+	{
+		this.array = array;
+		this.length = array.length;
+		this.type = Float.class;
+	}
+
+	public ImmutableArray(long[] array)
+	{
+		this.array = array;
+		this.length = array.length;
+		this.type = Long.class;
+	}
+
+	public ImmutableArray(double[] array)
+	{
+		this.array = array;
+		this.length = array.length;
+		this.type = Double.class;
+	}
+
+	public ImmutableArray(Object[] array)
+	{
+		this.array = array;
+		this.length = array.length;
+		this.type = array.getClass().getComponentType();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -30,7 +81,7 @@ public final class ImmutableArray<T> implements Iterable<T>
 	@SuppressWarnings("unchecked")
 	public T[] toArray()
 	{
-		T[] arr = (T[]) Array.newInstance(array.getClass().getComponentType(), length);
+		T[] arr = (T[]) Array.newInstance(type, length);
 		for (int i = 0; i < length; i++)
 		{
 			arr[i] = get(i);

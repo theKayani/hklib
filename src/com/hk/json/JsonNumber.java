@@ -8,15 +8,15 @@ public class JsonNumber extends JsonValue
 	{
 		this.value = value;
 	}
-	
-	public JsonType getType()
-	{
-		return JsonType.NUMBER;
-	}
 
 	public JsonNumber(double value)
 	{
 		this.value = value;
+	}
+	
+	public JsonType getType()
+	{
+		return JsonType.NUMBER;
 	}
 
 	public boolean isNumber()

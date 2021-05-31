@@ -19,8 +19,6 @@ public class JsonWriter
 	JsonWriter(Writer wtr)
 	{
 		this.wtr = new BufferedWriter(wtr);
-		
-		setSlashEscape();
 	}
 	
 	public JsonWriter unsetPrettyPrint()

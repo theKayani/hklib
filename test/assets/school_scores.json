@@ -1,0 +1,802 @@
+[
+	{
+		"dbn": "01M292",
+		"school_name": "HENRY STREET SCHOOL FOR INTERNATIONAL STUDIES",
+		"num_of_sat_test_takers": "29",
+		"sat_critical_reading_avg_score": "355",
+		"sat_math_avg_score": "404",
+		"sat_writing_avg_score": "363"
+	},
+	{
+		"dbn": "01M509",
+		"school_name": "MARTA VALLE HIGH SCHOOL",
+		"num_of_sat_test_takers": "44",
+		"sat_critical_reading_avg_score": "390",
+		"sat_math_avg_score": "433",
+		"sat_writing_avg_score": "384"
+	},
+	{
+		"dbn": "02M047",
+		"school_name": "47 THE AMERICAN SIGN LANGUAGE AND ENGLISH SECONDARY SCHOOL",
+		"num_of_sat_test_takers": "16",
+		"sat_critical_reading_avg_score": "395",
+		"sat_math_avg_score": "400",
+		"sat_writing_avg_score": "387"
+	},
+	{
+		"dbn": "02M300",
+		"school_name": "URBAN ASSEMBLY SCHOOL OF DESIGN AND CONSTRUCTION, THE",
+		"num_of_sat_test_takers": "48",
+		"sat_critical_reading_avg_score": "404",
+		"sat_math_avg_score": "449",
+		"sat_writing_avg_score": "416"
+	},
+	{
+		"dbn": "02M316",
+		"school_name": "URBAN ASSEMBLY SCHOOL OF BUSINESS FOR YOUNG WOMEN, THE",
+		"num_of_sat_test_takers": "42",
+		"sat_critical_reading_avg_score": "373",
+		"sat_math_avg_score": "370",
+		"sat_writing_avg_score": "384"
+	},
+	{
+		"dbn": "02M393",
+		"school_name": "BUSINESS OF SPORTS SCHOOL",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "02M408",
+		"school_name": "PROFESSIONAL PERFORMING ARTS HIGH SCHOOL",
+		"num_of_sat_test_takers": "94",
+		"sat_critical_reading_avg_score": "509",
+		"sat_math_avg_score": "490",
+		"sat_writing_avg_score": "523"
+	},
+	{
+		"dbn": "02M416",
+		"school_name": "ELEANOR ROOSEVELT HIGH SCHOOL",
+		"num_of_sat_test_takers": "127",
+		"sat_critical_reading_avg_score": "572",
+		"sat_math_avg_score": "594",
+		"sat_writing_avg_score": "592"
+	},
+	{
+		"dbn": "02M427",
+		"school_name": "MANHATTAN ACADEMY FOR ARTS & LANGUAGE",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "02M440",
+		"school_name": "BAYARD RUSTIN EDUCATIONAL COMPLEX",
+		"num_of_sat_test_takers": "59",
+		"sat_critical_reading_avg_score": "378",
+		"sat_math_avg_score": "365",
+		"sat_writing_avg_score": "368"
+	},
+	{
+		"dbn": "02M473",
+		"school_name": "WASHINGTON IRVING YABC",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "02M520",
+		"school_name": "MURRY BERGTRAUM HIGH SCHOOL FOR BUSINESS CAREERS",
+		"num_of_sat_test_takers": "264",
+		"sat_critical_reading_avg_score": "407",
+		"sat_math_avg_score": "440",
+		"sat_writing_avg_score": "393"
+	},
+	{
+		"dbn": "02M544",
+		"school_name": "INDEPENDENCE HIGH SCHOOL",
+		"num_of_sat_test_takers": "14",
+		"sat_critical_reading_avg_score": "389",
+		"sat_math_avg_score": "371",
+		"sat_writing_avg_score": "335"
+	},
+	{
+		"dbn": "02M565",
+		"school_name": "URBAN ACADEMY LABORATORY HIGH SCHOOL",
+		"num_of_sat_test_takers": "30",
+		"sat_critical_reading_avg_score": "527",
+		"sat_math_avg_score": "508",
+		"sat_writing_avg_score": "512"
+	},
+	{
+		"dbn": "02M586",
+		"school_name": "HARVEY MILK HIGH SCHOOL",
+		"num_of_sat_test_takers": "9",
+		"sat_critical_reading_avg_score": "458",
+		"sat_math_avg_score": "416",
+		"sat_writing_avg_score": "429"
+	},
+	{
+		"dbn": "02M625",
+		"school_name": "HIGH SCHOOL OF GRAPHIC COMMUNICATION ARTS",
+		"num_of_sat_test_takers": "191",
+		"sat_critical_reading_avg_score": "395",
+		"sat_math_avg_score": "382",
+		"sat_writing_avg_score": "376"
+	},
+	{
+		"dbn": "03M307",
+		"school_name": "URBAN ASSEMBLY SCHOOL FOR MEDIA STUDIES, THE",
+		"num_of_sat_test_takers": "41",
+		"sat_critical_reading_avg_score": "384",
+		"sat_math_avg_score": "390",
+		"sat_writing_avg_score": "370"
+	},
+	{
+		"dbn": "03M417",
+		"school_name": "FRANK MCCOURT HIGH SCHOOL",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "03M494",
+		"school_name": "HIGH SCHOOL OF ARTS AND TECHNOLOGY",
+		"num_of_sat_test_takers": "75",
+		"sat_critical_reading_avg_score": "433",
+		"sat_math_avg_score": "433",
+		"sat_writing_avg_score": "411"
+	},
+	{
+		"dbn": "03M860",
+		"school_name": "FREDERICK DOUGLASS ACADEMY II SECONDARY SCHOOL",
+		"num_of_sat_test_takers": "43",
+		"sat_critical_reading_avg_score": "356",
+		"sat_math_avg_score": "379",
+		"sat_writing_avg_score": "361"
+	},
+	{
+		"dbn": "04M610",
+		"school_name": "YOUNG WOMEN'S LEADERSHIP SCHOOL",
+		"num_of_sat_test_takers": "70",
+		"sat_critical_reading_avg_score": "432",
+		"sat_math_avg_score": "446",
+		"sat_writing_avg_score": "448"
+	},
+	{
+		"dbn": "05M362",
+		"school_name": "COLUMBIA SECONDARY SCHOOL FOR MATH, SCIENCE, AND ENGINEERING",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "05M670",
+		"school_name": "THURGOOD MARSHALL ACADEMY FOR LEARNING AND SOCIAL CHANGE",
+		"num_of_sat_test_takers": "66",
+		"sat_critical_reading_avg_score": "396",
+		"sat_math_avg_score": "402",
+		"sat_writing_avg_score": "404"
+	},
+	{
+		"dbn": "06M346",
+		"school_name": "COMMUNITY HEALTH ACADEMY OF THE HEIGHTS",
+		"num_of_sat_test_takers": "55",
+		"sat_critical_reading_avg_score": "362",
+		"sat_math_avg_score": "376",
+		"sat_writing_avg_score": "367"
+	},
+	{
+		"dbn": "06M463",
+		"school_name": "HIGH SCHOOL FOR MEDIA AND COMMUNICATIONS",
+		"num_of_sat_test_takers": "63",
+		"sat_critical_reading_avg_score": "369",
+		"sat_math_avg_score": "380",
+		"sat_writing_avg_score": "349"
+	},
+	{
+		"dbn": "07X221",
+		"school_name": "SOUTH BRONX PREPARATORY: A COLLEGE BOARD SCHOOL",
+		"num_of_sat_test_takers": "65",
+		"sat_critical_reading_avg_score": "364",
+		"sat_math_avg_score": "378",
+		"sat_writing_avg_score": "348"
+	},
+	{
+		"dbn": "07X427",
+		"school_name": "COMMUNITY SCHOOL FOR SOCIAL JUSTICE",
+		"num_of_sat_test_takers": "43",
+		"sat_critical_reading_avg_score": "361",
+		"sat_math_avg_score": "359",
+		"sat_writing_avg_score": "357"
+	},
+	{
+		"dbn": "07X527",
+		"school_name": "BRONX LEADERSHIP ACADEMY II HIGH SCHOOL",
+		"num_of_sat_test_takers": "62",
+		"sat_critical_reading_avg_score": "362",
+		"sat_math_avg_score": "378",
+		"sat_writing_avg_score": "363"
+	},
+	{
+		"dbn": "07X600",
+		"school_name": "ALFRED E. SMITH CAREER AND TECHNICAL EDUCATION HIGH SCHOOL",
+		"num_of_sat_test_takers": "76",
+		"sat_critical_reading_avg_score": "394",
+		"sat_math_avg_score": "400",
+		"sat_writing_avg_score": "364"
+	},
+	{
+		"dbn": "08X293",
+		"school_name": "RENAISSANCE HIGH SCHOOL FOR MUSICAL THEATER & TECHNOLOGY",
+		"num_of_sat_test_takers": "52",
+		"sat_critical_reading_avg_score": "384",
+		"sat_math_avg_score": "385",
+		"sat_writing_avg_score": "389"
+	},
+	{
+		"dbn": "08X367",
+		"school_name": "ARCHIMEDES ACADEMY FOR MATH, SCIENCE AND TECHNOLOGY APPLICATIONS",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "08X432",
+		"school_name": "BRONX BRIDGES HIGH SCHOOL",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "08X530",
+		"school_name": "BANANA KELLY HIGH SCHOOL",
+		"num_of_sat_test_takers": "54",
+		"sat_critical_reading_avg_score": "373",
+		"sat_math_avg_score": "381",
+		"sat_writing_avg_score": "377"
+	},
+	{
+		"dbn": "09X227",
+		"school_name": "BRONX EXPEDITIONARY LEARNING HIGH SCHOOL",
+		"num_of_sat_test_takers": "39",
+		"sat_critical_reading_avg_score": "324",
+		"sat_math_avg_score": "376",
+		"sat_writing_avg_score": "349"
+	},
+	{
+		"dbn": "09X252",
+		"school_name": "MOTT HALL BRONX HIGH SCHOOL",
+		"num_of_sat_test_takers": "67",
+		"sat_critical_reading_avg_score": "369",
+		"sat_math_avg_score": "367",
+		"sat_writing_avg_score": "356"
+	},
+	{
+		"dbn": "09X324",
+		"school_name": "BRONX EARLY COLLEGE ACADEMY FOR TEACHING & LEARNING",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "09X412",
+		"school_name": "BRONX HIGH SCHOOL OF BUSINESS",
+		"num_of_sat_test_takers": "34",
+		"sat_critical_reading_avg_score": "356",
+		"sat_math_avg_score": "376",
+		"sat_writing_avg_score": "351"
+	},
+	{
+		"dbn": "09X517",
+		"school_name": "FREDERICK DOUGLASS ACADEMY III SECONDARY SCHOOL",
+		"num_of_sat_test_takers": "50",
+		"sat_critical_reading_avg_score": "368",
+		"sat_math_avg_score": "384",
+		"sat_writing_avg_score": "369"
+	},
+	{
+		"dbn": "10X225",
+		"school_name": "THEATRE ARTS PRODUCTION COMPANY SCHOOL",
+		"num_of_sat_test_takers": "59",
+		"sat_critical_reading_avg_score": "405",
+		"sat_math_avg_score": "391",
+		"sat_writing_avg_score": "394"
+	},
+	{
+		"dbn": "10X319",
+		"school_name": "PROVIDING URBAN LEARNERS SUCCESS IN EDUCATION HIGH SCHOOL",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "10X433",
+		"school_name": "HIGH SCHOOL FOR TEACHING AND THE PROFESSIONS",
+		"num_of_sat_test_takers": "57",
+		"sat_critical_reading_avg_score": "370",
+		"sat_math_avg_score": "371",
+		"sat_writing_avg_score": "365"
+	},
+	{
+		"dbn": "10X439",
+		"school_name": "BRONX HIGH SCHOOL FOR LAW AND COMMUNITY SERVICE",
+		"num_of_sat_test_takers": "65",
+		"sat_critical_reading_avg_score": "366",
+		"sat_math_avg_score": "364",
+		"sat_writing_avg_score": "352"
+	},
+	{
+		"dbn": "10X477",
+		"school_name": "MARBLE HILL HIGH SCHOOL FOR INTERNATIONAL STUDIES",
+		"num_of_sat_test_takers": "99",
+		"sat_critical_reading_avg_score": "414",
+		"sat_math_avg_score": "435",
+		"sat_writing_avg_score": "414"
+	},
+	{
+		"dbn": "10X667",
+		"school_name": "GRACE DODGE YABC",
+		"num_of_sat_test_takers": "10",
+		"sat_critical_reading_avg_score": "350",
+		"sat_math_avg_score": "356",
+		"sat_writing_avg_score": "317"
+	},
+	{
+		"dbn": "11X270",
+		"school_name": "ACADEMY FOR SCHOLARSHIP AND ENTREPRENEURSHIP: A COLLEGE BOARD SCHOOL",
+		"num_of_sat_test_takers": "56",
+		"sat_critical_reading_avg_score": "386",
+		"sat_math_avg_score": "394",
+		"sat_writing_avg_score": "361"
+	},
+	{
+		"dbn": "11X415",
+		"school_name": "CHRISTOPHER COLUMBUS HIGH SCHOOL",
+		"num_of_sat_test_takers": "121",
+		"sat_critical_reading_avg_score": "367",
+		"sat_math_avg_score": "361",
+		"sat_writing_avg_score": "353"
+	},
+	{
+		"dbn": "11X456",
+		"school_name": "LEARNING TO WORK YABC AT TRUMAN HIGH SCHOOL",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "11X544",
+		"school_name": "HIGH SCHOOL FOR CONTEMPORARY ARTS",
+		"num_of_sat_test_takers": "55",
+		"sat_critical_reading_avg_score": "383",
+		"sat_math_avg_score": "378",
+		"sat_writing_avg_score": "365"
+	},
+	{
+		"dbn": "12X262",
+		"school_name": "PERFORMANCE CONSERVATORY HIGH SCHOOL",
+		"num_of_sat_test_takers": "30",
+		"sat_critical_reading_avg_score": "361",
+		"sat_math_avg_score": "353",
+		"sat_writing_avg_score": "360"
+	},
+	{
+		"dbn": "12X428",
+		"school_name": "LEARNING TO WORK YABC AT MONROE ACADEMY",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "12X550",
+		"school_name": "HIGH SCHOOL OF WORLD CULTURES",
+		"num_of_sat_test_takers": "42",
+		"sat_critical_reading_avg_score": "304",
+		"sat_math_avg_score": "323",
+		"sat_writing_avg_score": "312"
+	},
+	{
+		"dbn": "12X692",
+		"school_name": "MONROE ACADEMY FOR VISUAL ARTS & DESIGN",
+		"num_of_sat_test_takers": "43",
+		"sat_critical_reading_avg_score": "332",
+		"sat_math_avg_score": "357",
+		"sat_writing_avg_score": "349"
+	},
+	{
+		"dbn": "13K419",
+		"school_name": "SCIENCE SKILLS CENTER HIGH SCHOOL FOR SCIENCE, TECHNOLOGY AND THE CREATIVE ARTS",
+		"num_of_sat_test_takers": "92",
+		"sat_critical_reading_avg_score": "399",
+		"sat_math_avg_score": "417",
+		"sat_writing_avg_score": "395"
+	},
+	{
+		"dbn": "13K509",
+		"school_name": "FREEDOM ACADEMY HIGH SCHOOL",
+		"num_of_sat_test_takers": "29",
+		"sat_critical_reading_avg_score": "400",
+		"sat_math_avg_score": "390",
+		"sat_writing_avg_score": "403"
+	},
+	{
+		"dbn": "13K605",
+		"school_name": "GEORGE WESTINGHOUSE CAREER AND TECHNICAL EDUCATION HIGH SCHOOL",
+		"num_of_sat_test_takers": "85",
+		"sat_critical_reading_avg_score": "406",
+		"sat_math_avg_score": "391",
+		"sat_writing_avg_score": "392"
+	},
+	{
+		"dbn": "14K071",
+		"school_name": "JUAN MOREL CAMPOS SECONDARY SCHOOL",
+		"num_of_sat_test_takers": "102",
+		"sat_critical_reading_avg_score": "365",
+		"sat_math_avg_score": "361",
+		"sat_writing_avg_score": "359"
+	},
+	{
+		"dbn": "14K474",
+		"school_name": "PROGRESS HIGH SCHOOL FOR PROFESSIONAL CAREERS",
+		"num_of_sat_test_takers": "144",
+		"sat_critical_reading_avg_score": "364",
+		"sat_math_avg_score": "379",
+		"sat_writing_avg_score": "371"
+	},
+	{
+		"dbn": "14K561",
+		"school_name": "WILLIAMSBURG PREPARATORY SCHOOL",
+		"num_of_sat_test_takers": "113",
+		"sat_critical_reading_avg_score": "397",
+		"sat_math_avg_score": "410",
+		"sat_writing_avg_score": "380"
+	},
+	{
+		"dbn": "14K923",
+		"school_name": "AUTOMOTIVE HIGH SCHOOL YABC",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "15K464",
+		"school_name": "PARK SLOPE COLLEGIATE",
+		"num_of_sat_test_takers": "72",
+		"sat_critical_reading_avg_score": "379",
+		"sat_math_avg_score": "416",
+		"sat_writing_avg_score": "380"
+	},
+	{
+		"dbn": "15K529",
+		"school_name": "WEST BROOKLYN COMMUNITY HIGH SCHOOL",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "16K393",
+		"school_name": "FREDERICK DOUGLASS ACADEMY IV SECONDARY SCHOOL",
+		"num_of_sat_test_takers": "20",
+		"sat_critical_reading_avg_score": "355",
+		"sat_math_avg_score": "355",
+		"sat_writing_avg_score": "358"
+	},
+	{
+		"dbn": "17K382",
+		"school_name": "ACADEMY FOR COLLEGE PREPARATION AND CAREER EXPLORATION: A COLLEGE BOARD SCHOOL",
+		"num_of_sat_test_takers": "59",
+		"sat_critical_reading_avg_score": "396",
+		"sat_math_avg_score": "374",
+		"sat_writing_avg_score": "369"
+	},
+	{
+		"dbn": "17K528",
+		"school_name": "THE HIGH SCHOOL FOR GLOBAL CITIZENSHIP",
+		"num_of_sat_test_takers": "46",
+		"sat_critical_reading_avg_score": "403",
+		"sat_math_avg_score": "385",
+		"sat_writing_avg_score": "388"
+	},
+	{
+		"dbn": "17K539",
+		"school_name": "HIGH SCHOOL FOR SERVICE & LEARNING AT ERASMUS",
+		"num_of_sat_test_takers": "61",
+		"sat_critical_reading_avg_score": "362",
+		"sat_math_avg_score": "375",
+		"sat_writing_avg_score": "368"
+	},
+	{
+		"dbn": "17K548",
+		"school_name": "BROOKLYN SCHOOL FOR MUSIC & THEATRE",
+		"num_of_sat_test_takers": "48",
+		"sat_critical_reading_avg_score": "385",
+		"sat_math_avg_score": "393",
+		"sat_writing_avg_score": "373"
+	},
+	{
+		"dbn": "17K751",
+		"school_name": "ACADEMY FOR HEALTH CAREERS",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "18K576",
+		"school_name": "VICTORY COLLEGIATE HIGH SCHOOL",
+		"num_of_sat_test_takers": "63",
+		"sat_critical_reading_avg_score": "387",
+		"sat_math_avg_score": "377",
+		"sat_writing_avg_score": "379"
+	},
+	{
+		"dbn": "18K633",
+		"school_name": "HIGH SCHOOL FOR MEDICAL PROFESSIONS",
+		"num_of_sat_test_takers": "75",
+		"sat_critical_reading_avg_score": "386",
+		"sat_math_avg_score": "380",
+		"sat_writing_avg_score": "393"
+	},
+	{
+		"dbn": "18K673",
+		"school_name": "EAST BROOKLYN COMMUNITY HIGH SCHOOL",
+		"num_of_sat_test_takers": "12",
+		"sat_critical_reading_avg_score": "410",
+		"sat_math_avg_score": "403",
+		"sat_writing_avg_score": "378"
+	},
+	{
+		"dbn": "19K504",
+		"school_name": "HIGH SCHOOL FOR CIVIL RIGHTS",
+		"num_of_sat_test_takers": "47",
+		"sat_critical_reading_avg_score": "363",
+		"sat_math_avg_score": "349",
+		"sat_writing_avg_score": "342"
+	},
+	{
+		"dbn": "19K618",
+		"school_name": "ACADEMY OF INNOVATIVE TECHNOLOGY",
+		"num_of_sat_test_takers": "60",
+		"sat_critical_reading_avg_score": "371",
+		"sat_math_avg_score": "371",
+		"sat_writing_avg_score": "354"
+	},
+	{
+		"dbn": "20K445",
+		"school_name": "NEW UTRECHT HIGH SCHOOL",
+		"num_of_sat_test_takers": "456",
+		"sat_critical_reading_avg_score": "402",
+		"sat_math_avg_score": "471",
+		"sat_writing_avg_score": "399"
+	},
+	{
+		"dbn": "20K609",
+		"school_name": "THE URBAN ASSEMBLY SCHOOL FOR CRIMINAL JUSTICE",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "21K410",
+		"school_name": "ABRAHAM LINCOLN HIGH SCHOOL",
+		"num_of_sat_test_takers": "475",
+		"sat_critical_reading_avg_score": "396",
+		"sat_math_avg_score": "437",
+		"sat_writing_avg_score": "393"
+	},
+	{
+		"dbn": "21K559",
+		"school_name": "LIFE ACADEMY HIGH SCHOOL FOR FILM AND MUSIC",
+		"num_of_sat_test_takers": "40",
+		"sat_critical_reading_avg_score": "384",
+		"sat_math_avg_score": "375",
+		"sat_writing_avg_score": "365"
+	},
+	{
+		"dbn": "22K405",
+		"school_name": "MIDWOOD HIGH SCHOOL",
+		"num_of_sat_test_takers": "824",
+		"sat_critical_reading_avg_score": "478",
+		"sat_math_avg_score": "519",
+		"sat_writing_avg_score": "476"
+	},
+	{
+		"dbn": "23K493",
+		"school_name": "BROOKLYN COLLEGIATE: A COLLEGE BOARD SCHOOL",
+		"num_of_sat_test_takers": "60",
+		"sat_critical_reading_avg_score": "389",
+		"sat_math_avg_score": "409",
+		"sat_writing_avg_score": "387"
+	},
+	{
+		"dbn": "23K647",
+		"school_name": "METROPOLITAN DIPLOMA PLUS HIGH SCHOOL",
+		"num_of_sat_test_takers": "17",
+		"sat_critical_reading_avg_score": "350",
+		"sat_math_avg_score": "346",
+		"sat_writing_avg_score": "332"
+	},
+	{
+		"dbn": "24Q296",
+		"school_name": "PAN AMERICAN INTERNATIONAL HIGH SCHOOL",
+		"num_of_sat_test_takers": "55",
+		"sat_critical_reading_avg_score": "317",
+		"sat_math_avg_score": "323",
+		"sat_writing_avg_score": "311"
+	},
+	{
+		"dbn": "24Q520",
+		"school_name": "MIDDLE COLLEGE HIGH SCHOOL AT LAGUARDIA COMMUNITY COLLEGE",
+		"num_of_sat_test_takers": "58",
+		"sat_critical_reading_avg_score": "399",
+		"sat_math_avg_score": "393",
+		"sat_writing_avg_score": "385"
+	},
+	{
+		"dbn": "24Q610",
+		"school_name": "AVIATION CAREER & TECHNICAL EDUCATION HIGH SCHOOL",
+		"num_of_sat_test_takers": "396",
+		"sat_critical_reading_avg_score": "445",
+		"sat_math_avg_score": "496",
+		"sat_writing_avg_score": "423"
+	},
+	{
+		"dbn": "25Q281",
+		"school_name": "EASTsWEST SCHOOL OF INTERNATIONAL STUDIES",
+		"num_of_sat_test_takers": "59",
+		"sat_critical_reading_avg_score": "416",
+		"sat_math_avg_score": "463",
+		"sat_writing_avg_score": "392"
+	},
+	{
+		"dbn": "25Q525",
+		"school_name": "TOWNSEND HARRIS HIGH SCHOOL",
+		"num_of_sat_test_takers": "278",
+		"sat_critical_reading_avg_score": "621",
+		"sat_math_avg_score": "651",
+		"sat_writing_avg_score": "638"
+	},
+	{
+		"dbn": "26Q430",
+		"school_name": "FRANCIS LEWIS HIGH SCHOOL",
+		"num_of_sat_test_takers": "934",
+		"sat_critical_reading_avg_score": "468",
+		"sat_math_avg_score": "539",
+		"sat_writing_avg_score": "467"
+	},
+	{
+		"dbn": "27Q262",
+		"school_name": "CHANNEL VIEW SCHOOL FOR RESEARCH",
+		"num_of_sat_test_takers": "74",
+		"sat_critical_reading_avg_score": "432",
+		"sat_math_avg_score": "419",
+		"sat_writing_avg_score": "401"
+	},
+	{
+		"dbn": "27Q400",
+		"school_name": "AUGUST MARTIN HIGH SCHOOL",
+		"num_of_sat_test_takers": "101",
+		"sat_critical_reading_avg_score": "377",
+		"sat_math_avg_score": "371",
+		"sat_writing_avg_score": "360"
+	},
+	{
+		"dbn": "27Q650",
+		"school_name": "HIGH SCHOOL FOR CONSTRUCTION TRADES, ENGINEERING AND ARCHITECTURE",
+		"num_of_sat_test_takers": "194",
+		"sat_critical_reading_avg_score": "429",
+		"sat_math_avg_score": "491",
+		"sat_writing_avg_score": "425"
+	},
+	{
+		"dbn": "28Q350",
+		"school_name": "JAMAICA GATEWAY TO THE SCIENCES",
+		"num_of_sat_test_takers": "25",
+		"sat_critical_reading_avg_score": "430",
+		"sat_math_avg_score": "452",
+		"sat_writing_avg_score": "425"
+	},
+	{
+		"dbn": "28Q680",
+		"school_name": "QUEENS GATEWAY TO HEALTH SCIENCES SECONDARY SCHOOL",
+		"num_of_sat_test_takers": "99",
+		"sat_critical_reading_avg_score": "513",
+		"sat_math_avg_score": "523",
+		"sat_writing_avg_score": "502"
+	},
+	{
+		"dbn": "29Q248",
+		"school_name": "QUEENS PREPARATORY ACADEMY",
+		"num_of_sat_test_takers": "52",
+		"sat_critical_reading_avg_score": "360",
+		"sat_math_avg_score": "380",
+		"sat_writing_avg_score": "359"
+	},
+	{
+		"dbn": "29Q283",
+		"school_name": "PREPARATORY ACADEMY FOR WRITERS: A COLLEGE BOARD SCHOOL",
+		"num_of_sat_test_takers": "43",
+		"sat_critical_reading_avg_score": "370",
+		"sat_math_avg_score": "367",
+		"sat_writing_avg_score": "363"
+	},
+	{
+		"dbn": "29Q498",
+		"school_name": "HUMANITIES & ARTS MAGNET HIGH SCHOOL",
+		"num_of_sat_test_takers": "62",
+		"sat_critical_reading_avg_score": "393",
+		"sat_math_avg_score": "381",
+		"sat_writing_avg_score": "377"
+	},
+	{
+		"dbn": "30Q501",
+		"school_name": "FRANK SINATRA SCHOOL OF THE ARTS HIGH SCHOOL",
+		"num_of_sat_test_takers": "174",
+		"sat_critical_reading_avg_score": "504",
+		"sat_math_avg_score": "496",
+		"sat_writing_avg_score": "494"
+	},
+	{
+		"dbn": "31R047",
+		"school_name": "CSI HIGH SCHOOL FOR INTERNATIONAL STUDIES",
+		"num_of_sat_test_takers": "137",
+		"sat_critical_reading_avg_score": "452",
+		"sat_math_avg_score": "451",
+		"sat_writing_avg_score": "450"
+	},
+	{
+		"dbn": "31R450",
+		"school_name": "CURTIS HIGH SCHOOL",
+		"num_of_sat_test_takers": "375",
+		"sat_critical_reading_avg_score": "437",
+		"sat_math_avg_score": "435",
+		"sat_writing_avg_score": "429"
+	},
+	{
+		"dbn": "31R600",
+		"school_name": "RALPH R. MCKEE CAREER AND TECHNICAL EDUCATION HIGH SCHOOL",
+		"num_of_sat_test_takers": "94",
+		"sat_critical_reading_avg_score": "416",
+		"sat_math_avg_score": "422",
+		"sat_writing_avg_score": "397"
+	},
+	{
+		"dbn": "32K549",
+		"school_name": "BUSHWICK SCHOOL FOR SOCIAL JUSTICE",
+		"num_of_sat_test_takers": "75",
+		"sat_critical_reading_avg_score": "348",
+		"sat_math_avg_score": "353",
+		"sat_writing_avg_score": "334"
+	},
+	{
+		"dbn": "75K371",
+		"school_name": "P.S. 371 s LILLIAN L. RASHKIS",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	},
+	{
+		"dbn": "75X012",
+		"school_name": "P.S. X012 LEWIS AND CLARK SCHOOL",
+		"num_of_sat_test_takers": "s",
+		"sat_critical_reading_avg_score": "s",
+		"sat_math_avg_score": "s",
+		"sat_writing_avg_score": "s"
+	}
+]
