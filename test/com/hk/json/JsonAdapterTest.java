@@ -7,22 +7,6 @@ public class JsonAdapterTest extends TestCase
 	@Override
 	public void setUp()
 	{
-//		Json.registerAdapter(new DogAdapter());
-				
-//		Dog dog = Json.read(new File("test\\assets\\stuff.json")).get(Dog.class, DogAdapter.instance);
-//		
-//		System.out.println(dog.toString());
-//		System.out.println(DogAdapter.instance.to(dog));
-		
-//		File file1 = new File("test\\assets\\school_scores.json");
-//		File file2 = new File("test\\assets\\school_scores_copy.json");
-//		file2.delete();
-//		List<SchoolScore> scores = Json.read(file1).getArray().toList(new SchoolScoreAdapter());
-//		
-//		for(SchoolScore score : scores)
-//			System.out.println(score);
-//		
-//		Json.writer(file2).setPrettyPrint().put(new JsonArray().addAll(scores, new SchoolScoreAdapter())).close();
 //		Json.registerAdapter(new InterfaceAdapter<>(Point.class));
 		
 //		InterfaceAdapter<MyInterface> adapter = new InterfaceAdapter<>(MyInterface.class, true);
@@ -77,7 +61,11 @@ public class JsonAdapterTest extends TestCase
 //		
 //		System.out.println(myImpl1);
 //		System.out.println(myImpl2);
+	}
 	
+	public void testDoNotFail()
+	{
+		assertTrue(true);
 	}
 
 	@Override

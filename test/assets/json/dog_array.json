@@ -1,0 +1,33 @@
+[
+	{
+		"name": "Rocky",
+		"breed": "German Shepherd",
+		"age": 9,
+		"color": "black"
+	},
+	{
+		"name": "Charlie",
+		"breed": "Golden Retriever",
+		"age": 11,
+		"color": "golden"
+	},
+	{
+		"name": "Balto",
+		"breed": "Siberian Husky",
+		"age": 8,
+		"color": "light brown"
+	},
+	{
+		"name": "Bear",
+		"breed": "Bulldog",
+		"age": 9,
+		"color": "gray"
+	},
+	null,
+	{
+		"name": "Fluffles",
+		"breed": "Poodle",
+		"age": 12,
+		"color": "light gray"
+	}
+]

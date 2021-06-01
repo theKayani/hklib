@@ -29,13 +29,13 @@ public class Json
 {
 	static final Set<JsonAdapter<?>> globalAdapters = new TreeSet<>();
 	
-	public static JsonAdapter<?> registerAdapter(JsonAdapter<?> adapter)
+	public static <T extends JsonAdapter<?>> T registerAdapter(T adapter)
 	{
 		globalAdapters.add(adapter);
 		return adapter;
 	}
 
-	public static JsonAdapter<?> unregisterAdapter(JsonAdapter<?> adapter)
+	public static <T extends JsonAdapter<?>> T unregisterAdapter(T adapter)
 	{
 		globalAdapters.remove(adapter);
 		return adapter;
@@ -235,7 +235,7 @@ public class Json
 		return new JsonWriter(new OutputStreamWriter(out, charset));
 	}
 	
-//	@SuppressWarnings("unchecked")
+	//	@SuppressWarnings("unchecked")
 	public static Object fromJson(JsonValue val)
 	{
 		if(val == null || val.isNull())
@@ -250,10 +250,10 @@ public class Json
 			return val.getArray().list;
 		else if(val.isObject())
 			return val.getObject().map;
-
+	
 		throw new JsonAdaptationException();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static JsonValue toJson(Object obj)
 	{
@@ -312,6 +312,6 @@ public class Json
 			if(adapter.getObjClass().isAssignableFrom(obj.getClass()))
 				return adapter.tryTo(obj);
 		}
-		throw new JsonAdaptationException();
+		throw new JsonAdaptationException("No adapter for " + obj.getClass().getName());
 	}
 }

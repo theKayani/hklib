@@ -1,0 +1,56 @@
+{
+	"Josh's Dogs": [
+		{
+			"name": "Chi",
+			"breed": "Chihuahua",
+			"age": 6,
+			"color": "golden"
+		},
+		{
+			"name": "Daisy",
+			"breed": "Chihuahua",
+			"age": 8,
+			"color": "white"
+		},
+		{
+			"name": "Jack",
+			"breed": "Dachshund",
+			"age": 5,
+			"color": "black"
+		}
+	],
+	"Kim's Kennel": [
+		{
+			"name": "Zeus",
+			"breed": "Rottweiler",
+			"age": 9,
+			"color": "brown"
+		},
+		{
+			"name": "Bella",
+			"breed": "Labrador Retreiver",
+			"age": 8,
+			"color": "light golden"
+		}
+	],
+	"Pete's Pack": [
+		{
+			"name": "Fritz",
+			"breed": "Siberian Husky",
+			"age": 7,
+			"color": "light gray"
+		},
+		{
+			"name": "Gus",
+			"breed": "Siberian Husky",
+			"age": 7,
+			"color": "white"
+		},
+		{
+			"name": "Mishka",
+			"breed": "Siberian Husky",
+			"age": 5,
+			"color": "black"
+		}
+	]
+}

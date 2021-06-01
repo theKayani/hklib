@@ -1,0 +1,15 @@
+{
+	"Jim Halpert": {
+		"name": "Max",
+		"breed": "Border Collie",
+		"age": 7,
+		"color": "black"
+	},
+	"Pam Beesly": null,
+	"Michael Scott": {
+		"name": "Luna",
+		"breed": "Great Dane",
+		"age": 6,
+		"color": "black"
+	}
+}

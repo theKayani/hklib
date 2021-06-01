@@ -5,11 +5,9 @@ import com.hk.json.JsonAdapter;
 import com.hk.json.JsonObject;
 import com.hk.json.JsonValue;
 
-public class DogAdapter extends JsonAdapter<Dog>
-{
-	public static final DogAdapter instance = new DogAdapter();
-	
-	private DogAdapter()
+class DogAdapter extends JsonAdapter<Dog>
+{	
+	DogAdapter()
 	{
 		super(Dog.class);
 	}
