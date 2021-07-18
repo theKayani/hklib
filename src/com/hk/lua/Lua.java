@@ -71,6 +71,16 @@ public class Lua
 	{
 		return new LuaInterpreter((Reader) null, STDIN);
 	}
+
+	public static LuaInterpreter interpreter(String source)
+	{
+		return new LuaInterpreter((Reader) null, source);
+	}
+	
+	public static LuaInterpreter reader(Reader rdr, String source)
+	{
+		return new LuaInterpreter(Objects.requireNonNull(rdr), source);
+	}
 	
 	public static LuaInterpreter reader(Reader rdr)
 	{
@@ -207,6 +217,14 @@ public class Lua
 	public static LuaObject newVarargs(LuaObject... args)
 	{
 		return new LuaArgs(args);
+	}
+	
+	public static LuaObject[] getVarargs(LuaObject o)
+	{
+		if(o instanceof LuaArgs)
+			return ((LuaArgs) o).objs;
+		else
+			return new LuaObject[] { o };
 	}
 	
 	public static LuaObject newTable()

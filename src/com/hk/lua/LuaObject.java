@@ -177,6 +177,11 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		return rawLen().getInteger();
 	}
+	
+	public LuaObject call(LuaInterpreter interp, LuaObject... args)
+	{
+		return doCall(interp, args == null ? new LuaObject[0] : args);
+	}
 
 	public LuaObject callFunction(LuaInterpreter interp, Object... args)
 	{

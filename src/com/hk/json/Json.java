@@ -16,18 +16,19 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TreeSet;
 
+import com.hk.collections.lists.SortedList;
 import com.hk.io.StringBuilderWriter;
 
 public class Json
 {
-	static final Set<JsonAdapter<?>> globalAdapters = new TreeSet<>();
+	static final List<JsonAdapter<?>> globalAdapters = new SortedList<>();
 	
 	public static <T extends JsonAdapter<?>> T registerAdapter(T adapter)
 	{
@@ -43,7 +44,7 @@ public class Json
 
 	public static Set<JsonAdapter<?>> getGlobalAdapters()
 	{
-		return Collections.unmodifiableSet(globalAdapters);
+		return new HashSet<>(globalAdapters);
 	}
 	
 	public static JsonValue read(Reader rdr) throws JsonFormatException

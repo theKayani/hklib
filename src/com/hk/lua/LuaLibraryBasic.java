@@ -3,6 +3,7 @@ package com.hk.lua;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.StringReader;
 import java.util.Iterator;
 import java.util.Map;
@@ -284,14 +285,16 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
+			PrintStream out = interp.getExtra(EXKEY_OUTPUT , PrintStream.class, System.out);
+			
 			for(int i = 0; i < args.length; i++)
 			{
-				System.out.print(args[i].getString());
+				out.print(args[i].getString(interp));
 				
 				if(i < args.length - 1)
-					System.out.print('\t');
+					out.print('\t');
 			}
-			System.out.println();
+			out.println();
 			return LuaNil.NIL;
 		}
 	},
@@ -415,7 +418,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.ANY);
-			return new LuaString(args[0].getString());
+			return new LuaString(args[0].getString(interp));
 		}
 	},
 	type() {
@@ -461,4 +464,6 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		if(name != null && !name.trim().isEmpty())
 			table.rawSet(new LuaString(name), Lua.newFunc(this));
 	}
+	
+	public static final String EXKEY_OUTPUT = "system.out";
 }

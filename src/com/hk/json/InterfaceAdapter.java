@@ -6,13 +6,11 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class InterfaceAdapter<T> extends JsonAdapter<T>
 {
@@ -36,6 +34,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 
 		try
 		{
+			// TODO: Deprecated in the newer versions of JDK
 			proxyCls = Proxy.getProxyClass(interfaceCls.getClassLoader(), interfaceCls);
 			constructor = proxyCls.getConstructor(new Class[] { InvocationHandler.class });
 		}
@@ -49,7 +48,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		}
 		
 		fields = new HashMap<>();
-		adapters = new TreeSet<>(Json.globalAdapters);
+		adapters = null;
 		this.dynamicAddition = dynamicAddition;
 
 		setupFields();
@@ -62,6 +61,9 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	
 	public InterfaceAdapter<T> addAdapter(JsonAdapter<?> adapter)
 	{
+		if(adapters == null)
+			adapters = new HashSet<>();
+		
 		if(adapter instanceof InterfaceAdapter)
 			((InterfaceAdapter<?>) adapter).adapters = adapters;
 
@@ -71,21 +73,22 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	
 	public InterfaceAdapter<T> removeAdapter(JsonAdapter<?> adapter)
 	{
-		adapters.remove(adapter);
+		if(adapters != null)
+			adapters.remove(adapter);
 		return this;
 	}
 	
 	public InterfaceAdapter<T> setAdapterSet(Set<JsonAdapter<?>> adapterSet)
 	{
-		if(adapterSet == null)
-			adapterSet = Collections.emptySet();
-
-		adapters = new TreeSet<>(adapterSet);
+		adapters = adapterSet;
 		
-		for(JsonAdapter<?> adapter : adapters)
+		if(adapterSet != null)
 		{
-			if(adapter instanceof InterfaceAdapter)
-				((InterfaceAdapter<?>) adapter).adapters = adapters;
+			for(JsonAdapter<?> adapter : adapters)
+			{
+				if(adapter instanceof InterfaceAdapter)
+					((InterfaceAdapter<?>) adapter).adapters = adapters;
+			}
 		}
 		
 		return this;
@@ -201,7 +204,12 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 			return new JsonField(name, toField(name, cls.getComponentType()));
 		else
 		{
-			for(JsonAdapter<?> adapter : adapters)
+			Set<JsonAdapter<?>> adps = adapters;
+			
+			if(adps == null)
+				adps = Json.getGlobalAdapters();
+			
+			for(JsonAdapter<?> adapter : adps)
 			{
 				if(adapter.getObjClass().isAssignableFrom(cls))
 					return new JsonField(name, cls, adapter);

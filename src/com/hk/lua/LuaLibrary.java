@@ -4,7 +4,7 @@ import com.hk.func.BiConsumer;
 
 public class LuaLibrary<T extends Enum<T> & BiConsumer<Environment, LuaObject>>
 {
-	 /********************************************* BUILT-IN *********************************************/
+	/********************************************* BUILT-IN *********************************************/
 	public static final LuaLibrary<LuaLibraryBasic> BASIC = new LuaLibrary<>(null, LuaLibraryBasic.class);
 	public static final LuaLibrary<LuaLibraryCoroutine> COROUTINE = new LuaLibrary<>("coroutine", LuaLibraryCoroutine.class);
 //	public static final LuaLibrary<LuaLibraryPackage> PACKAGE = new LuaLibrary<>("package", LuaLibraryPackage.class);
@@ -16,9 +16,10 @@ public class LuaLibrary<T extends Enum<T> & BiConsumer<Environment, LuaObject>>
 	public static final LuaLibrary<LuaLibraryOS> OS = new LuaLibrary<>("os", LuaLibraryOS.class);
 //	public static final LuaLibrary<LuaLibraryDegub> DEGUB = new LuaLibrary<>("degub", LuaLibraryDegub.class);
 
-	 /********************************************* CUSTOM *********************************************/
+	/********************************************* CUSTOM *********************************************/
 	public static final LuaLibrary<LuaLibraryJson> JSON = new LuaLibrary<>("json", LuaLibraryJson.class);
 	public static final LuaLibrary<LuaLibraryHash> HASH = new LuaLibrary<>("hash", LuaLibraryHash.class);
+	public static final LuaLibrary<LuaLibraryDate> DATE = new LuaLibrary<>("date", LuaLibraryDate.class);
 
 	final String table;
 	final BiConsumer<Environment, LuaObject>[] consumers;
@@ -27,5 +28,23 @@ public class LuaLibrary<T extends Enum<T> & BiConsumer<Environment, LuaObject>>
 	{
 		this.table  = table;
 		consumers = cls.getEnumConstants();
+	}
+	
+	public static void importStandard(LuaInterpreter interp)
+	{
+		interp.importLib(BASIC);
+		interp.importLib(COROUTINE);
+//		interp.importLib(PACKAGE);
+		interp.importLib(STRING);
+//		interp.importLib(UTF8);
+		interp.importLib(TABLE);
+		interp.importLib(MATH);
+		interp.importLib(IO);
+		interp.importLib(OS);
+//		interp.importLib(DEGUB);
+
+		interp.importLib(JSON);
+		interp.importLib(HASH);
+		interp.importLib(DATE);
 	}
 }
