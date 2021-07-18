@@ -2,16 +2,16 @@ dist: xenial
 language: java
 jdk:
   - openjdk8
-install:
-  - rm -f argfile.txt
-  - find src -name "*.java" > argfile.txt
-  - rm -rf bin
-  - mkdir bin
-  - javac -sourcepath src -d bin @argfile.txt
-  - rm -f argfile.txt
-  - find test -name "*.java" > argfile.txt
-  - rm -rf testbin
-  - mkdir testbin
-  - javac -classpath "./bin/:./dist/junit3.8.1.jar" -sourcepath test -d testbin @argfile.txt
-script:
-  - java -classpath ./testbin/:./bin/:./dist/junit3.8.1.jar com.hk.TestMain
+#install:
+#  - rm -f argfile.txt
+#  - find src -name "*.java" > argfile.txt
+#  - rm -rf bin
+#  - mkdir bin
+#  - javac -sourcepath src -d bin @argfile.txt
+#  - rm -f argfile.txt
+#  - find test -name "*.java" > argfile.txt
+#  - rm -rf testbin
+#  - mkdir testbin
+#  - javac -classpath "./bin/:./dist/junit3.8.1.jar" -sourcepath test -d testbin @argfile.txt
+#script:
+#  - java -classpath ./testbin/:./bin/:./dist/junit3.8.1.jar com.hk.TestMain
