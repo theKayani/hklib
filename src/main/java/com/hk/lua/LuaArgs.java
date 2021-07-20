@@ -11,102 +11,119 @@ class LuaArgs extends LuaObject
 		obj = objs[0];
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaBoolean rawEqual(LuaObject o)
 	{
 		return obj.rawEqual(o);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawLen()
 	{
 		return obj.rawLen();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawGet(LuaObject key)
 	{
 		return obj.rawGet(key);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void rawSet(LuaObject key, LuaObject value)
 	{
 		obj.rawSet(key, value);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean getBoolean()
 	{
 		return obj.getBoolean();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
 	{
 		return obj.getString();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double getFloat()
 	{
 		return obj.getFloat();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public long getInteger()
 	{
 		return obj.getInteger();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNil()
 	{
 		return obj.isNil();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isBoolean()
 	{
 		return obj.isBoolean();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isString()
 	{
 		return obj.isString();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNumber()
 	{
 		return obj.isNumber();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isInteger()
 	{
 		return obj.isInteger();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isTable()
 	{
 		return obj.isTable();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isFunction()
 	{
 		return obj.isFunction();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isUserdata()
 	{
 		return obj.isUserdata();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isThread()
 	{
@@ -257,12 +274,14 @@ class LuaArgs extends LuaObject
 		return obj.code();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaType type()
 	{
 		return obj.type();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{

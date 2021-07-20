@@ -3,30 +3,63 @@ package com.hk.math.vector;
 import java.io.Serializable;
 import com.hk.array.ArrayUtil;
 
+/**
+ * <p>Point3F class.</p>
+ *
+ * @author theKayani
+ */
 public class Point3F implements Cloneable, Serializable
 {
 	public float x, y, z;
 
+	/**
+	 * <p>Constructor for Point3F.</p>
+	 */
 	public Point3F()
 	{
 		set(0F);
 	}
 
+	/**
+	 * <p>Constructor for Point3F.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F(Point3F vec)
 	{
 		set(vec);
 	}
 
+	/**
+	 * <p>Constructor for Point3F.</p>
+	 *
+	 * @param val a float
+	 */
 	public Point3F(float val)
 	{
 		set(val);
 	}
 
+	/**
+	 * <p>Constructor for Point3F.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 */
 	public Point3F(float x, float y, float z)
 	{
 		set(x, y, z);
 	}
 
+	/**
+	 * <p>addLocal.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F addLocal(float x, float y, float z)
 	{
 		this.x += x;
@@ -35,6 +68,12 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>addLocal.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F addLocal(float val)
 	{
 		x += val;
@@ -43,6 +82,12 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>addLocal.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F addLocal(Point3F vec)
 	{
 		x += vec.x;
@@ -51,6 +96,14 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>subtractLocal.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F subtractLocal(float x, float y, float z)
 	{
 		this.x -= x;
@@ -59,6 +112,12 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>subtractLocal.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F subtractLocal(float val)
 	{
 		x -= val;
@@ -67,6 +126,12 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>subtractLocal.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F subtractLocal(Point3F vec)
 	{
 		x -= vec.x;
@@ -75,6 +140,14 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>multiplyLocal.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F multiplyLocal(float x, float y, float z)
 	{
 		this.x *= x;
@@ -83,6 +156,12 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>multiplyLocal.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F multiplyLocal(float val)
 	{
 		x *= val;
@@ -91,6 +170,12 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>multiplyLocal.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F multiplyLocal(Point3F vec)
 	{
 		x *= vec.x;
@@ -99,6 +184,14 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>divideLocal.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F divideLocal(float x, float y, float z)
 	{
 		this.x /= x;
@@ -107,6 +200,12 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>divideLocal.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F divideLocal(float val)
 	{
 		x /= val;
@@ -115,6 +214,12 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>divideLocal.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F divideLocal(Point3F vec)
 	{
 		x /= vec.x;
@@ -123,6 +228,15 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>interpolateLocal.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 * @param amt a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F interpolateLocal(float x, float y, float z, float amt)
 	{
 		x = (1F - amt) * this.x + amt * x;
@@ -131,6 +245,13 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>interpolateLocal.</p>
+	 *
+	 * @param val a float
+	 * @param amt a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F interpolateLocal(float val, float amt)
 	{
 		x = (1F - amt) * x + amt * val;
@@ -139,6 +260,13 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>interpolateLocal.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 * @param amt a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F interpolateLocal(Point3F vec, float amt)
 	{
 		x = (1F - amt) * x + amt * vec.x;
@@ -147,87 +275,203 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>add.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F add(float x, float y, float z)
 	{
 		return clone().addLocal(x, y, z);
 	}
 
+	/**
+	 * <p>add.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F add(float val)
 	{
 		return clone().addLocal(val);
 	}
 
+	/**
+	 * <p>add.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F add(Point3F vec)
 	{
 		return clone().addLocal(vec);
 	}
 
+	/**
+	 * <p>subtract.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F subtract(float x, float y, float z)
 	{
 		return clone().subtractLocal(x, y, z);
 	}
 
+	/**
+	 * <p>subtract.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F subtract(float val)
 	{
 		return clone().subtractLocal(val);
 	}
 
+	/**
+	 * <p>subtract.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F subtract(Point3F vec)
 	{
 		return clone().subtractLocal(vec);
 	}
 
+	/**
+	 * <p>multiply.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F multiply(float x, float y, float z)
 	{
 		return clone().multiplyLocal(x, y, z);
 	}
 
+	/**
+	 * <p>multiply.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F multiply(float val)
 	{
 		return clone().multiplyLocal(val);
 	}
 
+	/**
+	 * <p>multiply.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F multiply(Point3F vec)
 	{
 		return clone().multiplyLocal(vec);
 	}
 
+	/**
+	 * <p>divide.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F divide(float x, float y, float z)
 	{
 		return clone().divideLocal(x, y, z);
 	}
 
+	/**
+	 * <p>divide.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F divide(float val)
 	{
 		return clone().divideLocal(val);
 	}
 
+	/**
+	 * <p>divide.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F divide(Point3F vec)
 	{
 		return clone().divideLocal(vec);
 	}
 
+	/**
+	 * <p>interpolate.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 * @param amt a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F interpolate(float x, float y, float z, float amt)
 	{
 		return clone().interpolateLocal(x, y, z, amt);
 	}
 
+	/**
+	 * <p>interpolate.</p>
+	 *
+	 * @param val a float
+	 * @param amt a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F interpolate(float val, float amt)
 	{
 		return clone().interpolateLocal(val, amt);
 	}
 
+	/**
+	 * <p>interpolate.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 * @param amt a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F interpolate(Point3F vec, float amt)
 	{
 		return clone().interpolateLocal(vec, amt);
 	}
 
+	/**
+	 * <p>zero.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F zero()
 	{
 		x = y = z = 0F;
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param z a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F set(float x, float y, float z)
 	{
 		this.x = x;
@@ -236,6 +480,12 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F set(float val)
 	{
 		x = val;
@@ -244,6 +494,12 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param vec a {@link com.hk.math.vector.Point3F} object
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F set(Point3F vec)
 	{
 		x = vec.x;
@@ -252,24 +508,48 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>Setter for the field <code>x</code>.</p>
+	 *
+	 * @param x a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F setX(float x)
 	{
 		this.x = x;
 		return this;
 	}
 
+	/**
+	 * <p>Setter for the field <code>y</code>.</p>
+	 *
+	 * @param y a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F setY(float y)
 	{
 		this.y = y;
 		return this;
 	}
 
+	/**
+	 * <p>Setter for the field <code>z</code>.</p>
+	 *
+	 * @param z a float
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F setZ(float z)
 	{
 		this.z = z;
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param arr an array of {@link float} objects
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F set(float[] arr)
 	{
 		x = arr[0];
@@ -278,6 +558,13 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param arr an array of {@link float} objects
+	 * @param off a int
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F set(float[] arr, int off)
 	{
 		x = arr[off + 0];
@@ -286,65 +573,117 @@ public class Point3F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>Getter for the field <code>x</code>.</p>
+	 *
+	 * @return a float
+	 */
 	public float getX()
 	{
 		return x;
 	}
 
+	/**
+	 * <p>Getter for the field <code>y</code>.</p>
+	 *
+	 * @return a float
+	 */
 	public float getY()
 	{
 		return y;
 	}
 
+	/**
+	 * <p>Getter for the field <code>z</code>.</p>
+	 *
+	 * @return a float
+	 */
 	public float getZ()
 	{
 		return z;
 	}
 
+	/**
+	 * <p>get.</p>
+	 *
+	 * @return an array of {@link float} objects
+	 */
 	public float[] get()
 	{
 		return ArrayUtil.toFloatArray(x, y, z);
 	}
 
+	/**
+	 * <p>absLocal.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F absLocal()
 	{
 		set(Math.abs(x), Math.abs(y), Math.abs(z));
 		return this;
 	}
 
+	/**
+	 * <p>negateLocal.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F negateLocal()
 	{
 		set(-x, -y, -z);
 		return this;
 	}
 
+	/**
+	 * <p>negativeLocal.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F negativeLocal()
 	{
 		set(-Math.abs(x), -Math.abs(y), -Math.abs(z));
 		return this;
 	}
 
+	/**
+	 * <p>abs.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F abs()
 	{
 		return clone().absLocal();
 	}
 
+	/**
+	 * <p>negate.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F negate()
 	{
 		return clone().negateLocal();
 	}
 
+	/**
+	 * <p>negative.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Point3F} object
+	 */
 	public Point3F negative()
 	{
 		return clone().negative();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Point3F clone()
 	{
 		return new Point3F(this);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean equals(Object o)
 	{
@@ -356,6 +695,7 @@ public class Point3F implements Cloneable, Serializable
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{
@@ -366,6 +706,7 @@ public class Point3F implements Cloneable, Serializable
 		return hash;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String toString()
 	{

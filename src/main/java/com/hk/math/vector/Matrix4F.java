@@ -2,10 +2,20 @@ package com.hk.math.vector;
 
 import java.io.Serializable;
 
+/**
+ * <p>Matrix4F class.</p>
+ *
+ * @author theKayani
+ */
 public class Matrix4F implements Serializable
 {
 	public float m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33;
 
+	/**
+	 * <p>identity.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Matrix4F} object
+	 */
 	public Matrix4F identity()
 	{
 		m00 = m11 = m22 = m33 = 1F;
@@ -13,6 +23,12 @@ public class Matrix4F implements Serializable
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param mat a {@link com.hk.math.vector.Matrix4F} object
+	 * @return a {@link com.hk.math.vector.Matrix4F} object
+	 */
 	public Matrix4F set(Matrix4F mat)
 	{
 		m00 = mat.m00;
@@ -34,6 +50,27 @@ public class Matrix4F implements Serializable
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param m00 a float
+	 * @param m01 a float
+	 * @param m02 a float
+	 * @param m03 a float
+	 * @param m10 a float
+	 * @param m11 a float
+	 * @param m12 a float
+	 * @param m13 a float
+	 * @param m20 a float
+	 * @param m21 a float
+	 * @param m22 a float
+	 * @param m23 a float
+	 * @param m30 a float
+	 * @param m31 a float
+	 * @param m32 a float
+	 * @param m33 a float
+	 * @return a {@link com.hk.math.vector.Matrix4F} object
+	 */
 	public Matrix4F set(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33)
 	{
 		this.m00 = m00;
@@ -55,6 +92,12 @@ public class Matrix4F implements Serializable
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.Matrix4F} object
+	 */
 	public Matrix4F set(float val)
 	{
 		this.m00 = val;

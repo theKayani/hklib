@@ -1,8 +1,19 @@
 package com.hk.str;
 
 
+/**
+ * <p>StringUtil class.</p>
+ *
+ * @author theKayani
+ */
 public class StringUtil
 {
+	/**
+	 * <p>properCapitalize.</p>
+	 *
+	 * @param s a {@link java.lang.String} object
+	 * @return a {@link java.lang.String} object
+	 */
 	public static String properCapitalize(String s)
 	{
 		if(s == null || s.trim().isEmpty()) return s;
@@ -21,6 +32,12 @@ public class StringUtil
 		return r;
 	}
 	
+	/**
+	 * <p>commaFormat.</p>
+	 *
+	 * @param num a long
+	 * @return a {@link java.lang.String} object
+	 */
 	public static String commaFormat(long num)
 	{
 		if(num == 0) return "0";
@@ -42,11 +59,28 @@ public class StringUtil
 		return sb.toString();
 	}
 	
+	/**
+	 * <p>atLeast.</p>
+	 *
+	 * @param length a int
+	 * @param s a {@link java.lang.String} object
+	 * @param padding a {@link java.lang.String} object
+	 * @return a {@link java.lang.String} object
+	 */
 	public static String atLeast(int length, String s, String padding)
 	{
 		return atLeast(length, s, padding, true);
 	}
 	
+	/**
+	 * <p>atLeast.</p>
+	 *
+	 * @param length a int
+	 * @param s a {@link java.lang.String} object
+	 * @param padding a {@link java.lang.String} object
+	 * @param leftSide a boolean
+	 * @return a {@link java.lang.String} object
+	 */
 	public static String atLeast(int length, String s, String padding, boolean leftSide)
 	{
 		while(s.length() < length)
@@ -56,6 +90,13 @@ public class StringUtil
 		return s;
 	}
 
+	/**
+	 * <p>repeat.</p>
+	 *
+	 * @param string a {@link java.lang.String} object
+	 * @param amount a int
+	 * @return a {@link java.lang.String} object
+	 */
 	public static String repeat(String string, int amount)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -66,11 +107,24 @@ public class StringUtil
 		return sb.toString();
 	}
 
+	/**
+	 * <p>isNumeric.</p>
+	 *
+	 * @param cs a {@link java.lang.CharSequence} object
+	 * @return a boolean
+	 */
 	public static boolean isNumeric(CharSequence cs)
 	{
 		return isNumeric(cs, 10);
 	}
 
+	/**
+	 * <p>isNumeric.</p>
+	 *
+	 * @param cs a {@link java.lang.CharSequence} object
+	 * @param base a int
+	 * @return a boolean
+	 */
 	public static boolean isNumeric(CharSequence cs, int base)
 	{
 		String bss = "0123456789ABCDEF";
@@ -85,6 +139,12 @@ public class StringUtil
 		return cs.length() > 0;
 	}
 	
+	/**
+	 * <p>isDecimal.</p>
+	 *
+	 * @param s a {@link java.lang.String} object
+	 * @return a boolean
+	 */
 	public static boolean isDecimal(String s)
 	{
 		int i = s.indexOf('.');

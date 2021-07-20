@@ -3,6 +3,11 @@ package com.hk.lua;
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 
+/**
+ * <p>LuaLibraryTable class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMethod
 {
 	concat() {
@@ -163,6 +168,7 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 //		throw new Error();
 //	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void accept(Environment env, LuaObject table)
 	{

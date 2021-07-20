@@ -5,15 +5,28 @@ import java.util.Collection;
 import java.util.List;
 import com.hk.math.vector.Vector2F;
 
+/**
+ * <p>Polygon class.</p>
+ *
+ * @author theKayani
+ */
 public class Polygon extends Shape
 {
 	public final List<Vector2F> vertices;
 
+	/**
+	 * <p>Constructor for Polygon.</p>
+	 */
 	public Polygon()
 	{
 		vertices = new ArrayList<>();
 	}
 
+	/**
+	 * <p>Constructor for Polygon.</p>
+	 *
+	 * @param vertices a {@link java.lang.Iterable} object
+	 */
 	public Polygon(Iterable<Vector2F> vertices)
 	{
 		this();
@@ -23,24 +36,48 @@ public class Polygon extends Shape
 		}
 	}
 
+	/**
+	 * <p>addVertex.</p>
+	 *
+	 * @param vertex a {@link com.hk.math.vector.Vector2F} object
+	 * @return a {@link com.hk.math.shape.Polygon} object
+	 */
 	public Polygon addVertex(Vector2F vertex)
 	{
 		vertices.add(vertex.clone());
 		return this;
 	}
 
+	/**
+	 * <p>addVertices.</p>
+	 *
+	 * @param vertices a {@link java.util.Collection} object
+	 * @return a {@link com.hk.math.shape.Polygon} object
+	 */
 	public Polygon addVertices(Collection<Vector2F> vertices)
 	{
 		this.vertices.addAll(vertices);
 		return this;
 	}
 
+	/**
+	 * <p>addVertex.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @return a {@link com.hk.math.shape.Polygon} object
+	 */
 	public Polygon addVertex(float x, float y)
 	{
 		vertices.add(new Vector2F(x, y));
 		return this;
 	}
 
+	/**
+	 * <p>calcMiddle.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Vector2F} object
+	 */
 	public Vector2F calcMiddle()
 	{
 		Vector2F v = new Vector2F();
@@ -51,6 +88,7 @@ public class Polygon extends Shape
 		return v.divideLocal(vertices.size());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean contains(float x, float y)
 	{
@@ -67,18 +105,21 @@ public class Polygon extends Shape
 		return in;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean contains(float x, float y, float w, float h)
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Polygon clone()
 	{
 		return new Polygon(vertices);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean equals(Object o)
 	{
@@ -101,6 +142,7 @@ public class Polygon extends Shape
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{
@@ -112,6 +154,7 @@ public class Polygon extends Shape
 		return hash;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String toString()
 	{

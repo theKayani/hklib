@@ -3,6 +3,11 @@ package com.hk.lua;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * <p>Environment class.</p>
+ *
+ * @author theKayani
+ */
 public class Environment
 {
 	public final LuaInterpreter interp;
@@ -35,6 +40,12 @@ public class Environment
 		}
 	}
 	
+	/**
+	 * <p>setVar.</p>
+	 *
+	 * @param name a {@link java.lang.String} object
+	 * @param value a {@link com.hk.lua.LuaObject} object
+	 */
 	public void setVar(String name, LuaObject value)
 	{
 		if(locals.containsKey(name))
@@ -67,6 +78,12 @@ public class Environment
 			locals.put(name, new LuaObject[] { value });
 	}
 	
+	/**
+	 * <p>getVar.</p>
+	 *
+	 * @param name a {@link java.lang.String} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
 	public LuaObject getVar(String name)
 	{
 		LuaObject[] obj = locals.get(name);
@@ -79,6 +96,12 @@ public class Environment
 		return obj[0];
 	}
 	
+	/**
+	 * <p>isLocal.</p>
+	 *
+	 * @param name a {@link java.lang.String} object
+	 * @return a boolean
+	 */
 	public boolean isLocal(String name)
 	{
 		return locals.containsKey(name);

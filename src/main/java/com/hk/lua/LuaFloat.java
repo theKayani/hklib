@@ -9,102 +9,119 @@ class LuaFloat extends LuaObject
 		this.value = value == -0 ? 0 : value;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaBoolean rawEqual(LuaObject o)
 	{
 		return LuaBoolean.valueOf(o.isNumber() && value == o.getFloat());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawLen()
 	{
 		throw LuaErrors.INVALID_LENGTH.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawGet(LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void rawSet(LuaObject key, LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public boolean getBoolean()
 	{
 		return true;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
 	{
 		return Double.toString(value);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double getFloat()
 	{
 		return value;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public long getInteger()
 	{
 		return (long) value;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isInteger()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNil()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isBoolean()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isString()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNumber()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isTable()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isFunction()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isUserdata()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isThread()
 	{
@@ -114,31 +131,27 @@ class LuaFloat extends LuaObject
 	@Override
 	LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
+		if (o.code() == T_NUMBER)
 		{
-		case T_NUMBER:
 			return LuaBoolean.valueOf(value <= o.getFloat());
-		default:
-			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 		}
+		throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 	}
 
 	@Override
 	LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
+		if (o.code() == T_NUMBER)
 		{
-		case T_NUMBER:
 			return LuaBoolean.valueOf(value < o.getFloat());
-		default:
-			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 		}
+		throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 	}
 
 	@Override
 	LuaBoolean doEQ(LuaInterpreter interp, LuaObject o)
 	{
-		return (LuaBoolean) rawEqual(o);
+		return rawEqual(o);
 	}
 
 	@Override
@@ -270,16 +283,19 @@ class LuaFloat extends LuaObject
 		return T_NUMBER;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaType type()
 	{
 		return LuaType.FLOAT;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{
-		return Double.hashCode(value);
+		long bits = Double.doubleToLongBits(value);
+		return (int) (bits ^ (bits >>> 32));
 	}
 	
 	static final LuaFloat NaN = new LuaFloat(Double.NaN);

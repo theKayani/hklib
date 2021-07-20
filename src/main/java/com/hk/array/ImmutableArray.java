@@ -3,12 +3,22 @@ package com.hk.array;
 import java.lang.reflect.Array;
 import java.util.Iterator;
 
+/**
+ * <p>ImmutableArray class.</p>
+ *
+ * @author theKayani
+ */
 public final class ImmutableArray<T> implements Iterable<T>
 {
 	private final Object array;
 	private final Class<?> type;
 	public final int length;
 
+	/**
+	 * <p>Constructor for ImmutableArray.</p>
+	 *
+	 * @param array an array of {@link boolean} objects
+	 */
 	public ImmutableArray(boolean[] array)
 	{
 		this.array = array;
@@ -16,6 +26,11 @@ public final class ImmutableArray<T> implements Iterable<T>
 		this.type = boolean.class;
 	}
 
+	/**
+	 * <p>Constructor for ImmutableArray.</p>
+	 *
+	 * @param array an array of {@link byte} objects
+	 */
 	public ImmutableArray(byte[] array)
 	{
 		this.array = array;
@@ -23,6 +38,11 @@ public final class ImmutableArray<T> implements Iterable<T>
 		this.type = byte.class;
 	}
 
+	/**
+	 * <p>Constructor for ImmutableArray.</p>
+	 *
+	 * @param array an array of {@link short} objects
+	 */
 	public ImmutableArray(short[] array)
 	{
 		this.array = array;
@@ -30,6 +50,11 @@ public final class ImmutableArray<T> implements Iterable<T>
 		this.type = Short.class;
 	}
 
+	/**
+	 * <p>Constructor for ImmutableArray.</p>
+	 *
+	 * @param array an array of {@link char} objects
+	 */
 	public ImmutableArray(char[] array)
 	{
 		this.array = array;
@@ -37,6 +62,11 @@ public final class ImmutableArray<T> implements Iterable<T>
 		this.type = Character.class;
 	}
 
+	/**
+	 * <p>Constructor for ImmutableArray.</p>
+	 *
+	 * @param array an array of {@link int} objects
+	 */
 	public ImmutableArray(int[] array)
 	{
 		this.array = array;
@@ -44,6 +74,11 @@ public final class ImmutableArray<T> implements Iterable<T>
 		this.type = Integer.class;
 	}
 
+	/**
+	 * <p>Constructor for ImmutableArray.</p>
+	 *
+	 * @param array an array of {@link float} objects
+	 */
 	public ImmutableArray(float[] array)
 	{
 		this.array = array;
@@ -51,6 +86,11 @@ public final class ImmutableArray<T> implements Iterable<T>
 		this.type = Float.class;
 	}
 
+	/**
+	 * <p>Constructor for ImmutableArray.</p>
+	 *
+	 * @param array an array of {@link long} objects
+	 */
 	public ImmutableArray(long[] array)
 	{
 		this.array = array;
@@ -58,6 +98,11 @@ public final class ImmutableArray<T> implements Iterable<T>
 		this.type = Long.class;
 	}
 
+	/**
+	 * <p>Constructor for ImmutableArray.</p>
+	 *
+	 * @param array an array of {@link double} objects
+	 */
 	public ImmutableArray(double[] array)
 	{
 		this.array = array;
@@ -65,6 +110,11 @@ public final class ImmutableArray<T> implements Iterable<T>
 		this.type = Double.class;
 	}
 
+	/**
+	 * <p>Constructor for ImmutableArray.</p>
+	 *
+	 * @param array an array of {@link java.lang.Object} objects
+	 */
 	public ImmutableArray(Object[] array)
 	{
 		this.array = array;
@@ -72,12 +122,23 @@ public final class ImmutableArray<T> implements Iterable<T>
 		this.type = array.getClass().getComponentType();
 	}
 
+	/**
+	 * <p>get.</p>
+	 *
+	 * @param index a int
+	 * @return a T object
+	 */
 	@SuppressWarnings("unchecked")
 	public T get(int index)
 	{
 		return (T) Array.get(array, index);
 	}
 
+	/**
+	 * <p>toArray.</p>
+	 *
+	 * @return an array of T[] objects
+	 */
 	@SuppressWarnings("unchecked")
 	public T[] toArray()
 	{
@@ -89,6 +150,7 @@ public final class ImmutableArray<T> implements Iterable<T>
 		return arr;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Iterator<T> iterator()
 	{

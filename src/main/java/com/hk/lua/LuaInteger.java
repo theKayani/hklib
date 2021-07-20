@@ -9,102 +9,119 @@ class LuaInteger extends LuaObject
 		this.value = value;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaBoolean rawEqual(LuaObject o)
 	{
 		return LuaBoolean.valueOf(o.isNumber() && getFloat() == o.getFloat());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawLen()
 	{
 		throw LuaErrors.INVALID_LENGTH.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawGet(LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void rawSet(LuaObject key, LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean getBoolean()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
 	{
 		return Long.toString(value);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double getFloat()
 	{
 		return value;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public long getInteger()
 	{
 		return value;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isInteger()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNil()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isBoolean()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isString()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNumber()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isTable()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isFunction()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isUserdata()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isThread()
 	{
@@ -114,31 +131,27 @@ class LuaInteger extends LuaObject
 	@Override
 	LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
+		if (o.code() == T_NUMBER)
 		{
-		case T_NUMBER:
-			if(o.isInteger())
+			if (o.isInteger())
 				return LuaBoolean.valueOf(value <= o.getInteger());
 			else
 				return LuaBoolean.valueOf(value <= o.getFloat());
-		default:
-			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 		}
+		throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 	}
 
 	@Override
 	LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
+		if (o.code() == T_NUMBER)
 		{
-		case T_NUMBER:
-			if(o.isInteger())
+			if (o.isInteger())
 				return LuaBoolean.valueOf(value < o.getInteger());
 			else
 				return LuaBoolean.valueOf(value < o.getFloat());
-		default:
-			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 		}
+		throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 	}
 
 	@Override
@@ -248,25 +261,21 @@ class LuaInteger extends LuaObject
 	@Override
 	LuaObject doSHL(LuaInterpreter interp, LuaObject o)
 	{
-		switch((int) o.getInteger())
+		if ((int) o.getInteger() == 64)
 		{
-		case 64:
 			return LuaInteger.ZERO;
-		default:
-			return LuaInteger.valueOf(value << o.getInteger());
 		}
+		return LuaInteger.valueOf(value << o.getInteger());
 	}
 
 	@Override
 	LuaObject doSHR(LuaInterpreter interp, LuaObject o)
 	{
-		switch((int) o.getInteger())
+		if ((int) o.getInteger() == 64)
 		{
-		case 64:
 			return LuaInteger.ZERO;
-		default:
-			return LuaInteger.valueOf(value >> o.getInteger());
 		}
+		return LuaInteger.valueOf(value >> o.getInteger());
 	}
 
 	@Override
@@ -311,16 +320,19 @@ class LuaInteger extends LuaObject
 		return T_NUMBER;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaType type()
 	{
 		return LuaType.INTEGER;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{
-		return Double.hashCode(value);
+		long bits = Double.doubleToLongBits(value);
+		return (int) (bits ^ (bits >>> 32));
 	}
 	
 	private static final LuaInteger[] map;

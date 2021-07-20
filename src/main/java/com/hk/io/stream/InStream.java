@@ -7,95 +7,124 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * <p>InStream class.</p>
+ *
+ * @author theKayani
+ */
 public class InStream implements Stream
 {
 	private final boolean errorCheck;
 	private final InputStream in;
 	private boolean closed;
 
+	/**
+	 * <p>Constructor for InStream.</p>
+	 *
+	 * @param in a {@link java.io.InputStream} object
+	 */
 	public InStream(InputStream in)
 	{
 		this(in, true);
 	}
 	
+	/**
+	 * <p>Constructor for InStream.</p>
+	 *
+	 * @param in a {@link java.io.InputStream} object
+	 * @param errorCheck a boolean
+	 */
 	public InStream(InputStream in, boolean errorCheck)
 	{
 		this.in = in;
 		this.errorCheck = errorCheck;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeBoolean(boolean o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeByte(byte o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeShort(short o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeInt(int o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeFloat(float o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeCharacter(char o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeLong(long o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeDouble(double o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeUTFString(String o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeRawString(String o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeSerializable(Serializable o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeBytes(byte[] arr) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean readBoolean() throws StreamException
 	{
@@ -108,6 +137,7 @@ public class InStream implements Stream
 		throw new StreamException("Corrupted data");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public byte readByte() throws StreamException
 	{
@@ -115,6 +145,7 @@ public class InStream implements Stream
 		return read();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public short readShort() throws StreamException
 	{
@@ -125,6 +156,7 @@ public class InStream implements Stream
 		return o;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int readInt() throws StreamException
 	{
@@ -137,6 +169,7 @@ public class InStream implements Stream
 		return o;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public float readFloat() throws StreamException
 	{
@@ -149,6 +182,7 @@ public class InStream implements Stream
 		return Float.intBitsToFloat(o);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public char readCharacter() throws StreamException
 	{
@@ -159,6 +193,7 @@ public class InStream implements Stream
 		return (char) o;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public long readLong() throws StreamException
 	{
@@ -175,6 +210,7 @@ public class InStream implements Stream
 		return o;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double readDouble() throws StreamException
 	{
@@ -191,6 +227,7 @@ public class InStream implements Stream
 		return Double.longBitsToDouble(o);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String readUTFString() throws StreamException
 	{
@@ -208,6 +245,7 @@ public class InStream implements Stream
 		return new String(arr, StandardCharsets.UTF_8);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String readRawString() throws StreamException
 	{
@@ -228,6 +266,7 @@ public class InStream implements Stream
 		return new String(arr);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public <T> T readSerializable(Class<T> cls) throws StreamException
 	{
@@ -257,6 +296,7 @@ public class InStream implements Stream
 		return o;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public byte[] readBytes() throws StreamException
 	{
@@ -283,6 +323,7 @@ public class InStream implements Stream
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void close() throws StreamException
 	{

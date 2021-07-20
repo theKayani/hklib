@@ -6,100 +6,125 @@ abstract class LuaFunction extends LuaObject
 	{
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaBoolean rawEqual(LuaObject o)
 	{
 		return LuaBoolean.valueOf(o == this);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawLen()
 	{
 		throw LuaErrors.INVALID_LENGTH.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawGet(LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void rawSet(LuaObject key, LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean getBoolean()
 	{
 		return true;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
 	{
 		return "function: 0x" + Long.toHexString((long) Math.pow(hashCode(), 2));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double getFloat()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public long getInteger()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNil()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isBoolean()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isString()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNumber()
 	{
 		return false;
 	}
 	
+	/**
+	 * <p>isInteger.</p>
+	 *
+	 * @return a boolean
+	 */
 	public boolean isInteger()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isTable()
 	{
 		return false;
 	}
 	
+	/**
+	 * <p>isFunction.</p>
+	 *
+	 * @return a boolean
+	 */
 	public boolean isFunction()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isUserdata()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isThread()
 	{
@@ -253,11 +278,17 @@ abstract class LuaFunction extends LuaObject
 		return T_FUNCTION;
 	}
 	
+	/**
+	 * <p>type.</p>
+	 *
+	 * @return a {@link com.hk.lua.LuaType} object
+	 */
 	public LuaType type()
 	{
 		return LuaType.FUNCTION;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{

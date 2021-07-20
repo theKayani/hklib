@@ -11,6 +11,11 @@ import com.hk.io.stream.StreamException;
 import com.hk.math.Rand;
 import com.hk.neuralnetwork.Mat.MatFunc;
 
+/**
+ * <p>NeuralNetwork class.</p>
+ *
+ * @author theKayani
+ */
 public class NeuralNetwork implements Cloneable
 {
 	public final int inputNodes;
@@ -20,11 +25,26 @@ public class NeuralNetwork implements Cloneable
 	private ActivationFunction activationFunction;
 	private double learningRate;
 	
+	/**
+	 * <p>Constructor for NeuralNetwork.</p>
+	 *
+	 * @param inputNodes a int
+	 * @param hiddenNodes a int
+	 * @param outputNodes a int
+	 */
 	public NeuralNetwork(int inputNodes, int hiddenNodes, int outputNodes)
 	{
 		this(inputNodes, 1, hiddenNodes, outputNodes);
 	}
 	
+	/**
+	 * <p>Constructor for NeuralNetwork.</p>
+	 *
+	 * @param inputNodes a int
+	 * @param hiddenLayers a int
+	 * @param hiddenNodes a int
+	 * @param outputNodes a int
+	 */
 	public NeuralNetwork(int inputNodes, int hiddenLayers, int hiddenNodes, int outputNodes)
 	{
 		this.inputNodes = inputNodes;
@@ -70,6 +90,11 @@ public class NeuralNetwork implements Cloneable
 		activationFunction = new ActivationFunction(Mat.SIGMOID, Mat.SIGMOID_DERIVATIVE);
 	}
 	
+	/**
+	 * <p>Constructor for NeuralNetwork.</p>
+	 *
+	 * @param copy a {@link com.hk.neuralnetwork.NeuralNetwork} object
+	 */
 	public NeuralNetwork(NeuralNetwork copy)
 	{
 		this.inputNodes = copy.inputNodes;
@@ -92,6 +117,12 @@ public class NeuralNetwork implements Cloneable
 		activationFunction = copy.activationFunction;
 	}
 	
+	/**
+	 * <p>process.</p>
+	 *
+	 * @param inputArray an array of {@link double} objects
+	 * @return an array of {@link double} objects
+	 */
 	public double[] process(double[] inputArray)
 	{
 		if(inputArray.length != inputNodes) throw new RuntimeException("Input must have " + inputNodes + " element" + (inputNodes == 1 ? "" : "s"));
@@ -108,6 +139,12 @@ public class NeuralNetwork implements Cloneable
 		return input.toArray();
 	}
 	
+	/**
+	 * <p>train.</p>
+	 *
+	 * @param inputArray an array of {@link double} objects
+	 * @param correct an array of {@link double} objects
+	 */
 	public void train(double[] inputArray, double[] correct)
 	{
 		if(inputArray.length != inputNodes) throw new RuntimeException("Input must have " + inputNodes + " element" + (inputNodes == 1 ? "" : "s"));
@@ -146,28 +183,58 @@ public class NeuralNetwork implements Cloneable
 		}
 	}
 	
+	/**
+	 * <p>Getter for the field <code>learningRate</code>.</p>
+	 *
+	 * @return a double
+	 */
 	public double getLearningRate()
 	{
 		return learningRate;
 	}
 	
+	/**
+	 * <p>Setter for the field <code>learningRate</code>.</p>
+	 *
+	 * @param learningRate a double
+	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork} object
+	 */
 	public NeuralNetwork setLearningRate(double learningRate)
 	{
 		this.learningRate = learningRate;
 		return this;
 	}
 	
+	/**
+	 * <p>Getter for the field <code>activationFunction</code>.</p>
+	 *
+	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork.ActivationFunction} object
+	 */
 	public ActivationFunction getActivationFunction()
 	{
 		return activationFunction;
 	}
 	
+	/**
+	 * <p>Setter for the field <code>activationFunction</code>.</p>
+	 *
+	 * @param activationFunction a {@link com.hk.neuralnetwork.NeuralNetwork.ActivationFunction} object
+	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork} object
+	 */
 	public NeuralNetwork setActivationFunction(ActivationFunction activationFunction)
 	{
 		this.activationFunction = activationFunction;
 		return this;
 	}
 	
+	/**
+	 * <p>mix.</p>
+	 *
+	 * @param other a {@link com.hk.neuralnetwork.NeuralNetwork} object
+	 * @param weights a boolean
+	 * @param biases a boolean
+	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork} object
+	 */
 	public NeuralNetwork mix(final NeuralNetwork other, boolean weights, boolean biases)
 	{
 		if(inputNodes != other.inputNodes || hiddenLayers != other.hiddenLayers || hiddenNodes != other.hiddenNodes || outputNodes != other.outputNodes)
@@ -213,6 +280,12 @@ public class NeuralNetwork implements Cloneable
 		return nn;
 	}
 	
+	/**
+	 * <p>mutateThis.</p>
+	 *
+	 * @param chance a double
+	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork} object
+	 */
 	public NeuralNetwork mutateThis(final double chance)
 	{
 		for(int i = 0; i < weights.length; i++)
@@ -229,16 +302,34 @@ public class NeuralNetwork implements Cloneable
 		return this;
 	}
 	
+	/**
+	 * <p>clone.</p>
+	 *
+	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork} object
+	 */
 	public NeuralNetwork clone()
 	{
 		return new NeuralNetwork(this);
 	}
 	
+	/**
+	 * <p>writeTo.</p>
+	 *
+	 * @param file a {@link java.io.File} object
+	 * @throws java.lang.Exception if any.
+	 */
 	public void writeTo(File file) throws Exception
 	{
 		writeTo(file, true);
 	}
 	
+	/**
+	 * <p>writeTo.</p>
+	 *
+	 * @param file a {@link java.io.File} object
+	 * @param safe a boolean
+	 * @throws java.lang.Exception if any.
+	 */
 	public void writeTo(File file, boolean safe) throws Exception
 	{
 		FileOutputStream fout = new FileOutputStream(file);
@@ -248,6 +339,12 @@ public class NeuralNetwork implements Cloneable
 		fout.close();
 	}
 	
+	/**
+	 * <p>writeTo.</p>
+	 *
+	 * @param out a {@link com.hk.io.stream.Stream} object
+	 * @throws com.hk.io.stream.StreamException if any.
+	 */
 	public void writeTo(Stream out) throws StreamException
 	{
 		for(int i = 0; i < weights.length; i++)
@@ -276,11 +373,24 @@ public class NeuralNetwork implements Cloneable
 		}
 	}
 
+	/**
+	 * <p>readFrom.</p>
+	 *
+	 * @param file a {@link java.io.File} object
+	 * @throws java.lang.Exception if any.
+	 */
 	public void readFrom(File file) throws Exception
 	{
 		readFrom(file, true);
 	}
 	
+	/**
+	 * <p>readFrom.</p>
+	 *
+	 * @param file a {@link java.io.File} object
+	 * @param safe a boolean
+	 * @throws java.lang.Exception if any.
+	 */
 	public void readFrom(File file, boolean safe) throws Exception
 	{
 		FileInputStream fin = new FileInputStream(file);
@@ -290,6 +400,12 @@ public class NeuralNetwork implements Cloneable
 		fin.close();
 	}
 	
+	/**
+	 * <p>readFrom.</p>
+	 *
+	 * @param in a {@link com.hk.io.stream.Stream} object
+	 * @throws com.hk.io.stream.StreamException if any.
+	 */
 	public void readFrom(Stream in) throws StreamException
 	{
 		for(int i = 0; i < weights.length; i++)

@@ -1,5 +1,10 @@
 package com.hk.lua;
 
+/**
+ * <p>LuaFunctionExpression class.</p>
+ *
+ * @author theKayani
+ */
 public class LuaFunctionExpression extends LuaExpression
 {
 	private final String[] args;

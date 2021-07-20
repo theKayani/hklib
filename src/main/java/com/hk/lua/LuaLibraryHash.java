@@ -6,6 +6,11 @@ import java.security.NoSuchAlgorithmException;
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 
+/**
+ * <p>LuaLibraryHash class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaLibraryHash implements BiConsumer<Environment, LuaObject>, LuaMethod
 {
 	md5() {
@@ -73,6 +78,7 @@ public enum LuaLibraryHash implements BiConsumer<Environment, LuaObject>, LuaMet
 		}
 	};
 
+	/** {@inheritDoc} */
 	@Override
 	public void accept(Environment env, LuaObject table)
 	{
@@ -81,6 +87,14 @@ public enum LuaLibraryHash implements BiConsumer<Environment, LuaObject>, LuaMet
 			table.rawSet(new LuaString(name), Lua.newFunc(this));
 	}
 	
+	/**
+	 * <p>hash.</p>
+	 *
+	 * @param alg a {@link java.lang.String} object
+	 * @param input a {@link java.lang.String} object
+	 * @param raw a boolean
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
 	public static LuaObject hash(String alg, String input, boolean raw)
 	{
 		try

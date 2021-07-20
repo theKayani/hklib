@@ -2,10 +2,22 @@ package com.hk.util;
 
 import java.io.Serializable;
 
+/**
+ * <p>Version class.</p>
+ *
+ * @author theKayani
+ */
 public final class Version implements Comparable<Version>, Serializable, Cloneable
 {
 	public final int major, minor, revision;
 	
+	/**
+	 * <p>Constructor for Version.</p>
+	 *
+	 * @param major a int
+	 * @param minor a int
+	 * @param revision a int
+	 */
 	public Version(int major, int minor, int revision)
 	{
 		this.major = Requirements.requireInBounds(0, major, Integer.MAX_VALUE);
@@ -13,6 +25,11 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 		this.revision = Requirements.requireInBounds(0, revision, Integer.MAX_VALUE);
 	}
 	
+	/**
+	 * <p>Constructor for Version.</p>
+	 *
+	 * @param versionString a {@link java.lang.String} object
+	 */
 	public Version(String versionString)
 	{
 		String[] sp = versionString.split("\\.");
@@ -32,11 +49,17 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 		}
 	}
 	
+	/**
+	 * <p>clone.</p>
+	 *
+	 * @return a {@link com.hk.util.Version} object
+	 */
 	public Version clone()
 	{
 		return new Version(major, minor, revision);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int compareTo(Version e)
 	{
@@ -53,11 +76,21 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 		return mjc;
 	}
 	
+	/**
+	 * <p>toString.</p>
+	 *
+	 * @return a {@link java.lang.String} object
+	 */
 	public String toString()
 	{
 		return major + "." + minor + "." + revision;
 	}
 	
+	/**
+	 * <p>hashCode.</p>
+	 *
+	 * @return a int
+	 */
 	public int hashCode()
 	{
 		int hash = 17;
@@ -67,6 +100,7 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 		return hash;
 	}
 	
+	/** {@inheritDoc} */
 	public boolean equals(Object o)
 	{
 		return o instanceof Version && ((Version) o).major == major && ((Version) o).minor == minor && ((Version) o).revision == revision;

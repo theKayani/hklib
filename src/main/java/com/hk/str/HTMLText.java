@@ -8,6 +8,11 @@ import java.util.TreeMap;
 
 import com.hk.math.ComparatorUtil;
 
+/**
+ * <p>HTMLText class.</p>
+ *
+ * @author theKayani
+ */
 public class HTMLText
 {
     private final StringBuilder sb;
@@ -16,6 +21,9 @@ public class HTMLText
     private boolean blockWS;
     private int tabs;
     
+    /**
+     * <p>Constructor for HTMLText.</p>
+     */
     public HTMLText()
     {
         varPositions = new TreeMap<>(ComparatorUtil.reversed(ComparatorUtil.compInteger));
@@ -25,29 +33,56 @@ public class HTMLText
         tabs = 0;
     }
     
+    /**
+     * <p>tabUp.</p>
+     *
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText tabUp()
     {
         tabs++;
         return this;
     }
     
+    /**
+     * <p>tabDown.</p>
+     *
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText tabDown()
     {
         tabs--;
         return this;
     }
     
+    /**
+     * <p>wr.</p>
+     *
+     * @param s a {@link java.lang.String} object
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText wr(String s)
     {
         sb.append(s);
         return this;
     }
     
+    /**
+     * <p>wrln.</p>
+     *
+     * @param s a {@link java.lang.String} object
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText wrln(String s)
     {
         return wr(s).ln();
     }
     
+    /**
+     * <p>tabs.</p>
+     *
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText tabs()
     {
         if(!blockWS)
@@ -59,12 +94,22 @@ public class HTMLText
         return this;
     }
     
+    /**
+     * <p>ln.</p>
+     *
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText ln()
     {
         sb.append(blockWS ? ' ' : '\n');
         return this;
     }
     
+    /**
+     * <p>br.</p>
+     *
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText br()
     {
         int i = sb.length() - 1;
@@ -80,36 +125,79 @@ public class HTMLText
         return wrln("<br/>");
     }
     
+    /**
+     * <p>openBrace.</p>
+     *
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText openBrace()
     {
         return tabs().wrln("{").tabUp();
     }
     
+    /**
+     * <p>closeBrace.</p>
+     *
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText closeBrace()
     {
         return tabDown().tabs().wrln("}");
     }
     
+    /**
+     * <p>pr.</p>
+     *
+     * @param s a {@link java.lang.String} object
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText pr(String s)
     {
         return tabs().wr(s);
     }
     
+    /**
+     * <p>prln.</p>
+     *
+     * @param s a {@link java.lang.String} object
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText prln(String s)
     {
         return tabs().wrln(s);
     }
     
+    /**
+     * <p>open.</p>
+     *
+     * @param tag a {@link java.lang.String} object
+     * @param attrs a {@link java.lang.String} object
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText open(String tag, String... attrs)
     {
         return pr("<" + tag).appendAttrs(attrs).wrln(">").tabUp();
     }
     
+    /**
+     * <p>close.</p>
+     *
+     * @param tag a {@link java.lang.String} object
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText close(String tag)
     {
         return tabDown().pr("</").wr(tag).wr(">").ln();
     }
     
+    /**
+     * <p>el.</p>
+     *
+     * @param tag a {@link java.lang.String} object
+     * @param html a {@link java.lang.String} object
+     * @param attrs a {@link java.lang.String} object
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText el(String tag, String html, String... attrs)
     {
         pr("<" + tag);
@@ -150,11 +238,24 @@ public class HTMLText
         return this;
     }
     
+    /**
+     * <p>makeVar.</p>
+     *
+     * @param name a {@link java.lang.String} object
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText makeVar(String name)
     {
         return makeVar(name, null);
     }
     
+    /**
+     * <p>makeVar.</p>
+     *
+     * @param name a {@link java.lang.String} object
+     * @param value a {@link java.lang.String} object
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText makeVar(String name, String value)
     {
         if(!hasVar(name))
@@ -172,6 +273,13 @@ public class HTMLText
         return this;
     }
     
+    /**
+     * <p>setVar.</p>
+     *
+     * @param name a {@link java.lang.String} object
+     * @param value a {@link java.lang.String} object
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText setVar(String name, String value)
     {
         if(hasVar(name))
@@ -181,32 +289,65 @@ public class HTMLText
         return this;
     }
     
+    /**
+     * <p>getVars.</p>
+     *
+     * @return an array of {@link java.lang.String} objects
+     */
     public String[] getVars()
     {
         return variables.keySet().toArray(new String[0]);
     }
     
+    /**
+     * <p>getVar.</p>
+     *
+     * @param name a {@link java.lang.String} object
+     * @return a {@link java.lang.String} object
+     */
     public String getVar(String name)
     {
         return variables.get(name);
     }
     
+    /**
+     * <p>hasVar.</p>
+     *
+     * @param name a {@link java.lang.String} object
+     * @return a boolean
+     */
     public boolean hasVar(String name)
     {
         return variables.containsKey(name);
     }
     
+    /**
+     * <p>blockWS.</p>
+     *
+     * @param def a boolean
+     * @return a {@link com.hk.str.HTMLText} object
+     */
     public HTMLText blockWS(boolean def)
     {
         blockWS = def;
         return this;
     }
     
+    /**
+     * <p>isBlocking.</p>
+     *
+     * @return a boolean
+     */
     public boolean isBlocking()
     {
         return blockWS;
     }
     
+    /**
+     * <p>create.</p>
+     *
+     * @return a {@link java.lang.String} object
+     */
     public String create()
     {
         Set<Map.Entry<Integer, Set<String>>> set = varPositions.entrySet();

@@ -12,8 +12,19 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import com.hk.io.IOUtil;
 
+/**
+ * <p>ZipUtil class.</p>
+ *
+ * @author theKayani
+ */
 public class ZipUtil
 {
+	/**
+	 * <p>zipFile.</p>
+	 *
+	 * @param directory a {@link java.io.File} object
+	 * @param zipFile a {@link java.io.File} object
+	 */
 	public static void zipFile(File directory, File zipFile)
 	{
 		try
@@ -40,6 +51,12 @@ public class ZipUtil
 		}
 	}
 
+	/**
+	 * <p>unzipFile.</p>
+	 *
+	 * @param zipFile a {@link java.io.File} object
+	 * @param directory a {@link java.io.File} object
+	 */
 	public static void unzipFile(File zipFile, File directory)
 	{
 		try
@@ -68,6 +85,12 @@ public class ZipUtil
 		}
 	}
 
+	/**
+	 * <p>jarFile.</p>
+	 *
+	 * @param directory a {@link java.io.File} object
+	 * @param jarFile a {@link java.io.File} object
+	 */
 	public static void jarFile(File directory, File jarFile)
 	{
 		try
@@ -92,6 +115,12 @@ public class ZipUtil
 		}
 	}
 
+	/**
+	 * <p>unjarFile.</p>
+	 *
+	 * @param jarFile a {@link java.io.File} object
+	 * @param directory a {@link java.io.File} object
+	 */
 	public static void unjarFile(File jarFile, File directory)
 	{
 		try

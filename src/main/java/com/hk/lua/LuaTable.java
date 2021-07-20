@@ -19,12 +19,14 @@ class LuaTable extends LuaMetatable
 		this.map = map;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaBoolean rawEqual(LuaObject o)
 	{
 		return LuaBoolean.valueOf(o == this);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawLen()
 	{
@@ -45,6 +47,7 @@ class LuaTable extends LuaMetatable
 		return LuaInteger.valueOf(count - 1);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawGet(LuaObject key)
 	{
@@ -52,6 +55,7 @@ class LuaTable extends LuaMetatable
 		return obj == null ? LuaNil.NIL : obj;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void rawSet(LuaObject key, LuaObject value)
 	{
@@ -64,24 +68,28 @@ class LuaTable extends LuaMetatable
 			map.put(key, value);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double getFloat()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public long getInteger()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean getBoolean()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
 	{
@@ -94,54 +102,63 @@ class LuaTable extends LuaMetatable
 			return "table: 0x" + Integer.toHexString(hashCode()) + Integer.toHexString(System.identityHashCode(map));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNil()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isBoolean()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isString()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNumber()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isInteger()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isTable()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isFunction()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isUserdata()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isThread()
 	{
@@ -388,12 +405,14 @@ class LuaTable extends LuaMetatable
 			throw LuaErrors.INVALID_CALL.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Set<LuaObject> getIndicies()
 	{
 		return map.keySet();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Set<Map.Entry<LuaObject, LuaObject>> getEntries()
 	{
@@ -406,18 +425,21 @@ class LuaTable extends LuaMetatable
 		return T_TABLE;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaType type()
 	{
 		return LuaType.TABLE;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String toString()
 	{
 		return map.toString();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{

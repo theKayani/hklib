@@ -14,6 +14,11 @@ import java.util.Arrays;
 
 import com.hk.ex.OutOfBoundsException;
 
+/**
+ * <p>BufferStream class.</p>
+ *
+ * @author theKayani
+ */
 public class BufferStream implements Stream
 {
 	private final byte[] buf;
@@ -21,16 +26,33 @@ public class BufferStream implements Stream
 	private boolean littleEndian;
 	private int pos;
 	
+	/**
+	 * <p>Constructor for BufferStream.</p>
+	 *
+	 * @param size a int
+	 */
 	public BufferStream(int size)
 	{
 		this(new byte[size]);
 	}
 	
+	/**
+	 * <p>Constructor for BufferStream.</p>
+	 *
+	 * @param buf an array of {@link byte} objects
+	 */
 	public BufferStream(byte[] buf)
 	{
 		this(buf, 0, buf.length);
 	}
 	
+	/**
+	 * <p>Constructor for BufferStream.</p>
+	 *
+	 * @param buf an array of {@link byte} objects
+	 * @param off a int
+	 * @param end a int
+	 */
 	public BufferStream(byte[] buf, int off, int end)
 	{
 		this.buf = buf;
@@ -39,13 +61,15 @@ public class BufferStream implements Stream
 		littleEndian = ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeBoolean(boolean o)
 	{
 		ensure(1);
-		buf[pos++] = (byte) Boolean.hashCode(o);
+		buf[pos++] = (byte) (o ? 1231 : 1237);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeByte(byte o)
 	{
@@ -53,6 +77,7 @@ public class BufferStream implements Stream
 		buf[pos++] = o;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeShort(short o)
 	{
@@ -64,6 +89,7 @@ public class BufferStream implements Stream
 		pos += 2;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeInt(int o)
 	{
@@ -75,18 +101,21 @@ public class BufferStream implements Stream
 		pos += 4;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeFloat(float o)
 	{
 		writeInt(Float.floatToIntBits(o));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeCharacter(char o)
 	{
 		writeShort((short) ((int) o & 0xFFFF));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeLong(long o)
 	{
@@ -98,18 +127,21 @@ public class BufferStream implements Stream
 		pos += 8;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeDouble(double o)
 	{
 		writeLong(Double.doubleToLongBits(o));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeUTFString(String o)
 	{
 		wr(o, StandardCharsets.UTF_8);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeRawString(String o)
 	{
@@ -125,8 +157,9 @@ public class BufferStream implements Stream
 		pos += bs.length;
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public void writeSerializable(Serializable o) throws StreamException
+	public void writeSerializable(Serializable o)
 	{
 		try
 		{
@@ -141,11 +174,11 @@ public class BufferStream implements Stream
 			bout.writeTo(new OutputStream()
 			{
 				@Override
-				public void write(int b) throws IOException
+				public void write(int b)
 				{}
 				
 				@Override
-				public void write(byte[] b, int off, int len) throws IOException
+				public void write(byte[] b, int off, int len)
 				{
 					System.arraycopy(b, off, buf, pos, len);
 				}
@@ -158,6 +191,7 @@ public class BufferStream implements Stream
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeBytes(byte[] arr)
 	{
@@ -167,6 +201,7 @@ public class BufferStream implements Stream
 		pos += arr.length;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean readBoolean()
 	{
@@ -174,6 +209,7 @@ public class BufferStream implements Stream
 		return (buf[pos++] & 0xFF) == 207;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public byte readByte()
 	{
@@ -181,6 +217,7 @@ public class BufferStream implements Stream
 		return buf[pos++];
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public short readShort()
 	{
@@ -194,6 +231,7 @@ public class BufferStream implements Stream
 		return o;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int readInt()
 	{
@@ -208,18 +246,21 @@ public class BufferStream implements Stream
 		return o;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public float readFloat()
 	{
 		return Float.intBitsToFloat(readInt());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public char readCharacter()
 	{
 		return (char) (readShort() & 0xFFFF);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public long readLong()
 	{
@@ -233,18 +274,21 @@ public class BufferStream implements Stream
 		return o;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double readDouble()
 	{
 		return Double.longBitsToDouble(readLong());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String readUTFString()
 	{
 		return rd(StandardCharsets.UTF_8);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String readRawString()
 	{
@@ -259,6 +303,7 @@ public class BufferStream implements Stream
 		return new String(buf, pos - len, len, cs);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public <T> T readSerializable(Class<T> cls) throws StreamException
 	{
@@ -279,6 +324,7 @@ public class BufferStream implements Stream
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public byte[] readBytes()
 	{
@@ -294,31 +340,59 @@ public class BufferStream implements Stream
 			throw new OutOfBoundsException("Exceeded by " + (pos + bytes - end));
 	}
 	
+	/**
+	 * <p>getPosition.</p>
+	 *
+	 * @return a int
+	 */
 	public int getPosition()
 	{
 		return pos;
 	}
 	
+	/**
+	 * <p>available.</p>
+	 *
+	 * @return a int
+	 */
 	public int available()
 	{
 		return end - pos;
 	}
 	
+	/**
+	 * <p>reset.</p>
+	 */
 	public void reset()
 	{
 		pos = off;
 	}
 	
+	/**
+	 * <p>setBigEndian.</p>
+	 *
+	 * @param bigEndian a boolean
+	 */
 	public void setBigEndian(boolean bigEndian)
 	{
 		this.littleEndian = !bigEndian;
 	}
 	
+	/**
+	 * <p>isBigEndian.</p>
+	 *
+	 * @return a boolean
+	 */
 	public boolean isBigEndian()
 	{
 		return !littleEndian;
 	}
 	
+	/**
+	 * <p>shift.</p>
+	 *
+	 * @param a a int
+	 */
 	public void shift(int a)
 	{
 		if(a > 0)
@@ -334,11 +408,17 @@ public class BufferStream implements Stream
 		}
 	}
 	
+	/**
+	 * <p>get.</p>
+	 *
+	 * @return an array of {@link byte} objects
+	 */
 	public byte[] get()
 	{
 		return Arrays.copyOf(buf, buf.length);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void close()
 	{}

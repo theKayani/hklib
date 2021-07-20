@@ -7,102 +7,119 @@ class LuaNil extends LuaObject
 	private LuaNil()
 	{}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaBoolean rawEqual(LuaObject o)
 	{
 		return LuaBoolean.valueOf(o.isNil());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawLen()
 	{
 		throw LuaErrors.INVALID_LENGTH.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawGet(LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void rawSet(LuaObject key, LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean getBoolean()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
 	{
 		return "nil";
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double getFloat()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public long getInteger()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNil()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isBoolean()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isString()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNumber()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isInteger()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isTable()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isFunction()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isUserdata()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isThread()
 	{
@@ -259,12 +276,14 @@ class LuaNil extends LuaObject
 		return T_NIL;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaType type()
 	{
 		return LuaType.NIL;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{

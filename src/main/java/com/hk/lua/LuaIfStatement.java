@@ -1,5 +1,10 @@
 package com.hk.lua;
 
+/**
+ * <p>LuaIfStatement class.</p>
+ *
+ * @author theKayani
+ */
 public class LuaIfStatement extends LuaStatement
 {
 	private final LuaExpression exp;

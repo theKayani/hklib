@@ -11,6 +11,11 @@ import java.util.Objects;
 import java.util.Set;
 import com.hk.array.ArrayUtil;
 
+/**
+ * <p>IndexMap class.</p>
+ *
+ * @author theKayani
+ */
 @Deprecated
 public class IndexMap<T> extends AbstractMap<Integer, T> implements Cloneable, Serializable
 {
@@ -18,24 +23,30 @@ public class IndexMap<T> extends AbstractMap<Integer, T> implements Cloneable, S
 	private int size, modCount;
 
 	@SuppressWarnings("unchecked")
+	/**
+	 * <p>Constructor for IndexMap.</p>
+	 */
 	public IndexMap()
 	{
 		ents = new Map.Entry[0];
 		size = 0;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int size()
 	{
 		return size;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean containsKey(Object key)
 	{
 		return key instanceof Integer ? search((Integer) key) >= 0 : false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean containsValue(Object value)
 	{
@@ -54,6 +65,7 @@ public class IndexMap<T> extends AbstractMap<Integer, T> implements Cloneable, S
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	@Deprecated
 	public T get(Object key)
@@ -61,12 +73,19 @@ public class IndexMap<T> extends AbstractMap<Integer, T> implements Cloneable, S
 		return key instanceof Integer ? get(((Integer) key).intValue()) : null;
 	}
 
+	/**
+	 * <p>get.</p>
+	 *
+	 * @param index a int
+	 * @return a T object
+	 */
 	public T get(int index)
 	{
 		int i = search(index);
 		return i >= 0 ? ents[i].getValue() : null;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public T put(Integer key, T value)
 	{
@@ -88,12 +107,19 @@ public class IndexMap<T> extends AbstractMap<Integer, T> implements Cloneable, S
 		return ent.setValue(value);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public T remove(Object key)
 	{
 		return key instanceof Integer ? remove(((Integer) key).intValue()) : null;
 	}
 
+	/**
+	 * <p>remove.</p>
+	 *
+	 * @param key a int
+	 * @return a T object
+	 */
 	@SuppressWarnings("unchecked")
 	public T remove(int key)
 	{
@@ -122,6 +148,7 @@ public class IndexMap<T> extends AbstractMap<Integer, T> implements Cloneable, S
 		return null;
 	}
 
+	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void clear()
@@ -133,6 +160,7 @@ public class IndexMap<T> extends AbstractMap<Integer, T> implements Cloneable, S
 
 	transient volatile Set<Entry<Integer, T>> set = null;
 
+	/** {@inheritDoc} */
 	@Override
 	public Set<Entry<Integer, T>> entrySet()
 	{

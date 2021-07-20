@@ -3,8 +3,13 @@ package com.hk.json;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
-import java.io.UncheckedIOException;
+import com.hk.ex.UncheckedIOException;
 
+/**
+ * <p>JsonReader class.</p>
+ *
+ * @author theKayani
+ */
 public class JsonReader
 {
 	private final LineNumberReader rdr;
@@ -18,18 +23,34 @@ public class JsonReader
 		setReadFully();
 	}
 	
+	/**
+	 * <p>unsetReadFully.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonReader} object
+	 */
 	public JsonReader unsetReadFully()
 	{
 		this.readFully = false;
 		return this;
 	}
 	
+	/**
+	 * <p>Setter for the field <code>readFully</code>.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonReader} object
+	 */
 	public JsonReader setReadFully()
 	{
 		this.readFully = true;
 		return this;
 	}
 	
+	/**
+	 * <p>get.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonValue} object
+	 * @throws com.hk.json.JsonFormatException if any.
+	 */
 	public JsonValue get() throws JsonFormatException
 	{
 		try
@@ -50,6 +71,9 @@ public class JsonReader
 		}
 	}
 	
+	/**
+	 * <p>close.</p>
+	 */
 	public void close()
 	{
 		try

@@ -11,6 +11,11 @@ import java.util.TimeZone;
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 
+/**
+ * <p>LuaLibraryDate class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMethod
 {
 	parse() {
@@ -97,6 +102,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		}
 	};
 
+	/** {@inheritDoc} */
 	@Override
 	public void accept(Environment env, LuaObject table)
 	{
@@ -409,6 +415,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		}
 	}
 	
+	/** Constant <code>EXKEY_DATE_FORMAT="date.format"</code> */
 	public static final String EXKEY_DATE_FORMAT = "date.format";
 	private static final DateFormat defaultFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
 }

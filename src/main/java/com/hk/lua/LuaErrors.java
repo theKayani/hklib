@@ -1,5 +1,10 @@
 package com.hk.lua;
 
+/**
+ * <p>LuaErrors class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaErrors
 {
 	DIVIDE_BY_ZERO                  ("attempt to divide by zero"),

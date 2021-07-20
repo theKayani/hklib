@@ -15,6 +15,11 @@ package com.hk.math;
  *   will be the same when ported to other languages.
  */
 
+/**
+ * <p>OpenSimplexNoise class.</p>
+ *
+ * @author theKayani
+ */
 public class OpenSimplexNoise
 {
 
@@ -29,11 +34,19 @@ public class OpenSimplexNoise
 	private final short[] perm;
 	private final short[] permGradIndex3D;
 
+	/**
+	 * <p>Constructor for OpenSimplexNoise.</p>
+	 */
 	public OpenSimplexNoise()
 	{
 		this(Rand.nextLong());
 	}
 
+	/**
+	 * <p>Constructor for OpenSimplexNoise.</p>
+	 *
+	 * @param perm an array of {@link short} objects
+	 */
 	public OpenSimplexNoise(short[] perm)
 	{
 		this.perm = perm;
@@ -49,6 +62,11 @@ public class OpenSimplexNoise
 	//Initializes the class using a permutation array generated from a 64-bit seed.
 	//Generates a proper permutation (i.e. doesn't merely perform N successive pair swaps on a base array)
 	//Uses a simple 64-bit LCG.
+	/**
+	 * <p>Constructor for OpenSimplexNoise.</p>
+	 *
+	 * @param seed a long
+	 */
 	public OpenSimplexNoise(long seed)
 	{
 		perm = new short[256];
@@ -71,6 +89,13 @@ public class OpenSimplexNoise
 	}
 
 	//2D OpenSimplex Noise.
+	/**
+	 * <p>eval.</p>
+	 *
+	 * @param x a double
+	 * @param y a double
+	 * @return a double
+	 */
 	public double eval(double x, double y)
 	{
 
@@ -206,6 +231,14 @@ public class OpenSimplexNoise
 	}
 
 	//3D OpenSimplex Noise.
+	/**
+	 * <p>eval.</p>
+	 *
+	 * @param x a double
+	 * @param y a double
+	 * @param z a double
+	 * @return a double
+	 */
 	public double eval(double x, double y, double z)
 	{
 

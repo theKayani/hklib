@@ -10,6 +10,11 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 
+/**
+ * <p>IniUtil class.</p>
+ *
+ * @author theKayani
+ */
 public class IniUtil
 {
 	private static String escape(String str)
@@ -207,6 +212,12 @@ public class IniUtil
 		}
 	}
 	
+	/**
+	 * <p>loadFrom.</p>
+	 *
+	 * @param data a {@link java.lang.CharSequence} object
+	 * @return a {@link com.hk.ini.Ini} object
+	 */
 	public static Ini loadFrom(CharSequence data)
 	{
 		Ini ini = new Ini();
@@ -228,11 +239,24 @@ public class IniUtil
 		return ini;
 	}
 	
+	/**
+	 * <p>loadFrom.</p>
+	 *
+	 * @param file a {@link java.io.File} object
+	 * @return a {@link com.hk.ini.Ini} object
+	 */
 	public static Ini loadFrom(File file)
 	{
 		return loadFrom(file, Charset.defaultCharset());
 	}
 	
+	/**
+	 * <p>loadFrom.</p>
+	 *
+	 * @param file a {@link java.io.File} object
+	 * @param charset a {@link java.nio.charset.Charset} object
+	 * @return a {@link com.hk.ini.Ini} object
+	 */
 	public static Ini loadFrom(File file, Charset charset)
 	{
 		if(!file.exists())
@@ -252,11 +276,24 @@ public class IniUtil
 		}
 	}
 	
+	/**
+	 * <p>save.</p>
+	 *
+	 * @param ini a {@link com.hk.ini.Ini} object
+	 * @param file a {@link java.io.File} object
+	 */
 	public static void save(Ini ini, File file)
 	{
 		save(ini, file, Charset.defaultCharset());
 	}
 	
+	/**
+	 * <p>save.</p>
+	 *
+	 * @param ini a {@link com.hk.ini.Ini} object
+	 * @param file a {@link java.io.File} object
+	 * @param charset a {@link java.nio.charset.Charset} object
+	 */
 	public static void save(Ini ini, File file, Charset charset)
 	{
 		String s = save(ini, new StringBuilder()).toString();
@@ -273,11 +310,24 @@ public class IniUtil
 		}
 	}
 	
+	/**
+	 * <p>save.</p>
+	 *
+	 * @param ini a {@link com.hk.ini.Ini} object
+	 * @return a {@link java.lang.String} object
+	 */
 	public static String save(Ini ini)
 	{
 		return save(ini, new StringBuilder()).toString();
 	}
 	
+	/**
+	 * <p>save.</p>
+	 *
+	 * @param ini a {@link com.hk.ini.Ini} object
+	 * @param sb a {@link java.lang.StringBuilder} object
+	 * @return a {@link java.lang.StringBuilder} object
+	 */
 	public static StringBuilder save(Ini ini, StringBuilder sb)
 	{
 		String[] secs = ini.getSections();

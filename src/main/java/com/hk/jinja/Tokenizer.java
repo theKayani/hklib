@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
 
+/**
+ * <p>Tokenizer class.</p>
+ *
+ * @author theKayani
+ */
 public class Tokenizer
 {
 	private final StringBuilder sb;

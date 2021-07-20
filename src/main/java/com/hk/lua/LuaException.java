@@ -4,6 +4,11 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Stack;
 
+/**
+ * <p>LuaException class.</p>
+ *
+ * @author theKayani
+ */
 public class LuaException extends RuntimeException
 {
 	final String source;
@@ -45,6 +50,11 @@ public class LuaException extends RuntimeException
 		}
 	}
 	
+	/**
+	 * <p>Constructor for LuaException.</p>
+	 *
+	 * @param message a {@link java.lang.String} object
+	 */
 	public LuaException(String message)
 	{
 		super(message);
@@ -60,22 +70,40 @@ public class LuaException extends RuntimeException
 		return this;
 	}
 
+    /**
+     * <p>fillInStackTrace.</p>
+     *
+     * @return a {@link java.lang.Throwable} object
+     */
     public synchronized Throwable fillInStackTrace()
     {
 //    	return super.fillInStackTrace();
     	return null;
     }
 
+    /**
+     * <p>getCause.</p>
+     *
+     * @return a {@link com.hk.lua.LuaException} object
+     */
     public synchronized LuaException getCause()
     {
     	return (LuaException) super.getCause();
     }
     
+    /**
+     * <p>printStackTrace.</p>
+     */
     public void printStackTrace()
     {
         printStackTrace(System.out);
     }
 
+    /**
+     * <p>printStackTrace.</p>
+     *
+     * @param s a {@link java.io.PrintStream} object
+     */
     public void printStackTrace(final PrintStream s)
     {
         printStackTrace(new WrappedPrinter() {
@@ -93,6 +121,11 @@ public class LuaException extends RuntimeException
 		});
     }
 
+    /**
+     * <p>printStackTrace.</p>
+     *
+     * @param s a {@link java.io.PrintWriter} object
+     */
     public void printStackTrace(final PrintWriter s)
     {
         printStackTrace(new WrappedPrinter() {

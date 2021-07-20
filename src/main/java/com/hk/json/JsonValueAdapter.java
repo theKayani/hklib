@@ -1,9 +1,19 @@
 package com.hk.json;
 
+/**
+ * <p>JsonValueAdapter class.</p>
+ *
+ * @author theKayani
+ */
 public class JsonValueAdapter<T extends JsonValue> extends JsonAdapter<T>
 {
 	private final JsonType type;
 	
+	/**
+	 * <p>Constructor for JsonValueAdapter.</p>
+	 *
+	 * @param cls a {@link java.lang.Class} object
+	 */
 	public JsonValueAdapter(Class<T> cls)
 	{
 		super(cls);
@@ -11,18 +21,25 @@ public class JsonValueAdapter<T extends JsonValue> extends JsonAdapter<T>
 	}
 
 	@SuppressWarnings("unchecked")
+	/**
+	 * <p>Constructor for JsonValueAdapter.</p>
+	 *
+	 * @param type a {@link com.hk.json.JsonType} object
+	 */
 	public JsonValueAdapter(JsonType type)
 	{
 		super((Class<? extends T>) type.cls);
 		this.type = type;
 	}
 
+	/** {@inheritDoc} */
 	public JsonValueAdapter<T> setPriority(int priority)
 	{
 		super.setPriority(priority);
 		return this;
 	}
 	
+	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
 	public T fromJson(JsonValue val) throws JsonAdaptationException
@@ -32,6 +49,7 @@ public class JsonValueAdapter<T extends JsonValue> extends JsonAdapter<T>
 		return (T) val;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public JsonValue toJson(T val) throws JsonAdaptationException
 	{

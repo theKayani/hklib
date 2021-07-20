@@ -3,7 +3,7 @@ package com.hk.lua;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.UncheckedIOException;
+import com.hk.ex.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +13,11 @@ import java.util.Stack;
 import com.hk.func.BiConsumer;
 
 // https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/examples
+/**
+ * <p>LuaInterpreter class.</p>
+ *
+ * @author theKayani
+ */
 public class LuaInterpreter implements Tokens
 {
 	private final Map<String, Object> extraData;
@@ -50,21 +55,50 @@ public class LuaInterpreter implements Tokens
 			mainChunk = new LuaChunk(new LuaStatement[0], source, global, false);
 	}
 	
+	/**
+	 * <p>hasExtra.</p>
+	 *
+	 * @param key a {@link java.lang.String} object
+	 * @return a boolean
+	 */
 	public boolean hasExtra(String key)
 	{
 		return extraData.containsKey(key);
 	}
 	
+	/**
+	 * <p>getExtra.</p>
+	 *
+	 * @param key a {@link java.lang.String} object
+	 * @return a {@link java.lang.Object} object
+	 */
 	public Object getExtra(String key)
 	{
 		return extraData.get(key);
 	}
 	
+	/**
+	 * <p>getExtra.</p>
+	 *
+	 * @param key a {@link java.lang.String} object
+	 * @param cls a {@link java.lang.Class} object
+	 * @param <T> a T class
+	 * @return a T object
+	 */
 	public <T> T getExtra(String key, Class<T> cls)
 	{
 		return getExtra(key, cls, null);
 	}
 	
+	/**
+	 * <p>getExtra.</p>
+	 *
+	 * @param key a {@link java.lang.String} object
+	 * @param cls a {@link java.lang.Class} object
+	 * @param def a T object
+	 * @param <T> a T class
+	 * @return a T object
+	 */
 	public <T> T getExtra(String key, Class<T> cls, T def)
 	{
 		try
@@ -73,43 +107,86 @@ public class LuaInterpreter implements Tokens
 			if(o != null)
 				return cls.cast(o);
 		}
-		catch(ClassCastException ex)
+		catch(ClassCastException ignored)
 		{}
 		return def;
 	}
 	
+	/**
+	 * <p>getExtraLua.</p>
+	 *
+	 * @param key a {@link java.lang.String} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
 	public LuaObject getExtraLua(String key)
 	{
 		return getExtra(key, LuaObject.class, LuaNil.NIL);
 	}
 	
+	/**
+	 * <p>setExtra.</p>
+	 *
+	 * @param key a {@link java.lang.String} object
+	 * @param value a {@link java.lang.Object} object
+	 * @return a {@link com.hk.lua.LuaInterpreter} object
+	 */
 	public LuaInterpreter setExtra(String key, Object value)
 	{
 		extraData.put(key, value);
 		return this;
 	}
 	
+	/**
+	 * <p>removeExtra.</p>
+	 *
+	 * @param key a {@link java.lang.String} object
+	 * @return a {@link com.hk.lua.LuaInterpreter} object
+	 */
 	public LuaInterpreter removeExtra(String key)
 	{
 		extraData.remove(key);
 		return this;
 	}
 	
+	/**
+	 * <p>getGlobals.</p>
+	 *
+	 * @return a {@link com.hk.lua.Environment} object
+	 */
 	public Environment getGlobals()
 	{
 		return global;
 	}
 	
+	/**
+	 * <p>require.</p>
+	 *
+	 * @param cs a {@link java.lang.CharSequence} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
 	public LuaObject require(CharSequence cs)
 	{
 		return require(null, new StringReader(cs.toString()));
 	}
 	
+	/**
+	 * <p>require.</p>
+	 *
+	 * @param reader a {@link java.io.Reader} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
 	public LuaObject require(Reader reader)
 	{
 		return require(null, reader);
 	}
 	
+	/**
+	 * <p>require.</p>
+	 *
+	 * @param source a {@link java.lang.String} object
+	 * @param reader a {@link java.io.Reader} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
 	public LuaObject require(String source, Reader reader)
 	{
 		LuaObject result = source == null ? null : required.get(new LuaString(source));
@@ -132,6 +209,12 @@ public class LuaInterpreter implements Tokens
 		return result;
 	}
 	
+	/**
+	 * <p>importLib.</p>
+	 *
+	 * @param lib a {@link com.hk.lua.LuaLibrary} object
+	 * @param <T> a T class
+	 */
 	public <T extends Enum<T> & BiConsumer<Environment, LuaObject>> void importLib(LuaLibrary<T> lib)
 	{
 		LuaTable tbl;
@@ -144,6 +227,13 @@ public class LuaInterpreter implements Tokens
 			consumer.accept(global, tbl);
 	}
 	
+	/**
+	 * <p>execute.</p>
+	 *
+	 * @param args a {@link java.lang.Object} object
+	 * @return a {@link java.lang.Object} object
+	 * @throws com.hk.ex.UncheckedIOException if any.
+	 */
 	public Object execute(Object... args) throws UncheckedIOException
 	{
 		try
@@ -158,6 +248,11 @@ public class LuaInterpreter implements Tokens
 		}
 	}
 	
+	/**
+	 * <p>compile.</p>
+	 *
+	 * @throws com.hk.ex.UncheckedIOException if any.
+	 */
 	public void compile() throws UncheckedIOException
 	{
 		if(mainChunk != null)
@@ -311,7 +406,7 @@ public class LuaInterpreter implements Tokens
 				if(!tkz.next())
 					throw unexpected(tkz, source, "for");
 				
-				LuaForStatement fst = null;
+				LuaForStatement fst;
 				switch(tkz.type())
 				{
 				case T_EQUALS:
@@ -524,16 +619,13 @@ public class LuaInterpreter implements Tokens
 					break;
 				}
 				else
-				{
 					tkz.next();
-					continue;
-				}
 			}
 			else
 				break;
 		} while(true);
 		
-		return lst.toArray(new LuaVariable[0]);
+		return lst.toArray(new LuaLocation[0]);
 	}
 	
 	private static LuaExpressions readExpressions(Tokenizer tkz, String source, boolean strict) throws IOException
@@ -555,8 +647,6 @@ public class LuaInterpreter implements Tokens
 					tkz.prev();
 					break;
 				}
-				else
-					continue;
 			}
 			else
 				break;
@@ -709,7 +799,7 @@ public class LuaInterpreter implements Tokens
 	{
 		Stack<Integer> ops = new Stack<>();
 		List<Object> res = new ArrayList<>();
-		boolean hasValue = false, ra = false;
+		boolean hasValue = false, ra;
 		int type, line;
 		
 		tklbl:

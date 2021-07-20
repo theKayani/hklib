@@ -3,10 +3,21 @@ package com.hk.math.expression;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 
+/**
+ * <p>Expression class.</p>
+ *
+ * @author theKayani
+ */
 public class Expression
 {
 	public final boolean result;
 
+	/**
+	 * <p>Constructor for Expression.</p>
+	 *
+	 * @param str a {@link java.lang.String} object
+	 * @throws com.hk.math.expression.ExpressionFormatException if any.
+	 */
 	public Expression(String str) throws ExpressionFormatException
 	{
 		str = str.replaceAll("\\s", "");

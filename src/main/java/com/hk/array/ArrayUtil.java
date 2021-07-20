@@ -9,17 +9,19 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * This class gives simple tools and utilities for working with arrays.
  * From copying them to extending them to primitive arrays to object arrays.
- * 
+ *
  * <p> All the utilities are here.
+ *
+ * @author theKayani
  */
 public class ArrayUtil
 {
 	/**
-	 * Returns an {@link ImmutableArray} instance of the given array.
-	 * 
+	 * Returns an {@link com.hk.array.ImmutableArray} instance of the given array.
+	 *
 	 * @param array The array that should be given to the ImmutableArray
-	 * 
-	 * @return The {@link ImmutableArray} instance.
+	 * @return The {@link com.hk.array.ImmutableArray} instance.
+	 * @param <T> a T class
 	 */
 	public static <T> ImmutableArray<T> immutableArrayOf(Object array)
 	{
@@ -46,11 +48,12 @@ public class ArrayUtil
 	/**
 	 * Swaps the two objects in the array. This can also be given primitive arrays as well.
 	 * Also returns the array object given to the method.
-	 * 
+	 *
 	 * @param arr The array object. Will give an exception if arr isn't an Array
 	 * @param index1 The index of the first object to swap.
 	 * @param index2 The index of the second object to swap.
 	 * @return The array back.
+	 * @param <T> a T class
 	 */
 	public static <T> Object swap(Object arr, int index1, int index2)
 	{
@@ -60,11 +63,26 @@ public class ArrayUtil
 		return arr;
 	}
 
+	/**
+	 * <p>shuffleArray.</p>
+	 *
+	 * @param arr a T object
+	 * @param <T> a T class
+	 * @return a T object
+	 */
 	public static <T> T shuffleArray(T arr)
 	{
 		return shuffleArray(arr, ThreadLocalRandom.current());
 	}
 
+	/**
+	 * <p>shuffleArray.</p>
+	 *
+	 * @param arr a T object
+	 * @param rand a {@link java.util.Random} object
+	 * @param <T> a T class
+	 * @return a T object
+	 */
 	public static <T> T shuffleArray(T arr, Random rand)
 	{
 		int l = Array.getLength(arr);
@@ -77,9 +95,9 @@ public class ArrayUtil
 
 	/**
 	 * This converts a list to it's primitive state.
-	 * In this case, it converts an {@link Integer} list to a
+	 * In this case, it converts an {@link java.lang.Integer} list to a
 	 * int array.
-	 * 
+	 *
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
@@ -95,9 +113,9 @@ public class ArrayUtil
 
 	/**
 	 * This converts a list to it's primitive state.
-	 * In this case, it converts a {@link Float} list to a
+	 * In this case, it converts a {@link java.lang.Float} list to a
 	 * float array.
-	 * 
+	 *
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
@@ -113,9 +131,9 @@ public class ArrayUtil
 
 	/**
 	 * This converts a list to it's primitive state.
-	 * In this case, it converts a {@link Double} list to a
+	 * In this case, it converts a {@link java.lang.Double} list to a
 	 * double array.
-	 * 
+	 *
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
@@ -131,9 +149,9 @@ public class ArrayUtil
 
 	/**
 	 * This converts a list to it's primitive state.
-	 * In this case, it converts a {@link Character} list to a
+	 * In this case, it converts a {@link java.lang.Character} list to a
 	 * char array.
-	 * 
+	 *
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
@@ -149,9 +167,9 @@ public class ArrayUtil
 
 	/**
 	 * This converts a list to it's primitive state.
-	 * In this case, it converts a {@link Long} list to a
+	 * In this case, it converts a {@link java.lang.Long} list to a
 	 * long array.
-	 * 
+	 *
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
@@ -167,9 +185,9 @@ public class ArrayUtil
 
 	/**
 	 * This converts a list to it's primitive state.
-	 * In this case, it converts a {@link Short} list to a
+	 * In this case, it converts a {@link java.lang.Short} list to a
 	 * short array.
-	 * 
+	 *
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
@@ -185,9 +203,9 @@ public class ArrayUtil
 
 	/**
 	 * This converts a list to it's primitive state.
-	 * In this case, it converts a {@link Byte} list to a
+	 * In this case, it converts a {@link java.lang.Byte} list to a
 	 * byte array.
-	 * 
+	 *
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
@@ -203,9 +221,9 @@ public class ArrayUtil
 
 	/**
 	 * This converts a list to it's primitive state.
-	 * In this case, it converts a {@link Boolean} list to a
+	 * In this case, it converts a {@link java.lang.Boolean} list to a
 	 * boolean array.
-	 * 
+	 *
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
@@ -222,10 +240,10 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given object array by one.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but a size higher.
+	 * @param <T> a T class
 	 */
 	public static <T> T[] growArray(T[] array)
 	{
@@ -235,9 +253,8 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given int array by one.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but a size higher.
 	 */
 	public static int[] growArray(int[] array)
@@ -248,9 +265,8 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given double array by one.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but a size higher.
 	 */
 	public static double[] growArray(double[] array)
@@ -261,9 +277,8 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given float array by one.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but a size higher.
 	 */
 	public static float[] growArray(float[] array)
@@ -274,9 +289,8 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given short array by one.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but a size higher.
 	 */
 	public static short[] growArray(short[] array)
@@ -287,9 +301,8 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given byte array by one.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but a size higher.
 	 */
 	public static byte[] growArray(byte[] array)
@@ -300,9 +313,8 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given long array by one.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but a size higher.
 	 */
 	public static long[] growArray(long[] array)
@@ -313,9 +325,8 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given boolean array by one.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but a size higher.
 	 */
 	public static boolean[] growArray(boolean[] array)
@@ -326,9 +337,8 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given char array by one.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but a size higher.
 	 */
 	public static char[] growArray(char[] array)
@@ -339,10 +349,11 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given object array by the amount to grow.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but amtToGrow more length.
+	 * @param amtToGrow a int
+	 * @param <T> a T class
 	 */
 	public static <T> T[] growArrayBy(T[] array, int amtToGrow)
 	{
@@ -352,10 +363,10 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given int array by the amount to grow.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but amtToGrow more length.
+	 * @param amtToGrow a int
 	 */
 	public static int[] growArrayBy(int[] array, int amtToGrow)
 	{
@@ -365,10 +376,10 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given double array by the amount to grow.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but amtToGrow more length.
+	 * @param amtToGrow a int
 	 */
 	public static double[] growArrayBy(double[] array, int amtToGrow)
 	{
@@ -378,10 +389,10 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given float array by the amount to grow.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but amtToGrow more length.
+	 * @param amtToGrow a int
 	 */
 	public static float[] growArrayBy(float[] array, int amtToGrow)
 	{
@@ -391,10 +402,10 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given short array by the amount to grow.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but amtToGrow more length.
+	 * @param amtToGrow a int
 	 */
 	public static short[] growArrayBy(short[] array, int amtToGrow)
 	{
@@ -404,10 +415,10 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given byte array by the amount to grow.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but amtToGrow more length.
+	 * @param amtToGrow a int
 	 */
 	public static byte[] growArrayBy(byte[] array, int amtToGrow)
 	{
@@ -417,10 +428,10 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given long array by the amount to grow.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but amtToGrow more length.
+	 * @param amtToGrow a int
 	 */
 	public static long[] growArrayBy(long[] array, int amtToGrow)
 	{
@@ -430,10 +441,10 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given boolean array by the amount to grow.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but amtToGrow more length.
+	 * @param amtToGrow a int
 	 */
 	public static boolean[] growArrayBy(boolean[] array, int amtToGrow)
 	{
@@ -443,10 +454,10 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given char array by the amount to grow.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but amtToGrow more length.
+	 * @param amtToGrow a int
 	 */
 	public static char[] growArrayBy(char[] array, int amtToGrow)
 	{
@@ -456,10 +467,9 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given int array at the specified index by one.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
 	 * @param indexToGrow The index to grow the array at.
-	 * 
 	 * @return A new array with the same contents but one more length at the given index.
 	 */
 	public static int[] growArrayAt(int[] array, int indexToGrow)
@@ -473,10 +483,11 @@ public class ArrayUtil
 	/**
 	 * This increases the size of the given object array by the amount to grow.
 	 * <p><i>NOTE: This doesn't alter the original array given!</i>
-	 * 
+	 *
 	 * @param array The array to grow.
-	 * 
 	 * @return A new array with the same contents but amtToGrow more length.
+	 * @param indexToGrow a int
+	 * @param <T> a T class
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] growArrayAt(T[] array, int indexToGrow)
@@ -488,56 +499,112 @@ public class ArrayUtil
 	}
 
 	/**
-	 * 
-	 * @param arr
-	 * @return
+	 * <p>toFloatArray.</p>
+	 *
+	 * @param arr a float
+	 * @return an array of {@link float} objects
 	 */
 	public static float[] toFloatArray(float... arr)
 	{
 		return arr;
 	}
 
+	/**
+	 * <p>toDoubleArray.</p>
+	 *
+	 * @param arr a double
+	 * @return an array of {@link double} objects
+	 */
 	public static double[] toDoubleArray(double... arr)
 	{
 		return arr;
 	}
 
+	/**
+	 * <p>toIntArray.</p>
+	 *
+	 * @param arr a int
+	 * @return an array of {@link int} objects
+	 */
 	public static int[] toIntArray(int... arr)
 	{
 		return arr;
 	}
 
+	/**
+	 * <p>toShortArray.</p>
+	 *
+	 * @param arr a short
+	 * @return an array of {@link short} objects
+	 */
 	public static short[] toShortArray(short... arr)
 	{
 		return arr;
 	}
 
+	/**
+	 * <p>toByteArray.</p>
+	 *
+	 * @param arr a byte
+	 * @return an array of {@link byte} objects
+	 */
 	public static byte[] toByteArray(byte... arr)
 	{
 		return arr;
 	}
 
+	/**
+	 * <p>toLongArray.</p>
+	 *
+	 * @param arr a long
+	 * @return an array of {@link long} objects
+	 */
 	public static long[] toLongArray(long... arr)
 	{
 		return arr;
 	}
 
+	/**
+	 * <p>toCharArray.</p>
+	 *
+	 * @param arr a char
+	 * @return an array of {@link char} objects
+	 */
 	public static char[] toCharArray(char... arr)
 	{
 		return arr;
 	}
 
+	/**
+	 * <p>toBooleanArray.</p>
+	 *
+	 * @param arr a boolean
+	 * @return an array of {@link boolean} objects
+	 */
 	public static boolean[] toBooleanArray(boolean... arr)
 	{
 		return arr;
 	}
 
+	/**
+	 * <p>toArray.</p>
+	 *
+	 * @param arr a T object
+	 * @param <T> a T class
+	 * @return an array of T[] objects
+	 */
 	@SafeVarargs
 	public static <T> T[] toArray(T... arr)
 	{
 		return arr;
 	}
 
+	/**
+	 * <p>toObjIntegerArray.</p>
+	 *
+	 * @param arr an array of {@link int} objects
+	 * @return an array of {@link java.lang.Integer} objects
+	 */
 	public static Integer[] toObjIntegerArray(int[] arr)
 	{
 		Integer[] arr1 = new Integer[arr.length];
@@ -548,6 +615,12 @@ public class ArrayUtil
 		return arr1;
 	}
 
+	/**
+	 * <p>toObjFloatArray.</p>
+	 *
+	 * @param arr an array of {@link float} objects
+	 * @return an array of {@link java.lang.Float} objects
+	 */
 	public static Float[] toObjFloatArray(float[] arr)
 	{
 		Float[] arr1 = new Float[arr.length];
@@ -558,6 +631,12 @@ public class ArrayUtil
 		return arr1;
 	}
 
+	/**
+	 * <p>toObjDoubleArray.</p>
+	 *
+	 * @param arr an array of {@link double} objects
+	 * @return an array of {@link java.lang.Double} objects
+	 */
 	public static Double[] toObjDoubleArray(double[] arr)
 	{
 		Double[] arr1 = new Double[arr.length];
@@ -568,6 +647,12 @@ public class ArrayUtil
 		return arr1;
 	}
 
+	/**
+	 * <p>toObjLongArray.</p>
+	 *
+	 * @param arr an array of {@link long} objects
+	 * @return an array of {@link java.lang.Long} objects
+	 */
 	public static Long[] toObjLongArray(long[] arr)
 	{
 		Long[] arr1 = new Long[arr.length];
@@ -578,6 +663,12 @@ public class ArrayUtil
 		return arr1;
 	}
 
+	/**
+	 * <p>toObjShortArray.</p>
+	 *
+	 * @param arr an array of {@link short} objects
+	 * @return an array of {@link java.lang.Short} objects
+	 */
 	public static Short[] toObjShortArray(short[] arr)
 	{
 		Short[] arr1 = new Short[arr.length];
@@ -588,6 +679,12 @@ public class ArrayUtil
 		return arr1;
 	}
 
+	/**
+	 * <p>toObjByteArray.</p>
+	 *
+	 * @param arr an array of {@link byte} objects
+	 * @return an array of {@link java.lang.Byte} objects
+	 */
 	public static Byte[] toObjByteArray(byte[] arr)
 	{
 		Byte[] arr1 = new Byte[arr.length];
@@ -598,6 +695,12 @@ public class ArrayUtil
 		return arr1;
 	}
 
+	/**
+	 * <p>toObjCharacterArray.</p>
+	 *
+	 * @param arr an array of {@link char} objects
+	 * @return an array of {@link java.lang.Character} objects
+	 */
 	public static Character[] toObjCharacterArray(char[] arr)
 	{
 		Character[] arr1 = new Character[arr.length];
@@ -608,6 +711,12 @@ public class ArrayUtil
 		return arr1;
 	}
 
+	/**
+	 * <p>toObjBooleanArray.</p>
+	 *
+	 * @param arr an array of {@link boolean} objects
+	 * @return an array of {@link java.lang.Boolean} objects
+	 */
 	public static Boolean[] toObjBooleanArray(boolean[] arr)
 	{
 		Boolean[] arr1 = new Boolean[arr.length];

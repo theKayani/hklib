@@ -12,107 +12,129 @@ class LuaBoolean extends LuaObject
 		this.value = value;
 	}
 	
+	/**
+	 * <p>not.</p>
+	 *
+	 * @return a {@link com.hk.lua.LuaBoolean} object
+	 */
 	public LuaBoolean not()
 	{
 		return value ? FALSE : TRUE;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaBoolean rawEqual(LuaObject o)
 	{
 		return LuaBoolean.valueOf(o.isBoolean() && value == o.getBoolean());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawLen()
 	{
 		throw LuaErrors.INVALID_LENGTH.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawGet(LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void rawSet(LuaObject key, LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
 	{
 		return value ? "true" : "false";
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean getBoolean()
 	{
 		return value;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double getFloat()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public long getInteger()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNil()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isBoolean()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isString()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNumber()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isInteger()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isTable()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isFunction()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isUserdata()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isThread()
 	{
@@ -122,25 +144,21 @@ class LuaBoolean extends LuaObject
 	@Override
 	LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
+		if (o.code() == T_FUNCTION)
 		{
-		case T_FUNCTION:
 			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
-		default:
-			throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
 		}
+		throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
 	}
 
 	@Override
 	LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
+		if (o.code() == T_FUNCTION)
 		{
-		case T_FUNCTION:
 			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
-		default:
-			throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
 		}
+		throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
 	}
 
 	@Override
@@ -269,16 +287,18 @@ class LuaBoolean extends LuaObject
 		return T_BOOLEAN;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaType type()
 	{
 		return LuaType.BOOLEAN;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{
-		return Boolean.hashCode(value);
+		return value ? 1231 : 1237;
 	}
 
 	static LuaBoolean valueOf(boolean value)

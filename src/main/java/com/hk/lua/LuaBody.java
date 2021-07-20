@@ -42,6 +42,7 @@ class LuaBody extends LuaBlock
 		return res;
 	}
 
+	/** {@inheritDoc} */
 	protected LuaException exception(LuaStatement st, LuaException e)
 	{
 		if(func != null)

@@ -13,6 +13,11 @@ import java.util.List;
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 
+/**
+ * <p>LuaLibraryIO class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMethod
 {
 	close() {
@@ -279,6 +284,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		}
 	};
 
+	/** {@inheritDoc} */
 	@Override
 	public void accept(final Environment env, LuaObject table)
 	{

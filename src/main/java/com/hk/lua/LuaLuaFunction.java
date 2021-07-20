@@ -13,6 +13,7 @@ class LuaLuaFunction extends LuaFunction
 		this.body = body;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
 	{

@@ -18,6 +18,11 @@ import com.hk.json.JsonValue;
 import com.hk.json.JsonWriter;
 import com.hk.lua.Lua.LuaMethod;
 
+/**
+ * <p>LuaLibraryJson class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMethod
 {
 	read() {
@@ -102,12 +107,14 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 		}
 	};
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 	{
 		throw new Error();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void accept(Environment env, LuaObject table)
 	{

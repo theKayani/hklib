@@ -5,33 +5,63 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 
+/**
+ * <p>SortedList class.</p>
+ *
+ * @author theKayani
+ */
 public class SortedList<E> extends ArrayList<E>
 {
 	private Comparator<E> comparator;
 	private boolean reverseSorting;
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * <p>Constructor for SortedList.</p>
+	 */
 	public SortedList()
 	{
 		this(null, false);
 	}
 
+	/**
+	 * <p>Constructor for SortedList.</p>
+	 *
+	 * @param comparator a {@link java.util.Comparator} object
+	 */
 	public SortedList(Comparator<E> comparator)
 	{
 		this(comparator, false);
 	}
 
+	/**
+	 * <p>Constructor for SortedList.</p>
+	 *
+	 * @param reverseSorting a boolean
+	 */
 	public SortedList(boolean reverseSorting)
 	{
 		this(null, reverseSorting);
 	}
 
+	/**
+	 * <p>Constructor for SortedList.</p>
+	 *
+	 * @param comparator a {@link java.util.Comparator} object
+	 * @param reverseSorting a boolean
+	 */
 	public SortedList(Comparator<E> comparator, boolean reverseSorting)
 	{
 		this.comparator = comparator;
 		this.reverseSorting = reverseSorting;
 	}
 
+	/**
+	 * <p>Setter for the field <code>reverseSorting</code>.</p>
+	 *
+	 * @param reverseSorting a boolean
+	 * @return a {@link com.hk.collections.lists.SortedList} object
+	 */
 	@SuppressWarnings("unchecked")
 	public SortedList<E> setReverseSorting(boolean reverseSorting)
 	{
@@ -48,22 +78,39 @@ public class SortedList<E> extends ArrayList<E>
 		return this;
 	}
 
+	/**
+	 * <p>Setter for the field <code>comparator</code>.</p>
+	 *
+	 * @param comparator a {@link java.util.Comparator} object
+	 * @return a {@link com.hk.collections.lists.SortedList} object
+	 */
 	public SortedList<E> setComparator(Comparator<E> comparator)
 	{
 		this.comparator = comparator;
 		return this;
 	}
 
+	/**
+	 * <p>Getter for the field <code>comparator</code>.</p>
+	 *
+	 * @return a {@link java.util.Comparator} object
+	 */
 	public Comparator<E> getComparator()
 	{
 		return comparator;
 	}
 
+	/**
+	 * <p>isReverseSorting.</p>
+	 *
+	 * @return a boolean
+	 */
 	public boolean isReverseSorting()
 	{
 		return reverseSorting;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean add(E mt)
 	{
@@ -72,6 +119,7 @@ public class SortedList<E> extends ArrayList<E>
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean addAll(Collection<? extends E> c)
 	{
@@ -84,18 +132,21 @@ public class SortedList<E> extends ArrayList<E>
 		return good;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean addAll(int index, Collection<? extends E> c)
 	{
 		throw new UnsupportedOperationException("Sorted Lists cannot be manually set");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public E set(int index, E element)
 	{
 		throw new UnsupportedOperationException("Sorted Lists cannot be manually set");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void add(int index, E element)
 	{

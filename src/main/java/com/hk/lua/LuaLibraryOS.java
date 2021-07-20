@@ -9,6 +9,11 @@ import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 import com.hk.math.Rand;
 
+/**
+ * <p>LuaLibraryOS class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMethod
 {
 	clock() {
@@ -52,12 +57,9 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 			try
 			{
 				Process proc = Runtime.getRuntime().exec(cmd);
-				do
-				{}
-				while(proc.isAlive());
-				return new LuaArgs(LuaBoolean.TRUE, LuaInteger.valueOf(proc.exitValue()));
+				return new LuaArgs(LuaBoolean.TRUE, LuaInteger.valueOf(proc.waitFor()));
 			}
-			catch (IOException e)
+			catch (IOException | InterruptedException e)
 			{
 				return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
 			}
@@ -197,12 +199,14 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 		}
 	};
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 	{
 		throw new Error();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void accept(Environment env, LuaObject table)
 	{

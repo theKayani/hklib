@@ -2,21 +2,43 @@ package com.hk.math.shape;
 
 import com.hk.math.FloatMath;
 
+/**
+ * <p>Ellipse class.</p>
+ *
+ * @author theKayani
+ */
 public class Ellipse extends Shape
 {
 	public float x, y, width, height;
 
+	/**
+	 * <p>Constructor for Ellipse.</p>
+	 */
 	public Ellipse()
 	{
 		x = y = width = height = 0F;
 	}
 
+	/**
+	 * <p>Constructor for Ellipse.</p>
+	 *
+	 * @param width a float
+	 * @param height a float
+	 */
 	public Ellipse(float width, float height)
 	{
 		this.width = width;
 		this.height = height;
 	}
 
+	/**
+	 * <p>Constructor for Ellipse.</p>
+	 *
+	 * @param x a float
+	 * @param y a float
+	 * @param width a float
+	 * @param height a float
+	 */
 	public Ellipse(float x, float y, float width, float height)
 	{
 		this.x = x;
@@ -25,16 +47,31 @@ public class Ellipse extends Shape
 		this.height = height;
 	}
 
+	/**
+	 * <p>getArea.</p>
+	 *
+	 * @return a float
+	 */
 	public float getArea()
 	{
 		return FloatMath.PI * width * height;
 	}
 
+	/**
+	 * <p>getCircumference.</p>
+	 *
+	 * @return a float
+	 */
 	public float getCircumference()
 	{
 		return Float.NaN; // TODO: Shouldn't return NaN...
 	}
 
+	/**
+	 * <p>getEccentricity.</p>
+	 *
+	 * @return a float
+	 */
 	public float getEccentricity()
 	{
 		float a = Math.max(width, height);
@@ -42,16 +79,27 @@ public class Ellipse extends Shape
 		return FloatMath.sqrt(1F - b * b / (a * a));
 	}
 
+	/**
+	 * <p>getSemiMajorAxis.</p>
+	 *
+	 * @return a float
+	 */
 	public float getSemiMajorAxis()
 	{
 		return Math.max(width, height);
 	}
 
+	/**
+	 * <p>getSemiMinorAxis.</p>
+	 *
+	 * @return a float
+	 */
 	public float getSemiMinorAxis()
 	{
 		return Math.min(width, height);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean contains(float x, float y)
 	{
@@ -61,6 +109,7 @@ public class Ellipse extends Shape
 		return x * x + y * y <= width * 0.5F * (width * 0.5F);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean contains(float x, float y, float w, float h)
 	{
@@ -68,12 +117,14 @@ public class Ellipse extends Shape
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Ellipse clone()
 	{
 		return new Ellipse(x, y, width, height);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean equals(Object o)
 	{
@@ -85,6 +136,7 @@ public class Ellipse extends Shape
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{
@@ -96,6 +148,7 @@ public class Ellipse extends Shape
 		return 0;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String toString()
 	{

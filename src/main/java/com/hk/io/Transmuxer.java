@@ -4,6 +4,11 @@ import java.util.Random;
 
 import com.hk.array.ArrayUtil;
 
+/**
+ * <p>Transmuxer class.</p>
+ *
+ * @author theKayani
+ */
 public class Transmuxer
 {
 	private final byte key;
@@ -19,11 +24,19 @@ public class Transmuxer
 		this.length = length;
 	}
 	
+	/**
+	 * <p>encoded.</p>
+	 *
+	 * @return a boolean
+	 */
 	public boolean encoded()
 	{
 		return encoded != null && encoded;
 	}
 	
+	/**
+	 * <p>doEncode.</p>
+	 */
 	public void doEncode()
 	{
 		if(encoded != null)
@@ -32,11 +45,19 @@ public class Transmuxer
 		process(false);
 	}
 	
+	/**
+	 * <p>decoded.</p>
+	 *
+	 * @return a boolean
+	 */
 	public boolean decoded()
 	{
 		return encoded != null && !encoded;
 	}
 
+	/**
+	 * <p>doDecode.</p>
+	 */
 	public void doDecode()
 	{
 		if(encoded != null)
@@ -70,6 +91,15 @@ public class Transmuxer
 		}
 	}
 	
+	/**
+	 * <p>make.</p>
+	 *
+	 * @param key a byte
+	 * @param data an array of {@link byte} objects
+	 * @param offset a int
+	 * @param length a int
+	 * @return a {@link com.hk.io.Transmuxer} object
+	 */
 	public static Transmuxer make(byte key, byte[] data, int offset, int length)
 	{
 		if(data == null)
@@ -82,16 +112,37 @@ public class Transmuxer
 		return new Transmuxer(key, data, offset, length);
 	}
 	
+	/**
+	 * <p>make.</p>
+	 *
+	 * @param key a byte
+	 * @param data an array of {@link byte} objects
+	 * @return a {@link com.hk.io.Transmuxer} object
+	 */
 	public static Transmuxer make(byte key, byte[] data)
 	{
 		return make(key, data, 0, data.length);
 	}
 	
+	/**
+	 * <p>make.</p>
+	 *
+	 * @param data an array of {@link byte} objects
+	 * @param offset a int
+	 * @param length a int
+	 * @return a {@link com.hk.io.Transmuxer} object
+	 */
 	public static Transmuxer make(byte[] data, int offset, int length)
 	{
 		return make(data[offset], data, offset + 1, length - 1);
 	}
 	
+	/**
+	 * <p>make.</p>
+	 *
+	 * @param data an array of {@link byte} objects
+	 * @return a {@link com.hk.io.Transmuxer} object
+	 */
 	public static Transmuxer make(byte[] data)
 	{
 		return make(data, 0, data.length);

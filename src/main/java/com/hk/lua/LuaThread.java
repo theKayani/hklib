@@ -2,6 +2,11 @@ package com.hk.lua;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * <p>LuaThread class.</p>
+ *
+ * @author theKayani
+ */
 public class LuaThread extends LuaObject
 {
 	private final LuaInterpreter interp;
@@ -16,6 +21,12 @@ public class LuaThread extends LuaObject
 		completed = new AtomicBoolean();
 	}
 	
+	/**
+	 * <p>resume.</p>
+	 *
+	 * @param args an array of {@link com.hk.lua.LuaObject} objects
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
 	public LuaObject resume(LuaObject[] args)
 	{
 		if(completed.get())
@@ -43,6 +54,12 @@ public class LuaThread extends LuaObject
 		return new LuaArgs(tmp);
 	}
 	
+	/**
+	 * <p>yield.</p>
+	 *
+	 * @param args an array of {@link com.hk.lua.LuaObject} objects
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
 	public LuaObject yield(LuaObject[] args)
 	{
 		if(completed.get())
@@ -61,119 +78,143 @@ public class LuaThread extends LuaObject
 		return new LuaArgs(thread.result);
 	}
 	
+	/**
+	 * <p>status.</p>
+	 *
+	 * @return a {@link java.lang.String} object
+	 */
 	public String status()
 	{
 		return completed.get() ? "dead" : "suspended";
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaBoolean rawEqual(LuaObject o)
 	{
 		return LuaBoolean.valueOf(o == this);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawLen()
 	{
 		throw LuaErrors.INVALID_LENGTH.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawGet(LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void rawSet(LuaObject key, LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean getBoolean()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
 	{
 		return "thread: 0x" + Integer.toHexString(hashCode());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double getFloat()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public long getInteger()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNil()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isBoolean()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isString()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNumber()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isInteger()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isTable()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isFunction()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isUserdata()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isThread()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final LuaType type()
 	{
 		return LuaType.THREAD;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
 	{
@@ -183,6 +224,7 @@ public class LuaThread extends LuaObject
 			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
 	{
@@ -198,120 +240,144 @@ public class LuaThread extends LuaObject
 		return rawEqual(o);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doConcat(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_CONCATENATE.create(name(), o.name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doAdd(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doSub(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doMul(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doDiv(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doIDiv(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doMod(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doPow(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doBAND(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doBOR(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doBXOR(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doSHL(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doSHR(LuaInterpreter interp, LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doBNOT(LuaInterpreter interp)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doUnm(LuaInterpreter interp)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doLen(LuaInterpreter interp)
 	{
 		throw LuaErrors.INVALID_LENGTH.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doIndex(LuaInterpreter interp, LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void doNewIndex(LuaInterpreter interp, LuaObject key, LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 	{
 		throw LuaErrors.INVALID_CALL.create(name());
 	}
 	
+	/**
+	 * <p>getAsThread.</p>
+	 *
+	 * @return a {@link com.hk.lua.LuaThread} object
+	 */
 	public LuaThread getAsThread()
 	{
 		return this;
@@ -323,6 +389,7 @@ public class LuaThread extends LuaObject
 		return T_THREAD;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{

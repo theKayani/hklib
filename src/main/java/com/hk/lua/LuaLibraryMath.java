@@ -5,9 +5,15 @@ import java.util.Random;
 
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
+import com.hk.math.MathUtil;
 import com.hk.math.PrimitiveUtil;
 import com.hk.math.Rand;
 
+/**
+ * <p>LuaLibraryMath class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMethod
 {	
 	abs() {
@@ -98,10 +104,14 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER, LuaType.NUMBER);
+			long x = args[0].getInteger();
+			long y = args[1].getInteger();
+			long r = x - (x / y) * y;
+
 			if(args[0].isInteger() && args[1].isInteger())
-				return LuaInteger.valueOf(Math.floorMod(args[0].getInteger(), args[1].getInteger()));
+				return LuaInteger.valueOf(r);
 			else
-				return new LuaFloat(Math.floorMod(args[0].getInteger(), args[1].getInteger()));
+				return new LuaFloat(r);
 		}
 	},
 	huge() {
@@ -320,12 +330,14 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		}
 	};
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 	{
 		throw new Error();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void accept(Environment env, LuaObject table)
 	{
@@ -334,5 +346,6 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 			table.rawSet(new LuaString(name), Lua.newFunc(this));
 	}
 	
+	/** Constant <code>EXKEY_MATH_RNG="math.rng"</code> */
 	public static final String EXKEY_MATH_RNG = "math.rng";
 }

@@ -9,8 +9,20 @@ import java.util.List;
 import com.hk.array.ArrayUtil;
 import com.hk.file.FileUtil;
 
+/**
+ * <p>JavaUtil class.</p>
+ *
+ * @author theKayani
+ */
 public class JavaUtil
 {
+	/**
+	 * <p>getClass.</p>
+	 *
+	 * @param parent a {@link java.io.File} object
+	 * @param file a {@link java.io.File} object
+	 * @return a {@link java.lang.Class} object
+	 */
 	@SuppressWarnings("resource")
 	public static Class<?> getClass(File parent, File file)
 	{
@@ -35,6 +47,12 @@ public class JavaUtil
 		return null;
 	}
 
+	/**
+	 * <p>getAllClasses.</p>
+	 *
+	 * @param dir a {@link java.io.File} object
+	 * @return an array of {@link java.lang.Class} objects
+	 */
 	@SuppressWarnings("resource")
 	public static Class<?>[] getAllClasses(File dir)
 	{
@@ -61,6 +79,13 @@ public class JavaUtil
 		}
 	}
 
+	/**
+	 * <p>getFieldValue.</p>
+	 *
+	 * @param obj a {@link java.lang.Object} object
+	 * @param fieldName a {@link java.lang.String} object
+	 * @return a {@link java.lang.Object} object
+	 */
 	public static Object getFieldValue(Object obj, String fieldName)
 	{
 		try
@@ -75,6 +100,13 @@ public class JavaUtil
 		}
 	}
 
+	/**
+	 * <p>getStaticFieldValue.</p>
+	 *
+	 * @param clz a {@link java.lang.Class} object
+	 * @param fieldName a {@link java.lang.String} object
+	 * @return a {@link java.lang.Object} object
+	 */
 	public static Object getStaticFieldValue(Class<?> clz, String fieldName)
 	{
 		try

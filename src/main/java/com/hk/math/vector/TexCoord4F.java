@@ -4,30 +4,65 @@ import java.io.Serializable;
 
 import com.hk.array.ArrayUtil;
 
+/**
+ * <p>TexCoord4F class.</p>
+ *
+ * @author theKayani
+ */
 public class TexCoord4F implements Cloneable, Serializable
 {
 	public float ux, uy, vx, vy;
 	
+	/**
+	 * <p>Constructor for TexCoord4F.</p>
+	 */
 	public TexCoord4F()
 	{
 		set(0);
 	}
 	
+	/**
+	 * <p>Constructor for TexCoord4F.</p>
+	 *
+	 * @param tc a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F(TexCoord4F tc)
 	{
 		set(tc);
 	}
 	
+	/**
+	 * <p>Constructor for TexCoord4F.</p>
+	 *
+	 * @param val a float
+	 */
 	public TexCoord4F(float val)
 	{
 		set(val);
 	}
 	
+	/**
+	 * <p>Constructor for TexCoord4F.</p>
+	 *
+	 * @param ux a float
+	 * @param uy a float
+	 * @param vx a float
+	 * @param vy a float
+	 */
 	public TexCoord4F(float ux, float uy, float vx, float vy)
 	{
 		set(ux, uy, vx, vy);
 	}
 	
+	/**
+	 * <p>add.</p>
+	 *
+	 * @param ux a float
+	 * @param uy a float
+	 * @param vx a float
+	 * @param vy a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F add(float ux, float uy, float vx, float vy)
 	{
 		this.ux += ux;
@@ -37,6 +72,12 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>add.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F add(float val)
 	{
 		this.ux += val;
@@ -46,6 +87,12 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>add.</p>
+	 *
+	 * @param tc a {@link com.hk.math.vector.TexCoord4F} object
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F add(TexCoord4F tc)
 	{
 		this.ux += tc.ux;
@@ -55,6 +102,15 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 	
+	/**
+	 * <p>subtract.</p>
+	 *
+	 * @param ux a float
+	 * @param uy a float
+	 * @param vx a float
+	 * @param vy a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F subtract(float ux, float uy, float vx, float vy)
 	{
 		this.ux -= ux;
@@ -64,6 +120,12 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>subtract.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F subtract(float val)
 	{
 		this.ux -= val;
@@ -73,6 +135,12 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>subtract.</p>
+	 *
+	 * @param tc a {@link com.hk.math.vector.TexCoord4F} object
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F subtract(TexCoord4F tc)
 	{
 		this.ux -= tc.ux;
@@ -82,6 +150,15 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 	
+	/**
+	 * <p>multiply.</p>
+	 *
+	 * @param ux a float
+	 * @param uy a float
+	 * @param vx a float
+	 * @param vy a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F multiply(float ux, float uy, float vx, float vy)
 	{
 		this.ux *= ux;
@@ -91,6 +168,12 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>multiply.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F multiply(float val)
 	{
 		this.ux *= val;
@@ -100,6 +183,12 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>multiply.</p>
+	 *
+	 * @param tc a {@link com.hk.math.vector.TexCoord4F} object
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F multiply(TexCoord4F tc)
 	{
 		this.ux *= tc.ux;
@@ -109,6 +198,15 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 	
+	/**
+	 * <p>divide.</p>
+	 *
+	 * @param ux a float
+	 * @param uy a float
+	 * @param vx a float
+	 * @param vy a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F divide(float ux, float uy, float vx, float vy)
 	{
 		this.ux /= ux;
@@ -118,6 +216,12 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>divide.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F divide(float val)
 	{
 		this.ux /= val;
@@ -127,6 +231,12 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>divide.</p>
+	 *
+	 * @param tc a {@link com.hk.math.vector.TexCoord4F} object
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F divide(TexCoord4F tc)
 	{
 		this.ux /= tc.ux;
@@ -137,6 +247,16 @@ public class TexCoord4F implements Cloneable, Serializable
 	}
 
 	
+	/**
+	 * <p>interpolate.</p>
+	 *
+	 * @param ux a float
+	 * @param uy a float
+	 * @param vx a float
+	 * @param vy a float
+	 * @param amt a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F interpolate(float ux, float uy, float vx, float vy, float amt)
 	{
 		this.ux = (1F - amt) * this.ux + amt * ux;
@@ -146,6 +266,13 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>interpolate.</p>
+	 *
+	 * @param val a float
+	 * @param amt a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F interpolate(float val, float amt)
 	{
 		this.ux = (1F - amt) * this.ux + amt * val;
@@ -155,6 +282,13 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>interpolate.</p>
+	 *
+	 * @param tc a {@link com.hk.math.vector.TexCoord4F} object
+	 * @param amt a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F interpolate(TexCoord4F tc, float amt)
 	{
 		this.ux = (1F - amt) * this.ux + amt * tc.ux;
@@ -164,12 +298,22 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 	
+	/**
+	 * <p>zero.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F zero()
 	{
 		ux = uy = vx = vy = 0;
 		return this;
 	}
 	
+	/**
+	 * <p>identity.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F identity()
 	{
 		ux = uy = 0;
@@ -177,6 +321,15 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 	
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param ux a float
+	 * @param uy a float
+	 * @param vx a float
+	 * @param vy a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F set(float ux, float uy, float vx, float vy)
 	{
 		this.ux = ux;
@@ -186,6 +339,12 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param val a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F set(float val)
 	{
 		this.ux = val;
@@ -195,6 +354,12 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param tc a {@link com.hk.math.vector.TexCoord4F} object
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F set(TexCoord4F tc)
 	{
 		this.ux = tc.ux;
@@ -204,35 +369,72 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>setUX.</p>
+	 *
+	 * @param ux a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F setUX(float ux)
 	{
 		this.ux = ux;
 		return this;
 	}
 
+	/**
+	 * <p>setUY.</p>
+	 *
+	 * @param uy a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F setUY(float uy)
 	{
 		this.uy = uy;
 		return this;
 	}
 
+	/**
+	 * <p>setVX.</p>
+	 *
+	 * @param vx a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F setVX(float vx)
 	{
 		this.vx = vx;
 		return this;
 	}
 
+	/**
+	 * <p>setVY.</p>
+	 *
+	 * @param vy a float
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F setVY(float vy)
 	{
 		this.vy = vy;
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param arr an array of {@link float} objects
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F set(float[] arr)
 	{
 		return set(arr, 0);
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param arr an array of {@link float} objects
+	 * @param off a int
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F set(float[] arr, int off)
 	{
 		this.ux = arr[0 + off];
@@ -242,36 +444,74 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>getUX.</p>
+	 *
+	 * @return a float
+	 */
 	public float getUX()
 	{
 		return ux;
 	}
 	
+	/**
+	 * <p>getUY.</p>
+	 *
+	 * @return a float
+	 */
 	public float getUY()
 	{
 		return uy;
 	}
 	
+	/**
+	 * <p>getVX.</p>
+	 *
+	 * @return a float
+	 */
 	public float getVX()
 	{
 		return vx;
 	}
 	
+	/**
+	 * <p>getVY.</p>
+	 *
+	 * @return a float
+	 */
 	public float getVY()
 	{
 		return vy;
 	}
 	
+	/**
+	 * <p>get.</p>
+	 *
+	 * @return an array of {@link float} objects
+	 */
 	public float[] get()
 	{
 		return ArrayUtil.toFloatArray(ux, uy, vx, vy);
 	}
 	
+	/**
+	 * <p>get.</p>
+	 *
+	 * @param arr an array of {@link float} objects
+	 * @return an array of {@link float} objects
+	 */
 	public float[] get(float[] arr)
 	{
 		return get(arr, 0);
 	}
 	
+	/**
+	 * <p>get.</p>
+	 *
+	 * @param arr an array of {@link float} objects
+	 * @param off a int
+	 * @return an array of {@link float} objects
+	 */
 	public float[] get(float[] arr, int off)
 	{
 		arr[0 + off] = ux;
@@ -281,6 +521,11 @@ public class TexCoord4F implements Cloneable, Serializable
 		return arr;
 	}
 	
+	/**
+	 * <p>abs.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F abs()
 	{
 		this.ux = Math.abs(ux);
@@ -290,6 +535,11 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 	
+	/**
+	 * <p>negate.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F negate()
 	{
 		this.ux = -ux;
@@ -299,6 +549,11 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 	
+	/**
+	 * <p>negative.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.TexCoord4F} object
+	 */
 	public TexCoord4F negative()
 	{
 		this.ux = -Math.abs(ux);
@@ -308,12 +563,14 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public TexCoord4F clone()
 	{
 		return new TexCoord4F(this);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean equals(Object o)
 	{
@@ -325,6 +582,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{
@@ -336,6 +594,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		return hash;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String toString()
 	{

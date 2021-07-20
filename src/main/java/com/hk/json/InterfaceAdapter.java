@@ -6,12 +6,13 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+/**
+ * <p>InterfaceAdapter class.</p>
+ *
+ * @author theKayani
+ */
 public class InterfaceAdapter<T> extends JsonAdapter<T>
 {
 	private final Class<?> proxyCls;
@@ -20,11 +21,22 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	private final boolean dynamicAddition;
 	private Set<JsonAdapter<?>> adapters;
 	
+	/**
+	 * <p>Constructor for InterfaceAdapter.</p>
+	 *
+	 * @param interfaceCls a {@link java.lang.Class} object
+	 */
 	public InterfaceAdapter(Class<? extends T> interfaceCls)
 	{
 		this(interfaceCls, false);
 	}
 
+	/**
+	 * <p>Constructor for InterfaceAdapter.</p>
+	 *
+	 * @param interfaceCls a {@link java.lang.Class} object
+	 * @param dynamicAddition a boolean
+	 */
 	public InterfaceAdapter(Class<? extends T> interfaceCls, boolean dynamicAddition)
 	{
 		super(interfaceCls);
@@ -36,7 +48,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		{
 			// TODO: Deprecated in the newer versions of JDK
 			proxyCls = Proxy.getProxyClass(interfaceCls.getClassLoader(), interfaceCls);
-			constructor = proxyCls.getConstructor(new Class[] { InvocationHandler.class });
+			constructor = proxyCls.getConstructor(InvocationHandler.class);
 		}
 		catch (NoSuchMethodException e)
 		{
@@ -54,11 +66,22 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		setupFields();
 	}
 	
+	/**
+	 * <p>Getter for the field <code>dynamicAddition</code>.</p>
+	 *
+	 * @return a boolean
+	 */
 	public boolean getDynamicAddition()
 	{
 		return dynamicAddition;
 	}
 	
+	/**
+	 * <p>addAdapter.</p>
+	 *
+	 * @param adapter a {@link com.hk.json.JsonAdapter} object
+	 * @return a {@link com.hk.json.InterfaceAdapter} object
+	 */
 	public InterfaceAdapter<T> addAdapter(JsonAdapter<?> adapter)
 	{
 		if(adapters == null)
@@ -71,6 +94,12 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		return this;
 	}
 	
+	/**
+	 * <p>removeAdapter.</p>
+	 *
+	 * @param adapter a {@link com.hk.json.JsonAdapter} object
+	 * @return a {@link com.hk.json.InterfaceAdapter} object
+	 */
 	public InterfaceAdapter<T> removeAdapter(JsonAdapter<?> adapter)
 	{
 		if(adapters != null)
@@ -78,6 +107,12 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		return this;
 	}
 	
+	/**
+	 * <p>setAdapterSet.</p>
+	 *
+	 * @param adapterSet a {@link java.util.Set} object
+	 * @return a {@link com.hk.json.InterfaceAdapter} object
+	 */
 	public InterfaceAdapter<T> setAdapterSet(Set<JsonAdapter<?>> adapterSet)
 	{
 		adapters = adapterSet;
@@ -94,6 +129,11 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		return this;
 	}
 	
+	/**
+	 * <p>getAdapterSet.</p>
+	 *
+	 * @return a {@link java.util.Set} object
+	 */
 	public Set<JsonAdapter<?>> getAdapterSet()
 	{
 		return adapters;
@@ -105,16 +145,17 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		
 		for(Method method : methods)
 		{
-			if(method.getParameterCount() != 0)
+			if(method.getParameterTypes().length != 0)
 				throw new JsonAdaptationException("Interface methods shouldn't take any parameters");
 
 			String fieldName = method.getName();
-			InterfaceAdapter<T>.JsonField field = toField(fieldName, method.getReturnType());
+			InterfaceAdapter.JsonField field = toField(fieldName, method.getReturnType());
 //			System.out.println("Added field " + fieldName + ", " + field);
 			fields.put(fieldName, field);
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public InterfaceAdapter<T> setPriority(int priority)
 	{
@@ -122,6 +163,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		return this;
 	}
 
+	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
 	public T fromJson(JsonValue val) throws JsonAdaptationException
@@ -136,6 +178,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		}
 	}
 
+	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
 	public JsonValue toJson(T val) throws JsonAdaptationException
@@ -302,7 +345,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		}
 	}
 	
-	private class JsonField
+	private static class JsonField
 	{
 		private final String name;
 		private final int type;
@@ -383,14 +426,14 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 				return val.getBoolean();
 			case TYPE_ARRAY:
 				List<JsonValue> lst = val.getArray().list;
-				Object arr = arrayField.array(lst.size());
+				Object arr = Objects.requireNonNull(arrayField).array(lst.size());
 				
 				for(int i = 0; i < lst.size(); i++)
 					Array.set(arr, i, arrayField.convert(lst.get(i)));
 				
 				return arr;
 			case TYPE_ADAPTER:
-				return adapter.fromJson(val);
+				return Objects.requireNonNull(adapter).fromJson(val);
 			default:
 				throw new Error();
 			}
@@ -421,11 +464,11 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 				JsonArray arr = new JsonArray(len);
 				
 				for(int i = 0; i < len; i++)
-					arr.add(arrayField.convertBack(Array.get(val, i)));
+					arr.add(Objects.requireNonNull(arrayField).convertBack(Array.get(val, i)));
 				
 				return arr;
 			case TYPE_ADAPTER:
-				return adapter.tryTo(val);
+				return Objects.requireNonNull(adapter).tryTo(val);
 			default:
 				throw new Error();
 			}
@@ -488,7 +531,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 			case TYPE_BOOLEAN:
 				return boolean.class;
 			case TYPE_ARRAY:
-				return Array.newInstance(arrayField.toClass(), 0).getClass();
+				return Array.newInstance(Objects.requireNonNull(arrayField).toClass(), 0).getClass();
 			case TYPE_ADAPTER:
 				return otherCls;
 			default:

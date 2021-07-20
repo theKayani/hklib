@@ -2,13 +2,18 @@ package com.hk.json;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.UncheckedIOException;
+import com.hk.ex.UncheckedIOException;
 import java.io.Writer;
 import java.util.Map;
 
 import com.hk.math.MathUtil;
 import com.hk.str.StringUtil;
 
+/**
+ * <p>JsonWriter class.</p>
+ *
+ * @author theKayani
+ */
 public class JsonWriter
 {
 	private final BufferedWriter wtr;
@@ -21,66 +26,122 @@ public class JsonWriter
 		this.wtr = new BufferedWriter(wtr);
 	}
 	
+	/**
+	 * <p>unsetPrettyPrint.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonWriter} object
+	 */
 	public JsonWriter unsetPrettyPrint()
 	{
 		this.prettyPrint = false;
 		return this;
 	}
 	
+	/**
+	 * <p>unsetIgnoreNulls.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonWriter} object
+	 */
 	public JsonWriter unsetIgnoreNulls()
 	{
 		this.ignoreNulls = false;
 		return this;
 	}
 	
+	/**
+	 * <p>unsetUnicodeEscape.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonWriter} object
+	 */
 	public JsonWriter unsetUnicodeEscape()
 	{
 		this.unicodeEscape = false;
 		return this;
 	}
 	
+	/**
+	 * <p>unsetSlashEscape.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonWriter} object
+	 */
 	public JsonWriter unsetSlashEscape()
 	{
 		this.slashEscape = false;
 		return this;
 	}
 	
+	/**
+	 * <p>unsetSingleQuoteEscape.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonWriter} object
+	 */
 	public JsonWriter unsetSingleQuoteEscape()
 	{
 		this.singleQuoteEscape = false;
 		return this;
 	}
 	
+	/**
+	 * <p>Setter for the field <code>singleQuoteEscape</code>.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonWriter} object
+	 */
 	public JsonWriter setSingleQuoteEscape()
 	{
 		this.singleQuoteEscape = true;
 		return this;
 	}
 	
+	/**
+	 * <p>Setter for the field <code>slashEscape</code>.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonWriter} object
+	 */
 	public JsonWriter setSlashEscape()
 	{
 		this.slashEscape = true;
 		return this;
 	}
 	
+	/**
+	 * <p>Setter for the field <code>unicodeEscape</code>.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonWriter} object
+	 */
 	public JsonWriter setUnicodeEscape()
 	{
 		this.unicodeEscape = true;
 		return this;
 	}
 	
+	/**
+	 * <p>Setter for the field <code>ignoreNulls</code>.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonWriter} object
+	 */
 	public JsonWriter setIgnoreNulls()
 	{
 		this.ignoreNulls = true;
 		return this;
 	}
 	
+	/**
+	 * <p>Setter for the field <code>prettyPrint</code>.</p>
+	 *
+	 * @return a {@link com.hk.json.JsonWriter} object
+	 */
 	public JsonWriter setPrettyPrint()
 	{
 		this.prettyPrint = true;
 		return this;
 	}
 	
+	/**
+	 * <p>put.</p>
+	 *
+	 * @param val a {@link com.hk.json.JsonValue} object
+	 * @return a {@link com.hk.json.JsonWriter} object
+	 */
 	public JsonWriter put(JsonValue val)
 	{
 		try
@@ -95,6 +156,9 @@ public class JsonWriter
 		return this;
 	}
 	
+	/**
+	 * <p>close.</p>
+	 */
 	public void close()
 	{
 		try

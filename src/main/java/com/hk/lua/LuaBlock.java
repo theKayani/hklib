@@ -22,6 +22,12 @@ class LuaBlock implements Tokens
 		return res;
 	}
 	
+	/**
+	 * <p>run.</p>
+	 *
+	 * @param interp a {@link com.hk.lua.LuaInterpreter} object
+	 * @return a {@link java.lang.Object} object
+	 */
 	protected Object run(LuaInterpreter interp)
 	{
 		Object res = null;
@@ -186,6 +192,13 @@ class LuaBlock implements Tokens
 		return res;
 	}
 
+	/**
+	 * <p>exception.</p>
+	 *
+	 * @param st a {@link com.hk.lua.LuaStatement} object
+	 * @param e a {@link com.hk.lua.LuaException} object
+	 * @return a {@link com.hk.lua.LuaException} object
+	 */
 	protected LuaException exception(LuaStatement st, LuaException e)
 	{
 		if(!e.internal)

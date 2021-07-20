@@ -6,6 +6,11 @@ import java.io.Reader;
 import java.util.LinkedList;
 import java.util.Stack;
 
+/**
+ * <p>Tokenizer class.</p>
+ *
+ * @author theKayani
+ */
 public class Tokenizer implements Tokens
 {
 	private final StringBuilder sb;

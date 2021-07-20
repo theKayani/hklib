@@ -2,8 +2,20 @@ package com.hk.array;
 
 import java.lang.reflect.Array;
 
+/**
+ * <p>Concat class.</p>
+ *
+ * @author theKayani
+ */
 public class Concat
 {
+	/**
+	 * <p>concat.</p>
+	 *
+	 * @param arrs an array of T[] objects
+	 * @param <T> a T class
+	 * @return an array of T[] objects
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] concat(T[]... arrs)
 	{
@@ -24,6 +36,12 @@ public class Concat
 		return arr;
 	}
 
+	/**
+	 * <p>concat.</p>
+	 *
+	 * @param arrs an array of {@link int} objects
+	 * @return an array of {@link int} objects
+	 */
 	public static int[] concat(int[]... arrs)
 	{
 		int len = 0;
@@ -42,6 +60,12 @@ public class Concat
 		return arr;
 	}
 
+	/**
+	 * <p>concat.</p>
+	 *
+	 * @param arrs an array of {@link double} objects
+	 * @return an array of {@link double} objects
+	 */
 	public static double[] concat(double[]... arrs)
 	{
 		int len = 0;
@@ -60,6 +84,12 @@ public class Concat
 		return arr;
 	}
 
+	/**
+	 * <p>concat.</p>
+	 *
+	 * @param arrs an array of {@link float} objects
+	 * @return an array of {@link float} objects
+	 */
 	public static float[] concat(float[]... arrs)
 	{
 		int len = 0;
@@ -78,6 +108,12 @@ public class Concat
 		return arr;
 	}
 
+	/**
+	 * <p>concat.</p>
+	 *
+	 * @param arrs an array of {@link byte} objects
+	 * @return an array of {@link byte} objects
+	 */
 	public static byte[] concat(byte[]... arrs)
 	{
 		int len = 0;
@@ -96,6 +132,12 @@ public class Concat
 		return arr;
 	}
 
+	/**
+	 * <p>concat.</p>
+	 *
+	 * @param arrs an array of {@link short} objects
+	 * @return an array of {@link short} objects
+	 */
 	public static short[] concat(short[]... arrs)
 	{
 		int len = 0;
@@ -114,6 +156,12 @@ public class Concat
 		return arr;
 	}
 
+	/**
+	 * <p>concat.</p>
+	 *
+	 * @param arrs an array of {@link long} objects
+	 * @return an array of {@link long} objects
+	 */
 	public static long[] concat(long[]... arrs)
 	{
 		int len = 0;
@@ -132,6 +180,12 @@ public class Concat
 		return arr;
 	}
 
+	/**
+	 * <p>concat.</p>
+	 *
+	 * @param arrs an array of {@link char} objects
+	 * @return an array of {@link char} objects
+	 */
 	public static char[] concat(char[]... arrs)
 	{
 		int len = 0;
@@ -150,6 +204,12 @@ public class Concat
 		return arr;
 	}
 
+	/**
+	 * <p>concat.</p>
+	 *
+	 * @param arrs an array of {@link boolean} objects
+	 * @return an array of {@link boolean} objects
+	 */
 	public static boolean[] concat(boolean[]... arrs)
 	{
 		int len = 0;
@@ -168,6 +228,12 @@ public class Concat
 		return arr;
 	}
 
+	/**
+	 * <p>concatStrings.</p>
+	 *
+	 * @param arrs an array of {@link java.lang.String} objects
+	 * @return a {@link java.lang.String} object
+	 */
 	public static String concatStrings(String[]... arrs)
 	{
 		int len = 0;
@@ -196,6 +262,12 @@ public class Concat
 		return new String(chs);
 	}
 
+	/**
+	 * <p>sumOfInts.</p>
+	 *
+	 * @param arrs an array of {@link int} objects
+	 * @return a int
+	 */
 	public static int sumOfInts(int[]... arrs)
 	{
 		int tot = 0;
@@ -209,6 +281,12 @@ public class Concat
 		return tot;
 	}
 
+	/**
+	 * <p>sumOfLongs.</p>
+	 *
+	 * @param arrs an array of {@link long} objects
+	 * @return a long
+	 */
 	public static long sumOfLongs(long[]... arrs)
 	{
 		long tot = 0;
@@ -222,6 +300,12 @@ public class Concat
 		return tot;
 	}
 
+	/**
+	 * <p>sumOfShorts.</p>
+	 *
+	 * @param arrs an array of {@link short} objects
+	 * @return a short
+	 */
 	public static short sumOfShorts(short[]... arrs)
 	{
 		short tot = 0;
@@ -235,6 +319,12 @@ public class Concat
 		return tot;
 	}
 
+	/**
+	 * <p>sumOfBytes.</p>
+	 *
+	 * @param arrs an array of {@link byte} objects
+	 * @return a byte
+	 */
 	public static byte sumOfBytes(byte[]... arrs)
 	{
 		byte tot = 0;
@@ -248,6 +338,12 @@ public class Concat
 		return tot;
 	}
 
+	/**
+	 * <p>sumOfFloats.</p>
+	 *
+	 * @param arrs an array of {@link float} objects
+	 * @return a float
+	 */
 	public static float sumOfFloats(float[]... arrs)
 	{
 		float tot = 0;
@@ -261,6 +357,12 @@ public class Concat
 		return tot;
 	}
 
+	/**
+	 * <p>sumOfDoubles.</p>
+	 *
+	 * @param arrs an array of {@link double} objects
+	 * @return a double
+	 */
 	public static double sumOfDoubles(double[]... arrs)
 	{
 		double tot = 0;
@@ -274,6 +376,12 @@ public class Concat
 		return tot;
 	}
 
+	/**
+	 * <p>sumOfChars.</p>
+	 *
+	 * @param arrs an array of {@link char} objects
+	 * @return a char
+	 */
 	public static char sumOfChars(char[]... arrs)
 	{
 		char tot = 0;

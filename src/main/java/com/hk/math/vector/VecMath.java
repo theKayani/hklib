@@ -1,12 +1,33 @@
 package com.hk.math.vector;
 
+/**
+ * <p>VecMath class.</p>
+ *
+ * @author theKayani
+ */
 public class VecMath
 {
+	/**
+	 * <p>distanceToSegment.</p>
+	 *
+	 * @param v1 a {@link com.hk.math.vector.Vector2F} object
+	 * @param v2 a {@link com.hk.math.vector.Vector2F} object
+	 * @param point a {@link com.hk.math.vector.Vector2F} object
+	 * @return a float
+	 */
 	public static float distanceToSegment(Vector2F v1, Vector2F v2, Vector2F point)
 	{
 		return closestToSegment(v1, v2, point).distance(point);
 	}
 	
+	/**
+	 * <p>closestToSegment.</p>
+	 *
+	 * @param v1 a {@link com.hk.math.vector.Vector2F} object
+	 * @param v2 a {@link com.hk.math.vector.Vector2F} object
+	 * @param point a {@link com.hk.math.vector.Vector2F} object
+	 * @return a {@link com.hk.math.vector.Vector2F} object
+	 */
 	public static Vector2F closestToSegment(Vector2F v1, Vector2F v2, Vector2F point)
 	{
 		float xDelta = v2.getX() - v1.getX();

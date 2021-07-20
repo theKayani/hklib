@@ -7,23 +7,40 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * <p>OutStream class.</p>
+ *
+ * @author theKayani
+ */
 public class OutStream implements Stream
 {
 	private final boolean errorCheck;
 	private final OutputStream out;
 	private boolean closed;
 
+	/**
+	 * <p>Constructor for OutStream.</p>
+	 *
+	 * @param out a {@link java.io.OutputStream} object
+	 */
 	public OutStream(OutputStream out)
 	{
 		this(out, true);
 	}
 
+	/**
+	 * <p>Constructor for OutStream.</p>
+	 *
+	 * @param out a {@link java.io.OutputStream} object
+	 * @param errorCheck a boolean
+	 */
 	public OutStream(OutputStream out, boolean errorCheck)
 	{
 		this.out = out;
 		this.errorCheck = errorCheck;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeBoolean(boolean o) throws StreamException
 	{
@@ -33,6 +50,7 @@ public class OutStream implements Stream
 		write(b);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeByte(byte o) throws StreamException
 	{
@@ -40,6 +58,7 @@ public class OutStream implements Stream
 		write(o);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeShort(short o) throws StreamException
 	{
@@ -48,6 +67,7 @@ public class OutStream implements Stream
 		write((byte) (o >> 0 & 0xFF));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeInt(int o) throws StreamException
 	{
@@ -58,6 +78,7 @@ public class OutStream implements Stream
 		write((byte) (o >>  0 & 0xFF));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeFloat(float o) throws StreamException
 	{
@@ -69,6 +90,7 @@ public class OutStream implements Stream
 		write((byte) (o2 >>  0 & 0xFF));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeCharacter(char o) throws StreamException
 	{
@@ -78,6 +100,7 @@ public class OutStream implements Stream
 		write((byte) (o2 >> 0 & 0xFF));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeLong(long o) throws StreamException
 	{
@@ -92,6 +115,7 @@ public class OutStream implements Stream
 		write((byte) (o >>  0 & 0xFF));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeDouble(double o) throws StreamException
 	{
@@ -107,6 +131,7 @@ public class OutStream implements Stream
 		write((byte) (o2 >>  0 & 0xFF));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeUTFString(String o) throws StreamException
 	{
@@ -123,6 +148,7 @@ public class OutStream implements Stream
 		}
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public void writeRawString(String o) throws StreamException
 	{
@@ -140,6 +166,7 @@ public class OutStream implements Stream
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeSerializable(Serializable o) throws StreamException
 	{
@@ -167,6 +194,7 @@ public class OutStream implements Stream
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void writeBytes(byte[] arr) throws StreamException
 	{
@@ -182,78 +210,91 @@ public class OutStream implements Stream
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean readBoolean() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public byte readByte() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public short readShort() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int readInt() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public float readFloat() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public char readCharacter() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public long readLong() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double readDouble() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String readUTFString() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String readRawString() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public <T> T readSerializable(Class<T> cls) throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public byte[] readBytes() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void close() throws StreamException
 	{

@@ -1,5 +1,10 @@
 package com.hk.json;
 
+/**
+ * <p>JsonType class.</p>
+ *
+ * @author theKayani
+ */
 public enum JsonType
 {
 	OBJECT(JsonObject.class),
@@ -16,11 +21,22 @@ public enum JsonType
 		this.cls = cls;
 	}
 	
+	/**
+	 * <p>size.</p>
+	 *
+	 * @return a int
+	 */
 	public static int size()
 	{
 		return 6;
 	}
 	
+	/**
+	 * <p>get.</p>
+	 *
+	 * @param index a int
+	 * @return a {@link com.hk.json.JsonType} object
+	 */
 	public static JsonType get(int index)
 	{
 		switch(index)
@@ -42,6 +58,12 @@ public enum JsonType
 		}
 	}
 
+	/**
+	 * <p>by.</p>
+	 *
+	 * @param cls a {@link java.lang.Class} object
+	 * @return a {@link com.hk.json.JsonType} object
+	 */
 	public static JsonType by(Class<?> cls)
 	{
 		for(JsonType type : values())

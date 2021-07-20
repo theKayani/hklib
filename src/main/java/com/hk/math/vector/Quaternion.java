@@ -7,25 +7,52 @@ import com.hk.math.FloatMath;
 // http://www.astro.rug.nl/software/kapteyn/_downloads/attitude.pdf
 // https://www.mathworks.com/help/aeroblks/quaterniondivision.html?s_tid=gn_loc_drop
 
+/**
+ * <p>Quaternion class.</p>
+ *
+ * @author theKayani
+ */
 public final class Quaternion implements Cloneable, Serializable
 {
 	public float i, j, k, w;
 
+	/**
+	 * <p>Constructor for Quaternion.</p>
+	 */
 	public Quaternion()
 	{
 		identity();
 	}
 
+	/**
+	 * <p>Constructor for Quaternion.</p>
+	 *
+	 * @param quat a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion(Quaternion quat)
 	{
 		set(quat);
 	}
 
+	/**
+	 * <p>Constructor for Quaternion.</p>
+	 *
+	 * @param i a float
+	 * @param j a float
+	 * @param k a float
+	 * @param w a float
+	 */
 	public Quaternion(float i, float j, float k, float w)
 	{
 		set(i, j, k, w);
 	}
 
+	/**
+	 * <p>add.</p>
+	 *
+	 * @param quat a {@link com.hk.math.vector.Quaternion} object
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion add(Quaternion quat)
 	{
 		i += quat.i;
@@ -35,6 +62,12 @@ public final class Quaternion implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>multiply.</p>
+	 *
+	 * @param quat a {@link com.hk.math.vector.Quaternion} object
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion multiply(Quaternion quat)
 	{
 		float i1 = w * quat.i + quat.w * i + j * quat.k - k * quat.j;
@@ -45,6 +78,15 @@ public final class Quaternion implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>multiply.</p>
+	 *
+	 * @param i a float
+	 * @param j a float
+	 * @param k a float
+	 * @param w a float
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion multiply(float i, float j, float k, float w)
 	{
 		float i1 = this.w * i + w * this.i + this.j * k - this.k * j;
@@ -55,11 +97,27 @@ public final class Quaternion implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>divide.</p>
+	 *
+	 * @param quat a {@link com.hk.math.vector.Quaternion} object
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion divide(Quaternion quat)
 	{
 		return this;
 	}
 
+	/**
+	 * <p>interpolate.</p>
+	 *
+	 * @param i a float
+	 * @param j a float
+	 * @param k a float
+	 * @param w a float
+	 * @param amt a float
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion interpolate(float i, float j, float k, float w, float amt)
 	{
 		this.i = (1F - amt) * this.i + amt * i;
@@ -69,6 +127,13 @@ public final class Quaternion implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>interpolate.</p>
+	 *
+	 * @param quat a {@link com.hk.math.vector.Quaternion} object
+	 * @param amt a float
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion interpolate(Quaternion quat, float amt)
 	{
 		i = (1F - amt) * i + amt * quat.i;
@@ -78,6 +143,15 @@ public final class Quaternion implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param i a float
+	 * @param j a float
+	 * @param k a float
+	 * @param w a float
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion set(float i, float j, float k, float w)
 	{
 		this.i = i;
@@ -87,6 +161,12 @@ public final class Quaternion implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param quat a {@link com.hk.math.vector.Quaternion} object
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion set(Quaternion quat)
 	{
 		i = quat.i;
@@ -96,6 +176,11 @@ public final class Quaternion implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>conjugate.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion conjugate()
 	{
 		i = -i;
@@ -104,6 +189,11 @@ public final class Quaternion implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>inverse.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion inverse()
 	{
 		float l2 = lengthSquared();
@@ -113,6 +203,11 @@ public final class Quaternion implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>identity.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion identity()
 	{
 		i = j = k = 0F;
@@ -120,6 +215,11 @@ public final class Quaternion implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>normalize.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Quaternion} object
+	 */
 	public Quaternion normalize()
 	{
 		float l = length();
@@ -133,16 +233,31 @@ public final class Quaternion implements Cloneable, Serializable
 		return this;
 	}
 
+	/**
+	 * <p>length.</p>
+	 *
+	 * @return a float
+	 */
 	public float length()
 	{
 		return FloatMath.sqrt(lengthSquared());
 	}
 
+	/**
+	 * <p>lengthSquared.</p>
+	 *
+	 * @return a float
+	 */
 	public float lengthSquared()
 	{
 		return i * i + j * j + k * k + w * w;
 	}
 
+	/**
+	 * <p>toMatrix3F.</p>
+	 *
+	 * @return a {@link com.hk.math.vector.Matrix3F} object
+	 */
 	public Matrix3F toMatrix3F()
 	{
 		Matrix3F mat = new Matrix3F();
@@ -160,12 +275,14 @@ public final class Quaternion implements Cloneable, Serializable
 		return mat;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Quaternion clone()
 	{
 		return new Quaternion(this);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean equals(Object o)
 	{
@@ -177,6 +294,7 @@ public final class Quaternion implements Cloneable, Serializable
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{
@@ -188,6 +306,7 @@ public final class Quaternion implements Cloneable, Serializable
 		return hash;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String toString()
 	{

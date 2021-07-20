@@ -10,42 +10,49 @@ class LuaString extends LuaMetatable
 		metatable = LuaLibraryString.stringMetatable;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawLen()
 	{
 		return LuaInteger.valueOf(value.length());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaBoolean rawEqual(LuaObject o)
 	{
 		return LuaBoolean.valueOf(o.isString() && value.equals(o.getString()));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject rawGet(LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void rawSet(LuaObject key, LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean getBoolean()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
 	{
 		return value;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public double getFloat()
 	{
@@ -56,6 +63,7 @@ class LuaString extends LuaMetatable
 			return num.doubleValue();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public long getInteger()
 	{
@@ -66,30 +74,35 @@ class LuaString extends LuaMetatable
 			return num.longValue();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNil()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isBoolean()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isString()
 	{
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isNumber()
 	{
 		return getNumber(value) != null;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isInteger()
 	{
@@ -97,24 +110,28 @@ class LuaString extends LuaMetatable
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isTable()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isFunction()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isUserdata()
 	{
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isThread()
 	{
@@ -284,6 +301,7 @@ class LuaString extends LuaMetatable
 		throw LuaErrors.INVALID_CALL.create(name());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void setMetatable(LuaObject metatable)
 	{
@@ -296,12 +314,14 @@ class LuaString extends LuaMetatable
 		return T_STRING;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public LuaType type()
 	{
 		return LuaType.STRING;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{

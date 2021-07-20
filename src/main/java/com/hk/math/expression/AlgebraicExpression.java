@@ -1,9 +1,20 @@
 package com.hk.math.expression;
 
+/**
+ * <p>AlgebraicExpression class.</p>
+ *
+ * @author theKayani
+ */
 public class AlgebraicExpression
 {
 	public Double result = null;
 
+	/**
+	 * <p>Constructor for AlgebraicExpression.</p>
+	 *
+	 * @param txt a {@link java.lang.String} object
+	 * @throws com.hk.math.expression.ExpressionFormatException if any.
+	 */
 	public AlgebraicExpression(String txt) throws ExpressionFormatException
 	{
 		try

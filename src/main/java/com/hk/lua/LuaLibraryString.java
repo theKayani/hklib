@@ -9,6 +9,11 @@ import java.util.regex.PatternSyntaxException;
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 
+/**
+ * <p>LuaLibraryString class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaMethod
 {
 	_byte() {
@@ -394,6 +399,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 //		throw new Error();
 //	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void accept(Environment env, LuaObject table)
 	{

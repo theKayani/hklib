@@ -2,10 +2,15 @@ package com.hk.jinja;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.UncheckedIOException;
+import com.hk.ex.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <p>TemplateReader class.</p>
+ *
+ * @author theKayani
+ */
 public class TemplateReader
 {
 	private final Tokenizer tkz;
@@ -15,6 +20,12 @@ public class TemplateReader
 		this.tkz = new Tokenizer(rdr);
 	}
 	
+	/**
+	 * <p>get.</p>
+	 *
+	 * @return a {@link com.hk.jinja.Template} object
+	 * @throws com.hk.ex.UncheckedIOException if any.
+	 */
 	public Template get() throws UncheckedIOException
 	{
 		try

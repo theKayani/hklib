@@ -5,6 +5,11 @@ import java.util.Arrays;
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 
+/**
+ * <p>LuaLibraryCoroutine class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaLibraryCoroutine implements BiConsumer<Environment, LuaObject>, LuaMethod
 {
 	create() {
@@ -74,6 +79,7 @@ public enum LuaLibraryCoroutine implements BiConsumer<Environment, LuaObject>, L
 		}
 	};
 
+	/** {@inheritDoc} */
 	@Override
 	public void accept(final Environment env, LuaObject table)
 	{

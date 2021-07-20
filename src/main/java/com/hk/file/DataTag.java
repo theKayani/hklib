@@ -14,32 +14,66 @@ import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+/**
+ * <p>DataTag class.</p>
+ *
+ * @author theKayani
+ */
 public class DataTag implements Serializable
 {
 	private final Map<String, Serializable> objs;
 
+	/**
+	 * <p>Constructor for DataTag.</p>
+	 */
 	public DataTag()
 	{
 		objs = new HashMap<>();
 	}
 
+	/**
+	 * <p>get.</p>
+	 *
+	 * @param name a {@link java.lang.String} object
+	 * @param <T> a T class
+	 * @return a T object
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> T get(String name)
 	{
 		return (T) objs.get(name);
 	}
 
+	/**
+	 * <p>getDefault.</p>
+	 *
+	 * @param name a {@link java.lang.String} object
+	 * @param defValue a T object
+	 * @param <T> a T class
+	 * @return a T object
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> T getDefault(String name, T defValue)
 	{
 		return (T) (objs.containsKey(name) ? objs.get(name) : defValue);
 	}
 
+	/**
+	 * <p>set.</p>
+	 *
+	 * @param name a {@link java.lang.String} object
+	 * @param obj a {@link java.io.Serializable} object
+	 */
 	public void set(String name, Serializable obj)
 	{
 		objs.put(name, obj);
 	}
 
+	/**
+	 * <p>setAll.</p>
+	 *
+	 * @param objs a {@link java.util.Map} object
+	 */
 	public void setAll(Map<? extends String, ? extends Serializable> objs)
 	{
 		this.objs.putAll(objs);
@@ -77,12 +111,14 @@ public class DataTag implements Serializable
 		out.close();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean equals(Object obj)
 	{
 		return obj instanceof DataTag && Objects.deepEquals(objs, ((DataTag) obj).objs);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode()
 	{

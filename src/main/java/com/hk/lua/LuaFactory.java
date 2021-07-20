@@ -7,6 +7,11 @@ import java.util.List;
 
 import com.hk.func.Consumer;
 
+/**
+ * <p>LuaFactory class.</p>
+ *
+ * @author theKayani
+ */
 public class LuaFactory
 {
 	private final String source;
@@ -24,28 +29,53 @@ public class LuaFactory
 		handlers = new LinkedList<>();
 	}
 	
+	/**
+	 * <p>addLibrary.</p>
+	 *
+	 * @param lib a {@link com.hk.lua.LuaLibrary} object
+	 */
 	public void addLibrary(LuaLibrary<?> lib)
 	{
 		if(!libs.contains(lib))
 			libs.add(lib);
 	}
 	
+	/**
+	 * <p>addHandler.</p>
+	 *
+	 * @param handler a {@link com.hk.func.Consumer} object
+	 */
 	public void addHandler(Consumer<LuaInterpreter> handler)
 	{
 		if(!handlers.contains(handler))
 			handlers.add(handler);
 	}
 	
+	/**
+	 * <p>removeLibrary.</p>
+	 *
+	 * @param lib a {@link com.hk.lua.LuaLibrary} object
+	 */
 	public void removeLibrary(LuaLibrary<?> lib)
 	{
 		libs.remove(lib);
 	}
 	
+	/**
+	 * <p>removeHandler.</p>
+	 *
+	 * @param handler a {@link com.hk.func.Consumer} object
+	 */
 	public void removeHandler(Consumer<LuaInterpreter> handler)
 	{
 		handlers.remove(handler);
 	}
 	
+	/**
+	 * <p>compile.</p>
+	 *
+	 * @throws java.io.IOException if any.
+	 */
 	public void compile() throws IOException
 	{
 		if(sts != null)
@@ -71,6 +101,11 @@ public class LuaFactory
 		}
 	}
 	
+	/**
+	 * <p>build.</p>
+	 *
+	 * @return a {@link com.hk.lua.LuaInterpreter} object
+	 */
 	public LuaInterpreter build()
 	{
 		if(sts == null)

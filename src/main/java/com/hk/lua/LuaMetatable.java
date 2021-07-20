@@ -30,16 +30,31 @@ abstract class LuaMetatable extends LuaObject
 		return LuaBoolean.FALSE;
 	}
 	
+	/** {@inheritDoc} */
 	public void setMetatable(LuaObject metatable)
 	{
 		this.metatable = metatable == null ? LuaNil.NIL : metatable;
 	}
 	
+	/**
+	 * <p>Getter for the field <code>metatable</code>.</p>
+	 *
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
 	public LuaObject getMetatable()
 	{
 		return metatable == null ? LuaNil.NIL : metatable;
 	}
 	
+	/**
+	 * <p>event.</p>
+	 *
+	 * @param interp a {@link com.hk.lua.LuaInterpreter} object
+	 * @param event a {@link java.lang.String} object
+	 * @param other a {@link com.hk.lua.LuaObject} object
+	 * @param args a {@link com.hk.lua.LuaObject} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
 	protected LuaObject event(LuaInterpreter interp, String event, LuaObject other, LuaObject... args)
 	{
 		LuaObject func = getHandler(event, other);
@@ -49,6 +64,13 @@ abstract class LuaMetatable extends LuaObject
 			return null;
 	}
 	
+	/**
+	 * <p>getHandler.</p>
+	 *
+	 * @param event a {@link java.lang.String} object
+	 * @param other a {@link com.hk.lua.LuaObject} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
 	protected LuaObject getHandler(String event, LuaObject other)
 	{
 		LuaString ls = new LuaString("__" + event);

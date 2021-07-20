@@ -8,91 +8,115 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * <p>ImmutableList class.</p>
+ *
+ * @author theKayani
+ */
 public final class ImmutableList<E> extends ArrayList<E> implements Serializable, Cloneable
 {
+	/**
+	 * <p>Constructor for ImmutableList.</p>
+	 *
+	 * @param c a {@link java.util.List} object
+	 */
 	public ImmutableList(List<? extends E> c)
 	{
 		super(new ArrayList<>(c));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void add(int index, E element)
 	{
 		throw new UnsupportedOperationException("This list in immutable");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean add(E e)
 	{
 		throw new UnsupportedOperationException("This list in immutable");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean addAll(int index, Collection<? extends E> c)
 	{
 		throw new UnsupportedOperationException("This list in immutable");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean addAll(Collection<? extends E> c)
 	{
 		throw new UnsupportedOperationException("This list in immutable");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void clear()
 	{
 		throw new UnsupportedOperationException("This list in immutable");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean remove(Object o)
 	{
 		throw new UnsupportedOperationException("This list in immutable");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public E remove(int index)
 	{
 		throw new UnsupportedOperationException("This list in immutable");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean removeAll(Collection<?> c)
 	{
 		throw new UnsupportedOperationException("This list in immutable");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean retainAll(Collection<?> c)
 	{
 		throw new UnsupportedOperationException("This list in immutable");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public E set(int index, E element)
 	{
 		throw new UnsupportedOperationException("This list in immutable");
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Iterator<E> iterator()
 	{
 		return new Itr(super.iterator());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public List<E> subList(int fromIndex, int toIndex)
 	{
 		return new ImmutableList<>(super.subList(fromIndex, toIndex));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void removeRange(int fromIndex, int toIndex)
 	{
 		throw new UnsupportedOperationException("This list in immutable");
 	}
 
+	/** {@inheritDoc} */
 	@SuppressWarnings({
 			"rawtypes", "unchecked"
 	})
@@ -102,6 +126,7 @@ public final class ImmutableList<E> extends ArrayList<E> implements Serializable
 		return new ImmutableList.ListItr(super.listIterator(index));
 	}
 
+	/** {@inheritDoc} */
 	@SuppressWarnings({
 			"rawtypes", "unchecked"
 	})
@@ -111,6 +136,7 @@ public final class ImmutableList<E> extends ArrayList<E> implements Serializable
 		return new ImmutableList.ListItr(super.listIterator());
 	}
 
+	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object clone()

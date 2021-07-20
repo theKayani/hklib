@@ -1,5 +1,10 @@
 package com.hk.lua;
 
+/**
+ * <p>LuaType class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaType
 {
 	NIL,
@@ -21,6 +26,12 @@ public enum LuaType
 		luaName = name().toLowerCase();
 	}
 	
+	/**
+	 * <p>applies.</p>
+	 *
+	 * @param type a {@link com.hk.lua.LuaType} object
+	 * @return a boolean
+	 */
 	public boolean applies(LuaType type)
 	{
 		switch(this)
@@ -37,16 +48,32 @@ public enum LuaType
 		}
 	}
 	
+	/**
+	 * <p>toString.</p>
+	 *
+	 * @return a {@link java.lang.String} object
+	 */
 	public String toString()
 	{
 		return luaName;
 	}
 	
+	/**
+	 * <p>size.</p>
+	 *
+	 * @return a int
+	 */
 	public static int size()
 	{
 		return values().length;
 	}
 	
+	/**
+	 * <p>get.</p>
+	 *
+	 * @param index a int
+	 * @return a {@link com.hk.lua.LuaType} object
+	 */
 	public static LuaType get(int index)
 	{
 		return values()[index];

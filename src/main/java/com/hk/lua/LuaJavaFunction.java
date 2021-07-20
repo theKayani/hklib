@@ -16,6 +16,7 @@ class LuaJavaFunction extends LuaFunction
 		this.obj = obj;
 	}
 	
+	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
 	{

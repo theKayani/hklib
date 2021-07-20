@@ -12,6 +12,11 @@ import java.util.Set;
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 
+/**
+ * <p>LuaLibraryBasic class.</p>
+ *
+ * @author theKayani
+ */
 public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMethod
 {
 	_assert() {
@@ -451,12 +456,14 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		}
 	};
 	
+	/** {@inheritDoc} */
 	@Override
 	public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 	{
 		throw new Error();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void accept(Environment env, LuaObject table)
 	{
@@ -465,5 +472,6 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			table.rawSet(new LuaString(name), Lua.newFunc(this));
 	}
 	
+	/** Constant <code>EXKEY_OUTPUT="system.out"</code> */
 	public static final String EXKEY_OUTPUT = "system.out";
 }

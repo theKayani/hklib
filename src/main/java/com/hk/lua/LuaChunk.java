@@ -1,5 +1,10 @@
 package com.hk.lua;
 
+/**
+ * <p>LuaChunk class.</p>
+ *
+ * @author theKayani
+ */
 public class LuaChunk extends LuaBlock
 {
 	private final Environment myEnv;
