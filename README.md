@@ -28,7 +28,7 @@ Add JitPack repository to `pom.xml`
 Add `hklib` dependency
 
     <dependency>
-        <groupId>com.github.thekayani</groupId>
+        <groupId>com.thekayani</groupId>
         <artifactId>hklib</artifactId>
         <version>$VERSION</version>
     </dependency>
@@ -46,7 +46,7 @@ Add to root `build.gradle`
 Add `hklib` dependency
 
     dependencies {
-	        implementation 'com.github.thekayani:hklib:VERSION'
+	        implementation 'com.thekayani:hklib:VERSION'
 	}
 
 ### Flat `jar` File
