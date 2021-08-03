@@ -1,10 +1,5 @@
 package com.hk.json;
 
-import com.hk.json.JsonAdaptationException;
-import com.hk.json.JsonAdapter;
-import com.hk.json.JsonObject;
-import com.hk.json.JsonValue;
-
 class DogAdapter extends JsonAdapter<Dog>
 {	
 	DogAdapter()

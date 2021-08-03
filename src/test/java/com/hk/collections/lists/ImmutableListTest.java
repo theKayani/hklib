@@ -15,22 +15,22 @@ public class ImmutableListTest extends TestCase
 		assertEquals(strLst.size(), 0);
 		assertEquals(strLst, Collections.<String>emptyList());
 
-		strLst = new ImmutableList<>(Arrays.asList("abc"));
+		strLst = new ImmutableList<>(Collections.singletonList("abc"));
 		assertEquals(strLst.size(), 1);
-		assertEquals(strLst, Arrays.asList("abc"));
+		assertEquals(strLst, Collections.singletonList("abc"));
 
 		strLst = new ImmutableList<>(Arrays.asList("a", "b", "c"));
 		assertEquals(strLst.size(), 3);
 		assertEquals(strLst, Arrays.asList("a", "b", "c"));
 
-		ImmutableList<Object> objLst = new ImmutableList<>(Collections.<Object>emptyList());
+		ImmutableList<Object> objLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(objLst.size(), 0);
 		assertEquals(objLst, Collections.<String>emptyList());
 
 		Object o = new Object();
-		objLst = new ImmutableList<>(Arrays.asList(o));
+		objLst = new ImmutableList<>(Collections.singletonList(o));
 		assertEquals(objLst.size(), 1);
-		assertEquals(objLst, Arrays.asList(o));
+		assertEquals(objLst, Collections.singletonList(o));
 
 		Object o1 = new Object();
 		Object o2 = new Object();
@@ -41,11 +41,11 @@ public class ImmutableListTest extends TestCase
 
 		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.<Double>emptyList());
 		assertEquals(dblLst.size(), 0);
-		assertEquals(dblLst, Collections.<String>emptyList());
+		assertEquals(dblLst, Collections.<Double>emptyList());
 
-		dblLst = new ImmutableList<>(Arrays.asList(2.0));
+		dblLst = new ImmutableList<>(Collections.singletonList(2.0));
 		assertEquals(dblLst.size(), 1);
-		assertEquals(dblLst, Arrays.asList(2.0));
+		assertEquals(dblLst, Collections.singletonList(2.0));
 
 		dblLst = new ImmutableList<>(Arrays.asList(-1D, -10D, -100D));
 		assertEquals(dblLst.size(), 3);
@@ -58,7 +58,7 @@ public class ImmutableListTest extends TestCase
 		Iterator<String> strItr = strLst.iterator();
 		assertFalse(strItr.hasNext());
 
-		strLst = new ImmutableList<>(Arrays.asList("abc"));
+		strLst = new ImmutableList<>(Collections.singletonList("abc"));
 		strItr = strLst.iterator();
 		assertTrue(strItr.hasNext());
 		assertEquals(strItr.next(), "abc");
@@ -74,12 +74,12 @@ public class ImmutableListTest extends TestCase
 		assertEquals(strItr.next(), "c");
 		assertFalse(strItr.hasNext());
 
-		ImmutableList<Object> objLst = new ImmutableList<>(Collections.<Object>emptyList());
+		ImmutableList<Object> objLst = new ImmutableList<>(Collections.emptyList());
 		Iterator<Object> objItr = objLst.iterator();
 		assertFalse(objItr.hasNext());
 
 		Object o = new Object();
-		objLst = new ImmutableList<>(Arrays.asList(o));
+		objLst = new ImmutableList<>(Collections.singletonList(o));
 		objItr = objLst.iterator();
 		assertTrue(objItr.hasNext());
 		assertEquals(objItr.next(), o);
@@ -102,7 +102,7 @@ public class ImmutableListTest extends TestCase
 		Iterator<Double> dblItr = dblLst.iterator();
 		assertFalse(dblItr.hasNext());
 
-		dblLst = new ImmutableList<>(Arrays.asList(2.0));
+		dblLst = new ImmutableList<>(Collections.singletonList(2.0));
 		dblItr = dblLst.iterator();
 		assertTrue(dblItr.hasNext());
 		assertEquals(dblItr.next(), 2.0);
@@ -125,27 +125,27 @@ public class ImmutableListTest extends TestCase
 		assertEquals(strLst.subList(0, 0).size(), 0);
 		assertEquals(strLst.subList(0, 0), Collections.<String>emptyList());
 
-		strLst = new ImmutableList<>(Arrays.asList("abc"));
+		strLst = new ImmutableList<>(Collections.singletonList("abc"));
 		assertEquals(strLst.subList(0, 1).size(), 1);
-		assertEquals(strLst.subList(0, 1), Arrays.asList("abc"));
+		assertEquals(strLst.subList(0, 1), Collections.singletonList("abc"));
 
 		strLst = new ImmutableList<>(Arrays.asList("a", "b", "c"));
 		assertEquals(strLst.subList(0, 3).size(), 3);
 		assertEquals(strLst.subList(0, 3), Arrays.asList("a", "b", "c"));
-		assertEquals(strLst.subList(0, 1), Arrays.asList("a"));
-		assertEquals(strLst.subList(1, 2), Arrays.asList("b"));
-		assertEquals(strLst.subList(2, 3), Arrays.asList("c"));
+		assertEquals(strLst.subList(0, 1), Collections.singletonList("a"));
+		assertEquals(strLst.subList(1, 2), Collections.singletonList("b"));
+		assertEquals(strLst.subList(2, 3), Collections.singletonList("c"));
 		assertEquals(strLst.subList(1, 3), Arrays.asList("b", "c"));
 		assertEquals(strLst.subList(0, 2), Arrays.asList("a", "b"));
 
-		ImmutableList<Object> objLst = new ImmutableList<>(Collections.<Object>emptyList());
+		ImmutableList<Object> objLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(objLst.subList(0, 0).size(), 0);
 		assertEquals(objLst.subList(0, 0), Collections.<String>emptyList());
 
 		Object o = new Object();
-		objLst = new ImmutableList<>(Arrays.asList(o));
+		objLst = new ImmutableList<>(Collections.singletonList(o));
 		assertEquals(objLst.subList(0, 1).size(), 1);
-		assertEquals(objLst.subList(0, 1), Arrays.asList(o));
+		assertEquals(objLst.subList(0, 1), Collections.singletonList(o));
 
 		Object o1 = new Object();
 		Object o2 = new Object();
@@ -153,26 +153,26 @@ public class ImmutableListTest extends TestCase
 		objLst = new ImmutableList<>(Arrays.asList(o1, o2, o3));
 		assertEquals(objLst.subList(0, 3).size(), 3);
 		assertEquals(objLst.subList(0, 3), Arrays.asList(o1, o2, o3));
-		assertEquals(objLst.subList(0, 1), Arrays.asList(o1));
-		assertEquals(objLst.subList(1, 2), Arrays.asList(o2));
-		assertEquals(objLst.subList(2, 3), Arrays.asList(o3));
+		assertEquals(objLst.subList(0, 1), Collections.singletonList(o1));
+		assertEquals(objLst.subList(1, 2), Collections.singletonList(o2));
+		assertEquals(objLst.subList(2, 3), Collections.singletonList(o3));
 		assertEquals(objLst.subList(1, 3), Arrays.asList(o2, o3));
 		assertEquals(objLst.subList(0, 2), Arrays.asList(o1, o2));
 
 		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.<Double>emptyList());
 		assertEquals(dblLst.subList(0, 0).size(), 0);
-		assertEquals(dblLst.subList(0, 0), Collections.<String>emptyList());
+		assertEquals(dblLst.subList(0, 0), Collections.<Double>emptyList());
 
-		dblLst = new ImmutableList<>(Arrays.asList(2.0));
+		dblLst = new ImmutableList<>(Collections.singletonList(2.0));
 		assertEquals(dblLst.subList(0, 1).size(), 1);
-		assertEquals(dblLst.subList(0, 1), Arrays.asList(2.0));
+		assertEquals(dblLst.subList(0, 1), Collections.singletonList(2.0));
 
 		dblLst = new ImmutableList<>(Arrays.asList(-1D, -10D, -100D));
 		assertEquals(dblLst.subList(0, 3).size(), 3);
 		assertEquals(dblLst.subList(0, 3), Arrays.asList(-1D, -10D, -100D));
-		assertEquals(dblLst.subList(0, 1), Arrays.asList(-1D));
-		assertEquals(dblLst.subList(1, 2), Arrays.asList(-10D));
-		assertEquals(dblLst.subList(2, 3), Arrays.asList(-100D));
+		assertEquals(dblLst.subList(0, 1), Collections.singletonList(-1D));
+		assertEquals(dblLst.subList(1, 2), Collections.singletonList(-10D));
+		assertEquals(dblLst.subList(2, 3), Collections.singletonList(-100D));
 		assertEquals(dblLst.subList(1, 3), Arrays.asList(-10D, -100D));
 		assertEquals(dblLst.subList(0, 2), Arrays.asList(-1D, -10D));
 	}
@@ -182,17 +182,17 @@ public class ImmutableListTest extends TestCase
 		ImmutableList<String> strLst = new ImmutableList<>(Collections.<String>emptyList());
 		assertEquals(strLst.clone(), strLst);
 
-		strLst = new ImmutableList<>(Arrays.asList("abc"));
+		strLst = new ImmutableList<>(Collections.singletonList("abc"));
 		assertEquals(strLst.clone(), strLst);
 
 		strLst = new ImmutableList<>(Arrays.asList("a", "b", "c"));
 		assertEquals(strLst.clone(), strLst);
 
-		ImmutableList<Object> objLst = new ImmutableList<>(Collections.<Object>emptyList());
+		ImmutableList<Object> objLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(objLst.clone(), objLst);
 
 		Object o = new Object();
-		objLst = new ImmutableList<>(Arrays.asList(o));
+		objLst = new ImmutableList<>(Collections.singletonList(o));
 		assertEquals(objLst.clone(), objLst);
 
 		Object o1 = new Object();
@@ -204,7 +204,7 @@ public class ImmutableListTest extends TestCase
 		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.<Double>emptyList());
 		assertEquals(dblLst.clone(), dblLst);
 
-		dblLst = new ImmutableList<>(Arrays.asList(2.0));
+		dblLst = new ImmutableList<>(Collections.singletonList(2.0));
 		assertEquals(dblLst.clone(), dblLst);
 
 		dblLst = new ImmutableList<>(Arrays.asList(-1D, -10D, -100D));
@@ -218,7 +218,7 @@ public class ImmutableListTest extends TestCase
 		assertFalse(strItr.hasNext());
 		assertEquals(strItr.nextIndex(), strLst.size());
 
-		strLst = new ImmutableList<>(Arrays.asList("abc"));
+		strLst = new ImmutableList<>(Collections.singletonList("abc"));
 		strItr = strLst.listIterator();
 		assertFalse(strItr.hasPrevious());
 		assertTrue(strItr.hasNext());
@@ -260,12 +260,12 @@ public class ImmutableListTest extends TestCase
 		assertEquals(strItr.previousIndex(), 2);
 		assertFalse(strItr.hasNext());
 
-		ImmutableList<Object> objLst = new ImmutableList<>(Collections.<Object>emptyList());
+		ImmutableList<Object> objLst = new ImmutableList<>(Collections.emptyList());
 		ListIterator<Object> objItr = objLst.listIterator();
 		assertFalse(objItr.hasNext());
 
 		Object o = new Object();
-		objLst = new ImmutableList<>(Arrays.asList(o));
+		objLst = new ImmutableList<>(Collections.singletonList(o));
 		objItr = objLst.listIterator();
 		assertFalse(objItr.hasPrevious());
 		assertTrue(objItr.hasNext());
@@ -314,7 +314,7 @@ public class ImmutableListTest extends TestCase
 		ListIterator<Double> dblItr = dblLst.listIterator();
 		assertFalse(dblItr.hasNext());
 
-		dblLst = new ImmutableList<>(Arrays.asList(2.0));
+		dblLst = new ImmutableList<>(Collections.singletonList(2.0));
 		dblItr = dblLst.listIterator();
 		assertFalse(dblItr.hasPrevious());
 		assertTrue(dblItr.hasNext());
@@ -364,7 +364,7 @@ public class ImmutableListTest extends TestCase
 		failAdd(strLst, "ERROR");
 		assertEquals(strLst.size(), 0);
 		
-		ImmutableList<Object> objLst = new ImmutableList<>(Collections.<Object>emptyList());
+		ImmutableList<Object> objLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(objLst.size(), 0);
 		failAdd(objLst, new Object());
 		assertEquals(objLst.size(), 0);

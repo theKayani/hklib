@@ -124,19 +124,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.longToBytes(0L, new byte[0], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 
 		try
 		{
 			PrimitiveUtil.longToBytes(0L, new byte[7], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.longToBytes(0L, new byte[8], 1);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 
 	public void testBytesToLong()
@@ -195,19 +195,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.bytesToLong(0, new byte[0]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.bytesToLong(0, new byte[7]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.bytesToLong(1, new byte[8]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 
 	public void testIntToShorts()
@@ -327,19 +327,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.intToShorts(0, new short[0], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 
 		try
 		{
 			PrimitiveUtil.intToShorts(0, new short[1], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.intToShorts(0, new short[2], 1);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 
 	public void testLongToShorts()
@@ -459,19 +459,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.longToShorts(0, new short[0], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 
 		try
 		{
 			PrimitiveUtil.longToShorts(0, new short[3], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.longToShorts(0, new short[4], 1);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 
 	public void testIntsToLong()
@@ -530,19 +530,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.intsToLong(0, new int[0]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.intsToLong(0, new int[1]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.intsToLong(1, new int[2]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 
 	public void testBytesToShort()
@@ -601,19 +601,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.bytesToShort(0, new byte[0]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.bytesToShort(0, new byte[1]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.bytesToShort(1, new byte[2]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 
 	public void testLongToInts()
@@ -733,19 +733,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.longToInts(0, new int[0], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 
 		try
 		{
 			PrimitiveUtil.longToInts(0, new int[1], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.longToInts(0, new int[2], 1);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 
 	public void testShortsToInt()
@@ -804,19 +804,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.shortsToInt(0, new short[0]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.shortsToInt(0, new short[1]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.shortsToInt(1, new short[2]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 
 	public void testShortToBytes()
@@ -936,19 +936,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.shortToBytes((short) 0, new byte[0], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 
 		try
 		{
 			PrimitiveUtil.shortToBytes((short) 0, new byte[1], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.shortToBytes((short) 0, new byte[2], 1);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 
 	public void testShortsToLong()
@@ -1007,19 +1007,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.shortsToLong(0, new short[0]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.shortsToLong(0, new short[3]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.shortsToLong(1, new short[4]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 
 	public void testBytesToInt()
@@ -1078,19 +1078,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.bytesToInt(0, new byte[0]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.bytesToInt(0, new byte[3]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.bytesToInt(1, new byte[4]);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 
 	public void testIntToBytes()
@@ -1210,19 +1210,19 @@ public class PrimitiveUtilTest extends TestCase
 		{
 			PrimitiveUtil.intToBytes(0, new byte[0], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 
 		try
 		{
 			PrimitiveUtil.intToBytes(0, new byte[3], 0);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 		
 		try
 		{
 			PrimitiveUtil.intToBytes(0, new byte[4], 1);
 			fail();
-		} catch(ArrayIndexOutOfBoundsException e) {}
+		} catch(ArrayIndexOutOfBoundsException ignored) {}
 	}
 	
 	private void assertEqualArrays(Object o1, Object o2)

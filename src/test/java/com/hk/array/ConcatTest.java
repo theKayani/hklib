@@ -449,42 +449,42 @@ public class ConcatTest extends TestCase
 		boolSum = Concat.concat(new boolean[10], new boolean[10]);
 		assertEquals(boolSum.length, 20);
 		for(boolean l : boolSum)
-			assertEquals(false, l);
+			assertFalse(l);
 
 		boolSum = Concat.concat(new boolean[1], new boolean[10], new boolean[100], new boolean[1000]);
 		assertEquals(boolSum.length, 1111);
 		for(boolean l : boolSum)
-			assertEquals(false, l);
+			assertFalse(l);
 
 		boolSum = Concat.concat(new boolean[] { true });
 		assertEquals(boolSum.length, 1);
 		for(boolean l : boolSum)
-			assertEquals(true, l);
+			assertTrue(l);
 
 		boolSum = Concat.concat(new boolean[] { true, true });
 		assertEquals(boolSum.length, 2);
 		for(boolean l : boolSum)
-			assertEquals(true, l);
+			assertTrue(l);
 
 		boolSum = Concat.concat(new boolean[] { true }, new boolean[] { true });
 		assertEquals(boolSum.length, 2);
 		for(boolean l : boolSum)
-			assertEquals(true, l);
+			assertTrue(l);
 
 		boolSum = Concat.concat(new boolean[] { true, true }, new boolean[] { true, true });
 		assertEquals(boolSum.length, 4);
 		for(boolean l : boolSum)
-			assertEquals(true, l);
+			assertTrue(l);
 
 		boolSum = Concat.concat(new boolean[] { true, true , true }, new boolean[] { true, true , true }, new boolean[] { true, true , true });
 		assertEquals(boolSum.length, 9);
 		for(boolean l : boolSum)
-			assertEquals(true, l);
+			assertTrue(l);
 
 		boolSum = Concat.concat(new boolean[] { false, false, false }, new boolean[] { false, false, false }, new boolean[] { false, false, false });
 		assertEquals(boolSum.length, 9);
 		for(boolean l : boolSum)
-			assertEquals(false, l);
+			assertFalse(l);
 
 		boolSum = Concat.concat(
 			new boolean[] { false, false, false }, new boolean[] { false, false, false },
@@ -508,50 +508,61 @@ public class ConcatTest extends TestCase
 		String[] strSum;
 
 		strSum = Concat.concat(new String[0]);
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 0);
 
 		strSum = Concat.concat(new String[0], new String[0]);
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 0);
 
 		strSum = Concat.concat(new String[0], new String[0], new String[0], new String[0]);
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 0);
 
 		strSum = Concat.concat(new String[10], new String[10]);
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 20);
 		for(String l : strSum)
-			assertEquals(null, l);
+			assertNull(l);
 
 		strSum = Concat.concat(new String[1], new String[10], new String[100], new String[1000]);
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 1111);
 		for(String l : strSum)
-			assertEquals(null, l);
+			assertNull(l);
 
 		strSum = Concat.concat(new String[] { "hello" });
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 1);
 		for(String l : strSum)
 			assertEquals("hello", l);
 
 		strSum = Concat.concat(new String[] { "hello", "hello" });
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 2);
 		for(String l : strSum)
 			assertEquals("hello", l);
 
 		strSum = Concat.concat(new String[] { "hello" }, new String[] { "hello" });
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 2);
 		for(String l : strSum)
 			assertEquals("hello", l);
 
 		strSum = Concat.concat(new String[] { "hello", "hello" }, new String[] { "hello", "hello" });
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 4);
 		for(String l : strSum)
 			assertEquals("hello", l);
 
 		strSum = Concat.concat(new String[] { "hello", "hello" , "hello" }, new String[] { "hello", "hello" , "hello" }, new String[] { "hello", "hello" , "hello" });
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 9);
 		for(String l : strSum)
 			assertEquals("hello", l);
 
 		strSum = Concat.concat(new String[] { "bye", "bye", "bye" }, new String[] { "bye", "bye", "bye" }, new String[] { "bye", "bye", "bye" });
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 9);
 		for(String l : strSum)
 			assertEquals("bye", l);
@@ -566,6 +577,7 @@ public class ConcatTest extends TestCase
 			new String[] { "bye", "bye", "bye" }, new String[] { "bye", "bye", "bye" },
 			new String[] { "hello", "hello" , "hello" }, new String[] { "hello", "hello" , "hello" }
 		);
+		assertNotNull(strSum);
 		assertEquals(strSum.length, 48);
 		for(int i = 0; i < 8; i++)
 		{

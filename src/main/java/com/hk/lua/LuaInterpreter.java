@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import com.hk.ex.UncheckedIOException;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +16,18 @@ import com.hk.func.BiConsumer;
 
 // https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/examples
 /**
- * <p>LuaInterpreter class.</p>
+ * This utility class encapsulates an entire Lua environment within
+ * a single Java class/package. This class is instantiated using the
+ * {@link Lua} class, which allows you to construct a Lua
+ * interpreter using a {@link java.io.Reader}. The reader is fully
+ * read and interpreted as Lua code. Which can then be executed in a
+ * myriad of fashions. There can be various types of variables and
+ * objects that can be directly tied to Java methods, fields, or code.
+ *
+ * @see Lua#interpreter()
+ * @see Lua#reader
+ * @see LuaFactory#build()
+ * @see <a href="https://www.lua.org/manual/5.3/">https://www.lua.org/manual/5.3/</a>
  *
  * @author theKayani
  */
@@ -56,10 +69,14 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>hasExtra.</p>
+	 * <p>Check whether a certain key has a value under it, whether null or not.</p>
 	 *
-	 * @param key a {@link java.lang.String} object
-	 * @return a boolean
+	 * <p>Extra data it data that is tied to this specific interpreter.
+	 * Completely optional and has no effect on execution of Lua.
+	 * Just for utility and data consistency sake.</p>
+	 *
+	 * @param key a {@link java.lang.String} to match to a key
+	 * @return if this certain key has data under it
 	 */
 	public boolean hasExtra(String key)
 	{
@@ -67,10 +84,14 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>getExtra.</p>
+	 * <p>Get the extra data under a certain key.</p>
 	 *
-	 * @param key a {@link java.lang.String} object
-	 * @return a {@link java.lang.Object} object
+	 * <p>Extra data it data that is tied to this specific interpreter.
+	 * Completely optional and has no effect on execution of Lua.
+	 * Just for utility and data consistency sake.</p>
+	 *
+	 * @param key a {@link java.lang.String} to match to a key
+	 * @return a {@link java.lang.Object} or null if there is no match.
 	 */
 	public Object getExtra(String key)
 	{
@@ -78,12 +99,19 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>getExtra.</p>
+	 * <p>Get the extra data under a certain key. The data returned
+	 * should be able to be cast to the <code>cls</code> specified.
+	 * If so, it is boxed and returned.</p>
 	 *
-	 * @param key a {@link java.lang.String} object
-	 * @param cls a {@link java.lang.Class} object
+	 * <p>Extra data it data that is tied to this specific interpreter.
+	 * Completely optional and has no effect on execution of Lua.
+	 * Just for utility and data consistency sake.</p>
+	 *
+	 * @param key a {@link java.lang.String} to match to a key
+	 * @param cls a {@link java.lang.Class} to cast the returned
+	 *            value to
 	 * @param <T> a T class
-	 * @return a T object
+	 * @return a T object, or null if none was found.
 	 */
 	public <T> T getExtra(String key, Class<T> cls)
 	{
@@ -91,13 +119,21 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>getExtra.</p>
+	 * <p>Get the extra data under a certain key, or a default if there
+	 * data found under the key was null or not found.</p>
 	 *
-	 * @param key a {@link java.lang.String} object
-	 * @param cls a {@link java.lang.Class} object
-	 * @param def a T object
+	 * <p>Extra data it data that is tied to this specific interpreter.
+	 * Completely optional and has no effect on execution of Lua.
+	 * Just for utility and data consistency sake.</p>
+	 *
+	 * @param key a {@link java.lang.String} to match to a key
+	 * @param cls a {@link java.lang.Class} to cast the returned
+	 *               value to
+	 * @param def a T object or the default if there
+	 *               was one provided
 	 * @param <T> a T class
-	 * @return a T object
+	 * @return a T object, or the def value if the data was null or
+	 * there was no found data.
 	 */
 	public <T> T getExtra(String key, Class<T> cls, T def)
 	{
@@ -113,10 +149,17 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>getExtraLua.</p>
+	 * <p>Get the extra data under a certain key, cast as a {@link LuaObject}.
+	 * This is useful because it will not return null, it will
+	 * instead return {@link Lua#nil()} if there was no valid data found.</p>
 	 *
-	 * @param key a {@link java.lang.String} object
-	 * @return a {@link com.hk.lua.LuaObject} object
+	 * <p>Extra data it data that is tied to this specific interpreter.
+	 * Completely optional and has no effect on execution of Lua.
+	 * Just for utility and data consistency sake.</p>
+	 *
+	 * @param key a {@link java.lang.String} to match to a key
+	 * @return a {@link com.hk.lua.LuaObject} object, or {@link Lua#nil()}
+	 * if there was no valid data found under the specified key.
 	 */
 	public LuaObject getExtraLua(String key)
 	{
@@ -124,11 +167,18 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>setExtra.</p>
+	 * <p>Set the data under a certain key. This value can then later be
+	 * retrieved using the {@link #getExtra} methods. These have
+	 * various overloaded helper functions to return the value cast
+	 * as another type.</p>
 	 *
-	 * @param key a {@link java.lang.String} object
-	 * @param value a {@link java.lang.Object} object
-	 * @return a {@link com.hk.lua.LuaInterpreter} object
+	 * <p>Extra data it data that is tied to this specific interpreter.
+	 * Completely optional and has no effect on execution of Lua.
+	 * Just for utility and data consistency sake.</p>
+	 *
+	 * @param key a {@link java.lang.String} to match to a key
+	 * @param value a {@link java.lang.Object} object, or null if desired
+	 * @return this
 	 */
 	public LuaInterpreter setExtra(String key, Object value)
 	{
@@ -137,10 +187,16 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>removeExtra.</p>
+	 * <p>Remove a certain key from the extra data. This will result in
+	 * the default value being used (if passed) or a null value when
+	 * using the {@link #getExtra} methods.</p>
 	 *
-	 * @param key a {@link java.lang.String} object
-	 * @return a {@link com.hk.lua.LuaInterpreter} object
+	 * <p>Extra data it data that is tied to this specific interpreter.
+	 * Completely optional and has no effect on execution of Lua.
+	 * Just for utility and data consistency sake.</p>
+	 *
+	 * @param key a {@link java.lang.String} to match to a key
+	 * @return this
 	 */
 	public LuaInterpreter removeExtra(String key)
 	{
@@ -149,9 +205,18 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>getGlobals.</p>
+	 * <p>Get the global Lua environment with global variables and
+	 * functions. Conventionally, the developer would use this method
+	 * to set the various global variables for this specific
+	 * environment before calling the {@link #execute} method, or
+	 * calling a specific method by name.</p>
 	 *
-	 * @return a {@link com.hk.lua.Environment} object
+	 * <p>Calling this before <code>execute</code> will only contain the
+	 * library imported methods and data. After calling the <code>execute</code>
+	 * method, will the environment be populated by the variables
+	 * from the Lua code interpreted.</p>
+	 *
+	 * @return the global Lua {@link com.hk.lua.Environment}
 	 */
 	public Environment getGlobals()
 	{
@@ -159,21 +224,26 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>require.</p>
+	 * Immediately execute a string of Lua code using this global
+	 * environment under a new Lua chunk.
 	 *
-	 * @param cs a {@link java.lang.CharSequence} object
-	 * @return a {@link com.hk.lua.LuaObject} object
+	 * @param cs the Lua code to interpret
+	 * @return the result from this execution. If this code had a
+	 * return statement.
 	 */
 	public LuaObject require(CharSequence cs)
 	{
 		return require(null, new StringReader(cs.toString()));
 	}
-	
+
 	/**
-	 * <p>require.</p>
+	 * Immediately execute a reader of Lua code using this global
+	 * environment under a new Lua chunk.
 	 *
-	 * @param reader a {@link java.io.Reader} object
-	 * @return a {@link com.hk.lua.LuaObject} object
+	 * @param reader a {@link java.io.Reader} to provide the Lua code
+	 *               to interpret
+	 * @return the result from this execution. If this code had a
+	 * return statement.
 	 */
 	public LuaObject require(Reader reader)
 	{
@@ -181,11 +251,18 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>require.</p>
+	 * Immediately execute a reader of Lua code using this global
+	 * environment under a new Lua chunk. This function executes the
+	 * Lua code under a certain source, the result is then stored in
+	 * the case that this function is called again with the same
+	 * source. If so, the reader is ignored and the saved value is
+	 * returned instead.
 	 *
-	 * @param source a {@link java.lang.String} object
-	 * @param reader a {@link java.io.Reader} object
-	 * @return a {@link com.hk.lua.LuaObject} object
+	 * @param source a key to match the result object to
+	 * @param reader a {@link java.io.Reader} to provide the Lua code
+	 *               to interpret
+	 * @return the result from this execution. If this code had a
+	 * return statement.
 	 */
 	public LuaObject require(String source, Reader reader)
 	{
@@ -210,7 +287,16 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>importLib.</p>
+	 * <p>Import the individual elements of a Lua Library directly into
+	 * the global environment. Whether the elements are placed in the
+	 * global space, or under a certain table is defined by the
+	 * constructor when instantiating the library object.</p>
+	 *
+	 * <p>To use any of the default libraries, you don't need to define
+	 * any functions yourself. All you need to do is import the
+	 * various standard libraries under {@link LuaLibrary}.</p>
+	 *
+	 * @see LuaLibrary#LuaLibrary(String, Class)
 	 *
 	 * @param lib a {@link com.hk.lua.LuaLibrary} object
 	 * @param <T> a T class
@@ -228,10 +314,20 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>execute.</p>
+	 * <p>Execute the interpreter using the previously provided
+	 * reader. If the {@link #compile} was not called first, the code
+	 * is first interpreted and compiled before executed.</p>
 	 *
-	 * @param args a {@link java.lang.Object} object
-	 * @return a {@link java.lang.Object} object
+	 * <p>The <code>args</code> parameter is for providing a variable
+	 * amount of arguments to the Lua code. According to
+	 * <a href="https://www.lua.org/manual/5.3/manual.html#3.4.11">The Lua 5.3 Manual</a>,
+	 * the provided arguments are converted into their LuaObject
+	 * equivalents and stored in the <code>...</code> varargs
+	 * variable in the Lua code.</p>
+	 *
+	 * @param args any vararg parameters to pass to the Lua code.
+	 * @return a result of the execution.
+	 * @throws com.hk.lua.LuaException if any.
 	 * @throws com.hk.ex.UncheckedIOException if any.
 	 */
 	public Object execute(Object... args) throws UncheckedIOException
@@ -249,8 +345,15 @@ public class LuaInterpreter implements Tokens
 	}
 	
 	/**
-	 * <p>compile.</p>
+	 * <p>Attempt to fully read the provided {@link java.io.Reader} and
+	 * interpret it as Lua code. If there are any Lua syntax errors,
+	 * this function will throw a {@link LuaException}.</p>
 	 *
+	 * <p>If not, the code is saved to be executed using the
+	 * {@link #execute} command. If this is not called beforehand,
+	 * it is called by default by the <code>execute</code> function.</p>
+	 *
+	 * @throws com.hk.lua.LuaException if any Lua syntax errors.
 	 * @throws com.hk.ex.UncheckedIOException if any.
 	 */
 	public void compile() throws UncheckedIOException

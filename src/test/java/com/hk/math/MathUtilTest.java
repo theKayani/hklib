@@ -764,7 +764,6 @@ public class MathUtilTest extends TestCase
 			if(arr == null)
 			{
 				state--;
-				continue;
 			}
 			else
 			{
@@ -879,7 +878,7 @@ public class MathUtilTest extends TestCase
 		for(int i = 0; i < size; i++)
 		{
 			assertEquals((float) cs[i], MathUtil.hypot((float) as[i], (float) bs[i]));
-			assertEquals((double) cs[i], MathUtil.hypot((double) as[i], (double) bs[i]));
+			assertEquals((double) cs[i], MathUtil.hypot(as[i], (double) bs[i]));
 		}
 	}
 
@@ -912,7 +911,6 @@ public class MathUtilTest extends TestCase
 			if(arr == null)
 			{
 				state--;
-				continue;
 			}
 			else
 			{

@@ -7,17 +7,24 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * <p>ListUtil class.</p>
+ * This class contains helper methods that create and manipulate various List classes. Such as...
+ * <ul>
+ *     <li>{@link java.util.ArrayList}</li>
+ *     <li>{@link java.util.LinkedList}</li>
+ *     <li>{@link com.hk.collections.lists.SortedList}</li>
+ *     <li>{@link com.hk.collections.lists.ImmutableList}</li>
+ *     <li>{@link com.hk.collections.lists.LockableList}</li>
+ * </ul>
  *
  * @author theKayani
  */
 public class ListUtil
 {
 	/**
-	 * <p>newArrayList.</p>
+	 * Creates a new array list. Similar to the constructor
 	 *
 	 * @param <T> a T class
-	 * @return a {@link java.util.ArrayList} object
+	 * @return a new {@link java.util.ArrayList} object
 	 */
 	public static <T> ArrayList<T> newArrayList()
 	{
@@ -25,11 +32,11 @@ public class ListUtil
 	}
 
 	/**
-	 * <p>newArrayList.</p>
+	 * Creates a new array list with a list of objects in it.
 	 *
-	 * @param elements a T object
+	 * @param elements a list of T objects
 	 * @param <T> a T class
-	 * @return a {@link java.util.ArrayList} object
+	 * @return a new {@link java.util.ArrayList} object
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> ArrayList<T> newArrayList(T... elements)
@@ -40,11 +47,11 @@ public class ListUtil
 	}
 
 	/**
-	 * <p>newArrayListWith.</p>
+	 * Creates a new array list with the array of objects in it.
 	 *
 	 * @param elements an array of T[] objects
 	 * @param <T> a T class
-	 * @return a {@link java.util.ArrayList} object
+	 * @return a new {@link java.util.ArrayList} object
 	 */
 	public static <T> ArrayList<T> newArrayListWith(T[] elements)
 	{
@@ -54,23 +61,23 @@ public class ListUtil
 	}
 
 	/**
-	 * <p>newArrayList.</p>
+	 * Creates a new, empty, array list with an initial specified capacity.
 	 *
-	 * @param capacity a int
+	 * @param initialCapacity initial capacity for array list
 	 * @param <T> a T class
-	 * @return a {@link java.util.ArrayList} object
+	 * @return a new {@link java.util.ArrayList} object
 	 */
-	public static <T> ArrayList<T> newArrayList(int capacity)
+	public static <T> ArrayList<T> newArrayList(int initialCapacity)
 	{
-		return new ArrayList<>(capacity);
+		return new ArrayList<>(initialCapacity);
 	}
 
 	/**
-	 * <p>newArrayList.</p>
+	 * Creates a new array list with the given collection added to it.
 	 *
-	 * @param c a {@link java.util.Collection} object
+	 * @param c a {@link java.util.Collection} of T objects to add
 	 * @param <T> a T class
-	 * @return a {@link java.util.ArrayList} object
+	 * @return a new {@link java.util.ArrayList} object
 	 */
 	public static <T> ArrayList<T> newArrayList(Collection<? extends T> c)
 	{
@@ -172,13 +179,13 @@ public class ListUtil
 	}
 
 	/**
-	 * <p>swap.</p>
+	 * Swap two different indices in a list.
 	 *
-	 * @param list a {@link java.util.List} object
-	 * @param index1 a int
-	 * @param index2 a int
+	 * @param list the list to perform the swap with
+	 * @param index1 the index of the first object to swap with the second
+	 * @param index2 the destination to put the first object
 	 * @param <T> a T class
-	 * @return a {@link java.util.List} object
+	 * @return the same list
 	 */
 	public static <T> List<T> swap(List<T> list, int index1, int index2)
 	{
@@ -187,30 +194,29 @@ public class ListUtil
 	}
 
 	/**
-	 * <p>addElements.</p>
+	 * Add an array of T objects to a given list.
 	 *
-	 * @param list a {@link java.util.List} object
+	 * @param list the {@link java.util.List} to add the elements to
 	 * @param array an array of T[] objects
 	 * @param <T> a T class
-	 * @return a boolean
+	 * @return whether all items were successfully added
 	 */
 	public static <T> boolean addElements(List<T> list, T[] array)
 	{
 		boolean good = true;
 		for (T obj : array)
-		{
 			good &= list.add(obj);
-		}
+
 		return good;
 	}
 
 	/**
-	 * <p>addAll.</p>
+	 * Add a variable amount of T objects to the given list.
 	 *
-	 * @param list a {@link java.util.List} object
-	 * @param array a T object
+	 * @param list the {@link java.util.List} to add the elements to
+	 * @param array a list of T objects
 	 * @param <T> a T class
-	 * @return a boolean
+	 * @return whether all items were successfully added
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> boolean addAll(List<T> list, T... array)

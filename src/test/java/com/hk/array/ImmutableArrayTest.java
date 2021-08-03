@@ -20,7 +20,7 @@ public class ImmutableArrayTest extends TestCase
 		for(int len : lens)
 		{
 			assertEquals(len, new ImmutableArray<String>(new String[len]).length);
-			assertEquals(len, new ImmutableArray<Object>(new Object[len]).length);
+			assertEquals(len, new ImmutableArray<>(new Object[len]).length);
 			assertEquals(len, new ImmutableArray<Double>(new Double[len]).length);
 			assertEquals(len, new ImmutableArray<Double>(new double[len]).length);
 		}
@@ -75,7 +75,7 @@ public class ImmutableArrayTest extends TestCase
 
 	public void testIterator()
 	{
-		int i = 0;
+		int i;
 
 		String[] stringArr = new String[] {
 				"a", "b", "c",
@@ -137,6 +137,7 @@ public class ImmutableArrayTest extends TestCase
 		assertEquals(i, pDoubleArr.length);
 	}
 
+	@SuppressWarnings("SimplifiableAssertion")
 	public void testToArray()
 	{
 		String[] stringArr = new String[] {
@@ -144,25 +145,25 @@ public class ImmutableArrayTest extends TestCase
 				"1", "2", "3",
 				"x", "y", "z"
 		};
-		
+
 		assertTrue("arrays not equal", Arrays.equals(stringArr, new ImmutableArray<String>(stringArr).toArray()));
 
 		File[] fileArr = File.listRoots();
-		
+
 		assertTrue("arrays not equal", Arrays.equals(fileArr, new ImmutableArray<File>(fileArr).toArray()));
 
 		Object[] objArr = new Object[1_000_000];
 		for(int i = 0; i < objArr.length; i++)
 			objArr[i] = new Object();
-		
-		assertTrue("arrays not equal", Arrays.equals(objArr, new ImmutableArray<Object>(objArr).toArray()));
+
+		assertTrue("arrays not equal", Arrays.equals(objArr, new ImmutableArray<>(objArr).toArray()));
 
 		Double[] doubleArr = new Double[20];
 		for(int i = 0; i < 18; i++)
 			doubleArr[i] = Math.pow(2, -i);
 		doubleArr[18] = Double.MAX_VALUE;
 		doubleArr[19] = Double.MIN_VALUE;
-		
+
 		assertTrue("arrays not equal", Arrays.equals(doubleArr, new ImmutableArray<Double>(doubleArr).toArray()));
 
 		double[] pDoubleArr = new double[] {
@@ -170,7 +171,7 @@ public class ImmutableArrayTest extends TestCase
 			Math.PI, Math.E, Math.sqrt(2D),
 			0.5D, 0.25D, 0.125D
 		};
-		
+
 		assertTrue("arrays not equal", Arrays.equals(pDoubleArr, ArrayUtil.toDoubleArray(Arrays.asList(new ImmutableArray<Double>(pDoubleArr).toArray()))));
 	}
 
