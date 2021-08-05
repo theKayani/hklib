@@ -52,34 +52,73 @@ public class Expression
 		{
 			char c = itr.current();
 
-			if (c == '(')
+			switch (c)
 			{
-				int start = itr.getIndex();
-				int end = -1;
-				int amt = 1;
-				while (itr.next() != CharacterIterator.DONE)
-				{
-					if (itr.current() == '(')
+				case '(':
+					int start = itr.getIndex();
+					int end = -1;
+					int amt = 1;
+					while (itr.next() != CharacterIterator.DONE)
 					{
-						amt++;
-					}
-					else if (itr.current() == ')')
-					{
-						amt--;
-
-						if (amt == 0)
+						if (itr.current() == '(')
 						{
-							end = itr.getIndex();
-							break;
+							amt++;
+						}
+						else if (itr.current() == ')')
+						{
+							amt--;
+
+							if (amt == 0)
+							{
+								end = itr.getIndex();
+								break;
+							}
 						}
 					}
-				}
 
-				if (end != -1)
-				{
-					boolean val = new Expression(s.substring(start, end - 1)).result;
-					val = s.charAt(start - 1) == '!' ? !val : val;
-					int v = val ? 1 : 0;
+					if (end != -1)
+					{
+						boolean val = new Expression(s.substring(start, end - 1)).result;
+						val = (s.charAt(start - 1) == '!') != val;
+						int v = val ? 1 : 0;
+
+						if (curr == -1)
+						{
+							curr = v;
+						}
+						else
+						{
+							if (op == 0)
+							{
+								curr &= v;
+							}
+							else if (op == 1)
+							{
+								curr |= v;
+							}
+							else if (op == 2)
+							{
+								curr ^= v;
+							}
+							else
+							{
+								throw new ExpressionFormatException("Unexpected Value. Expected Operation.");
+							}
+						}
+					}
+					else
+					{
+						throw new ExpressionFormatException("Unclosed Parenthesis at " + start);
+					}
+					break;
+				case '0':
+				case '1':
+					boolean val = c == '1';
+					if (itr.getIndex() > 0)
+					{
+						val = (s.charAt(itr.getIndex() - 1) == '!') != val;
+					}
+					int v = c == '0' ? 0 : 1;
 
 					if (curr == -1)
 					{
@@ -101,93 +140,49 @@ public class Expression
 						}
 						else
 						{
-							throw new ExpressionFormatException("Unexpected Value. Expected Operation.");
+							System.err.println(curr);
+							throw new ExpressionFormatException("Unexpected Value at index (" + itr.getIndex() + "): '" + c + "', Expected Operation");
 						}
 					}
-				}
-				else
-				{
-					throw new ExpressionFormatException("Unclosed Parenthesis at " + start);
-				}
-			}
-			else if (c == '0' || c == '1')
-			{
-				boolean val = c == '1';
-				if (itr.getIndex() > 0)
-				{
-					val = s.charAt(itr.getIndex() - 1) == '!' ? !val : val;
-				}
-				int v = c == '0' ? 0 : 1;
-
-				if (curr == -1)
-				{
-					curr = v;
-				}
-				else
-				{
-					if (op == 0)
+					break;
+				case '!':
+					break;
+				case '&':
+					if (curr != -1)
 					{
-						curr &= v;
-					}
-					else if (op == 1)
-					{
-						curr |= v;
-					}
-					else if (op == 2)
-					{
-						curr ^= v;
+						op = 0;
 					}
 					else
 					{
-						System.err.println(curr);
-						throw new ExpressionFormatException("Unexpected Value at index (" + itr.getIndex() + "): '" + c + "', Expected Operation");
+						throw new ExpressionFormatException("Unexpected '&', no set value");
 					}
-				}
-			}
-			else if (c == '!')
-			{
-				continue;
-			}
-			else if (c == '&')
-			{
-				if (curr != -1)
-				{
-					op = 0;
-				}
-				else
-				{
-					throw new ExpressionFormatException("Unexpected '&', no set value");
-				}
-			}
-			else if (c == '|')
-			{
-				if (curr != -1)
-				{
-					op = 1;
-				}
-				else
-				{
-					throw new ExpressionFormatException("Unexpected '|', no set value");
-				}
-			}
-			else if (c == '^')
-			{
-				if (curr != -1)
-				{
-					op = 2;
-				}
-				else
-				{
-					throw new ExpressionFormatException("Unexpected '^', no set value");
-				}
-			}
-			else
-			{
-				throw new ExpressionFormatException("Unexpected Value at " + itr.getIndex() + ": '" + c + "'");
+					break;
+				case '|':
+					if (curr != -1)
+					{
+						op = 1;
+					}
+					else
+					{
+						throw new ExpressionFormatException("Unexpected '|', no set value");
+					}
+					break;
+				case '^':
+					if (curr != -1)
+					{
+						op = 2;
+					}
+					else
+					{
+						throw new ExpressionFormatException("Unexpected '^', no set value");
+					}
+					break;
+				default:
+					throw new ExpressionFormatException("Unexpected Value at " + itr.getIndex() + ": '" + c + "'");
 			}
 		}
 
-		return curr == 0 ? false : true;
+		return curr != 0;
 	}
 
 	public static class Builder

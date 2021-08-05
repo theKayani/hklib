@@ -22,7 +22,7 @@ public class Environment
 		if(parent == null)
 		{
 			globals = new HashMap<>();
-			lua_G = new LuaGTable(globalMap = new HashMap<LuaObject, LuaObject>());
+			lua_G = new LuaGTable(globalMap = new HashMap<>());
 			globals.put("_G", new LuaObject[] { lua_G });
 			locals = new HashMap<>();
 			varargs = LuaNil.NIL;

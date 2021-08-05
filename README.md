@@ -5,7 +5,7 @@
 
 This is a collection of useful classes and functionalities that I found myself in need of over my years as a developer.
 
-##### Version: 1.0.5
+##### Version: 1.0.6
 
 ## Usage
 
@@ -30,7 +30,7 @@ Add `hklib` dependency
     <dependency>
         <groupId>com.thekayani</groupId>
         <artifactId>hklib</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
     </dependency>
 
 ### Gradle
@@ -46,7 +46,7 @@ Add to root `build.gradle`
 Add `hklib` dependency
 
     dependencies {
-	        implementation 'com.thekayani:hklib:1.0.5'
+	        implementation 'com.thekayani:hklib:1.0.6'
 	}
 
 ### Flat `jar` File

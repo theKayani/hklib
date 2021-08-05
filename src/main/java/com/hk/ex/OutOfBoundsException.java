@@ -53,7 +53,7 @@ public class OutOfBoundsException extends RuntimeException
 	 * @param enableSuppression a boolean
 	 * @param writableStackTrace a boolean
 	 */
-	public OutOfBoundsException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
+	protected OutOfBoundsException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
 	{
 		super(message, cause, enableSuppression, writableStackTrace);
 	}

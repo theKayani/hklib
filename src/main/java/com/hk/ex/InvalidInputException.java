@@ -53,7 +53,7 @@ public class InvalidInputException extends Exception
 	 * @param enableSuppression a boolean
 	 * @param writableStackTrace a boolean
 	 */
-	public InvalidInputException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
+	protected InvalidInputException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
 	{
 		super(message, cause, enableSuppression, writableStackTrace);
 	}

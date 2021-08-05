@@ -1,16 +1,21 @@
 package com.hk.abs;
 
 /**
- * <p>Nameable interface.</p>
+ * This interface represents an object that has a mutable name. Which
+ * means, it can be renamed given some type of parameters or object
+ * state.
+ *
+ * @see Named
  *
  * @author theKayani
  */
 public interface Nameable extends Named
 {
 	/**
-	 * <p>setName.</p>
+	 * Assign a new name to this object. Can possibly be null to
+	 * reassign the name, if the implementation allows it.
 	 *
-	 * @param name a {@link java.lang.String} object
+	 * @param name a name to assign to this object
 	 */
-	public void setName(String name);
+	void setName(String name);
 }

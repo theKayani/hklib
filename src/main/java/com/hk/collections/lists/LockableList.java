@@ -238,6 +238,7 @@ public class LockableList<E> implements List<E>, Lockable
 	
 	private void checkLocked()
 	{
-		Requirements.requireCondition(null, !isLocked, "Access to Locked List");
+		if(isLocked)
+			throw new IllegalStateException("Access to Locked List");
 	}
 }

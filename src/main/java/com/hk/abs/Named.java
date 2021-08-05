@@ -1,16 +1,20 @@
 package com.hk.abs;
 
 /**
- * <p>Named interface.</p>
+ * This interface is a utility to represent an object which has a name.
+ * Mostly to be used with the Nameable interface in the case that it
+ * have a mutable name.
+ *
+ * @see Nameable
  *
  * @author theKayani
  */
 public interface Named
 {
 	/**
-	 * <p>getName.</p>
+	 * Get the assigned name of this object. Can possibly be null.
 	 *
-	 * @return a {@link java.lang.String} object
+	 * @return a {@link java.lang.String} object, or null.
 	 */
-	public String getName();
+	String getName();
 }
