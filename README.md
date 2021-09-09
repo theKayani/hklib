@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.com/theKayani/hklib.svg?branch=main)](https://travis-ci.com/theKayani/hklib)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.thekayani/hklib/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.thekayani/hklib)
+[![Maven Central](https://img.shields.io/maven-central/v/com.thekayani/hklib.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.thekayani%22%20AND%20a:%22hklib%22)
 [![javadoc](https://javadoc.io/badge2/com.thekayani/hklib/javadoc.svg)](https://javadoc.io/doc/com.thekayani/hklib)
 
 
