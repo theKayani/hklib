@@ -31,7 +31,19 @@ import java.util.Objects;
 public class Lua
 {
 	static final String STDIN = "<stdin>";
-	
+
+	/**
+	 * <p>factory.</p>
+	 *
+	 * @param rdr a {@link java.io.Reader} object
+	 * @param source a {@link java.lang.String} object
+	 * @return a {@link com.hk.lua.LuaFactory} object
+	 */
+	public static LuaFactory factory(Reader rdr, String source)
+	{
+		return new LuaFactory(Objects.requireNonNull(rdr), source);
+	}
+
 	/**
 	 * <p>factory.</p>
 	 *
