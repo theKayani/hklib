@@ -5,7 +5,7 @@
 
 This is a collection of useful classes and functionalities that I found myself in need of over my years as a developer.
 
-##### Version: 1.0.6
+##### Version: 1.0.7
 
 ## Usage
 
@@ -16,37 +16,19 @@ The process to use it is very simple and are similar to each other.
 Add the repository, and add the library/dependency
 
 ### Maven
-Add JitPack repository to `pom.xml`
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
 Add `hklib` dependency
 
     <dependency>
         <groupId>com.thekayani</groupId>
         <artifactId>hklib</artifactId>
-        <version>1.0.6</version>
+        <version>1.0.7</version>
     </dependency>
 
 ### Gradle
-Add to root `build.gradle`
-
-    allprojects {
-        repositories {
-            ...
-            maven { url 'https://jitpack.io' }
-        }
-    }
-
 Add `hklib` dependency
 
     dependencies {
-	        implementation 'com.thekayani:hklib:1.0.6'
+	        implementation 'com.thekayani:hklib:1.0.7'
 	}
 
 ### Flat `jar` File
