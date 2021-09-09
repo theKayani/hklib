@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.com/theKayani/hklib.svg?branch=main)](https://travis-ci.com/theKayani/hklib)
-[![](https://jitpack.io/v/thekayani/hklib.svg)](https://jitpack.io/#com.thekayani/hklib)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.thekayani/hklib/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.thekayani/hklib)
+[![javadoc](https://javadoc.io/badge2/com.thekayani/hklib/javadoc.svg)](https://javadoc.io/doc/com.thekayani/hklib)
+
 
 # hklib
 
@@ -10,7 +12,7 @@ This is a collection of useful classes and functionalities that I found myself i
 ## Usage
 
 #### Reference
-You can access the Javadoc over at https://javadoc.jitpack.io/com/github/theKayani/hklib/latest/javadoc/
+You can access the Javadoc over at https://javadoc.io/doc/com.thekayani/hklib
 
 The process to use it is very simple and are similar to each other.
 Add the repository, and add the library/dependency
@@ -33,14 +35,13 @@ Add `hklib` dependency
 
 ### Flat `jar` File
 You have access to the `jar` file with the compiled code and sources under GitHub releases.
-You can download the `jar` file [here](https://github.com/theKayani/hklib/releases).
+You can download the `jar` file [here](https://search.maven.org/artifact/com.thekayani/hklib).
 This can be used directly on the command line when executing a Java program using
 the `-classpath` flag with the `java` command. Or added into your own project in various
 IDEs.
 
 #### Others
-You can explore the other ways over at https://jitpack.io/#com.thekayani/hklib.
-This includes Scala's SBT and Leiningen.
+You can explore the other ways over at https://search.maven.org/artifact/com.thekayani/hklib
 
 ## Development
 
