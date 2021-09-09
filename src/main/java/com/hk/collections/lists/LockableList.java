@@ -5,8 +5,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.hk.abs.Lockable;
+import com.hk.abs.Unlockable;
 import com.hk.util.Requirements;
 
 /**
@@ -14,10 +15,10 @@ import com.hk.util.Requirements;
  *
  * @author theKayani
  */
-public class LockableList<E> implements List<E>, Lockable
+public class LockableList<E> implements List<E>, Unlockable
 {
 	private List<E> parent;
-	private boolean isLocked;
+	private final AtomicBoolean isLocked;
 	
 	/**
 	 * <p>Constructor for LockableList.</p>
@@ -25,6 +26,7 @@ public class LockableList<E> implements List<E>, Lockable
 	public LockableList()
 	{
 		this.parent = new ArrayList<E>();
+		isLocked = new AtomicBoolean(false);
 	}
 	
 	/**
@@ -35,6 +37,13 @@ public class LockableList<E> implements List<E>, Lockable
 	public LockableList(List<E> parent)
 	{
 		this.parent = Requirements.requireNotNull(parent);
+		isLocked = new AtomicBoolean(false);
+	}
+
+	private LockableList(List<E> parent, AtomicBoolean locket)
+	{
+		this.parent = Requirements.requireNotNull(parent);
+		isLocked = locket;
 	}
 	
 	/**
@@ -45,21 +54,30 @@ public class LockableList<E> implements List<E>, Lockable
 	public LockableList(E[] es)
 	{
 		this.parent = ListUtil.newArrayListWith(es);
+		isLocked = new AtomicBoolean(false);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public boolean isLocked()
 	{
-		return isLocked;
+		return isLocked.get();
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public void lock()
 	{
-		checkLocked();
-		isLocked = true;
+		if(!isLocked.compareAndSet(false, true))
+			throw new IllegalStateException("List is already in a locked state");
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void unlock()
+	{
+		if(!isLocked.compareAndSet(true, false))
+			throw new IllegalStateException("List is already in an unlocked state");
 	}
 
 	/** {@inheritDoc} */
@@ -141,8 +159,7 @@ public class LockableList<E> implements List<E>, Lockable
 	@Override
 	public Iterator<E> iterator()
 	{
-		checkLocked();
-		return parent.iterator();
+		return new Itr(parent.iterator());
 	}
 
 	/** {@inheritDoc} */
@@ -156,8 +173,7 @@ public class LockableList<E> implements List<E>, Lockable
 	@Override
 	public ListIterator<E> listIterator()
 	{
-		checkLocked();
-		return parent.listIterator();
+		return new ListItr(parent.listIterator());
 	}
 
 	/** {@inheritDoc} */
@@ -165,7 +181,7 @@ public class LockableList<E> implements List<E>, Lockable
 	public ListIterator<E> listIterator(int i)
 	{
 		checkLocked();
-		return parent.listIterator(i);
+		return new ListItr(parent.listIterator(i));
 	}
 
 	/** {@inheritDoc} */
@@ -217,9 +233,9 @@ public class LockableList<E> implements List<E>, Lockable
 
 	/** {@inheritDoc} */
 	@Override
-	public List<E> subList(int i1, int i2)
+	public LockableList<E> subList(int i1, int i2)
 	{
-		return parent.subList(i1, i2);
+		return new LockableList<E>(parent.subList(i1, i2), isLocked);
 	}
 
 	/** {@inheritDoc} */
@@ -236,9 +252,123 @@ public class LockableList<E> implements List<E>, Lockable
 		return parent.toArray(arr);
 	}
 	
+	@Override
+	public boolean equals(Object o)
+	{
+		return parent.equals(o);
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return parent.hashCode();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return parent.toString();
+	}
+	
 	private void checkLocked()
 	{
-		if(isLocked)
+		if(isLocked.get())
 			throw new IllegalStateException("Access to Locked List");
+	}
+	
+	private class Itr implements Iterator<E>
+	{
+		private final Iterator<E> iterator;
+		
+		public Itr(Iterator<E> iterator)
+		{
+			this.iterator = iterator;
+		}
+
+		@Override
+		public boolean hasNext()
+		{
+			return iterator.hasNext();
+		}
+
+		@Override
+		public E next()
+		{
+			return iterator.next();
+		}
+
+		@Override
+		public void remove()
+		{
+			checkLocked();
+			iterator.remove();
+		}
+	}
+	
+	private class ListItr implements ListIterator<E>
+	{
+		private final ListIterator<E> listIterator;
+
+		private ListItr(ListIterator<E> listIterator)
+		{
+			this.listIterator = listIterator;
+		}
+
+		@Override
+		public boolean hasNext()
+		{
+			return listIterator.hasNext();
+		}
+
+		@Override
+		public E next()
+		{
+			return listIterator.next();
+		}
+
+		@Override
+		public boolean hasPrevious()
+		{
+			return listIterator.hasPrevious();
+		}
+
+		@Override
+		public E previous()
+		{
+			return listIterator.previous();
+		}
+
+		@Override
+		public int nextIndex()
+		{
+			return listIterator.nextIndex();
+		}
+
+		@Override
+		public int previousIndex()
+		{
+			return listIterator.previousIndex();
+		}
+
+		@Override
+		public void remove()
+		{
+			checkLocked();
+			listIterator.remove();
+		}
+
+		@Override
+		public void set(E e)
+		{
+			checkLocked();
+			listIterator.set(e);
+		}
+
+		@Override
+		public void add(E e)
+		{
+			checkLocked();
+			listIterator.add(e);
+		}
 	}
 }

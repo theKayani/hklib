@@ -10,8 +10,6 @@ import java.util.concurrent.ThreadLocalRandom;
  * This class gives simple tools and utilities for working with arrays.
  * From copying them to extending them to primitive arrays to object arrays.
  *
- * <p> All the utilities are here.
- *
  * @author theKayani
  */
 public class ArrayUtil
