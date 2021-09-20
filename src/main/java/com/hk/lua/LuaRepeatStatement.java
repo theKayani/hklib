@@ -1,11 +1,6 @@
 package com.hk.lua;
 
-/**
- * <p>LuaRepeatStatement class.</p>
- *
- * @author theKayani
- */
-public class LuaRepeatStatement extends LuaStatement
+class LuaRepeatStatement extends LuaStatement
 {
 	private final LuaBlock block;
 	private final LuaExpression exp;

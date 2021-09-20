@@ -4,28 +4,18 @@ import java.util.List;
 
 import com.hk.abs.Lockable;
 import com.hk.collections.lists.LockableList;
+import com.hk.lua.Lua;
+import com.hk.lua.LuaInterpreter;
+import com.hk.lua.LuaLibrary;
 
 public class Main
 {
 	public static void main(String[] args) throws Exception
 	{
-		List<Integer> list = new LockableList<>();
+		LuaInterpreter interp = Lua.reader("print [[] }]]");
 
-		list.add(3);
-		list.add(1);
-		list.add(2);
-		
-		System.out.println(list);
-		
-		list.add(2, 5);
-		
-		System.out.println(list);
-		
-		((Lockable) list).lock();
+		interp.importLib(LuaLibrary.BASIC);
 
-		System.out.print("[ ");
-		for(Integer i : list)
-			System.out.print(i + " ");
-		System.out.println("]");
+		interp.execute();
 	}
 }

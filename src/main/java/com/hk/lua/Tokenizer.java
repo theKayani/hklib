@@ -6,12 +6,7 @@ import java.io.Reader;
 import java.util.LinkedList;
 import java.util.Stack;
 
-/**
- * <p>Tokenizer class.</p>
- *
- * @author theKayani
- */
-public class Tokenizer implements Tokens
+class Tokenizer implements Tokens
 {
 	private final StringBuilder sb;
 	private final LineNumberReader rdr;
@@ -30,10 +25,10 @@ public class Tokenizer implements Tokens
 		sb = new StringBuilder(256);
 	}
 	
-	boolean prev()
+	void prev()
 	{
 		if(token == null)
-			return false;
+			return;
 		
 		next.push(new Object[] { token, value, type, line });
 		if(prev.isEmpty())
@@ -50,7 +45,6 @@ public class Tokenizer implements Tokens
 			type = (int) arr[2];
 			line = (int) arr[3];
 		}
-		return true;
 	}
 	
 	boolean next() throws IOException
@@ -313,10 +307,10 @@ public class Tokenizer implements Tokens
 									amt2++;
 									c = (char) rdr.read();
 								}
-								
+
 								if(c != ']')
 								{
-									sb.append('[');
+									sb.append(']');
 									while(amt2-- > 0)
 										sb.append('=');
 								}
@@ -460,17 +454,17 @@ public class Tokenizer implements Tokens
 				c = (char) rdr.read();
 				if(c >= '0' && c <= '9')
 				{
-					String s = String.valueOf(c);
+					StringBuilder s = new StringBuilder(String.valueOf(c));
 					for(int i = 0; i < 2; i++)
 					{
 						rdr.mark(1);
 						c = (char) rdr.read();
 						if(c >= '0' && c <= '9')
-							s += c;
+							s.append(c);
 						else
 							rdr.reset();
 					}
-					sb.append((char) Integer.parseInt(s));
+					sb.append((char) Integer.parseInt(s.toString()));
 				}
 				else
 				{
@@ -548,7 +542,7 @@ public class Tokenizer implements Tokens
 					break;
 				
 				sb.append(c);
-				fraction += n / (double) place;
+				fraction += n / place;
 				place *= 10;
 			}
 			
@@ -633,7 +627,7 @@ public class Tokenizer implements Tokens
 					break;
 				
 				sb.append(c);
-				fraction += n / (double) place;
+				fraction += n / place;
 				place *= 16;
 			}
 			

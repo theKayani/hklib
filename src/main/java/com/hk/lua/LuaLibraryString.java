@@ -1,6 +1,7 @@
 package com.hk.lua;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -357,17 +358,24 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.STRING);
-			String str = args[0].getString();
-			LuaObject i = args.length > 1 ? args[1] : LuaInteger.ONE;
-			LuaObject j = args.length > 2 ? args[2] : i;
-			
-			char[] res = new char[(int) (j.doSub(interp, i).getInteger() + 1)];
-			for(int k = 0; k < res.length; k++)
+			try
 			{
-				res[k] = str.charAt((int) (i.getInteger() - 1));
-				i = i.doAdd(interp, LuaInteger.ONE);
+				String str = args[0].getString();
+				int i = args.length > 1 ? (int) args[1].getInteger() : 1;
+				int j = args.length > 2 ? (int) args[2].getInteger() : i;
+
+				char[] res = new char[Math.min(j - i, str.length() - i) + 1];
+				for (int k = 0; k < res.length; k++)
+				{
+					res[k] = str.charAt(i - 1);
+					i++;
+				}
+				return new LuaString(new String(res));
 			}
-			return new LuaString(new String(res));
+			catch (StringIndexOutOfBoundsException ex)
+			{
+				throw new LuaException(ex.getLocalizedMessage());
+			}
 		}
 	},
 	unpack() {

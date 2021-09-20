@@ -1,11 +1,6 @@
 package com.hk.lua;
 
-/**
- * <p>LuaWhileStatement class.</p>
- *
- * @author theKayani
- */
-public class LuaWhileStatement extends LuaStatement
+class LuaWhileStatement extends LuaStatement
 {
 	private final LuaExpression exp;
 	private final LuaBlock block;

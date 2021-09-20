@@ -3,6 +3,8 @@ package com.hk.lua;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import com.hk.func.BiConsumer;
@@ -37,7 +39,8 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
-			throw new Error();
+			DateFormat fmt = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+			return Lua.newString(fmt.format(new Date()));
 		}
 	},
 	difftime() {

@@ -274,7 +274,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 					return new LuaArgs(arr);
 				}
 				else
-					return new LuaArgs(LuaBoolean.TRUE, (LuaObject) res);
+					return new LuaArgs(LuaBoolean.TRUE, res);
 			}
 			catch(LuaException e)
 			{
@@ -452,7 +452,17 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
-			throw new Error();
+			Lua.checkArgs(name(), args, LuaType.FUNCTION, LuaType.FUNCTION);
+
+			LuaObject[] tmp = new LuaObject[args.length - 1];
+			System.arraycopy(args, 1, tmp, 0, tmp.length);
+			tmp[0] = args[0];
+			LuaArgs res = (LuaArgs) pcall.call(interp, tmp);
+
+			if(!res.objs[0].getBoolean())
+				return new LuaArgs(LuaBoolean.FALSE, args[1].call(interp, res.objs[1]));
+			else
+				return res;
 		}
 	};
 	

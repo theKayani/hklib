@@ -70,7 +70,7 @@ public class Environment
 		}
 	}
 	
-	void setLocal(String name, LuaObject value)
+	public void setLocal(String name, LuaObject value)
 	{
 		if(locals.containsKey(name))
 			locals.get(name)[0] = value;
