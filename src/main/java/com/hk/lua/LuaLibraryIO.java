@@ -69,7 +69,55 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
-			throw new Error();
+			LuaObject obj = interp.getExtraLua(EXKEY_STDIN);
+
+			if(!(obj instanceof LuaInput))
+				return new LuaArgs(LuaNil.NIL, new LuaString("bad file descriptor"));
+
+			long[] formats = new long[args.length];
+			for(int i = 0; i < args.length; i++)
+			{
+				if(args[i].isString())
+				{
+					switch(args[i].getString())
+					{
+						case "n":
+							formats[i] = READMODE_N;
+							break;
+						case "a":
+							formats[i] = READMODE_A;
+							break;
+						case "l":
+							formats[i] = READMODE_LOW_L;
+							break;
+						case "L":
+							formats[i] = READMODE_L;
+							break;
+						default:
+							throw new LuaException("bad argument #" + (i + 1) + " to 'read' (invalid mode)");
+					}
+				}
+				else if(args[i].isInteger() && args[i].getInteger() >= 0)
+				{
+					formats[i] = args[i].getInteger();
+				}
+				else
+					throw new LuaException("bad argument #" + (i + 1) + " to 'read' (expected string or positive integer");
+			}
+
+			LuaInput input = (LuaInput) obj;
+
+			LuaObject[] read;
+			try
+			{
+				read = input.read(formats);
+			}
+			catch (IOException e)
+			{
+				throw new LuaException(e.getLocalizedMessage());
+			}
+
+
 		}
 	},
 	tmpfile() {
@@ -108,17 +156,14 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		@Override
 		public void accept(Environment env, LuaObject table)
 		{
-			if(env.interp.getExtra(EXKEY_STDIN) == null)
+			LuaObject stdin = env.interp.getExtraLua(EXKEY_STDIN);
+			if(stdin.isNil())
 			{
-				String str = "public static void main(String[] args)\n" +
-						"{\n" +
-						"\tSystem.out.println(9 + 10);\n" +
-						"}";
+				String str = "\"álo\"{a}\nsecond line\nthird line \nçfourth_line\n\n\t\t  3450\n";
 
-				LuaObject stdin = new LuaReader(new StringReader(str));
+				stdin = new LuaReader(new StringReader(str));
 				env.interp.setExtra(EXKEY_STDIN, stdin);
 			}
-
 			table.rawSet(new LuaString(name()), stdin);
 		}
 	},
@@ -157,18 +202,25 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		ioMetatable.rawSet("__name", new LuaString("FILE*"));
 		ioMetatable.rawSet("__index", ioMetatable);
 
+		ioMetatable.rawSet("read", new LuaFunction() {
+			@Override
+			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			{
 
+				return LuaNil.NIL;
+			}
+		});
 	}
 
 	public static abstract class LuaInput extends LuaUserdata
 	{
 		public abstract boolean isClosed();
 
-		public abstract Integer close() throws IOException;
+		public abstract LuaObject close() throws IOException;
 
-		public abstract LuaObject[] read(int[] formats) throws IOException;
+		public abstract LuaObject[] read(long[] formats) throws IOException;
 
-		public abstract Iterator<LuaObject> lines(int[] formats) throws IOException;
+		public abstract Iterator<LuaObject> lines(long[] formats) throws IOException;
 
 		public abstract long seek(int mode, long offset) throws IOException;
 
@@ -189,7 +241,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 	{
 		public abstract boolean isClosed();
 
-		public abstract Integer close() throws IOException;
+		public abstract LuaObject close() throws IOException;
 
 		public abstract void flush() throws IOException;
 
@@ -220,4 +272,9 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 
 	/** Constant <code>EXKEY_STDERR="io.stderr"</code> */
 	public static final String EXKEY_STDERR = "io.stderr";
+
+	public static final int READMODE_N = -4;
+	public static final int READMODE_A = -3;
+	public static final int READMODE_L = -2;
+	public static final int READMODE_LOW_L = -1;
 }
