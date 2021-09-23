@@ -1,11 +1,6 @@
 package com.hk.io;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.charset.Charset;
 
 /**
@@ -148,6 +143,67 @@ public final class IOUtil
 			throw new RuntimeException(e);
 		}
 	}
+
+	/**
+	 * <p>Returns an empty reader. Which doesn't support marking.</p>
+	 *
+	 * @return an empty reader
+	 */
+	public static Reader emptyReader()
+	{
+		return emptyReader;
+	}
+
+	/**
+	 * <p></p>
+	 *
+	 * @return
+	 */
+	public static Writer nowhereWriter()
+	{
+		return nowhereWriter;
+	}
+
+	private static final Reader emptyReader = new Reader()
+	{
+		@Override
+		public int read() throws IOException
+		{
+			return -1;
+		}
+
+		@Override
+		public int read(char[] cbuf, int off, int len)
+		{
+			return -1;
+		}
+
+		@Override
+		public long skip(long n)
+		{
+			return 0;
+		}
+
+		@Override
+		public void close() {}
+	};
+
+	private static final Writer nowhereWriter = new Writer() {
+		@Override
+		public void write(int c) {}
+
+		@Override
+		public void write(String str, int off, int len) {}
+
+		@Override
+		public void write(char[] cbuf, int off, int len) {}
+
+		@Override
+		public void flush() {}
+
+		@Override
+		public void close() {}
+	};
 
 	private IOUtil()
 	{}

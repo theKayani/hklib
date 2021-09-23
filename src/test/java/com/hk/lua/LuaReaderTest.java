@@ -4,24 +4,11 @@ import com.hk.Assets;
 import junit.framework.TestCase;
 
 import java.io.FileNotFoundException;
+import java.io.StringReader;
 import java.util.Arrays;
 
 public class LuaReaderTest extends TestCase
 {
-	public void test() throws FileNotFoundException
-	{
-		LuaInterpreter interp = Lua.reader(Assets.get("lua/test.lua"));
-
-		LuaLibrary.importStandard(interp);
-
-		Object res = interp.execute();
-
-		if(res instanceof Object[])
-			System.out.println("res = " + Arrays.deepToString((Object[]) res));
-		else
-			System.out.println("res = " + res);
-	}
-
 	public void testIsClosed()
 	{
 	}
@@ -30,8 +17,18 @@ public class LuaReaderTest extends TestCase
 	{
 	}
 
-	public void testRead()
+	public void testRead() throws FileNotFoundException
 	{
+		LuaInterpreter interp = Lua.reader(Assets.get("lua/test_stdin.lua"));
+
+		LuaLibrary.importStandard(interp);
+
+		String str = "\"álo\"{a}\nsecond line\nthird line \nçfourth_line\n\n\t\t  3450\n";
+		interp.setExtra(LuaLibraryIO.EXKEY_STDIN, new LuaReader(new StringReader(str)));
+
+		Object obj = interp.execute();
+		assertTrue(obj instanceof LuaObject);
+		assertTrue(((LuaObject) obj).getBoolean());
 	}
 
 	public void testLines()

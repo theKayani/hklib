@@ -68,7 +68,7 @@ class LuaString extends LuaMetatable
 	public long getInteger()
 	{
 		Number num = getNumber(value);
-		if(num == null || !(num instanceof Long))
+		if(!(num instanceof Long))
 			throw LuaErrors.INVALID_ARITHMETIC.create(name());
 		else
 			return num.longValue();
@@ -141,25 +141,19 @@ class LuaString extends LuaMetatable
 	@Override
 	LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
-		{
-		case T_STRING:
+		if (o.code() == T_STRING) {
 			return LuaBoolean.valueOf(value.compareTo(o.getString()) <= 0);
-		default:
-			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 		}
+		throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 	}
 
 	@Override
 	LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
-		{
-		case T_STRING:
+		if (o.code() == T_STRING) {
 			return LuaBoolean.valueOf(value.compareTo(o.getString()) < 0);
-		default:
-			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 		}
+		throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 	}
 
 	@Override
@@ -244,25 +238,19 @@ class LuaString extends LuaMetatable
 	@Override
 	LuaObject doSHL(LuaInterpreter interp, LuaObject o)
 	{
-		switch((int) o.getInteger())
-		{
-		case 64:
+		if ((int) o.getInteger() == 64) {
 			return LuaInteger.ZERO;
-		default:
-			return LuaInteger.valueOf(getInteger() << o.getInteger());
 		}
+		return LuaInteger.valueOf(getInteger() << o.getInteger());
 	}
 
 	@Override
 	LuaObject doSHR(LuaInterpreter interp, LuaObject o)
 	{
-		switch((int) o.getInteger())
-		{
-		case 64:
+		if ((int) o.getInteger() == 64) {
 			return LuaInteger.ZERO;
-		default:
-			return LuaInteger.valueOf(getInteger() >> o.getInteger());
 		}
+		return LuaInteger.valueOf(getInteger() >> o.getInteger());
 	}
 
 	@Override
@@ -367,7 +355,7 @@ class LuaString extends LuaMetatable
 					if((n = Tokenizer.num(value.charAt(index))) >= 16)
 						break;
 					
-					fraction += n / (double) place;
+					fraction += n / place;
 					place *= 16;
 					index++;
 				}
@@ -427,7 +415,7 @@ class LuaString extends LuaMetatable
 					if((n = Tokenizer.num(value.charAt(index))) >= 10)
 						break;
 					
-					fraction += n / (double) place;
+					fraction += n / place;
 					place *= 10;
 					
 					index++;
