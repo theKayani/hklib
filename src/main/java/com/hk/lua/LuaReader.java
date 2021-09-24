@@ -3,10 +3,8 @@ package com.hk.lua;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Arrays;
-import java.util.Iterator;
 
-public class LuaReader extends LuaLibraryIO.LuaInput
+public class LuaReader extends LuaLibraryIO.LuaIOUserdata
 {
 	private final Reader reader;
 	private boolean isClosed;
@@ -25,19 +23,26 @@ public class LuaReader extends LuaLibraryIO.LuaInput
 	@Override
 	public LuaObject close() throws IOException
 	{
-		System.out.println("LuaReader.close");
 		if(isClosed)
-			throw new LuaException("reader already closed");
+			throw new LuaException("input is already closed");
 
 		reader.close();
 		isClosed = true;
 
-		return LuaNil.NIL;
+		return LuaBoolean.TRUE;
+	}
+
+	@Override
+	public LuaObject flush()
+	{
+		return readableError();
 	}
 
 	@Override
 	public LuaObject[] read(int[] formats) throws IOException
 	{
+		checkClosed();
+
 		String numchars = "+-.0123456789xXpPaAbBcCdDeEfF";
 		LuaObject[] result = new LuaObject[formats.length];
 
@@ -103,7 +108,7 @@ public class LuaReader extends LuaLibraryIO.LuaInput
 						sb.append((char) j);
 					}
 
-					if (j != -1 && sb.length() >= 0)
+					if ((j != -1) || (sb.length() > 0))
 						obj = new LuaString(sb);
 					break;
 				case 0:
@@ -141,17 +146,33 @@ public class LuaReader extends LuaLibraryIO.LuaInput
 	}
 
 	@Override
-	public Iterator<LuaObject> lines(int[] formats) throws IOException
+	public long seek(int mode, long offset)
 	{
-		System.out.println("LuaReader.lines");
-		System.out.println("formats = " + Arrays.toString(formats));
-		return null;
+		checkClosed();
+		throw new LuaException("UnsupportedOperationException in this version of Lua (JVM)");
 	}
 
 	@Override
-	public long seek(int mode, long offset) throws IOException
+	public LuaObject setvbuf(int mode, int size)
 	{
-		throw new LuaException("UnsupportedOperationException in this version of Lua (JVM)");
+		return readableError();
+	}
+
+	@Override
+	public LuaObject write(LuaObject[] values)
+	{
+		return readableError();
+	}
+
+	private void checkClosed()
+	{
+		if(isClosed)
+			throw new LuaException("input is closed");
+	}
+
+	private LuaObject readableError()
+	{
+		return new LuaArgs(LuaNil.NIL, new LuaString("invalid call to readable"));
 	}
 
 	@Override

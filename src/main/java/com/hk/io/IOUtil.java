@@ -112,15 +112,13 @@ public final class IOUtil
 		{
 			c.close();
 		}
-		catch (IOException e)
+		catch (IOException ignored)
 		{}
 	}
 	
 	@Deprecated
-	/**
-	 * renamed to closeWithRE
-	 *
-	 * @param c a {@link java.io.Closeable} object
+	/*
+	  renamed to closeWithRE
 	 */
 	public static void closeWithRuntimeException(Closeable c)
 	{
@@ -145,7 +143,8 @@ public final class IOUtil
 	}
 
 	/**
-	 * <p>Returns an empty reader. Which doesn't support marking.</p>
+	 * <p>Returns an empty reader that can't be closed. Which doesn't
+	 * support marking.</p>
 	 *
 	 * @return an empty reader
 	 */
@@ -155,9 +154,9 @@ public final class IOUtil
 	}
 
 	/**
-	 * <p></p>
+	 * <p>Returns a writer that can't be closed which also goes nowhere.</p>
 	 *
-	 * @return
+	 * @return a writer that goes nowhere
 	 */
 	public static Writer nowhereWriter()
 	{
@@ -167,7 +166,7 @@ public final class IOUtil
 	private static final Reader emptyReader = new Reader()
 	{
 		@Override
-		public int read() throws IOException
+		public int read()
 		{
 			return -1;
 		}
