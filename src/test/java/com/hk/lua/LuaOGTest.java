@@ -164,9 +164,28 @@ public class LuaOGTest extends TestCase
 			objs[i] = Lua.newString(strs[i]);
 		expected.add(objs);
 
+		// 5
 		expected.add(new LuaObject[] {
 				Lua.newString("double quotes"),
 				Lua.newString("single quotes"),
+		});
+		expected.add(new LuaObject[] {
+				Lua.newString(" \"super string\" "),
+		});
+		expected.add(new LuaObject[] {
+				Lua.newString("    'still super' \"string\n"),
+		});
+		expected.add(new LuaObject[] {
+				Lua.newString(" [ "),
+		});
+		expected.add(new LuaObject[] {
+				Lua.newString(" ] "),
+		});
+		expected.add(new LuaObject[] {
+				Lua.newString("]\n}"),
+		});
+		expected.add(new LuaObject[] {
+				Lua.newString("]\noh yea"),
 		});
 		expected.add(new LuaObject[] {
 				Lua.newString("w parenthesis"),

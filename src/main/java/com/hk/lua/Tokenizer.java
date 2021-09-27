@@ -313,6 +313,7 @@ class Tokenizer implements Tokens
 									sb.append(']');
 									while(amt2-- > 0)
 										sb.append('=');
+									sb.append(c);
 								}
 								else
 									break;

@@ -17,6 +17,19 @@ end
 
 io.write("double quotes", 'single quotes')
 
+io.write [[ "super string" ]]
+io.write [[
+    'still super' "string
+]]
+
+io.write [[ [ ]]
+io.write [[ ] ]]
+io.write [[
+]
+}]]
+io.write [[]
+oh yea]]
+
 io.write('w parenthesis')
 io.write 'wo parenthesis'
 io.write { 'in a table' }
