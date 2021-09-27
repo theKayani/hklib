@@ -16,8 +16,8 @@ abstract class LuaMetatable extends LuaObject
 	
 		if(code() == o.code())
 		{
-			LuaObject mm1 = metatable == null ? null : metatable.rawGet(new LuaString("__eq"));
-			LuaObject mm2 = !o.getMetatable().isNil() ? ((LuaTable) o.getMetatable()).rawGet(new LuaString("__eq")) : null;
+			LuaObject mm1 = metatable.isNil() ? null : metatable.rawGet(new LuaString("__eq"));
+			LuaObject mm2 = o.getMetatable().isNil() ? null : o.getMetatable().rawGet(new LuaString("__eq"));
 			LuaObject mm = mm1 == mm2 ? mm1 : null;
 
 			if(mm != null)

@@ -1,20 +1,13 @@
 package com.hk.lua;
 
+import com.hk.ex.UncheckedIOException;
+import com.hk.func.BiConsumer;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import com.hk.ex.UncheckedIOException;
+import java.util.*;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-
-import com.hk.func.BiConsumer;
-
-// https://github.com/ArduPilot/ardupilot/blob/master/libraries/AP_Scripting/examples
 /**
  * This utility class encapsulates an entire Lua environment within
  * a single Java class/package. This class is instantiated using the
@@ -330,6 +323,7 @@ public class LuaInterpreter implements Tokens
 	 * @throws com.hk.lua.LuaException if any.
 	 * @throws com.hk.ex.UncheckedIOException if any.
 	 */
+	@SuppressWarnings("ThrowableNotThrown")
 	public Object execute(Object... args) throws UncheckedIOException
 	{
 		try
@@ -815,27 +809,36 @@ public class LuaInterpreter implements Tokens
 					{
 						String name = (String) tkz.value();
 						line = tkz.line();
-						LuaExpressions exps;
-						if(!tkz.next() || tkz.type() != T_OPEN_PTS)
-							throw unexpected(tkz, source, "call, expected '('");
+						LuaExpressions exps = null;
+						if(!tkz.next())
+							throw unexpected(tkz, source, "call, expected '(', string, or table");
 
-						if(tkz.next() && tkz.type() == T_CLSE_PTS)
+						switch(tkz.type())
 						{
-							exps = null;
-							tkz.prev();
-						}
-						else
-						{
-							tkz.prev();
-							exps = readExpressions(tkz, source, true);
+							case T_OPEN_PTS:
+								if (!tkz.next() || tkz.type() != T_CLSE_PTS)
+								{
+									tkz.prev();
+									exps = readExpressions(tkz, source, true);
+								}
+								else
+									tkz.prev();
+
+								if (!tkz.next() || tkz.type() != T_CLSE_PTS)
+									throw unexpected(tkz, source, "call, expected ')'");
+								break;
+							case T_STRING:
+								exps = new LuaExpressions(new LuaExpression(source, new LuaString((String) tkz.value())));
+								break;
+							case T_OPEN_BRC:
+								exps = new LuaExpressions(readTable(tkz, source));
+								break;
+							default:
+								throw unexpected(tkz, source, "call, expected '(', string, or table");
 						}
 						curr.next = new LuaSelfCall(line, name, exps);
 						curr = curr.next;
-						
-						if(tkz.next() && tkz.type() == T_CLSE_PTS)
-							break;
-						else
-							throw unexpected(tkz, source, "call, expected ')'");
+						break;
 					}
 					else
 						throw unexpected(tkz, source, "call, expected name");

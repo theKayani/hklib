@@ -599,4 +599,6 @@ public class Lua
 	
 	private Lua()
 	{}
+
+	public static final String EXIT_CODE = "interpreter.exit";
 }

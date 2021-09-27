@@ -351,7 +351,7 @@ local function run(self, opts)
         print(string.rep('-', 78))
     end
 
-    print(string.format("%d/%d tests passed (%0.1f%%)",
+    print(string.format("%d/%d tests passed (%.1f%%)",
             passed,
             #testnames,
             100 * passed / #testnames
@@ -377,6 +377,10 @@ local function run(self, opts)
     return passed==#testnames
 end
 
+for k, v in pairs(lunity) do
+    _G[k] = v
+end
+
 return function(name)
-    return setmetatable({}, {__call=run, __index=lunity, name=name or '(test suite)'})
+    return setmetatable({}, {__call=run, name=name or '(test suite)'})
 end

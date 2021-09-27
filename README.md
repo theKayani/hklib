@@ -9,13 +9,34 @@ This is a collection of useful classes and functionalities that I found myself i
 
 ##### Version: 1.0.8
 
+### Current Features
+ - Extensive and customizable `LuaInterpreter` with strong Java integration
+ - Fully featured JSON reader and writer (_w_ Object-Oriented serialization)
+ - Various 2D/3D Matrix, Vector, Point, and Quaternion classes
+ - A myriad of file helpers such as:
+   - `FileUtil` - contains multiple methods to read/write and handle general files and folders
+   - `ZipUtil` - contains functions to pack/extract ZIP or JAR files
+   - `DataTag` - useful class for de/serializing Java objects to be written-to or read-from a file
+   - `IniUtil` - read and write INI files
+ - `java.util.Collection` helper classes as well as custom subclasses for collection classes
+   - Lists: `LockableList`, `SortedList`, `ImmutableList`, `ListUtil`
+   - Maps: `MapUtil`
+   - Collections: `ComparatorUtil`, `CollectionUtil`
+ - Math and Number utility classes to easily manipulate all types of primitive data
+ - The `AlgebraicExpression` class which can read linear and quadratic expressions
+   - Such as `x^2 + 5x - 3` and allow the user to plug in values
+ - Super Light and Simple Neural Network implementation with full saving and loading capabilities
+ - **Continuous Integration** to test all types of functions and methods contained within this library
+   - Tests can be accessed over at [https://travis-ci.com/github/theKayani/hklib](https://travis-ci.com/github/theKayani/hklib)
+ - _Available with various builders or as a flat JAR file library through Maven Central_
+
 ## Usage
 
 #### Reference
-You can access the Javadoc over at https://javadoc.io/doc/com.thekayani/hklib
+You can access the Javadoc over at [https://javadoc.io/doc/com.thekayani/hklib](https://javadoc.io/doc/com.thekayani/hklib)
 
 The process to use it is very simple and are similar to each other.
-Add the repository, and add the library/dependency
+Simply add the library/dependency to your build file.
 
 ### Maven
 Add `hklib` dependency

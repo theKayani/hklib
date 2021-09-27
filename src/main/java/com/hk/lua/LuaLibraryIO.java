@@ -75,8 +75,19 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				if(!(args[0] instanceof LuaIOUserdata || args[0].isString()))
 					throw new LuaException("bad argument #1 to '" + name() + "' (expected FILE* object or string)");
 
-
-				throw new Error();
+				if(args[0].isString())
+				{
+					try
+					{
+						args[0] = new LuaReader(new FileReader(args[0].getString()));
+					}
+					catch (FileNotFoundException e)
+					{
+						return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+					}
+				}
+				interp.setExtra(EXKEY_STDIN, args[0]);
+				return LuaBoolean.TRUE;
 			}
 			else
 				return interp.getExtraLua(EXKEY_STDIN);
@@ -176,7 +187,27 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
-			return interp.getExtraLua(EXKEY_STDOUT);
+			if(args.length > 0)
+			{
+				if(!(args[0] instanceof LuaIOUserdata || args[0].isString()))
+					throw new LuaException("bad argument #1 to '" + name() + "' (expected FILE* object or string)");
+
+				if(args[0].isString())
+				{
+					try
+					{
+						args[0] = new LuaWriter(new FileWriter(args[0].getString()));
+					}
+					catch (IOException e)
+					{
+						return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+					}
+				}
+				interp.setExtra(EXKEY_STDOUT, args[0]);
+				return LuaBoolean.TRUE;
+			}
+			else
+				return interp.getExtraLua(EXKEY_STDOUT);
 		}
 	},
 	popen() {
@@ -210,7 +241,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
-			throw new Error();
+			throw new UnsupportedOperationException("Not in this version of Lua 5.3 (JVM)");
 		}
 	},
 	type() {
@@ -278,6 +309,25 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				env.interp.setExtra(EXKEY_STDOUT, stdout);
 			}
 			table.rawSet(new LuaString(name()), stdout);
+		}
+	},
+	stderr() {
+		@Override
+		public void accept(Environment env, LuaObject table)
+		{
+			LuaObject stderr = env.interp.getExtraLua(EXKEY_STDERR);
+			if(stderr.isNil())
+			{
+				stderr = new LuaWriter(IOUtil.nowhereWriter()) {
+					@Override
+					public LuaObject close()
+					{
+						return LuaNil.NIL;
+					}
+				};
+				env.interp.setExtra(EXKEY_STDERR, stderr);
+			}
+			table.rawSet(new LuaString(name()), stderr);
 		}
 	};
 
@@ -438,7 +488,6 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				}
 			}
 		});
-
 		ioMetatable.rawSet("write", new LuaFunction() {
 			@Override
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
@@ -456,6 +505,54 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				{
 					throw new LuaException(e.getLocalizedMessage());
 				}
+			}
+		});
+		ioMetatable.rawSet("seek", new LuaFunction() {
+			@Override
+			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			{
+				if (args.length < 1 || !(args[0] instanceof LuaIOUserdata))
+					throw new LuaException("bad argument #1 to 'seek' (expected FILE*)");
+
+				int mode = SEEKMODE_CUR;
+				long offset = 0;
+
+				if(args.length > 1)
+				{
+					if(!args[1].isString())
+						throw new LuaException("bad argument #2 to 'seek' (expected string)");
+
+					switch(args[1].getString())
+					{
+						case "set":
+							mode = SEEKMODE_SET;
+							break;
+						case "cur":
+							break;
+						case "end":
+							mode = SEEKMODE_END;
+							break;
+						default:
+							throw new LuaException("bad argument #2 to 'seek' (invalid mode)");
+					}
+					if(args.length > 2)
+					{
+						if(!args[2].isInteger())
+							throw new LuaException("bad argument #3 to 'seek' (expected integer)");
+
+						offset = args[2].getInteger();
+					}
+				}
+
+				try
+				{
+					offset = ((LuaIOUserdata) args[0]).seek(mode, offset);
+				}
+				catch (IOException e)
+				{
+					return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+				}
+				return LuaInteger.valueOf(offset);
 			}
 		});
 	}
@@ -561,4 +658,8 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 	public static final int SETVBUFMODE_NO = 1;
 	public static final int SETVBUFMODE_FULL = 2;
 	public static final int SETVBUFMODE_LINE = 3;
+
+	public static final int SEEKMODE_SET = 1;
+	public static final int SEEKMODE_CUR = 2;
+	public static final int SEEKMODE_END = 3;
 }

@@ -36,7 +36,7 @@ class LuaExpressions
 		}
 		else
 		{
-			List<LuaObject> vals = new ArrayList<>();
+			List<LuaObject> vals = new ArrayList<>(exps.length + 1);
 			int i;
 			ListUtil.addElements(vals, first);
 			

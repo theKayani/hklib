@@ -2,6 +2,7 @@ package com.hk.lua;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Formatter;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -113,7 +114,43 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
-			throw new Error();
+			Lua.checkArgs(name(), args, LuaType.STRING);
+			String str = args[0].getString();
+
+			Object arg;
+			Object[] newargs = new Object[args.length - 1];
+
+			for(int i = 1; i < args.length; i++)
+			{
+				switch (args[i].type())
+				{
+					case NIL:
+						arg = null;
+						break;
+					case BOOLEAN:
+						arg = args[i].getBoolean();
+						break;
+					case FLOAT:
+						arg = args[i].getFloat();
+						break;
+					case INTEGER:
+						arg = args[i].getInteger();
+						break;
+					case USERDATA:
+						if(args[i] instanceof LuaLibraryDate.LuaDateUserdata)
+							arg = args[i].getUserdata();
+						else
+							arg = args[i].getString();
+						break;
+					default:
+						arg = args[i].getString();
+						break;
+				}
+
+				newargs[i - 1] = arg;
+			}
+
+			return new LuaString(String.format(str, newargs));
 		}
 	},
 	gmatch() {

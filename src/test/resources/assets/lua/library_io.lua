@@ -1,6 +1,6 @@
 -- This magic line makes a `test` table available,
 -- and makes all the assertions available to your tests
-test = require('lunity')()
+test = require('lunity')('(my test suite)')
 
 function test:before()
     -- code here will be run before each test
@@ -8,7 +8,6 @@ function test:before()
 end
 
 function test:after()
-    -- run after each test, in case teardown is needed
 end
 
 -- Tests can have any name (other than 'before' or 'after')
@@ -31,6 +30,7 @@ end
 -- However, relying on the order of tests is an anti-pattern; don't do it
 function test:bar()
     assertType(some_utility(), "string")
+    -- TO BE CONTINUED...
 end
 
 local allPassed = test{

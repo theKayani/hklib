@@ -41,7 +41,10 @@ class LuaChunk extends LuaBlock
 			if(secondary)
 				throw ex;
 			else
-				return new LuaObject[] { LuaInteger.valueOf(ex.code) };			
+			{
+				interp.setExtra(Lua.EXIT_CODE, ex.code);
+				return null;
+			}
 		}
 		interp.env = env;
 		return res;
