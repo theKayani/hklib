@@ -7,7 +7,7 @@
 
 This is a collection of useful classes and functionalities that I found myself in need of over my years as a developer.
 
-##### Version: 1.0.8
+##### Version: 1.1.0
 
 ### Current Features
  - Extensive and customizable `LuaInterpreter` with strong Java integration
@@ -44,14 +44,14 @@ Add `hklib` dependency
     <dependency>
         <groupId>com.thekayani</groupId>
         <artifactId>hklib</artifactId>
-        <version>1.0.8</version>
+        <version>1.1.0</version>
     </dependency>
 
 ### Gradle
 Add `hklib` dependency
 
     dependencies {
-	        implementation 'com.thekayani:hklib:1.0.8'
+	        implementation 'com.thekayani:hklib:1.1.0'
 	}
 
 ### Flat `jar` File
