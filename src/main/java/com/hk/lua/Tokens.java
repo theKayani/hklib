@@ -1,5 +1,8 @@
 package com.hk.lua;
 
+/**
+ * Various token identifiers and flags
+ */
 public interface Tokens
 {
 	// VALUES

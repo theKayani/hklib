@@ -1,9 +1,6 @@
 package com.hk.lua;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Formatter;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -78,7 +75,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			int init = args.length > 2 ? (int) (args[2].getInteger() - 1) : 0;
 			while(init < 0)
 				init += str.length();
-			boolean plain = args.length > 3 ? args[3].getBoolean() : false;
+			boolean plain = args.length > 3 && args[3].getBoolean();
 			
 			if(plain)
 			{
@@ -241,8 +238,8 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			StringBuffer res = new StringBuffer();
 			Pattern ptn = toJavaPattern(pattern);
 			Matcher mtr = ptn.matcher(str);
-			LuaObject obj = null;
-			String r = null;
+			LuaObject obj;
+			String r;
 			while(mtr.find() && total++ < n)
 			{
 				switch(type)
@@ -433,16 +430,10 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 	
 	final LuaObject func;
 	
-	private LuaLibraryString()
+	LuaLibraryString()
 	{
 		func = Lua.newFunc(this);
 	}
-
-//	@Override
-//	public LuaObject call(LuaObject[] args)
-//	{
-//		throw new Error();
-//	}
 
 	/** {@inheritDoc} */
 	@Override
@@ -469,15 +460,17 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 		}
 	}
 
-	static final LuaTable stringMetatable = new LuaTable();
+	static final LuaTable stringMetatable;
 	
 	static
 	{
+		Map<LuaObject, LuaObject> map = new LinkedHashMap<>();
 		for(LuaLibraryString f : values())
 		{
 			String name = f.toString();
 			if(name != null && !name.trim().isEmpty())
-				stringMetatable.rawSet(new LuaString(name), f.func);
+				map.put(new LuaString(name), f.func);
 		}
+		stringMetatable = new LuaTable(Collections.unmodifiableMap(map));
 	}
 }

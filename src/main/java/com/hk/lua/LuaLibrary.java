@@ -3,7 +3,8 @@ package com.hk.lua;
 import com.hk.func.BiConsumer;
 
 /**
- * <p>LuaLibrary class.</p>
+ * <p>LuaLibrary objects wrap a set of library methods to be imported
+ * into a Lua environment.</p>
  *
  * @author theKayani
  */
@@ -48,27 +49,13 @@ public class LuaLibrary<T extends Enum<T> & BiConsumer<Environment, LuaObject>>
 		this.table  = table;
 		consumers = cls.getEnumConstants();
 	}
-	
+
 	/**
-	 * <p>importStandard.</p>
-	 *
-	 * @param interp a {@link com.hk.lua.LuaInterpreter} object
+	 * @deprecated {@link Lua#importStandard(LuaInterpreter)}
 	 */
+	@Deprecated
 	public static void importStandard(LuaInterpreter interp)
 	{
-		interp.importLib(BASIC);
-		interp.importLib(COROUTINE);
-//		interp.importLib(PACKAGE);
-		interp.importLib(STRING);
-//		interp.importLib(UTF8);
-		interp.importLib(TABLE);
-		interp.importLib(MATH);
-		interp.importLib(IO);
-		interp.importLib(OS);
-//		interp.importLib(DEGUB);
-
-		interp.importLib(JSON);
-		interp.importLib(HASH);
-		interp.importLib(DATE);
+		Lua.importStandard(interp);
 	}
 }

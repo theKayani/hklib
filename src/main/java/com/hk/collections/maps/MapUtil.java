@@ -10,18 +10,6 @@ import java.util.*;
 public class MapUtil
 {
 	/**
-	 * <p>newIndexMap.</p>
-	 *
-	 * @param <T> a T class
-	 * @return a {@link com.hk.collections.maps.IndexMap} object
-	 */
-	@Deprecated
-	public static <T> IndexMap<T> newIndexMap()
-	{
-		return new IndexMap<>();
-	}
-
-	/**
 	 * <p>newHashMap.</p>
 	 *
 	 * @param <T> a T class

@@ -16,7 +16,7 @@ public class LuaWriterTest extends TestCase
 	{
 		interp = Lua.reader(Assets.get("lua/test_stdout.lua"));
 
-		LuaLibrary.importStandard(interp);
+		Lua.importStandard(interp);
 
 		interp.execute();
 	}

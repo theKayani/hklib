@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
-import java.util.Arrays;
 
 public class LuaLibraryIOTest extends TestCase
 {
@@ -23,7 +22,7 @@ public class LuaLibraryIOTest extends TestCase
 
 		LuaInterpreter interp = Lua.reader(src);
 
-		LuaLibrary.importStandard(interp);
+		Lua.importStandard(interp);
 
 		Environment globals = interp.getGlobals();
 		globals.setVar("require", Lua.newFunc(new Lua.LuaMethod() {
@@ -42,7 +41,7 @@ public class LuaLibraryIOTest extends TestCase
 				}
 				catch (FileNotFoundException e)
 				{
-					return Lua.newVarargs(Lua.nil(), Lua.newString(e.getLocalizedMessage()));
+					return Lua.newVarargs(Lua.NIL, Lua.newString(e.getLocalizedMessage()));
 				}
 
 				return interp.require(arg, rdr);
@@ -52,7 +51,7 @@ public class LuaLibraryIOTest extends TestCase
 			@Override
 			public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 			{
-				return Lua.nil();
+				return Lua.NIL;
 			}
 		}));
 

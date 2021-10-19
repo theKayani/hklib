@@ -4,13 +4,10 @@ import com.hk.Assets;
 import com.hk.io.IOUtil;
 import junit.framework.TestCase;
 
-import javax.naming.RefAddr;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.nio.channels.SeekableByteChannel;
-import java.util.Arrays;
 
 public class LuaReaderTest extends TestCase
 {
@@ -21,7 +18,7 @@ public class LuaReaderTest extends TestCase
 	{
 		interp = Lua.reader(Assets.get("lua/test_stdin.lua"));
 
-		LuaLibrary.importStandard(interp);
+		Lua.importStandard(interp);
 
 		interp.execute();
 	}

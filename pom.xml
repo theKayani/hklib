@@ -10,7 +10,7 @@
 
 	<groupId>com.thekayani</groupId>
 	<artifactId>hklib</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>
 		This library contains various helper methods, classes, and features to enable rapid application development.
@@ -66,6 +66,9 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
+					<excludes>
+						<exclude>com/hk/Main.java</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -85,6 +88,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.3.0</version>
+				<configuration>
+					<excludePackageNames>com.hk</excludePackageNames>
+				</configuration>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>

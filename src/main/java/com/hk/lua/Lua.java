@@ -1,6 +1,5 @@
 package com.hk.lua;
 
-import java.io.CharArrayReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,19 +23,78 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * <p>Lua class.</p>
+ * <p>This class contains various utility methods for handling
+ * different types of Lua data and environments.</p>
  *
  * @author theKayani
  */
 public class Lua
 {
 	static final String STDIN = "<stdin>";
+	/**
+	 * Lua nil
+	 */
+	public static final LuaObject NIL = LuaNil.NIL;
+	/**
+	 * Lua boolean: true
+	 */
+	public static final LuaObject TRUE = LuaBoolean.TRUE;
+	/**
+	 * Lua boolean: false
+	 */
+	public static final LuaObject FALSE = LuaBoolean.FALSE;
+	/**
+	 * Lua integer: 0
+	 */
+	public static final LuaObject ZERO = LuaInteger.ZERO;
+	/**
+	 * Lua integer: 1
+	 */
+	public static final LuaObject ONE = LuaInteger.ONE;
+	/**
+	 * Lua integer: -1
+	 */
+	public static final LuaObject NEG_ONE = LuaInteger.NEG_ONE;
+	/**
+	 * Lua float: NaN
+	 */
+	public static final LuaObject NaN = LuaFloat.NaN;
+	/**
+	 * Lua float: max value
+	 */
+	public static final LuaObject HUGE = LuaFloat.HUGE;
+	/**
+	 * Lua float: pi
+	 */
+	public static final LuaObject PI = LuaFloat.PI;
+	/**
+	 * Lua float: inf
+	 */
+	public static final LuaObject POSITIVE_INFINITY = LuaFloat.POSITIVE_INFINITY;
+	/**
+	 * Lua float: -inf
+	 */
+	public static final LuaObject NEGATIVE_INFINITY = LuaFloat.NEGATIVE_INFINITY;
 
 	/**
-	 * <p>factory.</p>
+	 * <p>Construct a {@link LuaFactory} from a reader using the
+	 * specified parameter as the source.</p>
 	 *
-	 * @param rdr a {@link java.io.Reader} object
-	 * @param source a {@link java.lang.String} object
+	 * <p>Lua factories are pre-compiled chunks of Lua code. Instead
+	 * of having to wrap a reader with a {@link LuaInterpreter}
+	 * everytime, you can create a factory with the reader and use
+	 * the factory to provide new {@link LuaInterpreter} objects.</p>
+	 *
+	 * <p>Take this example, lets say we have a factory:</p>
+	 * <code>
+	 *     LuaFactory factory = Lua.factory("return testing()");<br>
+	 *     factory.addLibrary(LuaLibrary.BASIC);<br>
+	 * </code>
+	 * <p>We can then create two separate interpreters with different
+	 * functionalities upon calling the <code>testing</code> method.</p>
+	 *
+	 * @param rdr Lua code
+	 * @param source Source of code for error messages
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 */
 	public static LuaFactory factory(Reader rdr, String source)
@@ -45,9 +103,10 @@ public class Lua
 	}
 
 	/**
-	 * <p>factory.</p>
+	 * <p>Construct a {@link LuaFactory} from a reader using STDIN as
+	 * the source.</p>
 	 *
-	 * @param rdr a {@link java.io.Reader} object
+	 * @param rdr Lua code
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 */
 	public static LuaFactory factory(Reader rdr)
@@ -56,9 +115,10 @@ public class Lua
 	}
 
 	/**
-	 * <p>factory.</p>
+	 * <p>Construct a {@link LuaFactory} from a string using STDIN as
+	 * the source.</p>
 	 *
-	 * @param str a {@link java.lang.String} object
+	 * @param str Lua code
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 */
 	public static LuaFactory factory(String str)
@@ -67,20 +127,10 @@ public class Lua
 	}
 
 	/**
-	 * <p>factory.</p>
+	 * <p>Construct a {@link LuaFactory} from a file using the file
+	 * name as the source. Uses the default charset to read the file.</p>
 	 *
-	 * @param array an array of {@link char} objects
-	 * @return a {@link com.hk.lua.LuaFactory} object
-	 */
-	public static LuaFactory factory(char[] array)
-	{
-		return new LuaFactory(new CharArrayReader(array), STDIN);
-	}
-
-	/**
-	 * <p>factory.</p>
-	 *
-	 * @param file a {@link java.io.File} object
+	 * @param file Lua code source file
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
@@ -90,10 +140,12 @@ public class Lua
 	}
 
 	/**
-	 * <p>factory.</p>
+	 * <p>Construct a {@link LuaFactory} from a file using the file
+	 * name as the source. Specify a charset to use when reading
+	 * characters from the file.</p>
 	 *
-	 * @param file a {@link java.io.File} object
-	 * @param charset a {@link java.nio.charset.Charset} object
+	 * @param file Lua code source file
+	 * @param charset to use when reading the file
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
@@ -103,9 +155,11 @@ public class Lua
 	}
 
 	/**
-	 * <p>factory.</p>
+	 * <p>Construct a {@link LuaFactory} from an input stream using
+	 * STDIN as the source. The input stream is read using the
+	 * default charset.</p>
 	 *
-	 * @param input a {@link java.io.InputStream} object
+	 * @param input Lua code
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 */
 	public static LuaFactory factory(InputStream input)
@@ -114,10 +168,12 @@ public class Lua
 	}
 
 	/**
-	 * <p>factory.</p>
+	 * <p>Construct a {@link LuaFactory} from an input stream using
+	 * STDIN as the source. Specify a charset to use when reading
+	 * characters from the stream.</p>
 	 *
-	 * @param input a {@link java.io.InputStream} object
-	 * @param charset a {@link java.nio.charset.Charset} object
+	 * @param input Lua code
+	 * @param charset to use when reading the stream
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 */
 	public static LuaFactory factory(InputStream input, Charset charset)
@@ -126,9 +182,10 @@ public class Lua
 	}
 
 	/**
-	 * <p>factory.</p>
+	 * <p>Construct a {@link LuaFactory} from a URL as the source for
+	 * the Lua code.</p>
 	 *
-	 * @param url a {@link java.net.URL} object
+	 * @param url containing Lua code
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 * @throws java.io.IOException if any.
 	 */
@@ -138,7 +195,9 @@ public class Lua
 	}
 
 	/**
-	 * <p>interpreter.</p>
+	 * <p>Construct a {@link LuaInterpreter} using STDIN as the source.</p>
+	 * <p>This interpreter can be used to read chunks of Lua code in
+	 * realtime.</p>
 	 *
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
@@ -148,9 +207,12 @@ public class Lua
 	}
 
 	/**
-	 * <p>interpreter.</p>
+	 * <p>Construct a {@link LuaInterpreter} using the specified
+	 * parameter.</p>
+	 * <p>This interpreter can be used to read chunks of Lua code in
+	 * realtime.</p>
 	 *
-	 * @param source a {@link java.lang.String} object
+	 * @param source Source of code for error messages
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
 	public static LuaInterpreter interpreter(String source)
@@ -159,10 +221,58 @@ public class Lua
 	}
 	
 	/**
-	 * <p>reader.</p>
+	 * <p>Construct a {@link LuaInterpreter} from a reader using the
+	 * specified parameter as the source.</p>
 	 *
-	 * @param rdr a {@link java.io.Reader} object
-	 * @param source a {@link java.lang.String} object
+	 * <p>Lua interpreter objects can be used to execute arbitrary
+	 * Lua code within an enclosed environment. Let's say we have a
+	 * file called <code>main.lua</code> with the following contents:</p>
+	 * <code>
+	 *     print("Hello World!")<br>
+	 *     local a = 1<br>
+	 *     local b = a + a<br>
+	 *     local c = a + b * b<br>
+	 *     return globalVariable + b + c * c<br>
+	 * </code>
+	 * <br>
+	 * <p>Take the following code as an example:</p>
+	 * <code>
+	 *     LuaInterpreter interp = Lua.reader(new File("main.lua"));<br>
+	 *     interp.compile();<br>
+	 *     interp.importLibrary(LuaLibrary.BASIC);<br>
+	 * </code>
+	 * <p>The first line opens a new interpreter using the given file.
+	 * The second line parses the file into an executable Lua chunk.
+	 * The third line allows us to import various methods, fields,
+	 * and functions into our Lua environment. {@link LuaLibraryBasic}
+	 * contains the code revolving around the standard library in Lua
+	 * 5.3. By importing it, we have access to the <code>print</code>
+	 * method which prints its arguments to the console.</p>
+	 *
+	 * <p>Before we can run the lua code without errors, we have to
+	 * supply <code>globalVariable</code>, or else it will remain
+	 * as <code>nil</code>. We can achieve this using the following:</p>
+	 * <code>
+	 *     Environment env = interp.getGlobals();<br>
+	 *     env.setVar("globalVariable", Lua.newNumber(2));<br>
+	 * </code>
+	 *
+	 * <p>This is how we can inject variables and data into our Lua
+	 * environment for our code to manipulate.</p>
+	 *
+	 * <p>To execute the following code and collect the result:</p>
+	 * <code>
+	 *     Object result = interp.execute(...);<br>
+	 * </code>
+	 * <p>The <code>...</code> can be Lua objects which will be
+	 * passed into the <code>...</code> variable in the lua code.</p>
+	 *
+	 * <p>This covers the basics of how the {@link LuaInterpreter}
+	 * can be used to execute arbitrary Lua code which can, in turn,
+	 * be wired into Java methods, functions, and data.</p>
+	 *
+	 * @param rdr Lua code
+	 * @param source Source of code for error messages
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
 	public static LuaInterpreter reader(Reader rdr, String source)
@@ -171,9 +281,10 @@ public class Lua
 	}
 	
 	/**
-	 * <p>reader.</p>
+	 * <p>Construct a {@link LuaInterpreter} from a reader using
+	 * STDIN as the source.</p>
 	 *
-	 * @param rdr a {@link java.io.Reader} object
+	 * @param rdr Lua code
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
 	public static LuaInterpreter reader(Reader rdr)
@@ -182,9 +293,10 @@ public class Lua
 	}
 
 	/**
-	 * <p>reader.</p>
+	 * <p>Construct a {@link LuaInterpreter} from a string using
+	 * STDIN as the source.</p>
 	 *
-	 * @param str a {@link java.lang.String} object
+	 * @param str Lua code
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
 	public static LuaInterpreter reader(String str)
@@ -193,20 +305,11 @@ public class Lua
 	}
 
 	/**
-	 * <p>reader.</p>
+	 * <p>Construct a {@link LuaInterpreter} from a file using the
+	 * file name as the source. Uses the default charset to read the
+	 * file.</p>
 	 *
-	 * @param array an array of {@link char} objects
-	 * @return a {@link com.hk.lua.LuaInterpreter} object
-	 */
-	public static LuaInterpreter reader(char[] array)
-	{
-		return new LuaInterpreter(new CharArrayReader(array), STDIN);
-	}
-
-	/**
-	 * <p>reader.</p>
-	 *
-	 * @param file a {@link java.io.File} object
+	 * @param file Lua code source file
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
@@ -216,10 +319,12 @@ public class Lua
 	}
 
 	/**
-	 * <p>reader.</p>
+	 * <p>Construct a {@link LuaInterpreter} from a file using the
+	 * file name as the source. Specify a charset to use when reading
+	 * characters from the file.</p>
 	 *
-	 * @param file a {@link java.io.File} object
-	 * @param charset a {@link java.nio.charset.Charset} object
+	 * @param file Lua code source file
+	 * @param charset to use when reading the file
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
@@ -229,9 +334,11 @@ public class Lua
 	}
 
 	/**
-	 * <p>reader.</p>
+	 * <p>Construct a {@link LuaInterpreter} from a stream using the
+	 * STDIN as the source. Uses the default charset to read the
+	 * stream.</p>
 	 *
-	 * @param input a {@link java.io.InputStream} object
+	 * @param input Lua code
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
 	public static LuaInterpreter reader(InputStream input)
@@ -240,10 +347,12 @@ public class Lua
 	}
 
 	/**
-	 * <p>reader.</p>
+	 * <p>Construct a {@link LuaInterpreter} from a stream using the
+	 * STDIN as the source. Specify a charset to use when reading
+	 * characters from the stream.</p>
 	 *
-	 * @param input a {@link java.io.InputStream} object
-	 * @param charset a {@link java.nio.charset.Charset} object
+	 * @param input Lua code
+	 * @param charset to use when reading the stream
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
 	public static LuaInterpreter reader(InputStream input, Charset charset)
@@ -252,9 +361,10 @@ public class Lua
 	}
 
 	/**
-	 * <p>reader.</p>
+	 * <p>Construct a {@link LuaInterpreter} from a URL as the source for
+	 * the Lua code.</p>
 	 *
-	 * @param url a {@link java.net.URL} object
+	 * @param url containing Lua code
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 * @throws java.io.IOException if any.
 	 */
@@ -262,9 +372,100 @@ public class Lua
 	{
 		return new LuaInterpreter(new InputStreamReader(url.openStream()), url.getFile());
 	}
+
+	/**
+	 * Import the standard <code>Lua 5.3</code> libraries as well as
+	 * three additional libraries regarding hashing, JSON, and dates.
+	 * @param interp The environment to import the libraries into
+	 */
+	public static void importStandard(LuaInterpreter interp)
+	{
+		interp.importLib(LuaLibrary.BASIC);
+		interp.importLib(LuaLibrary.COROUTINE);
+//		interp.importLib(LuaLibrary.PACKAGE);
+		interp.importLib(LuaLibrary.STRING);
+//		interp.importLib(LuaLibrary.UTF8);
+		interp.importLib(LuaLibrary.TABLE);
+		interp.importLib(LuaLibrary.MATH);
+		interp.importLib(LuaLibrary.IO);
+		interp.importLib(LuaLibrary.OS);
+//		interp.importLib(LuaLibrary.DEGUB);
+
+		interp.importLib(LuaLibrary.JSON);
+		interp.importLib(LuaLibrary.HASH);
+		interp.importLib(LuaLibrary.DATE);
+	}
+
+	/**
+	 * <p>Import the standard <code>Lua 5.3</code> libraries as well as
+	 * three additional libraries regarding hashing, JSON, and dates.</p>
+	 * <p>Once these are imported into the factory, they don't need to
+	 * be imported into the retrieved interpreter object.</p>
+	 *
+	 * @param factory The environment to import the libraries into
+	 */
+	public static void importStandard(LuaFactory factory)
+	{
+		factory.addLibrary(LuaLibrary.BASIC);
+		factory.addLibrary(LuaLibrary.COROUTINE);
+//		factory.addLibrary(LuaLibrary.PACKAGE);
+		factory.addLibrary(LuaLibrary.STRING);
+//		factory.addLibrary(LuaLibrary.UTF8);
+		factory.addLibrary(LuaLibrary.TABLE);
+		factory.addLibrary(LuaLibrary.MATH);
+		factory.addLibrary(LuaLibrary.IO);
+		factory.addLibrary(LuaLibrary.OS);
+//		factory.addLibrary(LuaLibrary.DEGUB);
+
+		factory.addLibrary(LuaLibrary.JSON);
+		factory.addLibrary(LuaLibrary.HASH);
+		factory.addLibrary(LuaLibrary.DATE);
+	}
 	
 	/**
-	 * <p>newLuaObject.</p>
+	 * <p>Convert, or attempt to convert, the given object into the Lua object
+	 * equivalent. Here's a quick overview of how conversions happen:</p>
+	 * <ul>
+	 *   <li>
+	 *     <code>null</code> returns Lua <code>nil</code>
+	 *   </li>
+	 *   <li>
+	 *     <code>LuaObject</code> returns itself
+	 *   </li>
+	 *   <li>
+	 *       <code>{@link String}</code>, <code>{@link CharSequence}</code>,
+	 *       and <code>{@link Character}</code> return a Lua string
+	 *   </li>
+	 *   <li>
+	 *       <code>{@link Byte}</code>, <code>{@link Short}</code>,
+	 *       <code>{@link Integer}</code>, and <code>{@link Long}</code>
+	 *       return a Lua integer
+	 *   </li>
+	 *   <li>
+	 *       <code>{@link Float}</code> and <code>{@link Double}</code>
+	 *       return a Lua float
+	 *   </li>
+	 *   <li>
+	 *       <code>Boolean</code> return a Lua boolean
+	 *   </li>
+	 *   <li>
+	 *       <code>Object[]</code> return a lua varargs (see {@link #newVarargs})
+	 *   </li>
+	 *   <li>
+	 *       empty Java array return Lua <code>nil</code>
+	 *   </li>
+	 *   <li>
+	 *       {@link java.util.Map} returns a Lua table
+	 *   </li>
+	 *   <li>
+	 *       {@link java.lang.Iterable} return a Lua sequence
+	 *   </li>
+	 *   <li>
+	 *       otherwise <i>exception</i>
+	 *   </li>
+	 * </ul>
+	 * <p>Array and collection values are converted into Lua objects
+	 * using the same method.</p>
 	 *
 	 * @param o a {@link java.lang.Object} object
 	 * @return a {@link com.hk.lua.LuaObject} object
@@ -275,10 +476,8 @@ public class Lua
 			return LuaNil.NIL;
 		else if(o instanceof LuaObject)
 			return (LuaObject) o;
-		else if(o instanceof CharSequence)
-			return new LuaString(((CharSequence) o).toString());
-		else if(o instanceof Character)
-			return new LuaString(String.valueOf((Character) o));
+		else if(o instanceof CharSequence || o instanceof Character)
+			return new LuaString(String.valueOf(o));
 		else if(o instanceof Byte || o instanceof Short || o instanceof Integer || o instanceof Long)
 			return newNumber(((Number) o).longValue());
 		else if(o instanceof Number)
@@ -327,10 +526,12 @@ public class Lua
 	}
 	
 	/**
-	 * <p>newBoolean.</p>
+	 * <p>Convert the specified parameter into a Lua boolean.</p>
+	 * <p>Calling {@link LuaObject#isBoolean()} on the result will
+	 * return true.</p>
 	 *
 	 * @param value a boolean
-	 * @return a {@link com.hk.lua.LuaObject} object
+	 * @return a {@link com.hk.lua.LuaObject} boolean object
 	 */
 	public static LuaObject newBoolean(boolean value)
 	{
@@ -338,7 +539,10 @@ public class Lua
 	}
 	
 	/**
-	 * <p>newString.</p>
+	 * <p>Convert the specified parameter into a Lua string.</p>
+	 * <p>Calling {@link LuaObject#isString()} on the result will
+	 * return true. Unless the parameter is null, then the result is
+	 * <code>nil</code>.</p>
 	 *
 	 * @param cs a {@link java.lang.CharSequence} object
 	 * @return a {@link com.hk.lua.LuaObject} object
@@ -349,7 +553,9 @@ public class Lua
 	}
 	
 	/**
-	 * <p>newString.</p>
+	 * <p>Convert the specified parameter into a Lua string.</p>
+	 * <p>Calling {@link LuaObject#isString()} on the result will
+	 * return true.</p>
 	 *
 	 * @param c a char
 	 * @return a {@link com.hk.lua.LuaObject} object
@@ -360,18 +566,24 @@ public class Lua
 	}
 	
 	/**
-	 * <p>newString.</p>
+	 * <p>Convert the specified parameter into a Lua string.</p>
+	 * <p>Calling {@link LuaObject#isString()} on the result will
+	 * return true. Unless the parameter is null, then the result is
+	 * <code>nil</code>.</p>
 	 *
 	 * @param cs an array of {@link char} objects
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
 	public static LuaObject newString(char[] cs)
 	{
-		return newString(new String(cs));
+		return cs == null ? LuaNil.NIL : new LuaString(new String(cs));
 	}
 	
 	/**
-	 * <p>newString.</p>
+	 * <p>Convert the specified parameter into a Lua string.</p>
+	 * <p>Calling {@link LuaObject#isString()} on the result will
+	 * return true. Unless the parameter is null, then the result is
+	 * <code>nil</code>.</p>
 	 *
 	 * @param str a {@link java.lang.String} object
 	 * @return a {@link com.hk.lua.LuaObject} object
@@ -382,7 +594,10 @@ public class Lua
 	}
 	
 	/**
-	 * <p>newNumber.</p>
+	 * <p>Convert the specified parameter into a Lua float.</p>
+	 * <p>Calling {@link LuaObject#isNumber()} on the result will
+	 * return true but {@link LuaObject#isInteger()} will return
+	 * false.</p>
 	 *
 	 * @param value a double
 	 * @return a {@link com.hk.lua.LuaObject} object
@@ -393,7 +608,9 @@ public class Lua
 	}
 	
 	/**
-	 * <p>newNumber.</p>
+	 * <p>Convert the specified parameter into a Lua integer.</p>
+	 * <p>Calling {@link LuaObject#isNumber()} or
+	 * {@link LuaObject#isInteger()} on the result will return true.</p>
 	 *
 	 * @param value a long
 	 * @return a {@link com.hk.lua.LuaObject} object
@@ -404,8 +621,13 @@ public class Lua
 	}
 	
 	/**
-	 * <p>newVarargs.</p>
+	 * <p>Convert the specified parameters into a Lua args object.</p>
+	 * <p>This is similar to returning multiple values from a lua
+	 * function. If directly used, only the first value matters, but
+	 * this object can be expanded to include the rest of the
+	 * arguments. See Lua manual.</p>
 	 *
+	 * @see <a href="https://www.lua.org/pil/5.2.html">https://www.lua.org/pil/5.2.html</a>
 	 * @param args a {@link com.hk.lua.LuaObject} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
@@ -415,8 +637,12 @@ public class Lua
 	}
 	
 	/**
-	 * <p>getVarargs.</p>
-	 *
+	 * <p>Convert this potential LuaObject into an array of objects.</p>
+	 * <p>If the parameter is a Lua varargs object, then the result
+	 * array is the objects stored in this variable argument object.</p>
+	 * <p>If the parameter is NOT a Lua varargs object, then it is
+	 * returned in a one-length/single-object array.</p>
+	 * @see <a href="https://www.lua.org/pil/5.2.html">https://www.lua.org/pil/5.2.html</a>
 	 * @param o a {@link com.hk.lua.LuaObject} object
 	 * @return an array of {@link com.hk.lua.LuaObject} objects
 	 */
@@ -429,7 +655,15 @@ public class Lua
 	}
 	
 	/**
-	 * <p>newTable.</p>
+	 * <p>Convert an empty map into a new Lua table. The internal map
+	 * is a {@link java.util.LinkedHashMap}.</p>
+	 * <p>Using the {@link LuaObject#rawSet} and {@link LuaObject#rawGet}
+	 * methods, you can manipulate the data in the map, using the Lua
+	 * object. On the other hand, the {@link LuaObject#getIndex} and
+	 * {@link LuaObject#setIndex} methods respect the metatable and
+	 * require the interpreter.</p>
+	 * <p>Calling {@link LuaObject#isTable()} on the result will
+	 * return true.</p>
 	 *
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
@@ -439,7 +673,10 @@ public class Lua
 	}
 	
 	/**
-	 * <p>newTable.</p>
+	 * <p>Convert a given map into a new Lua table. The map is
+	 * wrapped in a {@link java.util.LinkedHashMap} first.</p>
+	 * <p>Calling {@link LuaObject#isTable()} on the result will
+	 * return true.</p>
 	 *
 	 * @param map a {@link java.util.Map} object
 	 * @return a {@link com.hk.lua.LuaObject} object
@@ -450,7 +687,10 @@ public class Lua
 	}
 	
 	/**
-	 * <p>newTable.</p>
+	 * <p>Convert a given iterable into a new Lua sequence. The
+	 * indices are incremented by one since arrays start at 1 in Lua.</p>
+	 * <p>Calling {@link LuaObject#isTable()} on the result will
+	 * return true.</p>
 	 *
 	 * @param iterable a {@link java.lang.Iterable} object
 	 * @return a {@link com.hk.lua.LuaObject} object
@@ -460,19 +700,35 @@ public class Lua
 		LuaObject tbl = new LuaTable();
 		LuaObject o;
 		long i = 1;
-		
-		Iterator<LuaObject> itr = iterable.iterator();
-		while(itr.hasNext())
-			tbl.rawSet(i++, (o = itr.next()) == null ? LuaNil.NIL : o);
+
+		for (LuaObject luaObject : iterable)
+			tbl.rawSet(i++, (o = luaObject) == null ? LuaNil.NIL : o);
 		
 		return tbl;
 	}
 	
 	/**
-	 * <p>newJavaFunc.</p>
+	 * <p>Convert a Java function into a Lua function. This operation
+	 * uses Java Reflection. Take a look at the following example:</p>
+	 * <code>
+	 *     public class MathHelp<br>
+	 *     {<br>
+	 *     &nbsp;&nbsp;public static double random(LuaObject[] args)<br>
+	 *     &nbsp;&nbsp;{<br>
+	 *     &nbsp;&nbsp;&nbsp;&nbsp;return Math.random();<br>
+	 *     &nbsp;&nbsp;}<br>
+	 *     }<br>
+	 * </code>
+	 * <p>We can create a Lua function wrapping 'random(args)' using
+	 * this method. Here's what that would look like:</p>
+	 * <code>
+	 *     LuaObject function = Lua.newJavaFunc(MathHelp.class, "random");<br>
+	 * </code>
+	 * <p>This isn't generally recommended since it can be quite slow
+	 * because of Java Reflection but if necessary, it is available.</p>
 	 *
-	 * @param cls a {@link java.lang.Class} object
-	 * @param methodName a {@link java.lang.String} object
+	 * @param cls that contains the method
+	 * @param methodName to wrap in a Lua function
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
 	public static LuaObject newJavaFunc(Class<?> cls, String methodName)
@@ -481,8 +737,10 @@ public class Lua
 	}
 	
 	/**
-	 * <p>newJavaFunc.</p>
+	 * <p>Convert a Java function into a Lua function. This operation
+	 * uses Java Reflection.</p>
 	 *
+	 * @see #newJavaFunc(Class, String)
 	 * @param o a {@link java.lang.Object} object
 	 * @param methodName a {@link java.lang.String} object
 	 * @return a {@link com.hk.lua.LuaObject} object
@@ -495,21 +753,24 @@ public class Lua
 	private static LuaObject newJavaFunc(Object o, Class<?> cls, String methodName)
 	{
 		Method[] ms = cls.getDeclaredMethods();
-		for(int i = 0; i < ms.length; i++)
+		for (Method m : ms)
 		{
-			if(ms[i].getName().equals(methodName))
+			if (m.getName().equals(methodName))
 			{
-				if(ms[i].isAnnotationPresent(LuaParameters.class))
-					return new LuaJavaFunction.LuaJavaArgFunction(ms[i], o);
+				if (m.isAnnotationPresent(LuaParameters.class))
+					return new LuaJavaFunction.LuaJavaArgFunction(m, o);
 				else
-					return new LuaJavaFunction(ms[i], o);
+					return new LuaJavaFunction(m, o);
 			}
 		}
 		return LuaNil.NIL;
 	}
 	
 	/**
-	 * <p>newFunc.</p>
+	 * <p>Convert a {@link LuaMethod} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
 	 *
 	 * @param method a {@link com.hk.lua.Lua.LuaMethod} object
 	 * @return a {@link com.hk.lua.LuaObject} object
@@ -528,36 +789,23 @@ public class Lua
 	}
 	
 	/**
-	 * <p>nil.</p>
+	 * <p>Lua <code>nil</code></p>
+	 * <p>Calling {@link LuaObject#isNil()} on the result will
+	 * return true.</p>
 	 *
 	 * @return a {@link com.hk.lua.LuaObject} object
+	 * @deprecated see #NIL
 	 */
+	@Deprecated
 	public static LuaObject nil()
 	{
 		return LuaNil.NIL;
 	}
-	
+
 	/**
-	 * <p>check.</p>
-	 *
-	 * @param method a {@link java.lang.String} object
-	 * @param args an array of {@link com.hk.lua.LuaObject} objects
-	 * @param types an array of {@link com.hk.lua.LuaType} objects
-	 * @return an array of {@link com.hk.lua.LuaObject} objects
-	 */
-	public static LuaObject[] check(String method, LuaObject[] args, LuaType[] types)
-	{
-		for(int i = 0; i < types.length; i++)
-		{
-			if(i == args.length || !types[i].applies(args[i].type()))
-				throw new LuaException("bad argument #" + (i + 1) + " to '" + method + "' (" + types[i].luaName + " expected)");
-		}
-		
-		return args;
-	}
-	
-	/**
-	 * <p>checkArgs.</p>
+	 * <p>This method checks the arguments array against the types
+	 * array to assure they match up. Otherwise, a "bad argument" lua
+	 * exception is thrown.</p>
 	 *
 	 * @param method a {@link java.lang.String} object
 	 * @param args an array of {@link com.hk.lua.LuaObject} objects
@@ -565,31 +813,66 @@ public class Lua
 	 */
 	public static void checkArgs(String method, LuaObject[] args, LuaType... types)
 	{
-		check(method, args, types);
-	}
-	
-	/**
-	 * <p>checkArgs.</p>
-	 *
-	 * @param method a {@link java.lang.String} object
-	 * @param types an array of {@link com.hk.lua.LuaType} objects
-	 * @param args a {@link com.hk.lua.LuaObject} object
-	 */
-	public static void checkArgs(String method, LuaType[] types, LuaObject... args)
-	{
-		check(method, args, types);
+		for(int i = 0; i < types.length; i++)
+		{
+			if(i == args.length || !types[i].applies(args[i].type()))
+				throw new LuaException("bad argument #" + (i + 1) + " to '" + method + "' (" + types[i].luaName + " expected)");
+		}
 	}
 
+	/**
+	 * @deprecated see {@link #checkArgs(String, LuaObject[], LuaType...)}
+	 */
+	@Deprecated
+	public static void checkArgs(String method, LuaType[] types, LuaObject... args)
+	{
+		checkArgs(method, args, types);
+	}
+
+	/**
+	 * <p>Annotate a Java method with this class to automatically
+	 * assure parameters being passed to the annotated method. Take
+	 * a look at the following example:</p>
+	 * <code>
+	 *     public class MathHelp<br>
+	 *     {<br>
+	 *     &nbsp;&nbsp;{@literal @}LuaParameter(LuaType.NUMBER, LuaType.NUMBER)<br>
+	 *     &nbsp;&nbsp;public static double atan2(LuaObject y, LuaObject x)<br>
+	 *     &nbsp;&nbsp;{<br>
+	 *     &nbsp;&nbsp;&nbsp;&nbsp;return Math.atan2(y.getFloat(), x.getFloat());<br>
+	 *     &nbsp;&nbsp;}<br>
+	 *     }<br>
+	 * </code>
+	 * <p>This allows us to have a set number of arguments and to
+	 * ensure the type of object being passed. Using the
+	 * {@link Lua#newJavaFunc} method, we can retrieve a Lua function
+	 * that wraps the method above!</p>
+	 */
 	@Target(ElementType.METHOD)
 	@Retention(RetentionPolicy.RUNTIME)
-	public static @interface LuaParameters
+	public @interface LuaParameters
 	{
+		/**
+		 * @return The types of arguments that should be accepted
+		 */
 		LuaType[] value();
 	}
-	
+
+	/**
+	 * This interface can be passes into {@link #newFunc} to return
+	 * a {@link LuaObject} as an executable Lua function.
+	 */
 	public interface LuaMethod
 	{
-		abstract LuaObject call(LuaInterpreter interp, LuaObject[] args);
+		/**
+		 * <p>Run a Java method, or function, wrapped as a LuaObject</p>
+		 *
+		 * @param interp the interpreter executing this code
+		 * @param args the arguments passed during execution
+		 * @return the result of the execution, if is null, will be
+		 * converted into Lua nil.
+		 */
+		LuaObject call(LuaInterpreter interp, LuaObject[] args);
 	}
 
 	static abstract class LuaValue implements Tokens
@@ -600,5 +883,14 @@ public class Lua
 	private Lua()
 	{}
 
+	/**
+	 * <p>If the {@link LuaInterpreter} was exited using the <code>exit</code>
+	 * method, then the resulting exit code will be placed in the
+	 * extra data of the interpreter. The exit code can be retrieved
+	 * using this line:</p>
+	 * <code>
+	 *     interpreter.getExtra(Lua.EXIT_CODE);
+	 * </code>
+	 */
 	public static final String EXIT_CODE = "interpreter.exit";
 }

@@ -4,12 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>Environment class.</p>
+ * <p>This class encapsulates a Lua environment. A Lua environment
+ * consists of global and local variables which are all accessible
+ * through this utility.</p>
  *
  * @author theKayani
  */
 public class Environment
 {
+	/**
+	 * The interpreter this environment is currently running under.
+	 */
 	public final LuaInterpreter interp;
 	final LuaTable lua_G;
 	LuaObject varargs;
@@ -41,10 +46,13 @@ public class Environment
 	}
 	
 	/**
-	 * <p>setVar.</p>
+	 * <p>This method sets a value to a variable. If the variable is
+	 * local, this will reassign the local variable. If the variable
+	 * is global or doesn't exist yet, this will assign the global
+	 * variable.</p>
 	 *
-	 * @param name a {@link java.lang.String} object
-	 * @param value a {@link com.hk.lua.LuaObject} object
+	 * @param name name of the variable
+	 * @param value value of the variable
 	 */
 	public void setVar(String name, LuaObject value)
 	{
@@ -69,7 +77,19 @@ public class Environment
 			}
 		}
 	}
-	
+
+	/**
+	 * <p>This method explicitly sets the local variable with the
+	 * given name to the given value. If the local variable already
+	 * exists, it will reassign the local variable. If the local
+	 * variable doesn't exist, it will assign the value to the local
+	 * variable.</p>
+	 * <p>If there is a global variable with this name, it is left
+	 * untouched. This method does not affect the global space.</p>
+	 *
+	 * @param name name of the variable to assign
+	 * @param value value of the variable to assign
+	 */
 	public void setLocal(String name, LuaObject value)
 	{
 		if(locals.containsKey(name))
@@ -79,10 +99,14 @@ public class Environment
 	}
 	
 	/**
-	 * <p>getVar.</p>
+	 * <p>Retrieve the value of the variable under the specified
+	 * name. If this variable exists in the local space, this method
+	 * will return the local value. Otherwise it will return the
+	 * global value if one exists. If one does not exist in the
+	 * global space, this will return <code>nil</code>.</p>
 	 *
-	 * @param name a {@link java.lang.String} object
-	 * @return a {@link com.hk.lua.LuaObject} object
+	 * @param name name of the variable to retrieve
+	 * @return value of the variable specified
 	 */
 	public LuaObject getVar(String name)
 	{
@@ -97,10 +121,10 @@ public class Environment
 	}
 	
 	/**
-	 * <p>isLocal.</p>
+	 * <p>This checks whether the variable exists in the local space.</p>
 	 *
-	 * @param name a {@link java.lang.String} object
-	 * @return a boolean
+	 * @param name name of the variable to check
+	 * @return whether the specific variable exists in the local space
 	 */
 	public boolean isLocal(String name)
 	{
@@ -123,7 +147,7 @@ public class Environment
 		}
 		
 		@Override
-		public void doNewIndex(LuaInterpreter interp, LuaObject key, LuaObject value)
+		void doNewIndex(LuaInterpreter interp, LuaObject key, LuaObject value)
 		{
 //			super.doNewIndex(key, value);
 			if(key.isString())

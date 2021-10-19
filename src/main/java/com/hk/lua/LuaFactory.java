@@ -8,7 +8,16 @@ import java.util.List;
 import com.hk.func.Consumer;
 
 /**
- * <p>LuaFactory class.</p>
+ * <p>Lua factories can be used to create various
+ * {@link LuaInterpreter} objects without the need of recompiling.
+ * This can be created using any of the {@link Lua#factory} methods.</p>
+ * <p>Once the factory is created, {@link #compile()} can be used to
+ * parse the reader and close it. Once compiled, the {@link #build()}
+ * method retrieves a new LuaInterpreter every time.</p>
+ * <p>Prior to building any interpreters, handlers can be attached
+ * which are called before the interpreter is returned by
+ * {@link #build()}. Libraries can also be added which would be
+ * injected into each interpreter built.</p>
  *
  * @author theKayani
  */
@@ -30,9 +39,11 @@ public class LuaFactory
 	}
 	
 	/**
-	 * <p>addLibrary.</p>
+	 * <p>Add a library to be injected into each built interpreter.
+	 * This means that the retrieved interpreter does not need this
+	 * library added to it.</p>
 	 *
-	 * @param lib a {@link com.hk.lua.LuaLibrary} object
+	 * @param lib a {@link com.hk.lua.LuaLibrary}
 	 */
 	public void addLibrary(LuaLibrary<?> lib)
 	{
@@ -41,7 +52,8 @@ public class LuaFactory
 	}
 	
 	/**
-	 * <p>addHandler.</p>
+	 * <p>Handlers are called on each interpreter built before they
+	 * are returned. This happens after libraries are injected.</p>
 	 *
 	 * @param handler a {@link com.hk.func.Consumer} object
 	 */
@@ -52,7 +64,9 @@ public class LuaFactory
 	}
 	
 	/**
-	 * <p>removeLibrary.</p>
+	 * <p>Remove a specific library if it was previously added using
+	 * the {@link #addLibrary(LuaLibrary)} method. If the given
+	 * library doesn't exist, this doesn't do anything.</p>
 	 *
 	 * @param lib a {@link com.hk.lua.LuaLibrary} object
 	 */
@@ -62,7 +76,9 @@ public class LuaFactory
 	}
 	
 	/**
-	 * <p>removeHandler.</p>
+	 * <p>Remove a handler from this factory. The handler would only
+	 * be removed if it was previously added using the {@link #addHandler(Consumer)}
+	 * method.</p>
 	 *
 	 * @param handler a {@link com.hk.func.Consumer} object
 	 */
@@ -72,7 +88,10 @@ public class LuaFactory
 	}
 	
 	/**
-	 * <p>compile.</p>
+	 * <p>Fully read the reader and attempt to compile the Lua source
+	 * into an executable chunk. If there are any issues during
+	 * compilation, this method will throw them.</p>
+	 * <p>This must be called before {@link #build()} can be called.</p>
 	 *
 	 * @throws java.io.IOException if any.
 	 */
@@ -98,11 +117,14 @@ public class LuaFactory
 		finally
 		{
 			reader.close();
+			reader = null;
 		}
 	}
 	
 	/**
-	 * <p>build.</p>
+	 * <p>Build and return a new {@link LuaInterpreter} object
+	 * containing the given libraries as well as executing the
+	 * handlers that were added previously.</p>
 	 *
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */

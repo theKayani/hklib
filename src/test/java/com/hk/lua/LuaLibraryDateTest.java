@@ -15,7 +15,7 @@ public class LuaLibraryDateTest extends TestCase
 	{
 		interp = Lua.reader(Assets.get("lua/library_date.lua"));
 		
-		LuaLibrary.importStandard(interp);
+		Lua.importStandard(interp);
 	}
 	
 	public void test()

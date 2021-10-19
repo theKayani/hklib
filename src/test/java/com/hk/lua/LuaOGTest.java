@@ -1,12 +1,13 @@
 package com.hk.lua;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.*;
-
 import com.hk.Assets;
 import com.hk.io.IOUtil;
 import junit.framework.TestCase;
+
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 
 public class LuaOGTest extends TestCase
 {
@@ -38,7 +39,7 @@ public class LuaOGTest extends TestCase
 	public void testNil()
 	{
 		String base = "return nil";
-		assertEquals(Lua.nil(), interp.require(base));
+		assertEquals(Lua.NIL, interp.require(base));
 		
 		assertEquals(interp.require(base), interp.require(base));
 	}
@@ -240,7 +241,7 @@ public class LuaOGTest extends TestCase
 
 		interp.setExtra(LuaLibraryIO.EXKEY_STDOUT, wtr);
 
-		LuaLibrary.importStandard(interp);
+		Lua.importStandard(interp);
 
 		Object res = interp.execute();
 

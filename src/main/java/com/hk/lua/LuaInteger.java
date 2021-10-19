@@ -355,4 +355,5 @@ class LuaInteger extends LuaObject
 
 	static final LuaInteger ZERO = valueOf(0);
 	static final LuaInteger ONE = valueOf(1);
+	static final LuaInteger NEG_ONE = valueOf(-1);
 }
