@@ -524,7 +524,16 @@ public class Lua
 		else
 			throw new UnsupportedOperationException();
 	}
-	
+
+	/**
+	 * @deprecated use {@link #newBool} or {@link #TRUE} or {@link #FALSE}
+	 */
+	@Deprecated
+	public static LuaObject newBoolean(boolean value)
+	{
+		return newBool(value);
+	}
+
 	/**
 	 * <p>Convert the specified parameter into a Lua boolean.</p>
 	 * <p>Calling {@link LuaObject#isBoolean()} on the result will
@@ -533,7 +542,7 @@ public class Lua
 	 * @param value a boolean
 	 * @return a {@link com.hk.lua.LuaObject} boolean object
 	 */
-	public static LuaObject newBoolean(boolean value)
+	public static LuaObject newBool(boolean value)
 	{
 		return LuaBoolean.valueOf(value);
 	}

@@ -11,7 +11,8 @@ import java.nio.charset.Charset;
 public final class IOUtil
 {
 	/**
-	 * <p>copyTo.</p>
+	 * Copy all the data from an input stream to an output stream
+	 * using a default byte buffer size of 1024.
 	 *
 	 * @param in a {@link java.io.InputStream} object
 	 * @param out a {@link java.io.OutputStream} object
@@ -20,9 +21,10 @@ public final class IOUtil
 	{
 		copyTo(in, out, 1024);
 	}
-	
+
 	/**
-	 * <p>copyTo.</p>
+	 * Copy all the data from an input stream to an output stream
+	 * using the specified size for the byte buffer.
 	 *
 	 * @param in a {@link java.io.InputStream} object
 	 * @param out a {@link java.io.OutputStream} object
@@ -47,7 +49,43 @@ public final class IOUtil
 	}
 
 	/**
-	 * <p>readAll.</p>
+	 * Copy all the data from a reader to a writer using a default
+	 * character buffer size of 512.
+	 *
+	 * @param in a {@link java.io.InputStream} object
+	 * @param out a {@link java.io.OutputStream} object
+	 */
+	public static void copyTo(Reader in, Writer out)
+	{
+		copyTo(in, out, 512);
+	}
+
+	/**
+	 * Copy all the data from a reader to a writer using the specified
+	 * size for the character buffer.
+	 *
+	 * @param in a {@link java.io.Reader} object
+	 * @param out a {@link java.io.Writer} object
+	 * @param buffer a int
+	 */
+	public static void copyTo(Reader in, Writer out, int buffer)
+	{
+		try
+		{
+			char[] arr = new char[buffer];
+			int read;
+
+			while ((read = in.read(arr)) != -1)
+				out.write(arr, 0, read);
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Collect all the contents of an input stream to a byte array.
 	 *
 	 * @param in a {@link java.io.InputStream} object
 	 * @return an array of {@link byte} objects
@@ -60,7 +98,21 @@ public final class IOUtil
 	}
 
 	/**
-	 * <p>readString.</p>
+	 * Collect all the contents of a reader to a character array.
+	 *
+	 * @param in a {@link java.io.Reader} object
+	 * @return an array of {@link char} objects
+	 */
+	public static char[] readAll(Reader in)
+	{
+		CharArrayWriter caw = new CharArrayWriter();
+		copyTo(in, caw);
+		return caw.toCharArray();
+	}
+
+	/**
+	 * Fully read an input stream in the default charset into a
+	 * string.
 	 *
 	 * @param in a {@link java.io.InputStream} object
 	 * @return a {@link java.lang.String} object
@@ -71,7 +123,8 @@ public final class IOUtil
 	}
 
 	/**
-	 * <p>readString.</p>
+	 * Fully read an input stream in the specified charset into a
+	 * string.
 	 *
 	 * @param in a {@link java.io.InputStream} object
 	 * @param charset a {@link java.lang.String} object
@@ -90,7 +143,8 @@ public final class IOUtil
 	}
 
 	/**
-	 * <p>readString.</p>
+	 * Fully read an input stream in the specified charset into a
+	 * string.
 	 *
 	 * @param in a {@link java.io.InputStream} object
 	 * @param charset a {@link java.nio.charset.Charset} object
@@ -99,6 +153,17 @@ public final class IOUtil
 	public static String readString(InputStream in, Charset charset)
 	{
 		return new String(readAll(in), charset);
+	}
+
+	/**
+	 * Fully read a reader into a string.
+	 *
+	 * @param in a {@link java.io.Reader} object
+	 * @return a {@link java.lang.String} object
+	 */
+	public static String readString(Reader in)
+	{
+		return new String(readAll(in));
 	}
 
 	/**

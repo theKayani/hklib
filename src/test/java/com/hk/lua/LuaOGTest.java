@@ -47,8 +47,8 @@ public class LuaOGTest extends TestCase
 	public void testBoolean()
 	{
 		String base = "return true";
-		assertEquals(Lua.newBoolean(true), interp.require(base));
-		assertEquals(Lua.newBoolean(false), interp.require("return false"));
+		assertEquals(Lua.TRUE, interp.require(base));
+		assertEquals(Lua.FALSE, interp.require("return false"));
 		
 		assertEquals(interp.require(base), interp.require(base));
 	}
@@ -153,9 +153,9 @@ public class LuaOGTest extends TestCase
 		});
 		expected.add(new LuaObject[] {
 				Lua.newString("a boolean"),
-				Lua.newBoolean(true),
+				Lua.TRUE,
 				Lua.newString("a false boolean"),
-				Lua.newBoolean(false),
+				Lua.FALSE,
 		});
 
 		String[] strs = ("these are my values. there are many " +
@@ -233,7 +233,7 @@ public class LuaOGTest extends TestCase
 						assertEquals(msg, objects[i], values[i]);
 				}
 
-				return Lua.newBoolean(true);
+				return Lua.TRUE;
 			}
 		};
 

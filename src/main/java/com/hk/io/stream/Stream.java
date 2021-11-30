@@ -16,7 +16,7 @@ public interface Stream extends Closeable
 	 * @param o a boolean
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeBoolean(boolean o) throws StreamException;
+	void writeBoolean(boolean o) throws StreamException;
 
 	/**
 	 * <p>writeByte.</p>
@@ -24,7 +24,7 @@ public interface Stream extends Closeable
 	 * @param o a byte
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeByte(byte o) throws StreamException;
+	void writeByte(byte o) throws StreamException;
 
 	/**
 	 * <p>writeShort.</p>
@@ -32,7 +32,7 @@ public interface Stream extends Closeable
 	 * @param o a short
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeShort(short o) throws StreamException;
+	void writeShort(short o) throws StreamException;
 
 	/**
 	 * <p>writeInt.</p>
@@ -40,7 +40,7 @@ public interface Stream extends Closeable
 	 * @param o a int
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeInt(int o) throws StreamException;
+	void writeInt(int o) throws StreamException;
 
 	/**
 	 * <p>writeFloat.</p>
@@ -48,7 +48,7 @@ public interface Stream extends Closeable
 	 * @param o a float
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeFloat(float o) throws StreamException;
+	void writeFloat(float o) throws StreamException;
 
 	/**
 	 * <p>writeCharacter.</p>
@@ -56,7 +56,7 @@ public interface Stream extends Closeable
 	 * @param o a char
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeCharacter(char o) throws StreamException;
+	void writeCharacter(char o) throws StreamException;
 
 	/**
 	 * <p>writeLong.</p>
@@ -64,7 +64,7 @@ public interface Stream extends Closeable
 	 * @param o a long
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeLong(long o) throws StreamException;
+	void writeLong(long o) throws StreamException;
 
 	/**
 	 * <p>writeDouble.</p>
@@ -72,7 +72,7 @@ public interface Stream extends Closeable
 	 * @param o a double
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeDouble(double o) throws StreamException;
+	void writeDouble(double o) throws StreamException;
 
 	/**
 	 * <p>writeUTFString.</p>
@@ -80,7 +80,7 @@ public interface Stream extends Closeable
 	 * @param o a {@link java.lang.String} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeUTFString(String o) throws StreamException;
+	void writeUTFString(String o) throws StreamException;
 	
 	/**
 	 * <p>writeRawString.</p>
@@ -88,7 +88,7 @@ public interface Stream extends Closeable
 	 * @param o a {@link java.lang.String} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeRawString(String o) throws StreamException;
+	void writeRawString(String o) throws StreamException;
 
 	/**
 	 * <p>writeSerializable.</p>
@@ -96,7 +96,7 @@ public interface Stream extends Closeable
 	 * @param o a {@link java.io.Serializable} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeSerializable(Serializable o) throws StreamException;
+	void writeSerializable(Serializable o) throws StreamException;
 
 	/**
 	 * <p>writeBytes.</p>
@@ -104,7 +104,7 @@ public interface Stream extends Closeable
 	 * @param arr an array of {@link byte} objects
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeBytes(byte[] arr) throws StreamException;
+	void writeBytes(byte[] arr) throws StreamException;
 
 	/**
 	 * <p>readBoolean.</p>
@@ -112,7 +112,7 @@ public interface Stream extends Closeable
 	 * @return a boolean
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public boolean readBoolean() throws StreamException;
+	boolean readBoolean() throws StreamException;
 
 	/**
 	 * <p>readByte.</p>
@@ -120,7 +120,7 @@ public interface Stream extends Closeable
 	 * @return a byte
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public byte readByte() throws StreamException;
+	byte readByte() throws StreamException;
 
 	/**
 	 * <p>readShort.</p>
@@ -128,7 +128,7 @@ public interface Stream extends Closeable
 	 * @return a short
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public short readShort() throws StreamException;
+	short readShort() throws StreamException;
 
 	/**
 	 * <p>readInt.</p>
@@ -136,7 +136,7 @@ public interface Stream extends Closeable
 	 * @return a int
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public int readInt() throws StreamException;
+	int readInt() throws StreamException;
 
 	/**
 	 * <p>readFloat.</p>
@@ -144,7 +144,7 @@ public interface Stream extends Closeable
 	 * @return a float
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public float readFloat() throws StreamException;
+	float readFloat() throws StreamException;
 
 	/**
 	 * <p>readCharacter.</p>
@@ -152,7 +152,7 @@ public interface Stream extends Closeable
 	 * @return a char
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public char readCharacter() throws StreamException;
+	char readCharacter() throws StreamException;
 
 	/**
 	 * <p>readLong.</p>
@@ -160,7 +160,7 @@ public interface Stream extends Closeable
 	 * @return a long
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public long readLong() throws StreamException;
+	long readLong() throws StreamException;
 
 	/**
 	 * <p>readDouble.</p>
@@ -168,7 +168,7 @@ public interface Stream extends Closeable
 	 * @return a double
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public double readDouble() throws StreamException;
+	double readDouble() throws StreamException;
 
 	/**
 	 * <p>readUTFString.</p>
@@ -176,7 +176,7 @@ public interface Stream extends Closeable
 	 * @return a {@link java.lang.String} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public String readUTFString() throws StreamException;
+	String readUTFString() throws StreamException;
 	
 	/**
 	 * <p>readRawString.</p>
@@ -184,7 +184,7 @@ public interface Stream extends Closeable
 	 * @return a {@link java.lang.String} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public String readRawString() throws StreamException;
+	String readRawString() throws StreamException;
 
 	/**
 	 * <p>readSerializable.</p>
@@ -194,7 +194,7 @@ public interface Stream extends Closeable
 	 * @return a T object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public <T> T readSerializable(Class<T> cls) throws StreamException;
+	<T> T readSerializable(Class<T> cls) throws StreamException;
 
 	/**
 	 * <p>readBytes.</p>
@@ -202,34 +202,34 @@ public interface Stream extends Closeable
 	 * @return an array of {@link byte} objects
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public byte[] readBytes() throws StreamException;
+	byte[] readBytes() throws StreamException;
 
 	/** {@inheritDoc} */
 	@Override
-	public void close() throws StreamException;
+	void close() throws StreamException;
 
 	/** Constant <code>TYPE_BOOLEAN=0</code> */
-	static final byte TYPE_BOOLEAN = 0;
+	byte TYPE_BOOLEAN = 0;
 	/** Constant <code>TYPE_BYTE=1</code> */
-	static final byte TYPE_BYTE = 1;
+	byte TYPE_BYTE = 1;
 	/** Constant <code>TYPE_SHORT=2</code> */
-	static final byte TYPE_SHORT = 2;
+	byte TYPE_SHORT = 2;
 	/** Constant <code>TYPE_INT=3</code> */
-	static final byte TYPE_INT = 3;
+	byte TYPE_INT = 3;
 	/** Constant <code>TYPE_FLOAT=4</code> */
-	static final byte TYPE_FLOAT = 4;
+	byte TYPE_FLOAT = 4;
 	/** Constant <code>TYPE_CHAR=5</code> */
-	static final byte TYPE_CHAR = 5;
+	byte TYPE_CHAR = 5;
 	/** Constant <code>TYPE_LONG=6</code> */
-	static final byte TYPE_LONG = 6;
+	byte TYPE_LONG = 6;
 	/** Constant <code>TYPE_DOUBLE=7</code> */
-	static final byte TYPE_DOUBLE = 7;
+	byte TYPE_DOUBLE = 7;
 	/** Constant <code>TYPE_UTF_STRING=8</code> */
-	static final byte TYPE_UTF_STRING = 8;
+	byte TYPE_UTF_STRING = 8;
 	/** Constant <code>TYPE_RAW_STRING=9</code> */
-	static final byte TYPE_RAW_STRING = 9;
+	byte TYPE_RAW_STRING = 9;
 	/** Constant <code>TYPE_SERIALIZABLE=10</code> */
-	static final byte TYPE_SERIALIZABLE = 10;
+	byte TYPE_SERIALIZABLE = 10;
 	/** Constant <code>TYPE_BYTES=11</code> */
-	static final byte TYPE_BYTES = 11;
+	byte TYPE_BYTES = 11;
 }

@@ -68,7 +68,6 @@ public class ZipUtil
 			{
 				if (entry.getName().endsWith("/")) continue;
 				File f = new File(directory, entry.getName().replace("/", File.separator));
-				System.out.println(entry.getName() + " | " + f.getAbsolutePath());
 				f.getParentFile().mkdirs();
 				f.delete();
 				f.createNewFile();
