@@ -29,13 +29,13 @@ public class MathUtil
 	//		return null;
 	//	}
 	/** Constant <code>deg2rad=Math.PI / 180</code> */
-	public static double deg2rad = Math.PI / 180;
+	public static final double deg2rad = Math.PI / 180;
 	/** Constant <code>rad2deg=180 / Math.PI</code> */
-	public static double rad2deg = 180 / Math.PI;
+	public static final double rad2deg = 180 / Math.PI;
 	/** Constant <code>deg2radF=(float) deg2rad</code> */
-	public static float deg2radF = (float) deg2rad;
+	public static final float deg2radF = (float) deg2rad;
 	/** Constant <code>rad2degF=(float) rad2deg</code> */
-	public static float rad2degF = (float) rad2deg;
+	public static final float rad2degF = (float) rad2deg;
 	
 	/**
 	 * <p>cube.</p>
@@ -231,7 +231,7 @@ public class MathUtil
 	 */
 	public static int sign(int a)
 	{
-		return a < 0 ? -1 : a > 0 ? 1 : 0;
+		return Integer.compare(a, 0);
 	}
 
 	/**
@@ -277,7 +277,7 @@ public class MathUtil
 	 */
 	public static double between(double min, double val, double max)
 	{
-		return val > max ? max : val < min ? min : val;
+		return val > max ? max : Math.max(val, min);
 	}
 	
 	/**
@@ -290,7 +290,7 @@ public class MathUtil
 	 */
 	public static float between(float min, float val, float max)
 	{
-		return val > max ? max : val < min ? min : val;
+		return val > max ? max : Math.max(val, min);
 	}
 	
 	/**
@@ -303,7 +303,7 @@ public class MathUtil
 	 */
 	public static int between(int min, int val, int max)
 	{
-		return val > max ? max : val < min ? min : val;
+		return val > max ? max : Math.max(val, min);
 	}
 	
 	/**
@@ -316,7 +316,7 @@ public class MathUtil
 	 */
 	public static long between(long min, long val, long max)
 	{
-		return val > max ? max : val < min ? min : val;
+		return val > max ? max : Math.max(val, min);
 	}
 	
 	/**
@@ -377,7 +377,7 @@ public class MathUtil
 	 */
 	public static int gcd(int a, int b)
 	{
-		return (int) gcd((long) a, (long) b);
+		return (int) gcd(a, (long) b);
 	}
 
 	/**
@@ -389,7 +389,7 @@ public class MathUtil
 	 */
 	public static short gcd(short a, short b)
 	{
-		return (short) gcd((long) a, (long) b);
+		return (short) gcd(a, (long) b);
 	}
 
 	/**
@@ -401,7 +401,7 @@ public class MathUtil
 	 */
 	public static byte gcd(byte a, byte b)
 	{
-		return (byte) gcd((long) a, (long) b);
+		return (byte) gcd(a, (long) b);
 	}
 
 	/**
@@ -425,7 +425,7 @@ public class MathUtil
 	 */
 	public static int lcm(int a, int b)
 	{
-		return (int) lcm((long) a, (long) b);
+		return (int) lcm(a, (long) b);
 	}
 
 	/**
@@ -437,7 +437,7 @@ public class MathUtil
 	 */
 	public static short lcm(short a, short b)
 	{
-		return (short) lcm((long) a, (long) b);
+		return (short) lcm(a, (long) b);
 	}
 
 	/**
@@ -449,7 +449,7 @@ public class MathUtil
 	 */
 	public static byte lcm(byte a, byte b)
 	{
-		return (byte) lcm((long) a, (long) b);
+		return (byte) lcm(a, (long) b);
 	}
 
 	/**
@@ -488,7 +488,7 @@ public class MathUtil
 	 */
 	public static String byteHex(int num)
 	{
-		return longHex(num | 0L, 2);
+		return longHex(num, 2);
 	}
 	
 	/**
@@ -499,7 +499,7 @@ public class MathUtil
 	 */
 	public static String shortHex(int num)
 	{
-		return longHex(num | 0L, 4);
+		return longHex(num, 4);
 	}
 	
 	/**
@@ -510,7 +510,7 @@ public class MathUtil
 	 */
 	public static String intHex(int num)
 	{
-		return longHex(num | 0L, 8);
+		return longHex(num, 8);
 	}
 	
 	/**
@@ -550,7 +550,7 @@ public class MathUtil
 	 */
 	public static String byteBin(int num)
 	{
-		return longBin(num | 0L, 8);
+		return longBin(num, 8);
 	}
 	
 	/**
@@ -561,7 +561,7 @@ public class MathUtil
 	 */
 	public static String shortBin(int num)
 	{
-		return longBin(num | 0L, 16);
+		return longBin(num, 16);
 	}
 	
 	/**
@@ -572,7 +572,7 @@ public class MathUtil
 	 */
 	public static String intBin(int num)
 	{
-		return longBin(num | 0L, 32);
+		return longBin(num, 32);
 	}
 	
 	/**

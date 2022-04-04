@@ -437,7 +437,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	 */
 	public TexCoord4F set(float[] arr, int off)
 	{
-		this.ux = arr[0 + off];
+		this.ux = arr[off];
 		this.uy = arr[1 + off];
 		this.vx = arr[2 + off];
 		this.vy = arr[3 + off];
@@ -514,7 +514,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	 */
 	public float[] get(float[] arr, int off)
 	{
-		arr[0 + off] = ux;
+		arr[off] = ux;
 		arr[1 + off] = uy;
 		arr[2 + off] = vx;
 		arr[3 + off] = vy;

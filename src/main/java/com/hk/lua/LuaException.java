@@ -17,6 +17,7 @@ public class LuaException extends RuntimeException
 	boolean internal;
 	Stack<LuaException> stacktrace;
 	
+	@SuppressWarnings("CopyConstructorMissesField")
 	LuaException(LuaException parent)
 	{
 		super("[J]: in ?");
@@ -169,7 +170,7 @@ public class LuaException extends RuntimeException
 		private static final long serialVersionUID = -5800760852156641968L;
 	}
 	
-	private static interface WrappedPrinter
+	private interface WrappedPrinter
 	{
 		void print(Object o);
 

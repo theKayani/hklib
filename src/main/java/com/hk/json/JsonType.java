@@ -16,19 +16,9 @@ public enum JsonType
 	
 	public final Class<? extends JsonValue> cls;
 	
-	private JsonType(Class<? extends JsonValue> cls)
+	JsonType(Class<? extends JsonValue> cls)
 	{
 		this.cls = cls;
-	}
-	
-	/**
-	 * <p>size.</p>
-	 *
-	 * @return a int
-	 */
-	public static int size()
-	{
-		return 6;
 	}
 	
 	/**

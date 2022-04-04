@@ -39,14 +39,15 @@ class LuaVariable extends LuaLocation
 			}
 			catch(LuaException e)
 			{
-				if(e.primary)
+				LuaException e2 = e;
+				if(e2.primary)
 				{
-					Stack<LuaException> stacktrace = e.stacktrace;
-					e = new LuaException(source, line, e.getLocalizedMessage() + " (" + (local ? "local" : "global") + " '" + variable + "')");
-					e.internal();
-					e.stacktrace = stacktrace;
+					Stack<LuaException> stacktrace = e2.stacktrace;
+					e2 = new LuaException(source, line, e2.getLocalizedMessage() + " (" + (local ? "local" : "global") + " '" + variable + "')");
+					e2.internal();
+					e2.stacktrace = stacktrace;
 				}
-				throw e;
+				throw e2;
 			}
 		}
 	}
@@ -68,14 +69,15 @@ class LuaVariable extends LuaLocation
 			}
 			catch(LuaException e)
 			{
-				if(e.primary)
+				LuaException e2 = e;
+				if(e2.primary)
 				{
-					Stack<LuaException> stacktrace = e.stacktrace;
-					e = new LuaException(source, line, e.getLocalizedMessage() + " (" + (local ? "local" : "global") + " '" + variable + "')");
-					e.internal();
-					e.stacktrace = stacktrace;
+					Stack<LuaException> stacktrace = e2.stacktrace;
+					e2 = new LuaException(source, line, e2.getLocalizedMessage() + " (" + (local ? "local" : "global") + " '" + variable + "')");
+					e2.internal();
+					e2.stacktrace = stacktrace;
 				}
-				throw e;
+				throw e2;
 			}
 		}
 	}

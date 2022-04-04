@@ -13,5 +13,5 @@ public interface Function<X, Y>
 	 * @param x a X object
 	 * @return a Y object
 	 */
-	public Y apply(X x);
+	Y apply(X x);
 }

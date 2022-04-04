@@ -174,9 +174,9 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 		else if(obj.isString() || obj.isFunction() || obj.isUserdata() || obj.isThread())
 			return new JsonString(obj.getString());
 		else if(obj.isInteger())
-			return new JsonNumber(obj.getInteger());
+			return new JsonNumber(obj.getLong());
 		else if(obj.isNumber())
-			return new JsonNumber(obj.getFloat());
+			return new JsonNumber(obj.getDouble());
 		else if(obj.isTable())
 		{
 			long len = obj.getLength();

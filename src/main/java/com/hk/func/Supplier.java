@@ -12,5 +12,5 @@ public interface Supplier<X>
 	 *
 	 * @return a X object
 	 */
-	public X get();
+	X get();
 }

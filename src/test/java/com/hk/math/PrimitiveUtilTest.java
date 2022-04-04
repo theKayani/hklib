@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import junit.framework.TestCase;
 
+@SuppressWarnings({"ResultOfMethodCallIgnored", "RedundantArrayCreation"})
 public class PrimitiveUtilTest extends TestCase
 {
 	public void testLongToBytes()

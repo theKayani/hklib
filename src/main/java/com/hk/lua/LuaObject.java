@@ -4,7 +4,11 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <p>Abstract LuaObject class.</p>
+ * <p>Every Lua value at runtime (and before) is represented by a
+ * LuaObject. This represents Lua strings, numbers, booleans, tables
+ * and other types of values. To implement your own concept of a
+ * LuaObject, you can extend the {@link com.hk.lua.LuaUserdata}
+ * and define your own functionality for a Lua object.</p>
  *
  * @author theKayani
  */
@@ -41,27 +45,30 @@ public abstract class LuaObject extends Lua.LuaValue
 	abstract int code();
 
 	/**
-	 * <p>rawEqual.</p>
+	 * <p>Return whether another LuaObject is of equal value to this one.</p>
 	 *
 	 * @param o a {@link com.hk.lua.LuaObject} object
-	 * @return a {@link com.hk.lua.LuaBoolean} object
+	 * @return a boolean dictating whether these objects are of equal value.
 	 */
-	public abstract LuaBoolean rawEqual(LuaObject o);
+	public abstract boolean rawEqual(LuaObject o);
+
 	/**
-	 * <p>rawLen.</p>
+	 * <p>Return the length of this Lua object. This only applies to
+	 * Lua strings and Lua tables.</p>
 	 *
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
 	public abstract LuaObject rawLen();
+
 	/**
-	 * <p>rawGet.</p>
+	 * <p>Get the raw value using a Lua object as a key to map the val.</p>
 	 *
 	 * @param key a {@link com.hk.lua.LuaObject} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
 	public abstract LuaObject rawGet(LuaObject key);
 	/**
-	 * <p>rawSet.</p>
+	 * <p>Set the raw value using a Lua object as a key to map the val.</p>
 	 *
 	 * @param key a {@link com.hk.lua.LuaObject} object
 	 * @param value a {@link com.hk.lua.LuaObject} object
@@ -69,30 +76,81 @@ public abstract class LuaObject extends Lua.LuaValue
 	public abstract void rawSet(LuaObject key, LuaObject value);
 	
 	/**
-	 * <p>getBoolean.</p>
+	 * <p>Get true or false defining whether this object 'exists' and
+	 * is not nil or false</p>
 	 *
 	 * @return a boolean
 	 */
 	public abstract boolean getBoolean();
+
 	/**
-	 * <p>getString.</p>
+	 * <p>Get the string value of this Lua object. If an interpreter
+	 * is provided and this object is a table, this method would call
+	 * the "__tostring" method. If this object is a string, this
+	 * parameter is ignored.</p>
 	 *
 	 * @param interp a {@link com.hk.lua.LuaInterpreter} object
-	 * @return a {@link java.lang.String} object
+	 * @return a {@link java.lang.String} representation of this object
 	 */
 	public abstract String getString(LuaInterpreter interp);
+
 	/**
-	 * <p>getFloat.</p>
+	 * <p>Get the double value of this Lua object if it's a number.</p>
+	 *
+	 * @return a double
+	 * @deprecated use #getDouble()
+	 */
+	@Deprecated
+	public final double getFloat()
+	{
+		return getDouble();
+	}
+
+	/**
+	 * <p>Get the double value of this Lua object if it's a number.</p>
 	 *
 	 * @return a double
 	 */
-	public abstract double getFloat();
+	public abstract double getDouble();
+
 	/**
-	 * <p>getInteger.</p>
+	 * <p>Get the float value of this Lua object if it's a number.</p>
+	 *
+	 * @return a float
+	 */
+	public float getFlt()
+	{
+		return (float) getDouble();
+	}
+
+	/**
+	 * <p>Get the long value of this Lua object if it's a number.</p>
+	 *
+	 * @return a long
+	 * @deprecated use #getLong()
+	 */
+	@Deprecated
+	public final long getInteger()
+	{
+		return getLong();
+	}
+
+	/**
+	 * <p>Get the long value of this Lua object if it's a number.</p>
 	 *
 	 * @return a long
 	 */
-	public abstract long getInteger();
+	public abstract long getLong();
+
+	/**
+	 * <p>Get the integer value of this Lua object if it's a number.</p>
+	 *
+	 * @return an integer
+	 */
+	public int getInt()
+	{
+		return (int) getLong();
+	}
 
 	/**
 	 * <p>isNil.</p>
@@ -414,7 +472,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 */
 	public final long getLength()
 	{
-		return rawLen().getInteger();
+		return rawLen().getLong();
 	}
 	
 	/**
@@ -488,9 +546,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	/** {@inheritDoc} */
 	public boolean equals(Object o)
 	{
-		if(o instanceof LuaObject)
-			return rawEqual((LuaObject) o).getBoolean();
-		return false;
+		return o instanceof LuaObject && rawEqual((LuaObject) o);
 	}
 	
 	/**

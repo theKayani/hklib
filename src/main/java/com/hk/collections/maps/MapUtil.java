@@ -120,7 +120,7 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.TreeMap} object
 	 */
-	public static <T, E> TreeMap<T, E> newTreeMap()
+	public static <T extends Comparable<T>, E> TreeMap<T, E> newTreeMap()
 	{
 		return new TreeMap<>();
 	}

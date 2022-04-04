@@ -255,7 +255,7 @@ public class Rectangle extends Shape
 		hash = hash * 31 + Float.floatToIntBits(y);
 		hash = hash * 31 + Float.floatToIntBits(width);
 		hash = hash * 31 + Float.floatToIntBits(height);
-		return 0;
+		return hash;
 	}
 
 	/** {@inheritDoc} */

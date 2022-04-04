@@ -309,7 +309,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		{
 			Lua.checkArgs(name(), args, LuaType.ANY, LuaType.ANY);
 			
-			return args[0].rawEqual(args[1]);
+			return LuaBoolean.valueOf(args[0].rawEqual(args[1]));
 		}
 	},
 	rawget() {
@@ -347,7 +347,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			if(args[0].isNumber())
 			{
 				int l = args.length - 1;
-				int index = (int) args[0].getInteger();
+				int index = args[0].getInt();
 				while(index <= 0)
 					index += args.length;
 				
@@ -361,11 +361,12 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 
 				return new LuaArgs(arr);
 			}
-			else if(args[0].rawEqual(new LuaString("#")).getBoolean())
+			else if(args[0].isString() && "#".equals(args[0].getString()))
 			{
 				return LuaInteger.valueOf(args.length - 1);
 			}
-			throw new Error();
+			throw new LuaException("expected number or '#' to select(...)");
+//			throw new Error();
 		}
 	},
 	setmetatable() {
@@ -390,7 +391,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		{
 			Lua.checkArgs(name(), args, LuaType.ANY);
 			LuaObject num = args[0];
-			int base = (int) (args.length > 1 ? args[1].getInteger() : 10);
+			int base = args.length > 1 ? args[1].getInt() : 10;
 			
 			if(base < 2 || base > 36)
 				throw new LuaException("bad argument #2 to 'tonumber' (base out of range [2-36])");

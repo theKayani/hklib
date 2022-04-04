@@ -25,6 +25,6 @@ abstract class LuaLocation extends Lua.LuaValue
 
 	boolean isCall()
 	{
-		return next == null ? false : next.isCall();
+		return next != null && next.isCall();
 	}
 }

@@ -1,10 +1,5 @@
 package com.hk.json;
 
-import com.hk.json.JsonAdaptationException;
-import com.hk.json.JsonAdapter;
-import com.hk.json.JsonObject;
-import com.hk.json.JsonValue;
-
 public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 {
 	@Override
@@ -23,7 +18,7 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 			{
 				satTestTakers = Integer.parseInt(obj.getString("num_of_sat_test_takers"));
 			}
-			catch (NumberFormatException ex)
+			catch (NumberFormatException ignored)
 			{}
 			score.setSatTestTakers(satTestTakers);
 			
@@ -32,7 +27,7 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 			{
 				satReadingAvg = Integer.parseInt(obj.getString("sat_critical_reading_avg_score"));
 			}
-			catch (NumberFormatException ex)
+			catch (NumberFormatException ignored)
 			{}
 			score.setSatReadingAvg(satReadingAvg);
 			
@@ -41,7 +36,7 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 			{
 				satMathAvg = Integer.parseInt(obj.getString("sat_math_avg_score"));
 			}
-			catch (NumberFormatException ex)
+			catch (NumberFormatException ignored)
 			{}
 			score.setSatMathAvg(satMathAvg);
 
@@ -50,7 +45,7 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 			{
 				satWritingAvg = Integer.parseInt(obj.getString("sat_writing_avg_score"));
 			}
-			catch (NumberFormatException ex)
+			catch (NumberFormatException ignored)
 			{}
 			score.setSatWritingAvg(satWritingAvg);
 			

@@ -1,15 +1,12 @@
 package com.hk.file;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
+import com.hk.ex.UncheckedIOException;
 import com.hk.io.IOUtil;
 
 /**
@@ -157,14 +154,14 @@ public class FileUtil
 	 */
 	public static boolean deleteDirectory(File file)
 	{
-		File[] list = file.listFiles();
+		File[] list = Objects.requireNonNull(file.listFiles());
 		boolean done = true;
 		for (File f : list)
 		{
 			done &= deleteFile(f);
 		}
-		if(done) file.delete();
-		return done;
+
+		return done && file.delete();
 	}
 
 	/**
@@ -443,7 +440,7 @@ public class FileUtil
 	public static String getFileExtension(File file)
 	{
 		String s = file.toString();
-		return s.substring(s.lastIndexOf(".") + 1, s.length());
+		return s.substring(s.lastIndexOf(".") + 1);
 	}
 
 	/**

@@ -152,7 +152,7 @@ public class InStream implements Stream
 		checkType(TYPE_SHORT, "Short");
 		short o = 0;
 		o |= (read() & 0xFF) << 8;
-		o |= (read() & 0xFF) << 0;
+		o |= (read() & 0xFF);
 		return o;
 	}
 
@@ -165,7 +165,7 @@ public class InStream implements Stream
 		o |= (read() & 0xFF) << 24;
 		o |= (read() & 0xFF) << 16;
 		o |= (read() & 0xFF) <<  8;
-		o |= (read() & 0xFF) <<  0;
+		o |= (read() & 0xFF);
 		return o;
 	}
 
@@ -178,7 +178,7 @@ public class InStream implements Stream
 		o |= (read() & 0xFF) << 24;
 		o |= (read() & 0xFF) << 16;
 		o |= (read() & 0xFF) <<  8;
-		o |= (read() & 0xFF) <<  0;
+		o |= (read() & 0xFF);
 		return Float.intBitsToFloat(o);
 	}
 
@@ -189,7 +189,7 @@ public class InStream implements Stream
 		checkType(TYPE_CHAR, "Character");
 		int o = 0;
 		o |= (read() & 0xFF) <<  8;
-		o |= (read() & 0xFF) <<  0;
+		o |= (read() & 0xFF);
 		return (char) o;
 	}
 
@@ -206,7 +206,7 @@ public class InStream implements Stream
 		o |= (read() & 0xFFL) << 24;
 		o |= (read() & 0xFFL) << 16;
 		o |= (read() & 0xFFL) <<  8;
-		o |= (read() & 0xFFL) <<  0;
+		o |= (read() & 0xFFL);
 		return o;
 	}
 
@@ -223,7 +223,7 @@ public class InStream implements Stream
 		o |= (read() & 0xFFL) << 24;
 		o |= (read() & 0xFFL) << 16;
 		o |= (read() & 0xFFL) <<  8;
-		o |= (read() & 0xFFL) <<  0;
+		o |= (read() & 0xFFL);
 		return Double.longBitsToDouble(o);
 	}
 
@@ -236,7 +236,7 @@ public class InStream implements Stream
 		o |= (read() & 0xFF) << 24;
 		o |= (read() & 0xFF) << 16;
 		o |= (read() & 0xFF) <<  8;
-		o |= (read() & 0xFF) <<  0;
+		o |= (read() & 0xFF);
 		byte[] arr = new byte[o];
 		for(int i = 0; i < o; i++)
 		{
@@ -254,13 +254,13 @@ public class InStream implements Stream
 		o |= (read() & 0xFF) << 24;
 		o |= (read() & 0xFF) << 16;
 		o |= (read() & 0xFF) <<  8;
-		o |= (read() & 0xFF) <<  0;
+		o |= (read() & 0xFF);
 		char[] arr = new char[o];
 		for(int i = 0; i < o; i++)
 		{
 			int o2 = 0;
 			o2 |= (read() & 0xFF) <<  8;
-			o2 |= (read() & 0xFF) <<  0;
+			o2 |= (read() & 0xFF);
 			arr[i] = (char) o2;
 		}
 		return new String(arr);
@@ -274,14 +274,14 @@ public class InStream implements Stream
 		len |= (read() & 0xFF) << 24;
 		len |= (read() & 0xFF) << 16;
 		len |= (read() & 0xFF) <<  8;
-		len |= (read() & 0xFF) <<  0;
+		len |= (read() & 0xFF);
 		byte[] arr = new byte[len];
 		for(int i = 0; i < len; i++)
 		{
 			arr[i] = (byte) (~read() & 0xFF);
 		}
 		ByteArrayInputStream bin = new ByteArrayInputStream(arr);
-		T o = null;
+		T o;
 		try
 		{
 			ObjectInputStream oin = new ObjectInputStream(bin);
@@ -305,7 +305,7 @@ public class InStream implements Stream
 		o |= (read() & 0xFF) << 24;
 		o |= (read() & 0xFF) << 16;
 		o |= (read() & 0xFF) <<  8;
-		o |= (read() & 0xFF) <<  0;
+		o |= (read() & 0xFF);
 		byte[] arr = new byte[o];
 		for(int i = 0; i < o; i++)
 		{
@@ -344,7 +344,7 @@ public class InStream implements Stream
 		{
 			throw new StreamException("Stream was Closed");
 		}
-		int b = -2;
+		int b;
 		try
 		{
 			b = in.read();
@@ -356,10 +356,6 @@ public class InStream implements Stream
 		if (b == -1)
 		{
 			throw new StreamException("End of Stream");
-		}
-		if (b == -2)
-		{
-			throw new StreamException();
 		}
 		return (byte) b;
 	}

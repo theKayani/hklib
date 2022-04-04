@@ -17,19 +17,17 @@ public class StringUtil
 	public static String properCapitalize(String s)
 	{
 		if(s == null || s.trim().isEmpty()) return s;
-		String r = "";
+		StringBuilder r = new StringBuilder();
 		for(int i = s.length() - 1; i >= 0; i--)
 		{
 			char a = s.charAt(i);
 			
 			if(i == 0 || Character.isAlphabetic(s.charAt(i - 1)))
-			{
 				a = Character.toLowerCase(a);
-			}
-			
-			r = a + r;
+
+			r.insert(0, a);
 		}
-		return r;
+		return r.toString();
 	}
 	
 	/**

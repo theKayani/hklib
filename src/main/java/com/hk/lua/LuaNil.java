@@ -9,9 +9,9 @@ class LuaNil extends LuaObject
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaBoolean rawEqual(LuaObject o)
+	public boolean rawEqual(LuaObject o)
 	{
-		return LuaBoolean.valueOf(o.isNil());
+		return o.isNil();
 	}
 
 	/** {@inheritDoc} */
@@ -51,14 +51,14 @@ class LuaNil extends LuaObject
 
 	/** {@inheritDoc} */
 	@Override
-	public double getFloat()
+	public double getDouble()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public long getInteger()
+	public long getLong()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
@@ -129,25 +129,19 @@ class LuaNil extends LuaObject
 	@Override
 	LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
-		{
-		case T_NIL:
+		if (o.code() == T_NIL)
 			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
-		default:
+		else
 			throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
-		}
 	}
 
 	@Override
 	LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
-		{
-		case T_NIL:
+		if (o.code() == T_NIL)
 			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
-		default:
+		else
 			throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
-		}
 	}
 
 	@Override

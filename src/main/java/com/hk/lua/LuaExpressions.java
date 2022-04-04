@@ -38,14 +38,14 @@ class LuaExpressions
 		{
 			List<LuaObject> vals = new ArrayList<>(exps.length + 1);
 			int i;
-			ListUtil.addElements(vals, first);
+			ListUtil.addAll(vals, first);
 			
 			for(i = 0; i < exps.length - 1; i++)
 				vals.add(exps[i].evaluate(interp));
 			
 			LuaObject e = exps[i].evaluate(interp);
 			if(e instanceof LuaArgs)
-				ListUtil.addElements(vals, ((LuaArgs) e).objs);
+				ListUtil.addAll(vals, ((LuaArgs) e).objs);
 			else
 				vals.add(e);
 			

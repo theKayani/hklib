@@ -77,7 +77,7 @@ public class Ini
 		else if(value instanceof Object[])
 		{
 			List<Object> lst = new ArrayList<>();
-			ListUtil.addElements(lst, (Object[]) value);
+			ListUtil.addAll(lst, (Object[]) value);
 			value = lst;
 		}
 		else
@@ -113,7 +113,7 @@ public class Ini
 		}
 
 		if(value instanceof Collection)
-			value = new ArrayList<Object>((Collection<?>) value);
+			value = new ArrayList<>((Collection<?>) value);
 		else
 			value = value == null ? "" : value.toString();
 
@@ -234,7 +234,7 @@ public class Ini
 			{
 				return Long.parseLong((String) o);
 			}
-			catch(NumberFormatException e)
+			catch(NumberFormatException ignored)
 			{}
 		}
 		return def;
@@ -300,7 +300,7 @@ public class Ini
 			{
 				return Double.parseDouble((String) o);
 			}
-			catch(NumberFormatException e)
+			catch(NumberFormatException ignored)
 			{}
 		}
 		return def;

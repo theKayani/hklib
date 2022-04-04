@@ -13,7 +13,7 @@ class LuaArgs extends LuaObject
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaBoolean rawEqual(LuaObject o)
+	public boolean rawEqual(LuaObject o)
 	{
 		return obj.rawEqual(o);
 	}
@@ -55,16 +55,16 @@ class LuaArgs extends LuaObject
 
 	/** {@inheritDoc} */
 	@Override
-	public double getFloat()
+	public double getDouble()
 	{
-		return obj.getFloat();
+		return obj.getDouble();
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public long getInteger()
+	public long getLong()
 	{
-		return obj.getInteger();
+		return obj.getLong();
 	}
 
 	/** {@inheritDoc} */

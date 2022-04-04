@@ -9,7 +9,7 @@ import com.hk.util.Requirements;
  */
 public class JsonString extends JsonValue
 {
-	private String value;
+	private final String value;
 	
 	/**
 	 * <p>Constructor for JsonString.</p>

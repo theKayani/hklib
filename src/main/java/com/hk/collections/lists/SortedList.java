@@ -3,7 +3,6 @@ package com.hk.collections.lists;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
 
 /**
  * <p>SortedList class.</p>
@@ -124,11 +123,9 @@ public class SortedList<E> extends ArrayList<E>
 	public boolean addAll(Collection<? extends E> c)
 	{
 		boolean good = true;
-		Iterator<? extends E> itr = c.iterator();
-		while (itr.hasNext())
-		{
-			good = good && add(itr.next());
-		}
+		for (E e : c)
+			good = good && add(e);
+
 		return good;
 	}
 

@@ -422,9 +422,8 @@ public class Json
 	 *
 	 * @param out a {@link java.io.OutputStream} object
 	 * @param value a {@link com.hk.json.JsonValue} object
-	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static void write(OutputStream out, JsonValue value) throws FileNotFoundException
+	public static void write(OutputStream out, JsonValue value)
 	{
 		JsonWriter jw = writer(out);
 		jw.put(value);
@@ -448,9 +447,8 @@ public class Json
 	 * @param out a {@link java.io.OutputStream} object
 	 * @param charset a {@link java.nio.charset.Charset} object
 	 * @param value a {@link com.hk.json.JsonValue} object
-	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static void write(OutputStream out, Charset charset, JsonValue value) throws FileNotFoundException
+	public static void write(OutputStream out, Charset charset, JsonValue value)
 	{
 		JsonWriter jw = writer(out, charset);
 		jw.put(value);
@@ -533,9 +531,8 @@ public class Json
 		else if(obj instanceof Iterable<?>)
 		{
 			JsonArray arr = new JsonArray();
-			Iterator<Object> itr = ((Iterable<Object>) obj).iterator();
-			while(itr.hasNext())
-				arr.add(itr.next());
+			for (Object o : (Iterable<Object>) obj)
+				arr.add(o);
 
 			return arr;
 		}
@@ -553,7 +550,7 @@ public class Json
 			return o;
 		}
 
-		for(JsonAdapter<? extends Object> adapter : globalAdapters)
+		for(JsonAdapter<?> adapter : globalAdapters)
 		{
 			if(adapter.getObjClass().isAssignableFrom(obj.getClass()))
 				return adapter.tryTo(obj);

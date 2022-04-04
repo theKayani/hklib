@@ -14,5 +14,5 @@ public interface BiPredicate<X, Y>
 	 * @param y a Y object
 	 * @return a boolean
 	 */
-	public boolean test(X x, Y y);
+	boolean test(X x, Y y);
 }

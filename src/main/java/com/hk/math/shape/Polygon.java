@@ -81,10 +81,9 @@ public class Polygon extends Shape
 	public Vector2F calcMiddle()
 	{
 		Vector2F v = new Vector2F();
-		for (int i = 0; i < vertices.size(); i++)
-		{
-			v.addLocal(vertices.get(i));
-		}
+		for (Vector2F vertex : vertices)
+			v.addLocal(vertex);
+
 		return v.divideLocal(vertices.size());
 	}
 
@@ -147,10 +146,9 @@ public class Polygon extends Shape
 	public int hashCode()
 	{
 		int hash = 11;
-		for (int i = 0; i < vertices.size(); i++)
-		{
-			hash = hash * 19 + vertices.get(i).hashCode();
-		}
+		for (Vector2F vertex : vertices)
+			hash = hash * 19 + vertex.hashCode();
+
 		return hash;
 	}
 
@@ -161,7 +159,10 @@ public class Polygon extends Shape
 		StringBuilder bd = new StringBuilder("[");
 		for (int i = 0; i < vertices.size(); i++)
 		{
-			bd.append(vertices.get(i) + (i == vertices.size() - 1 ? "" : ", "));
+			bd.append(vertices.get(i));
+
+			if(i <= vertices.size() - 1)
+				bd.append(", ");
 		}
 		return bd.append("]").toString();
 	}

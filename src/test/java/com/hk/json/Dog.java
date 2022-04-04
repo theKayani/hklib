@@ -2,10 +2,10 @@ package com.hk.json;
 
 class Dog
 {
-	String name;
-	String breed;
-	int age;
-	String color;
+	final String name;
+	final String breed;
+	final int age;
+	final String color;
 
 	Dog(String name, String breed, int age, String color)
 	{

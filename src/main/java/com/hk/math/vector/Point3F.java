@@ -239,9 +239,9 @@ public class Point3F implements Cloneable, Serializable
 	 */
 	public Point3F interpolateLocal(float x, float y, float z, float amt)
 	{
-		x = (1F - amt) * this.x + amt * x;
-		y = (1F - amt) * this.y + amt * y;
-		z = (1F - amt) * this.z + amt * z;
+		this.x = (1F - amt) * this.x + amt * x;
+		this.y = (1F - amt) * this.y + amt * y;
+		this.z = (1F - amt) * this.z + amt * z;
 		return this;
 	}
 
@@ -567,7 +567,7 @@ public class Point3F implements Cloneable, Serializable
 	 */
 	public Point3F set(float[] arr, int off)
 	{
-		x = arr[off + 0];
+		x = arr[off];
 		y = arr[off + 1];
 		z = arr[off + 2];
 		return this;

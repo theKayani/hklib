@@ -63,7 +63,7 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 			LuaObject t = args[3];
 			LuaObject a2 = args.length > 4 ? args[4] : a1;
 			
-			for(long l = f.getInteger(); l <= e.getInteger(); l++)
+			for(long l = f.getLong(); l <= e.getLong(); l++)
 			{
 				a2.rawSet(t, a1.rawGet(LuaInteger.valueOf(l)));
 				
@@ -110,8 +110,8 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 			LuaObject tbl = args[0];
 			LuaObject comp = args.length > 1 ? args[1] : null;
 			
-			long len = tbl.rawLen().getInteger();
-			boolean swap = false;
+			long len = tbl.rawLen().getLong();
+			boolean swap;
 			for(long i = 1; i < len; i++)
 			{
 				for(long j = i; j <= len; j++)
@@ -122,14 +122,9 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 					}
 					else
 					{
-						Object o = comp.doCall(interp, new LuaObject[] { tbl.rawGet(LuaInteger.valueOf(i)), tbl.rawGet(LuaInteger.valueOf(j)) });
-					
-						if(o instanceof LuaObject[])
-							o = ((LuaObject[]) o)[0];
-						else
-							o = ((Lua.LuaValue) o).evaluate(interp);
-						
-						swap = !((LuaObject) o).getBoolean();
+						LuaObject o = comp.doCall(interp, new LuaObject[] { tbl.rawGet(LuaInteger.valueOf(i)), tbl.rawGet(LuaInteger.valueOf(j)) });
+
+						swap = !o.evaluate(interp).getBoolean();
 					}
 					
 					if(swap)
@@ -152,7 +147,7 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 			LuaObject list = args[0];
 			LuaObject i = args.length > 1 ? args[1] : LuaInteger.ONE;
 			LuaObject j = args.length > 2 ? args[2] : list.rawLen();
-			LuaObject[] res = new LuaObject[(int) (j.doSub(interp, i).getInteger() + 1)];
+			LuaObject[] res = new LuaObject[j.doSub(interp, i).getInt() + 1];
 			for(int k = 0; k < res.length; k++)
 			{
 				res[k] = list.rawGet(i);
@@ -161,12 +156,6 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 			return new LuaArgs(res);
 		}
 	};
-
-//	@Override
-//	public LuaObject call(LuaInterpreter interp, LuaObject[] args)
-//	{
-//		throw new Error();
-//	}
 
 	/** {@inheritDoc} */
 	@Override

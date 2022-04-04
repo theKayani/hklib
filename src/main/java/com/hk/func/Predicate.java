@@ -13,5 +13,5 @@ public interface Predicate<X>
 	 * @param x a X object
 	 * @return a boolean
 	 */
-	public boolean test(X x);
+	boolean test(X x);
 }

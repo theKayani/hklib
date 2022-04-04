@@ -12,5 +12,5 @@ public interface Consumer<X>
 	 *
 	 * @param x a X object
 	 */
-	public void accept(X x);
+	void accept(X x);
 }

@@ -1,10 +1,6 @@
 package com.hk.collections.lists;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class contains helper methods that create and manipulate various List classes. Such as...
@@ -42,7 +38,7 @@ public class ListUtil
 	public static <T> ArrayList<T> newArrayList(T... elements)
 	{
 		ArrayList<T> list = newArrayList();
-		addElements(list, elements);
+		addAll(list, elements);
 		return list;
 	}
 
@@ -56,7 +52,7 @@ public class ListUtil
 	public static <T> ArrayList<T> newArrayListWith(T[] elements)
 	{
 		ArrayList<T> list = newArrayList();
-		addElements(list, elements);
+		addAll(list, elements);
 		return list;
 	}
 
@@ -193,21 +189,10 @@ public class ListUtil
 		return list;
 	}
 
-	/**
-	 * Add an array of T objects to a given list.
-	 *
-	 * @param list the {@link java.util.List} to add the elements to
-	 * @param array an array of T[] objects
-	 * @param <T> a T class
-	 * @return whether all items were successfully added
-	 */
-	public static <T> boolean addElements(List<T> list, T[] array)
+	@Deprecated
+	public static <T> void addElements(List<T> list, T[] array)
 	{
-		boolean good = true;
-		for (T obj : array)
-			good &= list.add(obj);
-
-		return good;
+		Collections.addAll(list, array);
 	}
 
 	/**
@@ -216,12 +201,11 @@ public class ListUtil
 	 * @param list the {@link java.util.List} to add the elements to
 	 * @param array a list of T objects
 	 * @param <T> a T class
-	 * @return whether all items were successfully added
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> boolean addAll(List<T> list, T... array)
+	public static <T> void addAll(List<T> list, T... array)
 	{
-		return addElements(list, array);
+		Collections.addAll(list, array);
 	}
 
 	private ListUtil()

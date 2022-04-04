@@ -23,8 +23,7 @@ class LuaBody extends LuaBlock
 			if(args.length >= argNames.length)
 			{
 				LuaObject[] tmp = new LuaObject[args.length - argNames.length + 1];
-				for(int j = 0; j < tmp.length; j++)
-					tmp[j] = args[i + j];
+				System.arraycopy(args, i, tmp, 0, tmp.length);
 	
 				interp.env.varargs = new LuaArgs(tmp);
 			}

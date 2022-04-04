@@ -144,14 +144,14 @@ public class LuaInterpreter implements Tokens
 	/**
 	 * <p>Get the extra data under a certain key, cast as a {@link LuaObject}.
 	 * This is useful because it will not return null, it will
-	 * instead return {@link Lua#nil()} if there was no valid data found.</p>
+	 * instead return {@link Lua#NIL} if there was no valid data found.</p>
 	 *
 	 * <p>Extra data it data that is tied to this specific interpreter.
 	 * Completely optional and has no effect on execution of Lua.
 	 * Just for utility and data consistency sake.</p>
 	 *
 	 * @param key a {@link java.lang.String} to match to a key
-	 * @return a {@link com.hk.lua.LuaObject} object, or {@link Lua#nil()}
+	 * @return a {@link com.hk.lua.LuaObject} object, or {@link Lua#NIL}
 	 * if there was no valid data found under the specified key.
 	 */
 	public LuaObject getExtraLua(String key)

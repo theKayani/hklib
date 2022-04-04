@@ -810,7 +810,7 @@ public final class Vector2F implements Serializable, Cloneable
 	@Override
 	public boolean equals(Object obj)
 	{
-		return obj instanceof Vector2F ? Float.floatToIntBits(x) == Float.floatToIntBits(((Vector2F) obj).x) && Float.floatToIntBits(y) == Float.floatToIntBits(((Vector2F) obj).y) : false;
+		return obj instanceof Vector2F && Float.floatToIntBits(x) == Float.floatToIntBits(((Vector2F) obj).x) && Float.floatToIntBits(y) == Float.floatToIntBits(((Vector2F) obj).y);
 	}
 
 	/** {@inheritDoc} */
@@ -828,7 +828,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 */
 	public static boolean isValidVector(Vector2F vec)
 	{
-		return vec == null ? false : !(Float.isNaN(vec.x) || Float.isNaN(vec.y) || Float.isInfinite(vec.x) || Float.isInfinite(vec.y));
+		return vec != null && !(Float.isNaN(vec.x) || Float.isNaN(vec.y) || Float.isInfinite(vec.x) || Float.isInfinite(vec.y));
 	}
 
 	/**
@@ -839,7 +839,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 */
 	public static boolean isUnitVector(Vector2F vec)
 	{
-		return vec == null ? false : vec.x > 0.99F && vec.y > 0.99F && vec.x < 1.01F && vec.y < 1.01F;
+		return vec != null && vec.x > 0.99F && vec.y > 0.99F && vec.x < 1.01F && vec.y < 1.01F;
 	}
 
 	/**

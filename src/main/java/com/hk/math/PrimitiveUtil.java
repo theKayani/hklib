@@ -277,7 +277,7 @@ public class PrimitiveUtil
 	{
 		for (int i = 0; i < 2; i++)
 		{
-			arr[i + off] = (int) (n >> 32 * i & 0xFFFFFFFF);
+			arr[i + off] = (int) (n >> 32 * i);
 		}
 
 		return arr;

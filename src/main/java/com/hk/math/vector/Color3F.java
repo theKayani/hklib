@@ -1,10 +1,12 @@
 package com.hk.math.vector;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import com.hk.array.ArrayUtil;
 import com.hk.math.MathUtil;
 import com.hk.math.Rand;
+import com.hk.str.StringUtil;
 
 /**
  * <p>Color3F class.</p>
@@ -837,7 +839,7 @@ public final class Color3F implements Serializable, Cloneable
 	 */
 	public Color3F fromArray(float[] arr, int off)
 	{
-		r = arr[off + 0];
+		r = arr[off    ];
 		g = arr[off + 1];
 		b = arr[off + 2];
 		a = arr[off + 3];
@@ -923,12 +925,8 @@ public final class Color3F implements Serializable, Cloneable
 	 */
 	public String toHexString()
 	{
-		String s = Integer.toHexString(toARGB());
-		while (s.length() < 8)
-		{
-			s = '0' + s;
-		}
-		return s.toUpperCase();
+		String s = Integer.toHexString(toARGB()).toUpperCase(Locale.ROOT);
+		return StringUtil.repeat("0", 8 - s.length()) + s;
 	}
 
 	/**

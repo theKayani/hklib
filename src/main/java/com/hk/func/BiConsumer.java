@@ -13,5 +13,5 @@ public interface BiConsumer<X, Y>
 	 * @param x a X object
 	 * @param y a Y object
 	 */
-	public void accept(X x, Y y);
+	void accept(X x, Y y);
 }

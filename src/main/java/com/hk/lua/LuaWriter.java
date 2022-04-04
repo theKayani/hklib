@@ -42,7 +42,7 @@ public class LuaWriter extends LuaLibraryIO.LuaIOUserdata
 	}
 
 	@Override
-	public LuaObject[] read(int[] formats) throws IOException
+	public LuaObject[] read(int[] formats)
 	{
 		return new LuaObject[] {
 				LuaNil.NIL, new LuaString("invalid call to writable")

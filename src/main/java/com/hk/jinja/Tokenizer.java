@@ -13,8 +13,7 @@ public class Tokenizer
 {
 	private final StringBuilder sb;
 	private final LineNumberReader rdr;
-	private char c;
-	
+
 	boolean inStatement, inExpression, inComment/*, inLineStatement */;
 	
 	private String prevToken, token;
@@ -56,6 +55,7 @@ public class Tokenizer
 		token = null;
 		value = null;
 		type = 0;
+		char c;
 		if(inComment)
 		{
 			throw new RuntimeException("TODO");

@@ -8,9 +8,9 @@ abstract class LuaFunction extends LuaObject
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaBoolean rawEqual(LuaObject o)
+	public boolean rawEqual(LuaObject o)
 	{
-		return LuaBoolean.valueOf(o == this);
+		return o == this;
 	}
 
 	/** {@inheritDoc} */
@@ -50,14 +50,14 @@ abstract class LuaFunction extends LuaObject
 
 	/** {@inheritDoc} */
 	@Override
-	public double getFloat()
+	public double getDouble()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public long getInteger()
+	public long getLong()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
@@ -134,25 +134,19 @@ abstract class LuaFunction extends LuaObject
 	@Override
 	LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
-		{
-		case T_FUNCTION:
+		if (o.code() == T_FUNCTION)
 			throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
-		default:
-			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
-		}
+
+		throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 	}
 
 	@Override
 	LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
 	{
-		switch(o.code())
-		{
-		case T_FUNCTION:
+		if (o.code() == T_FUNCTION)
 			throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
-		default:
-			throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
-		}
+
+		throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 	}
 
 	@Override

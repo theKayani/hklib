@@ -258,7 +258,7 @@ public final class ImmutableList<E> extends ArrayList<E> implements Serializable
 
 		public ImmutableList<E> build()
 		{
-			return new ImmutableList<E>(list);
+			return new ImmutableList<>(list);
 		}
 	}
 

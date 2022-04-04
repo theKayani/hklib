@@ -21,9 +21,9 @@ class LuaTable extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaBoolean rawEqual(LuaObject o)
+	public boolean rawEqual(LuaObject o)
 	{
-		return LuaBoolean.valueOf(o == this);
+		return o == this;
 	}
 
 	/** {@inheritDoc} */
@@ -59,7 +59,7 @@ class LuaTable extends LuaMetatable
 	@Override
 	public void rawSet(LuaObject key, LuaObject value)
 	{
-		if(key.isNil() || (key.isNumber() && Double.isNaN(key.getFloat())))
+		if(key.isNil() || (key.isNumber() && Double.isNaN(key.getDouble())))
 			return;
 		
 		if(value.isNil())
@@ -70,14 +70,14 @@ class LuaTable extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public double getFloat()
+	public double getDouble()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public long getInteger()
+	public long getLong()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}

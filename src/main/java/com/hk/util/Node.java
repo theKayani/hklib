@@ -27,6 +27,7 @@ public class Node<T> implements Iterator<Node<T>>
 	 *
 	 * @param parent a {@link com.hk.util.Node} object
 	 */
+	@SuppressWarnings("CopyConstructorMissesField")
 	public Node(Node<T> parent)
 	{
 		parent.next = this;

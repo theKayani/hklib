@@ -24,9 +24,9 @@ class LuaBoolean extends LuaObject
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaBoolean rawEqual(LuaObject o)
+	public boolean rawEqual(LuaObject o)
 	{
-		return LuaBoolean.valueOf(o.isBoolean() && value == o.getBoolean());
+		return o.isBoolean() && value == o.getBoolean();
 	}
 
 	/** {@inheritDoc} */
@@ -66,14 +66,14 @@ class LuaBoolean extends LuaObject
 
 	/** {@inheritDoc} */
 	@Override
-	public double getFloat()
+	public double getDouble()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public long getInteger()
+	public long getLong()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}

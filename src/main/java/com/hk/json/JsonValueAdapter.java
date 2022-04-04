@@ -20,12 +20,12 @@ public class JsonValueAdapter<T extends JsonValue> extends JsonAdapter<T>
 		this.type = JsonType.by(cls);
 	}
 
-	@SuppressWarnings("unchecked")
 	/**
 	 * <p>Constructor for JsonValueAdapter.</p>
 	 *
 	 * @param type a {@link com.hk.json.JsonType} object
 	 */
+	@SuppressWarnings("unchecked")
 	public JsonValueAdapter(JsonType type)
 	{
 		super((Class<? extends T>) type.cls);

@@ -128,7 +128,7 @@ public class Circle extends Shape
 		hash = hash * 41 + Float.floatToIntBits(x);
 		hash = hash * 41 + Float.floatToIntBits(y);
 		hash = hash * 41 + Float.floatToIntBits(radius);
-		return 0;
+		return hash;
 	}
 
 	/** {@inheritDoc} */

@@ -32,13 +32,14 @@ class LuaField extends LuaLocation
 			}
 			catch(LuaException e)
 			{
-				if(e.primary)
+				LuaException e2 = e;
+				if(e2.primary)
 				{
-					Stack<LuaException> stacktrace = e.stacktrace;
-					e = new LuaException(source, line, e.getLocalizedMessage() + " (field '" + val + "')");
-					e.stacktrace = stacktrace;
+					Stack<LuaException> stacktrace = e2.stacktrace;
+					e2 = new LuaException(source, line, e2.getLocalizedMessage() + " (field '" + val + "')");
+					e2.stacktrace = stacktrace;
 				}
-				throw e.internal();
+				throw e2.internal();
 			}
 		}
 	}
@@ -59,13 +60,14 @@ class LuaField extends LuaLocation
 			}
 			catch(LuaException e)
 			{
-				if(e.primary)
+				LuaException e2 = e;
+				if(e2.primary)
 				{
-					Stack<LuaException> stacktrace = e.stacktrace;
-					e = new LuaException(source, line, e.getLocalizedMessage() + " (field '" + val + "')");
-					e.stacktrace = stacktrace;
+					Stack<LuaException> stacktrace = e2.stacktrace;
+					e2 = new LuaException(source, line, e2.getLocalizedMessage() + " (field '" + val + "')");
+					e2.stacktrace = stacktrace;
 				}
-				throw e.internal();
+				throw e2.internal();
 			}
 		}
 	}

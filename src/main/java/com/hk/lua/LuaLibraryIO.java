@@ -1,10 +1,12 @@
 package com.hk.lua;
 
+import com.hk.file.FileUtil;
 import com.hk.func.BiConsumer;
 import com.hk.io.IOUtil;
 import com.hk.lua.Lua.LuaMethod;
 
 import java.io.*;
+import java.nio.file.Paths;
 
 /**
  * <p>This class is to replicate the <em>io</em> library from Lua.</p>
@@ -47,6 +49,20 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			}
 		}
 	},
+	cwd() {
+		@Override
+		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
+		{
+			Object obj = interp.getExtra(EXKEY_CWD);
+			File f;
+			if(obj instanceof String)
+				f = Paths.get((String) obj).toFile();
+			else
+				f = FileUtil.getUserDirectory();
+
+			return new LuaString(f.getAbsolutePath());
+		}
+	},
 	flush() {
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
@@ -77,9 +93,16 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 
 				if(args[0].isString())
 				{
+					String file = args[0].getString();
+					File f;
+
+					if(interp.hasExtra(EXKEY_CWD))
+						f = new File(interp.getExtra(EXKEY_CWD, String.class), file);
+					else
+						f = new File(file);
 					try
 					{
-						args[0] = new LuaReader(new FileReader(args[0].getString()));
+						args[0] = new LuaReader(new FileReader(f));
 					}
 					catch (FileNotFoundException e)
 					{
@@ -160,14 +183,19 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				throw new LuaException("Update mode unsupported for this version of Lua (JVM)");
 //				mode = mode.substring(0, mode.length() - 1);
 
-			File f = new File(file);
+			File f;
+
+			if(interp.hasExtra(EXKEY_CWD))
+				f = new File(interp.getExtra(EXKEY_CWD, String.class), file);
+			else
+				f = new File(file);
 
 			try
 			{
 				switch(mode)
 				{
 					case "r":
-						if(f.exists())
+						if(!f.exists())
 							return new LuaArgs(LuaNil.NIL, new LuaString("file not found"));
 						return new LuaReader(new FileReader(f));
 					case "w":
@@ -194,9 +222,16 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 
 				if(args[0].isString())
 				{
+					String file = args[0].getString();
+					File f;
+
+					if(interp.hasExtra(EXKEY_CWD))
+						f = new File(interp.getExtra(EXKEY_CWD, String.class), file);
+					else
+						f = new File(file);
 					try
 					{
-						args[0] = new LuaWriter(new FileWriter(args[0].getString()));
+						args[0] = new LuaWriter(new FileWriter(f));
 					}
 					catch (IOException e)
 					{
@@ -328,6 +363,20 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				env.interp.setExtra(EXKEY_STDERR, stderr);
 			}
 			table.rawSet(new LuaString(name()), stderr);
+		}
+	},
+	sep() {
+		@Override
+		public void accept(Environment env, LuaObject table)
+		{
+			table.rawSet(new LuaString(name()), new LuaString(File.separator));
+		}
+	},
+	psep() {
+		@Override
+		public void accept(Environment env, LuaObject table)
+		{
+			table.rawSet(new LuaString(name()), new LuaString(File.pathSeparator));
 		}
 	};
 
@@ -471,7 +520,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 							if(args.length > 2)
 							{
 								if(args[2].isInteger())
-									size = (int) args[2].getInteger();
+									size = args[2].getInt();
 								else
 									throw new LuaException("bad argument #3 to 'setvbuf' (expected integer)");
 							}
@@ -540,7 +589,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 						if(!args[2].isInteger())
 							throw new LuaException("bad argument #3 to 'seek' (expected integer)");
 
-						offset = args[2].getInteger();
+						offset = args[2].getLong();
 					}
 				}
 
@@ -591,8 +640,8 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 						default:
 							throw new LuaException("bad argument #" + (i + 1) + " to 'read' (invalid mode)");
 					}
-				} else if (args[i].isInteger() && args[i].getInteger() >= 0)
-					formats[i - offset] = (int) args[i].getInteger();
+				} else if (args[i].isInteger() && args[i].getLong() >= 0)
+					formats[i - offset] = args[i].getInt();
 				else
 					throw new LuaException("bad argument #" + (i + 1) + " to 'read' (expected string or positive integer");
 			}
@@ -649,6 +698,9 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 
 	/** Constant <code>EXKEY_STDERR="io.stderr"</code> */
 	public static final String EXKEY_STDERR = "io.stderr";
+
+	/** Constant <code>EXKEY_CWD="io.cwd"</code> */
+	public static final String EXKEY_CWD = "io.cwd";
 
 	public static final int READMODE_N = -4;
 	public static final int READMODE_A = -3;

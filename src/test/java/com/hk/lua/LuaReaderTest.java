@@ -86,13 +86,13 @@ public class LuaReaderTest extends TestCase
 
 		obj = interp.getGlobals().getVar("testLinesCount").call(interp);
 		assertTrue(obj.isNumber());
-		assertEquals(6, obj.getInteger());
+		assertEquals(6, obj.getLong());
 
 		rdr.reset();
 
 		obj = interp.getGlobals().getVar("testLinesNumbers").call(interp);
 		assertTrue(obj.isNumber());
-		assertEquals(6, obj.getInteger());
+		assertEquals(6, obj.getLong());
 
 		StringBuilder sb = new StringBuilder(3892);
 		for(int i = 0; i < 999; i++)
@@ -105,13 +105,13 @@ public class LuaReaderTest extends TestCase
 
 		obj = interp.getGlobals().getVar("testLinesCount").call(interp);
 		assertTrue(obj.isNumber());
-		assertEquals(1000, obj.getInteger());
+		assertEquals(1000, obj.getLong());
 
 		rdr.reset();
 
 		obj = interp.getGlobals().getVar("testLinesNumbers").call(interp);
 		assertTrue(obj.isNumber());
-		assertEquals(1000, obj.getInteger());
+		assertEquals(1000, obj.getLong());
 
 		str = "0123456789\n";
 		rdr = new StringReader(str);

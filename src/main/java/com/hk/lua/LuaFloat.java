@@ -11,9 +11,9 @@ class LuaFloat extends LuaObject
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaBoolean rawEqual(LuaObject o)
+	public boolean rawEqual(LuaObject o)
 	{
-		return LuaBoolean.valueOf(o.isNumber() && value == o.getFloat());
+		return o.isNumber() && value == o.getDouble();
 	}
 
 	/** {@inheritDoc} */
@@ -53,14 +53,14 @@ class LuaFloat extends LuaObject
 
 	/** {@inheritDoc} */
 	@Override
-	public double getFloat()
+	public double getDouble()
 	{
 		return value;
 	}
 	
 	/** {@inheritDoc} */
 	@Override
-	public long getInteger()
+	public long getLong()
 	{
 		return (long) value;
 	}
@@ -133,7 +133,7 @@ class LuaFloat extends LuaObject
 	{
 		if (o.code() == T_NUMBER)
 		{
-			return LuaBoolean.valueOf(value <= o.getFloat());
+			return LuaBoolean.valueOf(value <= o.getDouble());
 		}
 		throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 	}
@@ -143,7 +143,7 @@ class LuaFloat extends LuaObject
 	{
 		if (o.code() == T_NUMBER)
 		{
-			return LuaBoolean.valueOf(value < o.getFloat());
+			return LuaBoolean.valueOf(value < o.getDouble());
 		}
 		throw LuaErrors.INVALID_COMPARISON.create(name(), o.name());
 	}
@@ -151,7 +151,7 @@ class LuaFloat extends LuaObject
 	@Override
 	LuaBoolean doEQ(LuaInterpreter interp, LuaObject o)
 	{
-		return rawEqual(o);
+		return LuaBoolean.valueOf(rawEqual(o));
 	}
 
 	@Override
@@ -172,79 +172,79 @@ class LuaFloat extends LuaObject
 	@Override
 	LuaObject doAdd(LuaInterpreter interp, LuaObject o)
 	{
-		return new LuaFloat(value + o.getFloat());
+		return new LuaFloat(value + o.getDouble());
 	}
 
 	@Override
 	LuaObject doSub(LuaInterpreter interp, LuaObject o)
 	{
-		return new LuaFloat(value - o.getFloat());
+		return new LuaFloat(value - o.getDouble());
 	}
 
 	@Override
 	LuaObject doMul(LuaInterpreter interp, LuaObject o)
 	{
-		return new LuaFloat(value * o.getFloat());
+		return new LuaFloat(value * o.getDouble());
 	}
 
 	@Override
 	LuaObject doDiv(LuaInterpreter interp, LuaObject o)
 	{
-		return new LuaFloat(value / o.getFloat());
+		return new LuaFloat(value / o.getDouble());
 	}
 
 	@Override
 	LuaObject doIDiv(LuaInterpreter interp, LuaObject o)
 	{
-		return new LuaFloat(Math.floor(value / o.getFloat()));
+		return new LuaFloat(Math.floor(value / o.getDouble()));
 	}
 
 	@Override
 	LuaObject doMod(LuaInterpreter interp, LuaObject o)
 	{
-		return new LuaFloat(value % o.getFloat());
+		return new LuaFloat(value % o.getDouble());
 	}
 
 	@Override
 	LuaObject doPow(LuaInterpreter interp, LuaObject o)
 	{
-		return new LuaFloat(Math.pow(value, o.getFloat()));
+		return new LuaFloat(Math.pow(value, o.getDouble()));
 	}
 
 	@Override
 	LuaObject doBAND(LuaInterpreter interp, LuaObject o)
 	{
-		return LuaInteger.valueOf(getInteger() & o.getInteger());
+		return LuaInteger.valueOf(getLong() & o.getLong());
 	}
 
 	@Override
 	LuaObject doBOR(LuaInterpreter interp, LuaObject o)
 	{
-		return LuaInteger.valueOf(getInteger() | o.getInteger());
+		return LuaInteger.valueOf(getLong() | o.getLong());
 	}
 
 	@Override
 	LuaObject doBXOR(LuaInterpreter interp, LuaObject o)
 	{
-		return LuaInteger.valueOf(getInteger() ^ o.getInteger());
+		return LuaInteger.valueOf(getLong() ^ o.getLong());
 	}
 
 	@Override
 	LuaObject doSHL(LuaInterpreter interp, LuaObject o)
 	{
-		return LuaInteger.valueOf(getInteger() << o.getInteger());
+		return LuaInteger.valueOf(getLong() << o.getLong());
 	}
 
 	@Override
 	LuaObject doSHR(LuaInterpreter interp, LuaObject o)
 	{
-		return LuaInteger.valueOf(getInteger() >> o.getInteger());
+		return LuaInteger.valueOf(getLong() >> o.getLong());
 	}
 
 	@Override
 	LuaObject doBNOT(LuaInterpreter interp)
 	{
-		return LuaInteger.valueOf(~getInteger());
+		return LuaInteger.valueOf(~getLong());
 	}
 
 	@Override

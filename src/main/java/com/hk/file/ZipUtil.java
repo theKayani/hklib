@@ -63,7 +63,7 @@ public class ZipUtil
 		{
 			ZipInputStream zin = new ZipInputStream(new FileInputStream(zipFile));
 
-			ZipEntry entry = null;
+			ZipEntry entry;
 			while ((entry = zin.getNextEntry()) != null)
 			{
 				if (entry.getName().endsWith("/")) continue;
@@ -126,7 +126,7 @@ public class ZipUtil
 		{
 			JarInputStream jin = new JarInputStream(new FileInputStream(jarFile));
 
-			JarEntry entry = null;
+			JarEntry entry;
 			while ((entry = jin.getNextJarEntry()) != null)
 			{
 				if (entry.getName().endsWith("/")) continue;

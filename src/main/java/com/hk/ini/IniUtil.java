@@ -26,7 +26,7 @@ public class IniUtil
 			c = str.charAt(i);
 			if(((int) c & 0xFF00) != 0)
 			{
-				String s = Integer.toHexString((int) c).toUpperCase();
+				String s = Integer.toHexString(c).toUpperCase();
 				sb.append("\\x");
 				for(int j = s.length(); j < 4; j++)
 				{
@@ -170,7 +170,6 @@ public class IniUtil
 				if(i < line.length() - 1 && line.charAt(i) == '\\')
 				{
 					i++;
-					continue;
 				}
 				else if(line.charAt(i) == '=')
 				{
@@ -178,36 +177,34 @@ public class IniUtil
 					break;
 				}
 			}
-			
-			if(line.isEmpty())
-			{
-				continue;
-			}
-			else if(line.charAt(0) == ';')
-			{
-				if(comment.length() > 0)
-					comment.append('\n');
-				comment.append(line.substring(1));
-			}
-			else if(line.charAt(0) == '[' && line.charAt(line.length() - 1) == ']')
-			{
-				section = unescape(line.substring(1, line.length() - 1));
-				if(comment.length() > 0)
-					ini.setComment(section, comment.toString());
-				comment.setLength(0);
-			}
-			else if(eqIndx >= 0)
-			{
-				comment.setLength(0);
-				String name = "";
-				if(eqIndx > 0)
-					name = unescape(line.substring(0, eqIndx).trim());
 
-				String val = "";
-				if(eqIndx < line.length() - 1)
-					val = unescape(line.substring(eqIndx + 1).trim());
+			if (!line.isEmpty()) {
+				if(line.charAt(0) == ';')
+				{
+					if(comment.length() > 0)
+						comment.append('\n');
+					comment.append(line.substring(1));
+				}
+				else if(line.charAt(0) == '[' && line.charAt(line.length() - 1) == ']')
+				{
+					section = unescape(line.substring(1, line.length() - 1));
+					if(comment.length() > 0)
+						ini.setComment(section, comment.toString());
+					comment.setLength(0);
+				}
+				else if(eqIndx >= 0)
+				{
+					comment.setLength(0);
+					String name = "";
+					if(eqIndx > 0)
+						name = unescape(line.substring(0, eqIndx).trim());
 
-				ini.add(section, name, val);
+					String val = "";
+					if(eqIndx < line.length() - 1)
+						val = unescape(line.substring(eqIndx + 1).trim());
+
+					ini.add(section, name, val);
+				}
 			}
 		}
 	}
@@ -350,21 +347,18 @@ public class IniUtil
 			if(!sec.isEmpty())
 				sb.append('[').append(IniUtil.escape(sec)).append("]\n");
 			String[] keys = ini.getKeys(sec);
-			for(int j = 0; j < keys.length; j++)
-			{
-				String key = keys[j];
+			for (String key : keys) {
 				Object[] vals;
 				Object o = ini.get(sec, key);
-				if(o instanceof Object[])
+				if (o instanceof Object[])
 					vals = (Object[]) o;
 				else
-					vals = new Object[] { o };
-				
-				for(int k = 0; k < vals.length; k++)
-				{
+					vals = new Object[]{o};
+
+				for (Object val : vals) {
 					sb.append(IniUtil.escape(key));
 					sb.append('=');
-					sb.append(IniUtil.escape(vals[k].toString()));
+					sb.append(IniUtil.escape(val.toString()));
 					sb.append('\n');
 				}
 			}

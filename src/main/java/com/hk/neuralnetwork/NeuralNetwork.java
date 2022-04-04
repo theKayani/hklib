@@ -288,13 +288,10 @@ public class NeuralNetwork implements Cloneable
 	 */
 	public NeuralNetwork mutateThis(final double chance)
 	{
-		for(int i = 0; i < weights.length; i++)
-		{
-			weights[i].map(new MatFunc()
-			{
+		for (Mat weight : weights) {
+			weight.map(new MatFunc() {
 				@Override
-				public double perform(double val, int r, int c)
-				{
+				public double perform(double val, int r, int c) {
 					return Rand.nextDouble() < chance ? val + (Rand.nextDouble(2) - 1) / 10 : val;
 				}
 			});
@@ -347,26 +344,16 @@ public class NeuralNetwork implements Cloneable
 	 */
 	public void writeTo(Stream out) throws StreamException
 	{
-		for(int i = 0; i < weights.length; i++)
-		{
-			Mat weight = weights[i];
-			
-			for(int x = 0; x < weight.rows; x++)
-			{
-				for(int y = 0; y < weight.cols; y++)
-				{
+		for (Mat weight : weights) {
+			for (int x = 0; x < weight.rows; x++) {
+				for (int y = 0; y < weight.cols; y++) {
 					out.writeDouble(weight.data[x][y]);
 				}
 			}
 		}
-		for(int i = 0; i < biases.length; i++)
-		{
-			Mat bias = biases[i];
-			
-			for(int x = 0; x < bias.rows; x++)
-			{
-				for(int y = 0; y < bias.cols; y++)
-				{
+		for (Mat bias : biases) {
+			for (int x = 0; x < bias.rows; x++) {
+				for (int y = 0; y < bias.cols; y++) {
 					out.writeDouble(bias.data[x][y]);
 				}
 			}
@@ -408,26 +395,16 @@ public class NeuralNetwork implements Cloneable
 	 */
 	public void readFrom(Stream in) throws StreamException
 	{
-		for(int i = 0; i < weights.length; i++)
-		{
-			Mat weight = weights[i];
-			
-			for(int x = 0; x < weight.rows; x++)
-			{
-				for(int y = 0; y < weight.cols; y++)
-				{
+		for (Mat weight : weights) {
+			for (int x = 0; x < weight.rows; x++) {
+				for (int y = 0; y < weight.cols; y++) {
 					weight.data[x][y] = in.readDouble();
 				}
 			}
 		}
-		for(int i = 0; i < biases.length; i++)
-		{
-			Mat bias = biases[i];
-			
-			for(int x = 0; x < bias.rows; x++)
-			{
-				for(int y = 0; y < bias.cols; y++)
-				{
+		for (Mat bias : biases) {
+			for (int x = 0; x < bias.rows; x++) {
+				for (int y = 0; y < bias.cols; y++) {
 					bias.data[x][y] = in.readDouble();
 				}
 			}

@@ -17,7 +17,7 @@ import com.hk.util.Requirements;
  */
 public class LockableList<E> implements List<E>, Unlockable
 {
-	private List<E> parent;
+	private final List<E> parent;
 	private final AtomicBoolean isLocked;
 	
 	/**
@@ -25,7 +25,7 @@ public class LockableList<E> implements List<E>, Unlockable
 	 */
 	public LockableList()
 	{
-		this.parent = new ArrayList<E>();
+		this.parent = new ArrayList<>();
 		isLocked = new AtomicBoolean(false);
 	}
 	
@@ -235,7 +235,7 @@ public class LockableList<E> implements List<E>, Unlockable
 	@Override
 	public LockableList<E> subList(int i1, int i2)
 	{
-		return new LockableList<E>(parent.subList(i1, i2), isLocked);
+		return new LockableList<>(parent.subList(i1, i2), isLocked);
 	}
 
 	/** {@inheritDoc} */

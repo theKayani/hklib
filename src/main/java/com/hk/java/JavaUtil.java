@@ -71,7 +71,7 @@ public class JavaUtil
 					clzs.add(cl.loadClass(pckg));
 				}
 			}
-			return clzs.toArray(new Class<?>[clzs.size()]);
+			return clzs.toArray(new Class<?>[0]);
 		}
 		catch (Exception e)
 		{

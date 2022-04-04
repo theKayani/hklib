@@ -21,7 +21,7 @@ public enum LuaType
 	
 	public final String luaName;
 	
-	private LuaType()
+	LuaType()
 	{
 		luaName = name().toLowerCase();
 	}

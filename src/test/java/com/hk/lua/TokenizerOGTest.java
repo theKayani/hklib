@@ -1,12 +1,10 @@
 package com.hk.lua;
 
-import java.io.IOException;
-
 import junit.framework.TestCase;
 
 public class TokenizerOGTest extends TestCase
 {
-	public void testInteger() throws IOException
+	public void testInteger()
 	{
 //		Tokenizer tkz = new Tokenizer(new StringReader("9223372036854775807"));
 //		

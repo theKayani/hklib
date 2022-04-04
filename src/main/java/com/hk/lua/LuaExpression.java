@@ -65,7 +65,7 @@ class LuaExpression extends Lua.LuaValue
 					}
 				}
 				else
-					stack.push((Lua.LuaValue) value);
+					stack.push(value);
 			}
 			catch(EmptyStackException e)
 			{

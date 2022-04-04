@@ -40,10 +40,7 @@ public class Mat implements Serializable, Cloneable
 		this.data = new double[rows][cols];
 		for(int r = 0; r < rows; r++)
 		{
-			for(int c = 0; c < cols; c++)
-			{
-				this.data[r][c] = data[r][c];
-			}
+			System.arraycopy(data[r], 0, this.data[r], 0, cols);
 		}
 	}
 	
@@ -253,10 +250,7 @@ public class Mat implements Serializable, Cloneable
 		double[] arr = new double[rows * cols];
 		for(int r = 0; r < rows; r++)
 		{
-			for(int c = 0; c < cols; c++)
-			{
-				arr[c + r * cols] = data[r][c];
-			}
+			if (cols >= 0) System.arraycopy(data[r], 0, arr, r * cols, cols);
 		}
 		return arr;
 	}
@@ -339,11 +333,11 @@ public class Mat implements Serializable, Cloneable
 	
 	public interface MatFunc
 	{
-		public double perform(double val, int r, int c);
+		double perform(double val, int r, int c);
 	}
 	
 	/** Constant <code>SIGMOID</code> */
-	public static MatFunc SIGMOID = new MatFunc()
+	public static final MatFunc SIGMOID = new MatFunc()
 	{
 		@Override
 		public double perform(double val, int r, int c)
@@ -353,7 +347,7 @@ public class Mat implements Serializable, Cloneable
 	};
 	
 	/** Constant <code>SIGMOID_DERIVATIVE</code> */
-	public static MatFunc SIGMOID_DERIVATIVE = new MatFunc()
+	public static final MatFunc SIGMOID_DERIVATIVE = new MatFunc()
 	{
 		@Override
 		public double perform(double val, int r, int c)
@@ -363,7 +357,7 @@ public class Mat implements Serializable, Cloneable
 	};
 	
 	/** Constant <code>TANH</code> */
-	public static MatFunc TANH = new MatFunc()
+	public static final MatFunc TANH = new MatFunc()
 	{
 		@Override
 		public double perform(double val, int r, int c)
@@ -373,7 +367,7 @@ public class Mat implements Serializable, Cloneable
 	};
 	
 	/** Constant <code>TANH_DERIVATIVE</code> */
-	public static MatFunc TANH_DERIVATIVE = new MatFunc()
+	public static final MatFunc TANH_DERIVATIVE = new MatFunc()
 	{
 		@Override
 		public double perform(double val, int r, int c)

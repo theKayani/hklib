@@ -28,10 +28,9 @@ public class Concat
 
 		T[] arr = (T[]) Array.newInstance(arrs[0].getClass().getComponentType(), len);
 		int index = 0;
-		for (int i = 0; i < arrs.length; i++)
-		{
-			System.arraycopy(arrs[i], 0, arr, index, arrs[i].length);
-			index += arrs[i].length;
+		for (T[] ts : arrs) {
+			System.arraycopy(ts, 0, arr, index, ts.length);
+			index += ts.length;
 		}
 		return arr;
 	}
@@ -52,10 +51,9 @@ public class Concat
 
 		int[] arr = new int[len];
 		int index = 0;
-		for (int i = 0; i < arrs.length; i++)
-		{
-			System.arraycopy(arrs[i], 0, arr, index, arrs[i].length);
-			index += arrs[i].length;
+		for (int[] ints : arrs) {
+			System.arraycopy(ints, 0, arr, index, ints.length);
+			index += ints.length;
 		}
 		return arr;
 	}
@@ -76,10 +74,9 @@ public class Concat
 
 		double[] arr = new double[len];
 		int index = 0;
-		for (int i = 0; i < arrs.length; i++)
-		{
-			System.arraycopy(arrs[i], 0, arr, index, arrs[i].length);
-			index += arrs[i].length;
+		for (double[] doubles : arrs) {
+			System.arraycopy(doubles, 0, arr, index, doubles.length);
+			index += doubles.length;
 		}
 		return arr;
 	}
@@ -100,10 +97,9 @@ public class Concat
 
 		float[] arr = new float[len];
 		int index = 0;
-		for (int i = 0; i < arrs.length; i++)
-		{
-			System.arraycopy(arrs[i], 0, arr, index, arrs[i].length);
-			index += arrs[i].length;
+		for (float[] floats : arrs) {
+			System.arraycopy(floats, 0, arr, index, floats.length);
+			index += floats.length;
 		}
 		return arr;
 	}
@@ -124,10 +120,9 @@ public class Concat
 
 		byte[] arr = new byte[len];
 		int index = 0;
-		for (int i = 0; i < arrs.length; i++)
-		{
-			System.arraycopy(arrs[i], 0, arr, index, arrs[i].length);
-			index += arrs[i].length;
+		for (byte[] bytes : arrs) {
+			System.arraycopy(bytes, 0, arr, index, bytes.length);
+			index += bytes.length;
 		}
 		return arr;
 	}
@@ -148,10 +143,9 @@ public class Concat
 
 		short[] arr = new short[len];
 		int index = 0;
-		for (int i = 0; i < arrs.length; i++)
-		{
-			System.arraycopy(arrs[i], 0, arr, index, arrs[i].length);
-			index += arrs[i].length;
+		for (short[] shorts : arrs) {
+			System.arraycopy(shorts, 0, arr, index, shorts.length);
+			index += shorts.length;
 		}
 		return arr;
 	}
@@ -172,10 +166,9 @@ public class Concat
 
 		long[] arr = new long[len];
 		int index = 0;
-		for (int i = 0; i < arrs.length; i++)
-		{
-			System.arraycopy(arrs[i], 0, arr, index, arrs[i].length);
-			index += arrs[i].length;
+		for (long[] longs : arrs) {
+			System.arraycopy(longs, 0, arr, index, longs.length);
+			index += longs.length;
 		}
 		return arr;
 	}
@@ -196,10 +189,9 @@ public class Concat
 
 		char[] arr = new char[len];
 		int index = 0;
-		for (int i = 0; i < arrs.length; i++)
-		{
-			System.arraycopy(arrs[i], 0, arr, index, arrs[i].length);
-			index += arrs[i].length;
+		for (char[] chars : arrs) {
+			System.arraycopy(chars, 0, arr, index, chars.length);
+			index += chars.length;
 		}
 		return arr;
 	}
@@ -220,10 +212,9 @@ public class Concat
 
 		boolean[] arr = new boolean[len];
 		int index = 0;
-		for (int i = 0; i < arrs.length; i++)
-		{
-			System.arraycopy(arrs[i], 0, arr, index, arrs[i].length);
-			index += arrs[i].length;
+		for (boolean[] booleans : arrs) {
+			System.arraycopy(booleans, 0, arr, index, booleans.length);
+			index += booleans.length;
 		}
 		return arr;
 	}

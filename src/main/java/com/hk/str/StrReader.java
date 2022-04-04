@@ -161,13 +161,13 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	public String peekString(int amt)
 	{
 		amt = Math.max(0, amt);
-		String s = "";
+		StringBuilder s = new StringBuilder();
 		for(int i = position; i < position + amt; i++)
 		{
 			if(!inBound(i)) break;
-			s += str.charAt(i);
+			s.append(str.charAt(i));
 		}
-		return s;
+		return s.toString();
 	}
 	
 	/**
@@ -192,13 +192,13 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	public String pollString(int amt)
 	{
 		amt = Math.max(0, amt);
-		String s = "";
+		StringBuilder s = new StringBuilder();
 		for(int i = position - amt - 1; i < position - 1; i++)
 		{
 			if(!inBound(i)) break;
-			s += str.charAt(i);
+			s.append(str.charAt(i));
 		}
-		return s;
+		return s.toString();
 	}
 
 	private boolean inBound(int i)

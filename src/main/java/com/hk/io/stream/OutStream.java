@@ -64,7 +64,7 @@ public class OutStream implements Stream
 	{
 		if(errorCheck) write(TYPE_SHORT);
 		write((byte) (o >> 8 & 0xFF));
-		write((byte) (o >> 0 & 0xFF));
+		write((byte) (o & 0xFF));
 	}
 
 	/** {@inheritDoc} */
@@ -75,7 +75,7 @@ public class OutStream implements Stream
 		write((byte) (o >> 24 & 0xFF));
 		write((byte) (o >> 16 & 0xFF));
 		write((byte) (o >>  8 & 0xFF));
-		write((byte) (o >>  0 & 0xFF));
+		write((byte) (o & 0xFF));
 	}
 
 	/** {@inheritDoc} */
@@ -87,7 +87,7 @@ public class OutStream implements Stream
 		write((byte) (o2 >> 24 & 0xFF));
 		write((byte) (o2 >> 16 & 0xFF));
 		write((byte) (o2 >>  8 & 0xFF));
-		write((byte) (o2 >>  0 & 0xFF));
+		write((byte) (o2 & 0xFF));
 	}
 
 	/** {@inheritDoc} */
@@ -95,9 +95,8 @@ public class OutStream implements Stream
 	public void writeCharacter(char o) throws StreamException
 	{
 		if(errorCheck) write(TYPE_CHAR);
-		int o2 = (int) o;
-		write((byte) (o2 >> 8 & 0xFF));
-		write((byte) (o2 >> 0 & 0xFF));
+		write((byte) ((int) o >> 8 & 0xFF));
+		write((byte) ((int) o & 0xFF));
 	}
 
 	/** {@inheritDoc} */
@@ -112,7 +111,7 @@ public class OutStream implements Stream
 		write((byte) (o >> 24 & 0xFF));
 		write((byte) (o >> 16 & 0xFF));
 		write((byte) (o >>  8 & 0xFF));
-		write((byte) (o >>  0 & 0xFF));
+		write((byte) (o & 0xFF));
 	}
 
 	/** {@inheritDoc} */
@@ -128,7 +127,7 @@ public class OutStream implements Stream
 		write((byte) (o2 >> 24 & 0xFF));
 		write((byte) (o2 >> 16 & 0xFF));
 		write((byte) (o2 >>  8 & 0xFF));
-		write((byte) (o2 >>  0 & 0xFF));
+		write((byte) (o2 & 0xFF));
 	}
 
 	/** {@inheritDoc} */
@@ -141,11 +140,9 @@ public class OutStream implements Stream
 		write((byte) (len >> 24 & 0xFF));
 		write((byte) (len >> 16 & 0xFF));
 		write((byte) (len >> 8 & 0xFF));
-		write((byte) (len >> 0 & 0xFF));
-		for(int i = 0; i < len; i++)
-		{
-			write((byte) (~bs[i] & 0xFF));
-		}
+		write((byte) (len & 0xFF));
+		for (byte b : bs)
+			write((byte) (~b & 0xFF));
 	}
 	
 	/** {@inheritDoc} */
@@ -157,12 +154,12 @@ public class OutStream implements Stream
 		write((byte) (len >> 24 & 0xFF));
 		write((byte) (len >> 16 & 0xFF));
 		write((byte) (len >> 8 & 0xFF));
-		write((byte) (len >> 0 & 0xFF));
+		write((byte) (len & 0xFF));
 		for(int i = 0; i < len; i++)
 		{
-			int o2 = (int) o.charAt(i);
+			int o2 = o.charAt(i);
 			write((byte) (o2 >> 8 & 0xFF));
-			write((byte) (o2 >> 0 & 0xFF));
+			write((byte) (o2 & 0xFF));
 		}
 	}
 
@@ -187,11 +184,9 @@ public class OutStream implements Stream
 		write((byte) (len >> 24 & 0xFF));
 		write((byte) (len >> 16 & 0xFF));
 		write((byte) (len >> 8 & 0xFF));
-		write((byte) (len >> 0 & 0xFF));
-		for(int i = 0; i < len; i++)
-		{
-			write((byte) (~arr[i] & 0xFF));
-		}
+		write((byte) (len & 0xFF));
+		for (byte b : arr)
+			write((byte) (~b & 0xFF));
 	}
 
 	/** {@inheritDoc} */
@@ -203,11 +198,9 @@ public class OutStream implements Stream
 		write((byte) (len >> 24 & 0xFF));
 		write((byte) (len >> 16 & 0xFF));
 		write((byte) (len >> 8 & 0xFF));
-		write((byte) (len >> 0 & 0xFF));
-		for(int i = 0; i < len; i++)
-		{
-			write(arr[i]);
-		}
+		write((byte) (len & 0xFF));
+		for (byte b : arr)
+			write(b);
 	}
 
 	/** {@inheritDoc} */

@@ -387,7 +387,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 */
 	public Vector3F set(float[] arr, int off)
 	{
-		x = arr[off + 0];
+		x = arr[off];
 		y = arr[off + 1];
 		z = arr[off + 2];
 		return this;
@@ -470,7 +470,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 */
 	public float[] get(float[] arr, int off)
 	{
-		arr[off + 0] = x;
+		arr[off] = x;
 		arr[off + 1] = y;
 		arr[off + 2] = z;
 		return arr;
@@ -783,7 +783,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 */
 	public static boolean isValidVector(Vector3F vec)
 	{
-		return vec == null ? false : !(Float.isNaN(vec.x) || Float.isNaN(vec.y) || Float.isInfinite(vec.x) || Float.isInfinite(vec.y) || Float.isInfinite(vec.z) || Float.isInfinite(vec.z));
+		return vec != null && !(Float.isNaN(vec.x) || Float.isNaN(vec.y) || Float.isNaN(vec.z) || Float.isInfinite(vec.x) || Float.isInfinite(vec.y) || Float.isInfinite(vec.z));
 	}
 
 	/**
@@ -794,7 +794,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 */
 	public static boolean isUnitVector(Vector3F vec)
 	{
-		return vec == null ? false : vec.x > 0.99F && vec.y > 0.99F && vec.z > 0.99F && vec.x < 1.01F && vec.y < 1.01F && vec.z < 1.01F;
+		return vec != null && vec.x > 0.99F && vec.y > 0.99F && vec.z > 0.99F && vec.x < 1.01F && vec.y < 1.01F && vec.z < 1.01F;
 	}
 
 	/** {@inheritDoc} */

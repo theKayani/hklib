@@ -248,12 +248,11 @@ public class Rand
 	 */
 	public static String nextString(int length)
 	{
-		String s = "";
+		char[] cs = new char[length];
 		for (int i = 0; i < length; i++)
-		{
-			s += nextChar();
-		}
-		return s;
+			cs[i] = nextChar();
+
+		return new String(cs);
 	}
 
 	/**

@@ -110,19 +110,19 @@ public class ListUtilTest extends TestCase
 		assertEquals(expectedDbl, actualDbl);
 
 		actualObj = new ArrayList<>();
-		ListUtil.addElements(actualObj, objectArr);
+		ListUtil.addAll(actualObj, objectArr);
 		expectedObj = new ArrayList<>();
 		Collections.addAll(expectedObj, objectArr);
 		assertEquals(expectedObj, actualObj);
 
 		actualStr = new ArrayList<>();
-		ListUtil.addElements(actualStr, stringArr);
+		ListUtil.addAll(actualStr, stringArr);
 		expectedStr = new ArrayList<>();
 		Collections.addAll(expectedStr, stringArr);
 		assertEquals(expectedStr, actualStr);
 
 		actualDbl = new ArrayList<>();
-		ListUtil.addElements(actualDbl, doubleArr);
+		ListUtil.addAll(actualDbl, doubleArr);
 		expectedDbl = new ArrayList<>();
 		Collections.addAll(expectedDbl, doubleArr);
 		assertEquals(expectedDbl, actualDbl);

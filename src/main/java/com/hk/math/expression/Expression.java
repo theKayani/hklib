@@ -114,6 +114,7 @@ public class Expression
 				case '0':
 				case '1':
 					boolean val = c == '1';
+					// i have no idea what this is...
 					if (itr.getIndex() > 0)
 					{
 						val = (s.charAt(itr.getIndex() - 1) == '!') != val;

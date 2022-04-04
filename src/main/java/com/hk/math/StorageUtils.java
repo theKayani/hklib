@@ -19,5 +19,6 @@ public class StorageUtils
 	/** Constant <code>GIGABYTE=1000 * MEGABYTE</code> */
 	public static final int GIGABYTE = 1000 * MEGABYTE;
 	/** Constant <code>TERABYTE=1000 * GIGABYTE</code> */
-	public static final int TERABYTE = 1000 * GIGABYTE;
+	@Deprecated
+	public static final int TERABYTE = -1; // 1000 * GIGABYTE;
 }

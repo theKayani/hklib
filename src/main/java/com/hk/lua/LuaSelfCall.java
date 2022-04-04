@@ -20,7 +20,7 @@ class LuaSelfCall extends LuaLocation
 		
 		LuaObject field = parent.doIndex(interp, new LuaString(name));
 		
-		LuaObject[] arr = null;
+		LuaObject[] arr;
 		if(args == null)
 			arr = new LuaObject[] { parent };
 		else
@@ -33,7 +33,7 @@ class LuaSelfCall extends LuaLocation
 	{
 		LuaObject field = parent.doIndex(interp, new LuaString(name));
 
-		LuaObject[] arr = null;
+		LuaObject[] arr;
 		if(args == null)
 			arr = new LuaObject[] { parent };
 		else

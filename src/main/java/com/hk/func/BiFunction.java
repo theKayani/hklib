@@ -14,5 +14,5 @@ public interface BiFunction<X, Y, Z>
 	 * @param y a Y object
 	 * @return a Z object
 	 */
-	public Z apply(X x, Y y);
+	Z apply(X x, Y y);
 }

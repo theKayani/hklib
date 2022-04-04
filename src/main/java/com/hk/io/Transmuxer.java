@@ -83,10 +83,10 @@ public class Transmuxer
 		}
 		else
 		{
-			for(int i = 0; i < muxers.length; i++)
+			for (Muxer muxer : muxers)
 			{
-				if(!muxers[i].ignore)
-					muxers[i].mux(key, data, offset, length);
+				if (!muxer.ignore)
+					muxer.mux(key, data, offset, length);
 			}
 		}
 	}
@@ -106,7 +106,7 @@ public class Transmuxer
 			throw new NullPointerException("data");
 		if(offset < 0 || offset >= length || offset >= data.length)
 			throw new IllegalArgumentException("offset out of range");
-		if(length <= 0 || length > data.length - offset)
+		if(length > data.length - offset)
 			throw new IllegalArgumentException("length out of range");
 		
 		return new Transmuxer(key, data, offset, length);
@@ -211,12 +211,12 @@ public class Transmuxer
 		
 		private final boolean ignore;
 		
-		private Muxer()
+		Muxer()
 		{
 			this(false);
 		}
 		
-		private Muxer(boolean ignore)
+		Muxer(boolean ignore)
 		{
 			this.ignore = ignore;
 		}

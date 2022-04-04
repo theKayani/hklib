@@ -45,7 +45,7 @@ public class PascalsTriangle
      */
     public static int nCr(int n, int r)
     {
-        return (int) nCr((long) n, (long) r);
+        return (int) nCr(n, (long) r);
     }
 
     /**
@@ -57,7 +57,7 @@ public class PascalsTriangle
      */
     public static int nPr(int n, int r)
     {
-        return (int) nPr((long) n, (long) r);
+        return (int) nPr(n, (long) r);
     }
 
     /**
@@ -125,12 +125,12 @@ public class PascalsTriangle
     {
         if (exp == 0)
             return "1";
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < exp + 1; i++)
         {
-            s += getTerm(exp, i) + (i == exp ? "" : " + ");
+            s.append(getTerm(exp, i)).append(i == exp ? "" : " + ");
         }
-        return s;
+        return s.toString();
     }
 
     /**

@@ -24,12 +24,12 @@ abstract class LuaMetatable extends LuaObject
 			{
 				LuaObject res = mm.doCall(interp, new LuaObject[] { this, o });
 				res = res.evaluate(interp);
-				return LuaBoolean.valueOf(((LuaObject) res).getBoolean());
+				return LuaBoolean.valueOf(res.getBoolean());
 			}
 		}
 		return LuaBoolean.FALSE;
 	}
-	
+
 	/** {@inheritDoc} */
 	public void setMetatable(LuaObject metatable)
 	{
@@ -78,6 +78,6 @@ abstract class LuaMetatable extends LuaObject
 		if(!mm.isNil())
 			return mm;
 
-		return !other.getMetatable().isNil() ? ((LuaTable) other.getMetatable()).rawGet(ls) : null;
+		return !other.getMetatable().isNil() ? other.getMetatable().rawGet(ls) : null;
 	}
 }

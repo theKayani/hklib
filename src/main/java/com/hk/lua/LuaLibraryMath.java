@@ -5,7 +5,6 @@ import java.util.Random;
 
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
-import com.hk.math.MathUtil;
 import com.hk.math.PrimitiveUtil;
 import com.hk.math.Rand;
 
@@ -22,9 +21,9 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
 			if(args[0].isInteger())
-				return LuaInteger.valueOf(Math.abs(args[0].getInteger()));
+				return LuaInteger.valueOf(Math.abs(args[0].getLong()));
 			else
-				return new LuaFloat(Math.abs(args[0].getFloat()));
+				return new LuaFloat(Math.abs(args[0].getDouble()));
 		}
 	},
 	acos() {
@@ -32,7 +31,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
-			return new LuaFloat(Math.acos(args[0].getFloat()));
+			return new LuaFloat(Math.acos(args[0].getDouble()));
 		}
 	},
 	asin() {
@@ -40,7 +39,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
-			return new LuaFloat(Math.asin(args[0].getFloat()));
+			return new LuaFloat(Math.asin(args[0].getDouble()));
 		}
 	},
 	atan() {
@@ -50,12 +49,12 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 			if(args.length > 1)
 			{
 				Lua.checkArgs(name(), args, LuaType.NUMBER, LuaType.NUMBER);
-				return new LuaFloat(Math.atan2(args[0].getFloat(), args[1].getFloat()));
+				return new LuaFloat(Math.atan2(args[0].getDouble(), args[1].getDouble()));
 			}
 			else
 			{
 				Lua.checkArgs(name(), args, LuaType.NUMBER);
-				return new LuaFloat(Math.atan(args[0].getFloat()));
+				return new LuaFloat(Math.atan(args[0].getDouble()));
 			}
 		}
 	},
@@ -64,7 +63,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
-			return LuaInteger.valueOf((long) (args[0].getFloat() < 0 ? Math.floor(args[0].getFloat()) : Math.ceil(args[0].getFloat())));
+			return LuaInteger.valueOf((long) (args[0].getDouble() < 0 ? Math.floor(args[0].getDouble()) : Math.ceil(args[0].getDouble())));
 		}
 	},
 	cos() {
@@ -72,7 +71,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
-			return new LuaFloat(Math.cos(args[0].getFloat()));
+			return new LuaFloat(Math.cos(args[0].getDouble()));
 		}
 	},
 	deg() {
@@ -80,7 +79,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
-			return new LuaFloat(Math.toDegrees(args[0].getFloat()));
+			return new LuaFloat(Math.toDegrees(args[0].getDouble()));
 		}
 	},
 	exp() {
@@ -88,7 +87,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
-			return new LuaFloat(Math.exp(args[0].getFloat()));
+			return new LuaFloat(Math.exp(args[0].getDouble()));
 		}
 	},
 	floor() {
@@ -96,7 +95,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
-			return LuaInteger.valueOf((long) (args[0].getFloat() < 0 ? Math.ceil(args[0].getFloat()) : Math.floor(args[0].getFloat())));
+			return LuaInteger.valueOf((long) (args[0].getDouble() < 0 ? Math.ceil(args[0].getDouble()) : Math.floor(args[0].getDouble())));
 		}
 	},
 	fmod() {
@@ -104,8 +103,8 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER, LuaType.NUMBER);
-			long x = args[0].getInteger();
-			long y = args[1].getInteger();
+			long x = args[0].getLong();
+			long y = args[1].getLong();
 			long r = x - (x / y) * y;
 
 			if(args[0].isInteger() && args[1].isInteger())
@@ -127,12 +126,12 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 			if(args.length > 1)
 			{
 				Lua.checkArgs(name(), args, LuaType.NUMBER, LuaType.NUMBER);
-				return new LuaFloat(Math.log(args[0].getFloat()) / Math.log(args[1].getFloat()));
+				return new LuaFloat(Math.log(args[0].getDouble()) / Math.log(args[1].getDouble()));
 			}
 			else
 			{
 				Lua.checkArgs(name(), args, LuaType.NUMBER);
-				return new LuaFloat(Math.log(args[0].getFloat()));
+				return new LuaFloat(Math.log(args[0].getDouble()));
 			}
 		}
 	},
@@ -179,7 +178,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.FLOAT);
-			double d = args[0].getFloat();
+			double d = args[0].getDouble();
 			if(Double.isNaN(d))
 				return new LuaArgs(LuaFloat.NaN, LuaFloat.NaN);
 			else if(Double.isInfinite(d))
@@ -201,7 +200,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
-			return new LuaFloat(Math.toRadians(args[0].getFloat()));
+			return new LuaFloat(Math.toRadians(args[0].getDouble()));
 		}
 	},
 	random() {
@@ -218,7 +217,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 			if(args.length > 1)
 			{
 				Lua.checkArgs(name(), args, LuaType.NUMBER, LuaType.NUMBER);
-				double d = rng.nextDouble() * (args[1].getFloat() - args[0].getFloat() + 1) + args[0].getFloat();
+				double d = rng.nextDouble() * (args[1].getDouble() - args[0].getDouble() + 1) + args[0].getDouble();
 				if(args[0].isInteger() && args[1].isInteger())
 					return LuaInteger.valueOf((long) d);
 				else
@@ -228,9 +227,9 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 			{
 				Lua.checkArgs(name(), args, LuaType.NUMBER);
 				if(args[0].isInteger())
-					return LuaInteger.valueOf(args[0].getInteger() == 0L ? rng.nextLong() : (long) (rng.nextDouble() * ((int) args[0].getInteger() + 1)));
+					return LuaInteger.valueOf(args[0].getLong() == 0L ? rng.nextLong() : (long) (rng.nextDouble() * ((int) args[0].getLong() + 1)));
 				else
-					return new LuaFloat(rng.nextDouble() * args[0].getFloat() + 1);
+					return new LuaFloat(rng.nextDouble() * args[0].getDouble() + 1);
 			}
 			else
 			{
@@ -246,11 +245,11 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 			if(args.length >= 1)
 			{
 				Lua.checkArgs(name(), args, LuaType.NUMBER);
-				PrimitiveUtil.longToBytes(Double.doubleToRawLongBits(args[0].getFloat()), seed, 0);
+				PrimitiveUtil.longToBytes(Double.doubleToRawLongBits(args[0].getDouble()), seed, 0);
 				if(args.length > 1)
 				{
 					Lua.checkArgs(name(), args, LuaType.NUMBER, LuaType.NUMBER);
-					PrimitiveUtil.longToBytes(Double.doubleToRawLongBits(args[1].getFloat()), seed, 8);
+					PrimitiveUtil.longToBytes(Double.doubleToRawLongBits(args[1].getDouble()), seed, 8);
 				}
 			}
 			else
@@ -268,7 +267,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
-			return new LuaFloat(Math.sin(args[0].getFloat()));
+			return new LuaFloat(Math.sin(args[0].getDouble()));
 		}
 	},
 	sqrt() {
@@ -276,7 +275,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
-			return new LuaFloat(Math.sqrt(args[0].getFloat()));
+			return new LuaFloat(Math.sqrt(args[0].getDouble()));
 		}
 	},
 	tan() {
@@ -284,7 +283,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER);
-			return new LuaFloat(Math.tan(args[0].getFloat()));
+			return new LuaFloat(Math.tan(args[0].getDouble()));
 		}
 	},
 	tointeger() {
@@ -326,7 +325,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaBoolean call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.NUMBER, LuaType.NUMBER);
-			return LuaBoolean.valueOf(args[0].isInteger() && args[1].isInteger() && args[0].getInteger() < args[1].getInteger());
+			return LuaBoolean.valueOf(args[0].isInteger() && args[1].isInteger() && args[0].getLong() < args[1].getLong());
 		}
 	};
 

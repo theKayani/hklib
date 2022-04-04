@@ -117,7 +117,8 @@ public class JsonReader
 		}
 		else if(c == 'n')
 		{
-			val = parseNull();
+			parseNull();
+			val = JsonNull.NULL;
 		}
 		else
 			throw unexpected();
@@ -326,14 +327,10 @@ public class JsonReader
 		throw unexpected();
 	}
 
-	private JsonNull parseNull() throws IOException
+	private void parseNull() throws IOException
 	{
-		if(c == 'n' &&
-			(c = (char) rdr.read()) == 'u' &&
-			(c = (char) rdr.read()) == 'l' &&
-			(c = (char) rdr.read()) == 'l')
-			return JsonNull.NULL;
-
+		if (c != 'n' || (c = (char) rdr.read()) != 'u' ||
+			(c = (char) rdr.read()) != 'l' || (c = (char) rdr.read()) != 'l')
 		throw unexpected();
 	}
 	

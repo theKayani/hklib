@@ -145,7 +145,7 @@ public class Ellipse extends Shape
 		hash = hash * 13 + Float.floatToIntBits(y);
 		hash = hash * 13 + Float.floatToIntBits(width);
 		hash = hash * 13 + Float.floatToIntBits(height);
-		return 0;
+		return hash;
 	}
 
 	/** {@inheritDoc} */

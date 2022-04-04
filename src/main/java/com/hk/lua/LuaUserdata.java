@@ -16,9 +16,9 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaBoolean rawEqual(LuaObject o)
+	public boolean rawEqual(LuaObject o)
 	{
-		return LuaBoolean.valueOf(o == this);
+		return o == this;
 	}
 
 	/** {@inheritDoc} */
@@ -62,14 +62,14 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public double getFloat()
+	public double getDouble()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public long getInteger()
+	public long getLong()
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
@@ -156,6 +156,13 @@ public abstract class LuaUserdata extends LuaMetatable
 	public final LuaType type()
 	{
 		return LuaType.USERDATA;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public LuaBoolean doEQ(LuaInterpreter interp, LuaObject o)
+	{
+		return super.doEQ(interp, o);
 	}
 
 	/** {@inheritDoc} */

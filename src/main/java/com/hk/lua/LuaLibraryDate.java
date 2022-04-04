@@ -55,7 +55,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(toString(), args, LuaType.INTEGER);
-			return new LuaDateUserdata(new Date(args[0].getInteger()));
+			return new LuaDateUserdata(new Date(args[0].getLong()));
 		}
 	},
 	now() {
@@ -133,7 +133,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 							throw new LuaException("bad argument #2 to 'year' (integer expected)");
 						try
 						{
-							cal.set(Calendar.YEAR, (int) args[1].getInteger());
+							cal.set(Calendar.YEAR, args[1].getInt());
 						}
 						catch(ArrayIndexOutOfBoundsException ex)
 						{
@@ -160,7 +160,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 							throw new LuaException("bad argument #2 to 'month' (integer expected)");
 						try
 						{
-							cal.set(Calendar.MONTH, (int) args[1].getInteger() - 1);
+							cal.set(Calendar.MONTH, args[1].getInt() - 1);
 						}
 						catch(ArrayIndexOutOfBoundsException ex)
 						{
@@ -187,7 +187,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 							throw new LuaException("bad argument #2 to 'day' (integer expected)");
 						try
 						{
-							cal.set(Calendar.DAY_OF_MONTH, (int) args[1].getInteger());
+							cal.set(Calendar.DAY_OF_MONTH, args[1].getInt());
 						}
 						catch(ArrayIndexOutOfBoundsException ex)
 						{
@@ -214,7 +214,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 							throw new LuaException("bad argument #2 to 'hour' (integer expected)");
 						try
 						{
-							cal.set(Calendar.HOUR_OF_DAY, (int) args[1].getInteger());
+							cal.set(Calendar.HOUR_OF_DAY, args[1].getInt());
 						}
 						catch(ArrayIndexOutOfBoundsException ex)
 						{
@@ -241,7 +241,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 							throw new LuaException("bad argument #2 to 'minute' (integer expected)");
 						try
 						{
-							cal.set(Calendar.MINUTE, (int) args[1].getInteger());
+							cal.set(Calendar.MINUTE, args[1].getInt());
 						}
 						catch(ArrayIndexOutOfBoundsException ex)
 						{
@@ -268,7 +268,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 							throw new LuaException("bad argument #2 to 'second' (integer expected)");
 						try
 						{
-							cal.set(Calendar.SECOND, (int) args[1].getInteger());
+							cal.set(Calendar.SECOND, args[1].getInt());
 						}
 						catch(ArrayIndexOutOfBoundsException ex)
 						{
@@ -295,7 +295,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 							throw new LuaException("bad argument #2 to 'millis' (integer expected)");
 						try
 						{
-							cal.set(Calendar.MILLISECOND, (int) args[1].getInteger());
+							cal.set(Calendar.MILLISECOND, args[1].getInt());
 						}
 						catch(ArrayIndexOutOfBoundsException ex)
 						{
@@ -353,21 +353,18 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		}
 
 		@Override
-		public LuaBoolean rawEqual(LuaObject o)
+		public boolean rawEqual(LuaObject o)
 		{
 			if(o == this)
-				return LuaBoolean.TRUE;
-			
-			if(o instanceof LuaDateUserdata)
-				return LuaBoolean.valueOf(calendar.equals(((LuaDateUserdata) o).calendar));
-			else
-				return LuaBoolean.valueOf(o == this);
+				return true;
+
+			return o instanceof LuaDateUserdata && calendar.equals(((LuaDateUserdata) o).calendar);
 		}
 
 		@Override
 		public LuaBoolean doEQ(LuaInterpreter interp, LuaObject o)
 		{
-			return rawEqual(o);
+			return LuaBoolean.valueOf(rawEqual(o));
 		}
 		
 		@Override

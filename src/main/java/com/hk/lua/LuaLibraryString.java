@@ -24,10 +24,10 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			LuaObject i = args.length > 1 ? args[1] : LuaInteger.ONE;
 			LuaObject j = args.length > 2 ? args[2] : i;
 			
-			LuaObject[] res = new LuaObject[(int) (j.doSub(interp, i).getInteger() + 1)];
+			LuaObject[] res = new LuaObject[j.doSub(interp, i).getInt() + 1];
 			for(int k = 0; k < res.length; k++)
 			{
-				res[k] = LuaInteger.valueOf((int) str.charAt((int) (i.getInteger() - 1)));
+				res[k] = LuaInteger.valueOf((int) str.charAt(i.getInt() - 1));
 				i = i.doAdd(interp, LuaInteger.ONE);
 			}
 			return new LuaArgs(res);
@@ -48,7 +48,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 				if(!args[i].isInteger())
 					throw new LuaException("bad argument #" + (i + 1) + " to 'char' (integer expected)");
 				
-				cs[i] = (char) args[i].getInteger();
+				cs[i] = (char) args[i].getInt();
 			}
 			return new LuaString(new String(cs));
 		}
@@ -72,7 +72,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			Lua.checkArgs(name(), args, LuaType.STRING, LuaType.STRING);
 			String str = args[0].getString();
 			String pattern = args[1].getString();
-			int init = args.length > 2 ? (int) (args[2].getInteger() - 1) : 0;
+			int init = args.length > 2 ? args[2].getInt() - 1 : 0;
 			while(init < 0)
 				init += str.length();
 			boolean plain = args.length > 3 && args[3].getBoolean();
@@ -128,10 +128,10 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 						arg = args[i].getBoolean();
 						break;
 					case FLOAT:
-						arg = args[i].getFloat();
+						arg = args[i].getDouble();
 						break;
 					case INTEGER:
-						arg = args[i].getInteger();
+						arg = args[i].getLong();
 						break;
 					case USERDATA:
 						if(args[i] instanceof LuaLibraryDate.LuaDateUserdata)
@@ -232,7 +232,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			default:
 				throw new LuaException("bad argument #3 to 'gsub' (string, table, or function expected)");
 			}
-			int n = args.length > 3 ? (int) args[3].getInteger() : Integer.MAX_VALUE;
+			int n = args.length > 3 ? args[3].getInt() : Integer.MAX_VALUE;
 			int total = 0;
 
 			StringBuffer res = new StringBuffer();
@@ -314,7 +314,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			Lua.checkArgs(name(), args, LuaType.STRING, LuaType.STRING);
 			String str = args[0].getString();
 			String pattern = args[1].getString();
-			int init = args.length > 2 ? (int) (args[2].getInteger() - 1) : 0;
+			int init = args.length > 2 ? args[2].getInt() - 1 : 0;
 			while(init < 0)
 				init += str.length();
 			
@@ -368,12 +368,12 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			LuaObject n = args[1];
 			LuaObject sep = args.length > 2 ? args[2] : new LuaString("");
 			
-			StringBuilder sb = new StringBuilder((int) (str.length() * n.getInteger() + sep.getString().length() * (n.getInteger() - 1)));
-			for(int i = 0; i < n.getInteger(); i++)
+			StringBuilder sb = new StringBuilder(str.length() * n.getInt() + sep.getString().length() * (n.getInt() - 1));
+			for(int i = 0; i < n.getInt(); i++)
 			{
 				sb.append(str);
 
-				if(i < n.getInteger() - 1)
+				if(i < n.getInt() - 1)
 					sb.append(sep.getString());
 			}
 			return new LuaString(sb.toString());
@@ -395,8 +395,8 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			try
 			{
 				String str = args[0].getString();
-				int i = args.length > 1 ? (int) args[1].getInteger() : 1;
-				int j = args.length > 2 ? (int) args[2].getInteger() : i;
+				int i = args.length > 1 ? args[1].getInt() : 1;
+				int j = args.length > 2 ? args[2].getInt() : i;
 
 				char[] res = new char[Math.min(j - i, str.length() - i) + 1];
 				for (int k = 0; k < res.length; k++)

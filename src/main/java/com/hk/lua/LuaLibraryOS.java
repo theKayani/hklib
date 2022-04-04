@@ -76,7 +76,7 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 			if(args.length >= 1)
 			{
 				if(args[0].isNumber())
-					status = (int) args[0].getInteger();
+					status = args[0].getInt();
 				else if(args[0].isBoolean())
 					status = args[0].getBoolean() ? 0 : -1;
 			}
@@ -89,6 +89,18 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 		{
 			Lua.checkArgs(toString(), args, LuaType.STRING);
 			String str = System.getenv(args[0].getString());
+			if(str == null)
+				return LuaNil.NIL;
+			else
+				return new LuaString(str);
+		}
+	},
+	getprop() {
+		@Override
+		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
+		{
+			Lua.checkArgs(toString(), args, LuaType.STRING);
+			String str = System.getProperty(args[0].getString());
 			if(str == null)
 				return LuaNil.NIL;
 			else
@@ -173,20 +185,20 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 				if(!year.isInteger())
 					throw new LuaException("field 'year' is not an integer");
 				
-				cal.set((int) year.getInteger(), (int) month.getInteger() - 1, (int) day.getInteger());
+				cal.set(year.getInt(), month.getInt() - 1, day.getInt());
 				time = cal.getTimeInMillis();
 				
 				LuaObject ex = tbl.rawGet(new LuaString("hour"));
 				if(ex.isInteger())
-					time += ex.getInteger() * 60 * 60 * 1000;
+					time += ex.getLong() * 60 * 60 * 1000;
 				
 				ex = tbl.rawGet(new LuaString("min"));
 				if(ex.isInteger())
-					time += ex.getInteger() * 60 * 1000;
+					time += ex.getLong() * 60 * 1000;
 				
 				ex = tbl.rawGet(new LuaString("sec"));				
 				if(ex.isInteger())
-					time += ex.getInteger() * 1000;
+					time += ex.getLong() * 1000;
 			}
 			else
 				time = System.currentTimeMillis();
