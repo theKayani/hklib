@@ -219,6 +219,17 @@ public final class IOUtil
 	}
 
 	/**
+	 * <p>Returns an empty input stream that can't be closed. Which doesn't
+	 * support marking.</p>
+	 *
+	 * @return an empty stream
+	 */
+	public static InputStream emptyStream()
+	{
+		return emptyStream;
+	}
+
+	/**
 	 * <p>Returns a writer that can't be closed which also goes nowhere.</p>
 	 *
 	 * @return a writer that goes nowhere
@@ -226,6 +237,16 @@ public final class IOUtil
 	public static Writer nowhereWriter()
 	{
 		return nowhereWriter;
+	}
+
+	/**
+	 * <p>Returns an output stream that can't be closed which also goes nowhere.</p>
+	 *
+	 * @return an output stream that goes nowhere
+	 */
+	public static OutputStream nowhereStream()
+	{
+		return nowhereStream;
 	}
 
 	private static final Reader emptyReader = new Reader()
@@ -267,6 +288,35 @@ public final class IOUtil
 
 		@Override
 		public void close() {}
+	};
+
+	private static final InputStream emptyStream = new InputStream() {
+		@Override
+		public int read()
+		{
+			return -1;
+		}
+
+		@Override
+		public int read(byte[] b, int off, int len)
+		{
+			return -1;
+		}
+
+		@Override
+		public long skip(long n)
+		{
+			return 0;
+		}
+	};
+
+	private static final OutputStream nowhereStream = new OutputStream()
+	{
+		@Override
+		public void write(int b) {}
+
+		@Override
+		public void write(byte[] b, int off, int len) {}
 	};
 
 	private IOUtil()
