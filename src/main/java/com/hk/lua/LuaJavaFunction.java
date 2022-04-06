@@ -53,7 +53,7 @@ class LuaJavaFunction extends LuaFunction
 			for(int i = 0; i < argTypes.length; i++)
 			{
 				if(i == args.length || !argTypes[i].applies(args[i].type()))
-					throw new LuaException("bad argument #" + (i + 1) + " to '" + method.getName() + "' (" + argTypes[i].luaName + " expected)");
+					throw Lua.badArgument(i, method.getName(), argTypes[i].luaName + " expected");
 
 				newArgs[i] = args[i];
 			}

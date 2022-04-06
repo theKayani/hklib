@@ -376,9 +376,9 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			if(args.length == 2)
 			{
 				if(!args[0].isTable())
-					throw new LuaException("bad argument #1 to 'setmetatable' (table expected, got " + args[0].name() + ")");
+					throw Lua.badArgument(0, name(), "table expected", "got " + args[0].name());
 				if(!args[1].isTable() && !args[1].isNil())
-					throw new LuaException("bad argument #2 to 'setmetatable' (nil or table expected)");
+					throw Lua.badArgument(1, name(), "nil or table expected");
 				args[0].setMetatable(args[1]);
 				return args[0];
 			}
@@ -394,7 +394,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			int base = args.length > 1 ? args[1].getInt() : 10;
 			
 			if(base < 2 || base > 36)
-				throw new LuaException("bad argument #2 to 'tonumber' (base out of range [2-36])");
+				throw Lua.badArgument(1, name(), "base out of range [2-36]");
 			
 			if(base == 10)
 			{
@@ -412,7 +412,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			else
 			{
 				if(!num.isString())
-					throw new LuaException("bad argument #1 to 'tonumber' (expected string with base)");
+					throw Lua.badArgument(0, name(), "expected string with base");
 				
 				return LuaInteger.valueOf(Long.parseLong(num.getString(), base));
 			}

@@ -825,8 +825,18 @@ public class Lua
 		for(int i = 0; i < types.length; i++)
 		{
 			if(i == args.length || !types[i].applies(args[i].type()))
-				throw new LuaException("bad argument #" + (i + 1) + " to '" + method + "' (" + types[i].luaName + " expected)");
+				throw badArgument(i, method, types[i].luaName + " expected", i < args.length ? "not " + args[i].name() : null);
 		}
+	}
+
+	public static LuaException badArgument(int param, String method, String message)
+	{
+		throw badArgument(param, method, message, null);
+	}
+
+	public static LuaException badArgument(int param, String method, String message, String extra)
+	{
+		return new LuaException("bad argument #" + (param + 1) + " to '" + method + "' (" + message + (extra == null ? "" : ", " + extra) + ")");
 	}
 
 	/**
@@ -838,6 +848,7 @@ public class Lua
 		checkArgs(method, args, types);
 	}
 
+	
 	/**
 	 * <p>Annotate a Java method with this class to automatically
 	 * assure parameters being passed to the annotated method. Take

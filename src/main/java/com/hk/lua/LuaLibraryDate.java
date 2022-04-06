@@ -34,7 +34,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 						if(args[2].isString())
 							df.setTimeZone(TimeZone.getTimeZone(args[2].getString()));
 						else
-							throw new LuaException("bad argument #3 to 'parse' (string expected)");
+							throw Lua.badArgument(2, name(), "string expected");
 					}
 				}
 				else
@@ -123,14 +123,14 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
-					throw new LuaException("bad argument #1 to 'year' (DATE* expected)");
+					throw Lua.badArgument(0, "year", "DATE* expected");
 				else
 				{
 					GregorianCalendar cal = ((LuaDateUserdata) args[0]).calendar;
 					if(args.length > 1)
 					{
 						if(!args[1].isInteger())
-							throw new LuaException("bad argument #2 to 'year' (integer expected)");
+							throw Lua.badArgument(1, "year", "integer expected");
 						try
 						{
 							cal.set(Calendar.YEAR, args[1].getInt());
@@ -150,14 +150,14 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
-					throw new LuaException("bad argument #1 to 'month' (DATE* expected)");
+					throw Lua.badArgument(0, "month", "DATE* expected");
 				else
 				{
 					GregorianCalendar cal = ((LuaDateUserdata) args[0]).calendar;
 					if(args.length > 1)
 					{
 						if(!args[1].isInteger())
-							throw new LuaException("bad argument #2 to 'month' (integer expected)");
+							throw Lua.badArgument(1, "month", "integer expected");
 						try
 						{
 							cal.set(Calendar.MONTH, args[1].getInt() - 1);
@@ -177,14 +177,14 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
-					throw new LuaException("bad argument #1 to 'day' (DATE* expected)");
+					throw Lua.badArgument(0, "day", "DATE* expected");
 				else
 				{
 					GregorianCalendar cal = ((LuaDateUserdata) args[0]).calendar;
 					if(args.length > 1)
 					{
 						if(!args[1].isInteger())
-							throw new LuaException("bad argument #2 to 'day' (integer expected)");
+							throw Lua.badArgument(1, "day", "integer expected");
 						try
 						{
 							cal.set(Calendar.DAY_OF_MONTH, args[1].getInt());
@@ -204,14 +204,14 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
-					throw new LuaException("bad argument #1 to 'hour' (DATE* expected)");
+					throw Lua.badArgument(0, "hour", "DATE* expected");
 				else
 				{
 					GregorianCalendar cal = ((LuaDateUserdata) args[0]).calendar;
 					if(args.length > 1)
 					{
 						if(!args[1].isInteger())
-							throw new LuaException("bad argument #2 to 'hour' (integer expected)");
+							throw Lua.badArgument(1, "hour", "integer expected");
 						try
 						{
 							cal.set(Calendar.HOUR_OF_DAY, args[1].getInt());
@@ -231,14 +231,14 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
-					throw new LuaException("bad argument #1 to 'minute' (DATE* expected)");
+					throw Lua.badArgument(0, "minute", "DATE* expected");
 				else
 				{
 					GregorianCalendar cal = ((LuaDateUserdata) args[0]).calendar;
 					if(args.length > 1)
 					{
 						if(!args[1].isInteger())
-							throw new LuaException("bad argument #2 to 'minute' (integer expected)");
+							throw Lua.badArgument(1, "minute", "integer expected");
 						try
 						{
 							cal.set(Calendar.MINUTE, args[1].getInt());
@@ -258,14 +258,14 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
-					throw new LuaException("bad argument #1 to 'second' (DATE* expected)");
+					throw Lua.badArgument(0, "second", "DATE* expected");
 				else
 				{
 					GregorianCalendar cal = ((LuaDateUserdata) args[0]).calendar;
 					if(args.length > 1)
 					{
 						if(!args[1].isInteger())
-							throw new LuaException("bad argument #2 to 'second' (integer expected)");
+							throw Lua.badArgument(1, "second", "integer expected");
 						try
 						{
 							cal.set(Calendar.SECOND, args[1].getInt());
@@ -285,14 +285,14 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
-					throw new LuaException("bad argument #1 to 'millis' (DATE* expected)");
+					throw Lua.badArgument(0, "millis", "DATE* expected");
 				else
 				{
 					GregorianCalendar cal = ((LuaDateUserdata) args[0]).calendar;
 					if(args.length > 1)
 					{
 						if(!args[1].isInteger())
-							throw new LuaException("bad argument #2 to 'millis' (integer expected)");
+							throw Lua.badArgument(1, "millis", "integer expected");
 						try
 						{
 							cal.set(Calendar.MILLISECOND, args[1].getInt());
@@ -312,7 +312,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
-					throw new LuaException("bad argument #1 to 'time' (DATE* expected)");
+					throw Lua.badArgument(0, "time", "DATE* expected");
 				else
 					return LuaInteger.valueOf(((LuaDateUserdata) args[0]).calendar.getTimeInMillis());
 			}
@@ -323,7 +323,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			{
 				Lua.checkArgs(toString(), args, LuaType.USERDATA, LuaType.STRING);
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
-					throw new LuaException("bad argument #1 to 'format' (DATE* expected)");
+					throw Lua.badArgument(0, "format", "DATE* expected");
 				else
 				{
 					DateFormat df = new SimpleDateFormat(args[1].getString());
@@ -332,7 +332,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 						if(args[2].isString())
 							df.setTimeZone(TimeZone.getTimeZone(args[2].getString()));
 						else
-							throw new LuaException("bad argument #3 to 'format' (string expected)");
+							throw Lua.badArgument(2, "format", "string expected");
 					}
 					return new LuaString(df.format(((LuaDateUserdata) args[0]).calendar.getTime()));
 				}

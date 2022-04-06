@@ -140,7 +140,7 @@ public class LuaInterpreter implements Tokens
 		{}
 		return def;
 	}
-	
+
 	/**
 	 * <p>Get the extra data under a certain key, cast as a {@link LuaObject}.
 	 * This is useful because it will not return null, it will
@@ -157,6 +157,23 @@ public class LuaInterpreter implements Tokens
 	public LuaObject getExtraLua(String key)
 	{
 		return getExtra(key, LuaObject.class, LuaNil.NIL);
+	}
+
+	/**
+	 * <p>Get the extra data under a certain key, cast as a {@link String}.
+	 * This will return null if there was no valid data found.</p>
+	 *
+	 * <p>Extra data it data that is tied to this specific interpreter.
+	 * Completely optional and has no effect on execution of Lua.
+	 * Just for utility and data consistency sake.</p>
+	 *
+	 * @param key a {@link java.lang.String} to match to a key
+	 * @return a {@link java.lang.String} object, or null
+	 * if there was no valid data found under the specified key.
+	 */
+	public String getExtraProp(String key)
+	{
+		return getExtra(key, String.class);
 	}
 	
 	/**
@@ -246,37 +263,42 @@ public class LuaInterpreter implements Tokens
 	/**
 	 * Immediately execute a reader of Lua code using this global
 	 * environment under a new Lua chunk. This function executes the
-	 * Lua code under a certain source, the result is then stored in
+	 * Lua code under a certain module, the result is then stored in
 	 * the case that this function is called again with the same
-	 * source. If so, the reader is ignored and the saved value is
+	 * module. If so, the reader is ignored and the saved value is
 	 * returned instead.
 	 *
-	 * @param source a key to match the result object to
+	 * @param module a key to match the result object to
 	 * @param reader a {@link java.io.Reader} to provide the Lua code
 	 *               to interpret
 	 * @return the result from this execution. If this code had a
 	 * return statement.
 	 */
-	public LuaObject require(String source, Reader reader)
+	public LuaObject require(String module, Reader reader)
 	{
-		LuaObject result = source == null ? null : required.get(new LuaString(source));
+		LuaObject result = module == null ? null : required.get(new LuaString(module));
 		if(result == null)
 		{
 			LuaChunk chunk;
 			try
 			{
-				chunk = readLua(reader, source == null ? Lua.STDIN : source, new Environment(this, global, true), true);
+				chunk = readLua(reader, module == null ? Lua.STDIN : module, new Environment(this, global, true), true);
 			}
 			catch(IOException e)
 			{
-				throw new UncheckedIOException(e);
+				throw new LuaException(e.getLocalizedMessage());
 			}
 
 			result = (LuaObject) chunk.execute(this);
-			if(source != null)
-				required.put(new LuaString(source), result);
+			if(module != null)
+				required.put(new LuaString(module), result);
 		}
 		return result;
+	}
+
+	public boolean hasModule(String module)
+	{
+		return required.containsKey(new LuaString(module));
 	}
 	
 	/**

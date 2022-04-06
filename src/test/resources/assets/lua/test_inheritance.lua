@@ -55,10 +55,6 @@ function Rectangle:getArea()
     return "Rectangle", self.area
 end
 
-for k, v in pairs(_G) do
-    print(k, v)
-end
-
 -- Creating the objects
 local type, area
 
@@ -66,15 +62,60 @@ myshape = Shape:new(nil,10)
 type, area = myshape:getArea()
 assert(type == 'Shape')
 assert(area == 100)
+assert(getmetatable(myshape) == Shape)
+
+myshape = Shape:new(nil,1)
+type, area = myshape:getArea()
+assert(type == 'Shape')
+assert(area == 1)
+assert(getmetatable(myshape) == Shape)
+
+myshape = Shape:new(nil,5)
+type, area = myshape:getArea()
+assert(type == 'Shape')
+assert(area == 25)
+assert(getmetatable(myshape) == Shape)
 
 mysquare = Square:new(nil,10)
 type, area = mysquare:getArea()
 assert(type == 'Square')
 assert(area == 100)
+assert(getmetatable(mysquare) == Square)
+
+mysquare = Square:new(nil,100)
+type, area = mysquare:getArea()
+assert(type == 'Square')
+assert(area == 10000)
+assert(getmetatable(mysquare) == Square)
+
+mysquare = Square:new(nil,3)
+type, area = mysquare:getArea()
+assert(type == 'Square')
+assert(area == 9)
+assert(getmetatable(mysquare) == Square)
 
 myrectangle = Rectangle:new(nil,10,20)
 type, area = myrectangle:getArea()
 assert(type == 'Rectangle')
 assert(area == 200)
+assert(getmetatable(myrectangle) == Rectangle)
+
+myrectangle = Rectangle:new(nil,2,10)
+type, area = myrectangle:getArea()
+assert(type == 'Rectangle')
+assert(area == 20)
+assert(getmetatable(myrectangle) == Rectangle)
+
+myrectangle = Rectangle:new(nil,5,100)
+type, area = myrectangle:getArea()
+assert(type == 'Rectangle')
+assert(area == 500)
+assert(getmetatable(myrectangle) == Rectangle)
+
+myrectangle = Rectangle:new(nil,50,50)
+type, area = myrectangle:getArea()
+assert(type == 'Rectangle')
+assert(area == 2500)
+assert(getmetatable(myrectangle) == Rectangle)
 
 return true

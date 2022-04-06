@@ -46,7 +46,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			for(int i = 0; i < args.length; i++)
 			{
 				if(!args[i].isInteger())
-					throw new LuaException("bad argument #" + (i + 1) + " to 'char' (integer expected)");
+					throw Lua.badArgument(i, "char", "integer expected");
 				
 				cs[i] = (char) args[i].getInt();
 			}
@@ -230,7 +230,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 				repl = args[2];
 				break;
 			default:
-				throw new LuaException("bad argument #3 to 'gsub' (string, table, or function expected)");
+				throw Lua.badArgument(2, "gsub", "string, table, or function expected");
 			}
 			int n = args.length > 3 ? args[3].getInt() : Integer.MAX_VALUE;
 			int total = 0;

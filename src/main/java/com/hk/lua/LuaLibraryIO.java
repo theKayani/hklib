@@ -89,7 +89,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			if(args.length > 0)
 			{
 				if(!(args[0] instanceof LuaIOUserdata || args[0].isString()))
-					throw new LuaException("bad argument #1 to '" + name() + "' (expected FILE* object or string)");
+					throw Lua.badArgument(0, name(), "expected FILE* object or string");
 
 				if(args[0].isString())
 				{
@@ -218,7 +218,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			if(args.length > 0)
 			{
 				if(!(args[0] instanceof LuaIOUserdata || args[0].isString()))
-					throw new LuaException("bad argument #1 to '" + name() + "' (expected FILE* object or string)");
+					throw Lua.badArgument(0, name(), "expected FILE* object or string");
 
 				if(args[0].isString())
 				{
@@ -407,7 +407,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 			{
 				if(args.length < 1)
-					throw new LuaException("bad argument #1 to 'read' (expected FILE*)");
+					throw Lua.badArgument(0, "read", "expected FILE*");
 
 				if(!(args[0] instanceof LuaIOUserdata))
 					return new LuaArgs(LuaNil.NIL, new LuaString("bad file descriptor"));
@@ -426,7 +426,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			@Override
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args) {
 				if(args.length < 1)
-					throw new LuaException("bad argument #1 to 'lines' (expected FILE*)");
+					throw Lua.badArgument(0, "lines", "expected FILE*");
 
 				if(!(args[0] instanceof LuaIOUserdata))
 					return new LuaArgs(LuaNil.NIL, new LuaString("bad file descriptor"));
@@ -457,7 +457,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				try
 				{
 					if (args.length < 1)
-						throw new LuaException("bad argument #1 to 'close' (expected FILE*)");
+						throw Lua.badArgument(0, "close", "expected FILE*");
 
 					if (args[0] instanceof LuaIOUserdata)
 						return ((LuaIOUserdata) args[0]).close();
@@ -481,7 +481,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				try
 				{
 					if (args.length < 1)
-						throw new LuaException("bad argument #1 to 'flush' (expected FILE*)");
+						throw Lua.badArgument(0, "flush", "expected FILE*");
 
 					if (args[0] instanceof LuaIOUserdata)
 						return ((LuaIOUserdata) args[0]).flush();
@@ -501,9 +501,9 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				try
 				{
 					if (args.length < 1 || !(args[0] instanceof LuaIOUserdata))
-						throw new LuaException("bad argument #1 to 'setvbuf' (expected FILE*)");
+						throw Lua.badArgument(0, "setvbuf", "expected FILE*");
 					if(args.length < 2 || !args[1].isString())
-						throw new LuaException("bad argument #2 to 'setvbuf' (expected string)");
+						throw Lua.badArgument(1, "setvbuf", "expected string");
 					int mode = 0, size = 4096;
 
 					switch (args[1].getString())
@@ -522,11 +522,11 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 								if(args[2].isInteger())
 									size = args[2].getInt();
 								else
-									throw new LuaException("bad argument #3 to 'setvbuf' (expected integer)");
+									throw Lua.badArgument(2, "setvbuf", "expected integer");
 							}
 							break;
 						default:
-							throw new LuaException("invalid mode");
+							throw Lua.badArgument(1, "setvbuf", "invalid mode");
 					}
 
 					return ((LuaIOUserdata) args[0]).setvbuf(mode, size);
@@ -542,7 +542,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 			{
 				if (args.length < 1 || !(args[0] instanceof LuaIOUserdata))
-					throw new LuaException("bad argument #1 to 'write' (expected FILE*)");
+					throw Lua.badArgument(0, "write", "expected FILE*");
 
 				try
 				{
@@ -561,7 +561,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 			{
 				if (args.length < 1 || !(args[0] instanceof LuaIOUserdata))
-					throw new LuaException("bad argument #1 to 'seek' (expected FILE*)");
+					throw Lua.badArgument(0, "seek", "expected FILE*");
 
 				int mode = SEEKMODE_CUR;
 				long offset = 0;
@@ -569,7 +569,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				if(args.length > 1)
 				{
 					if(!args[1].isString())
-						throw new LuaException("bad argument #2 to 'seek' (expected string)");
+						throw Lua.badArgument(1, "seek", "expected string");
 
 					switch(args[1].getString())
 					{
@@ -582,12 +582,12 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 							mode = SEEKMODE_END;
 							break;
 						default:
-							throw new LuaException("bad argument #2 to 'seek' (invalid mode)");
+							throw Lua.badArgument(1, "seek", "invalid mode");
 					}
 					if(args.length > 2)
 					{
 						if(!args[2].isInteger())
-							throw new LuaException("bad argument #3 to 'seek' (expected integer)");
+							throw Lua.badArgument(2, "seek", "expected integer");
 
 						offset = args[2].getLong();
 					}

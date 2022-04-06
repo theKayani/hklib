@@ -76,7 +76,7 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			if(args.length < 1 || !(args[0] instanceof LuaReader))
-				throw new LuaException("bad argument #1 to 'readFrom' (reader expected)");
+				throw Lua.badArgument(0, name(), "reader expected");
 
 			Reader rdr = args[0].getUserdata(Reader.class);
 
@@ -135,7 +135,7 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			if(args.length < 1 || !(args[0] instanceof LuaWriter))
-				throw new LuaException("bad argument #1 to 'writeTo' (writer expected)");
+				throw Lua.badArgument(0, name(), "writer expected");
 			Writer wtr = args[0].getUserdata(Writer.class);
 
 			Json.writer(wtr).put(toJson(args[1]));

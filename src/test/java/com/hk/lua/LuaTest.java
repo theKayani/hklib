@@ -25,19 +25,7 @@ public class LuaTest extends TestCase
 
 		factory.compile();
 
-		factory.addLibrary(LuaLibrary.BASIC);
-		factory.addLibrary(LuaLibrary.COROUTINE);
-//			factory.addLibrary(LuaLibrary.PACKAGE);
-		factory.addLibrary(LuaLibrary.STRING);
-		factory.addLibrary(LuaLibrary.TABLE);
-		factory.addLibrary(LuaLibrary.MATH);
-		factory.addLibrary(LuaLibrary.IO);
-		factory.addLibrary(LuaLibrary.OS);
-//			factory.addLibrary(LuaLibrary.DEBUG);
-
-		factory.addLibrary(LuaLibrary.JSON);
-		factory.addLibrary(LuaLibrary.HASH);
-		factory.addLibrary(LuaLibrary.DATE);
+		Lua.importStandard(factory);
 
 		Object res;
 
@@ -52,7 +40,6 @@ public class LuaTest extends TestCase
 		res = interp.execute(Lua.newNumber(3L), Lua.newNumber(6L));
 		assertTrue(res instanceof LuaObject);
 		assertTrue(((LuaObject) res).getBoolean());
-
 
 		Random rng = new Random(8593640562223858172L);
 		for (int i = 0; i < 10; i++)
@@ -97,19 +84,7 @@ public class LuaTest extends TestCase
 		interp.compile();
 		double compileTime = (System.nanoTime() - start) / 1E6D;
 
-		interp.importLib(LuaLibrary.BASIC);
-		interp.importLib(LuaLibrary.COROUTINE);
-//		interp.importLib(LuaLibrary.PACKAGE);
-		interp.importLib(LuaLibrary.STRING);
-		interp.importLib(LuaLibrary.TABLE);
-		interp.importLib(LuaLibrary.MATH);
-		interp.importLib(LuaLibrary.IO);
-		interp.importLib(LuaLibrary.OS);
-//		interp.importLib(LuaLibrary.DEBUG);
-
-		interp.importLib(LuaLibrary.JSON);
-		interp.importLib(LuaLibrary.HASH);
-		interp.importLib(LuaLibrary.DATE);
+		Lua.importStandard(interp);
 
 		Object obj;
 		try
@@ -132,19 +107,7 @@ public class LuaTest extends TestCase
 	{
 		final LuaInterpreter interp = Lua.reader(Assets.get("lua/test_inheritance.lua"));
 
-		interp.importLib(LuaLibrary.BASIC);
-		interp.importLib(LuaLibrary.COROUTINE);
-//		interp.importLib(LuaLibrary.PACKAGE);
-		interp.importLib(LuaLibrary.STRING);
-		interp.importLib(LuaLibrary.TABLE);
-		interp.importLib(LuaLibrary.MATH);
-		interp.importLib(LuaLibrary.IO);
-		interp.importLib(LuaLibrary.OS);
-//		interp.importLib(LuaLibrary.DEBUG);
-
-		interp.importLib(LuaLibrary.JSON);
-		interp.importLib(LuaLibrary.HASH);
-		interp.importLib(LuaLibrary.DATE);
+		Lua.importStandard(interp);
 
 		Object obj = interp.execute();
 

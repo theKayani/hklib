@@ -386,6 +386,8 @@ class LuaTable extends LuaMetatable
 					func.doCall(interp, new LuaObject[] { this, key, value });
 				else
 					func.doNewIndex(interp, key, value);
+
+				// TODO: does this still place key/value after this?
 			}
 		}
 		map.put(key, value);
