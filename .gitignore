@@ -34,3 +34,6 @@ hs_err_pid*
 argfile.txt
 .classpath
 .project
+
+# test lua file
+src/test/resources/assets/lua/main.lua

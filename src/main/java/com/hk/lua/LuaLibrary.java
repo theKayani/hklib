@@ -10,10 +10,12 @@ import com.hk.func.BiConsumer;
  */
 public class LuaLibrary<T extends Enum<T> & BiConsumer<Environment, LuaObject>>
 {
-	/********************************************* BUILT-IN *********************************************/
+	//******************************************** BUILT-IN *********************************************/
+	/** Constant <code>BASIC</code> */
 	public static final LuaLibrary<LuaLibraryBasic> BASIC = new LuaLibrary<>(null, LuaLibraryBasic.class);
 	/** Constant <code>COROUTINE</code> */
 	public static final LuaLibrary<LuaLibraryCoroutine> COROUTINE = new LuaLibrary<>("coroutine", LuaLibraryCoroutine.class);
+	//** Constant <code>PACKAGE</code> */
 //	public static final LuaLibrary<LuaLibraryPackage> PACKAGE = new LuaLibrary<>("package", LuaLibraryPackage.class);
 	/** Constant <code>STRING</code> */
 	public static final LuaLibrary<LuaLibraryString> STRING = new LuaLibrary<>("string", LuaLibraryString.class);
@@ -28,7 +30,8 @@ public class LuaLibrary<T extends Enum<T> & BiConsumer<Environment, LuaObject>>
 	public static final LuaLibrary<LuaLibraryOS> OS = new LuaLibrary<>("os", LuaLibraryOS.class);
 //	public static final LuaLibrary<LuaLibraryDegub> DEGUB = new LuaLibrary<>("degub", LuaLibraryDegub.class);
 
-	/********************************************* CUSTOM *********************************************/
+	//******************************************** CUSTOM *********************************************/
+	/** Constant <code>JSON</code> */
 	public static final LuaLibrary<LuaLibraryJson> JSON = new LuaLibrary<>("json", LuaLibraryJson.class);
 	/** Constant <code>HASH</code> */
 	public static final LuaLibrary<LuaLibraryHash> HASH = new LuaLibrary<>("hash", LuaLibraryHash.class);

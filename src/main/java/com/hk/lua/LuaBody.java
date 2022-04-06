@@ -32,8 +32,8 @@ class LuaBody extends LuaBlock
 		}
 		else
 		{
-			for(int i = 0; i < Math.min(args.length, argNames.length); i++)
-				interp.env.setLocal(argNames[i], args[i]);
+			for(int i = 0; i < argNames.length; i++)
+				interp.env.setLocal(argNames[i], i < args.length ? args[i] : LuaNil.NIL);
 		}
 
 		Object res = run(interp);
