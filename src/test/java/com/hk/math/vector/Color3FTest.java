@@ -10,11 +10,6 @@ public class Color3FTest extends TestCase
 		// TODO: create or delete
 	}
 
-	public void testRandColor()
-	{
-		// TODO: Color3F.randColor()
-	}
-
 	public void testToHexString()
 	{
 		assertEquals("FFFFFFFF", Color3F.WHITE.toHexString());

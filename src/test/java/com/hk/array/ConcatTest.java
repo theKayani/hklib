@@ -921,11 +921,6 @@ public class ConcatTest extends TestCase
 		assertEquals(sum, 0);
 	}
 
-	public void testSumOfChars()
-	{
-		// TODO: Concat.sumOfChars(char[][])
-	}
-
 	public void testConcatStrings()
 	{
 		String total;

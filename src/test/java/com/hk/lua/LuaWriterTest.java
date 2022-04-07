@@ -47,7 +47,4 @@ public class LuaWriterTest extends TestCase
 		assertEquals(12, wtr.size());
 	}
 
-	public void testWrite()
-	{
-	}
 }

@@ -2039,25 +2039,4 @@ public class ArrayUtilTest extends TestCase
 		assertEquals(Integer.valueOf(Integer.MAX_VALUE), cs[0]);
 		assertEquals(Integer.valueOf(Integer.MAX_VALUE), cs[1]);
 	}
-
-	public void testGrowArrayBy()
-	{
-		// TODO: ArrayUtil.growArrayBy(long[], int)
-
-		// TODO: ArrayUtil.growArrayBy(boolean[], int)
-
-		// TODO: ArrayUtil.growArrayBy(byte[], int)
-
-		// TODO: ArrayUtil.growArrayBy(char[], int)
-
-		// TODO: ArrayUtil.growArrayBy(short[], int)
-
-		// TODO: ArrayUtil.growArrayBy(int[], int)
-
-		// TODO: ArrayUtil.growArrayBy(Object[], int)
-
-		// TODO: ArrayUtil.growArrayBy(float[], int)
-
-		// TODO: ArrayUtil.growArrayBy(double[], int)
-	}
 }

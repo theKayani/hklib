@@ -175,31 +175,6 @@ public class ListUtilTest extends TestCase
 		assertEquals(expectedDbl, actualDbl);
 	}
 
-	public void testNewLinkedList()
-	{
-		// TODO: ListUtil.newLinkedList(java.util.Collection)
-
-		// TODO: ListUtil.newLinkedList()
-	}
-
-	public void testNewImmutableList()
-	{
-		// TODO: ListUtil.newImmutableList(java.util.List)
-
-		// TODO: ListUtil.newImmutableListBuilder()
-	}
-
-	public void testNewSortedList()
-	{
-		// TODO: ListUtil.newSortedList(java.util.Comparator, boolean)
-
-		// TODO: ListUtil.newSortedList(boolean)
-
-		// TODO: ListUtil.newSortedList(java.util.Comparator)
-
-		// TODO: ListUtil.newSortedList()
-	}
-
 	@Override
 	public void tearDown()
 	{

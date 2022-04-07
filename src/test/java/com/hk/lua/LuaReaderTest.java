@@ -133,7 +133,4 @@ public class LuaReaderTest extends TestCase
 		assertTrue(obj.getBoolean());
 	}
 
-	public void testSeek()
-	{
-	}
 }

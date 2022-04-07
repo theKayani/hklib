@@ -28,27 +28,6 @@ public class AlgebraicExpressionTest extends TestCase
 		for(String str : strs)
 			new AlgebraicExpression(str);
 	}
-	public void testInvalidFormats()
-	{
-/*
-		TODO: fix this, amirite
-		String[] strs = {
-				"--",
-		};
-
-		for(String str : strs)
-		{
-			try
-			{
-				new AlgebraicExpression(str);
-
-				fail(str + " should not be a valid expression");
-			}
-			catch(ExpressionFormatException ignored)
-			{}
-		}
-*/
-	}
 
 	public void testNonVariableExpressions()
 	{

@@ -797,11 +797,6 @@ public class MathUtilTest extends TestCase
 		}
 	}
 
-	public void testShortHex()
-	{
-		// TODO: MathUtil.shortHex(int)
-	}
-
 	public void testSquare()
 	{
 		float f;
@@ -835,11 +830,6 @@ public class MathUtilTest extends TestCase
 			l = rng.nextLong();
 			assertEquals(l * l, MathUtil.square(l));
 		}
-	}
-
-	public void testByteBin()
-	{
-		// TODO: MathUtil.byteBin(int)
 	}
 
 	public void testHypot()
@@ -944,13 +934,6 @@ public class MathUtilTest extends TestCase
 		}
 	}
 
-	public void testLongHex()
-	{
-		// TODO: MathUtil.longHex(long, int)
-
-		// TODO: MathUtil.longHex(long)
-	}
-
 	public void testCube()
 	{
 		float f;
@@ -986,11 +969,6 @@ public class MathUtilTest extends TestCase
 		}
 	}
 
-	public void testIntHex()
-	{
-		// TODO: MathUtil.intHex(int)
-	}
-
 	public void testMap()
 	{
 		assertEquals(1D, MathUtil.map(0D, 0D, 1D, 1D, 2D));
@@ -1003,38 +981,6 @@ public class MathUtilTest extends TestCase
 		// TODO: MathUtil.map(int, int, int, int, int)
 		
 		assertEquals(50, MathUtil.map(6, 3, 9, 25, 75));
-	}
-
-	public void testByteHex()
-	{
-		// TODO: MathUtil.byteHex(int)
-	}
-
-	public void testShortBin()
-	{
-		// TODO: MathUtil.shortBin(int)
-	}
-
-	public void testBetween()
-	{
-		// TODO: MathUtil.between(double, double, double)
-
-		// TODO: MathUtil.between(float, float, float)
-
-		// TODO: MathUtil.between(int, int, int)
-
-		// TODO: MathUtil.between(long, long, long)
-
-		// TODO: MathUtil.between(byte, byte, byte)
-
-		// TODO: MathUtil.between(short, short, short)
-	}
-
-	public void testDeterminant()
-	{
-		// TODO: MathUtil.determinant(double, double, double, double)
-
-		// TODO: MathUtil.determinant(float, float, float, float)
 	}
 
 	@Override
