@@ -1201,11 +1201,11 @@ public class LuaInterpreter implements Tokens
 	
 	static LuaException unexpected(Tokenizer tkz, String source, String section)
 	{
-		String s = "Unexpected ";
+		String s = "unexpected ";
 		if(tkz.token() == null)
 			s += "<eof>";
 		else
-			s += "token '" + tkz.token() + "'";
+			s += "symbol '" + tkz.token() + "'";
 		if(section != null)
 			s += " reading " + section;
 

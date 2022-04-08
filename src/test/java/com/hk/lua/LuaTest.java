@@ -127,6 +127,32 @@ public class LuaTest extends TestCase
 		assertTrue(((LuaObject) obj).getBoolean());
 	}
 
+	public void testCalls() throws FileNotFoundException
+	{
+		// ALMOST verbatim lua 5.3.4 'calls.lua' test suite
+		final LuaInterpreter interp = Lua.reader(Assets.get("lua/calls.lua"));
+
+		Lua.importStandard(interp);
+
+		Object obj = interp.execute();
+
+		assertTrue(obj instanceof LuaObject);
+		assertTrue(((LuaObject) obj).getBoolean());
+	}
+
+	public void testClosures() throws FileNotFoundException
+	{
+		// ALMOST verbatim lua 5.3.4 'calls.lua' test suite
+		final LuaInterpreter interp = Lua.reader(Assets.get("lua/closures.lua"));
+
+		Lua.importStandard(interp);
+
+		Object obj = interp.execute();
+
+		assertTrue(obj instanceof LuaObject);
+		assertTrue(((LuaObject) obj).getBoolean());
+	}
+
 	@Override
 	public void tearDown()
 	{

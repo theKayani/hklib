@@ -110,8 +110,16 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			Lua.checkArgs(name(), args, LuaType.STRING);
 			try
 			{
-				final LuaChunk chunk = LuaInterpreter.readLua(new StringReader(args[0].getString()), Lua.STDIN, interp.global, true);
-				
+				final LuaChunk chunk;
+				try
+				{
+					chunk = LuaInterpreter.readLua(new StringReader(args[0].getString()), Lua.STDIN, interp.global, true);
+				}
+				catch (LuaException ex)
+				{
+					return new LuaArgs(LuaNil.NIL, new LuaString(ex.getLocalizedMessage()));
+				}
+
 				return new LuaFunction()
 				{
 					@Override

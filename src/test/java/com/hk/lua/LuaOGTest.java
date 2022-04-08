@@ -237,7 +237,7 @@ public class LuaOGTest extends TestCase
 			}
 		};
 
-		LuaInterpreter interp = Lua.reader(Assets.get("lua/calls.lua"));
+		LuaInterpreter interp = Lua.reader(Assets.get("lua/test_arguments.lua"));
 
 		interp.setExtra(LuaLibraryIO.EXKEY_STDOUT, wtr);
 
