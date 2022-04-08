@@ -158,8 +158,8 @@ class LuaBlock implements Tokens
 						else
 							values = exps.collect(interp);
 
-						for (int j = 0; j < Math.min(vars.length, values.length); j++)
-							vars[j].give(interp, null, values[j]);
+						for (int j = 0; j < vars.length; j++)
+							vars[j].give(interp, null, j < values.length ? values[j] : LuaNil.NIL);
 						break;
 					case T_BREAK:
 						res = T_BREAK;

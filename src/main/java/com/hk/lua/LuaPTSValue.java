@@ -15,7 +15,7 @@ class LuaPTSValue extends LuaLocation
 	{
 		if(next == null)
 			throw new Error();
-		
+
 		next.give(interp, exp.evaluate(interp), obj);
 	}
 	
@@ -23,13 +23,13 @@ class LuaPTSValue extends LuaLocation
 	{
 		LuaObject s = exp.evaluate(interp);
 		if(next == null)
-			return s;
+			return s.evaluate(interp);
 		else
 			return next.grab(interp, s);
 	}
 
 	boolean isCall()
 	{
-		return next == null || next.isCall();
+		return next != null && next.isCall();
 	}
 }

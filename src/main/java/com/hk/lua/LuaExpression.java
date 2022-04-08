@@ -1,5 +1,6 @@
 package com.hk.lua;
 
+import java.util.Arrays;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
@@ -20,7 +21,30 @@ class LuaExpression extends Lua.LuaValue
 	}
 	
 	LuaExpression collect(Object[] values)
-	{		
+	{
+//		StringBuilder sb = new StringBuilder();
+//		sb.append("[");
+//		for(int i = 0; i < values.length; i += 2)
+//		{
+//			Object o = values[i];
+//			if(o instanceof Integer)
+//			{
+//				String label = Tokenizer.label((Integer) o);
+//				if(label != null)
+//					sb.append(label);
+//				else
+//					sb.append(o);
+//			}
+//			else
+//				sb.append(o);
+//
+//			if(i < values.length - 2)
+//				sb.append(", ");
+//		}
+//		sb.append("]");
+//		String str = sb.toString();
+//		System.out.println(str);
+
 		if(root != null)
 			throw new Error();
 		
@@ -70,6 +94,7 @@ class LuaExpression extends Lua.LuaValue
 			catch(EmptyStackException e)
 			{
 				throw new Error(e);
+//				e.printStackTrace();
 //				throw new LuaException(source, line, "Unexpected");
 			}
 		}
@@ -115,9 +140,9 @@ class LuaExpression extends Lua.LuaValue
 		{
 			try
 			{
-				LuaObject v1 = getOp(interp, op1);
+				LuaObject v1 = getOp(interp, op1).evaluate(interp);
 				if(v1.getBoolean())
-					return getOp(interp, op2);
+					return getOp(interp, op2).evaluate(interp);
 				else
 					return v1;
 			}
@@ -140,11 +165,11 @@ class LuaExpression extends Lua.LuaValue
 		{
 			try
 			{
-				LuaObject v1 = getOp(interp, op1);
+				LuaObject v1 = getOp(interp, op1).evaluate(interp);
 				if(v1.getBoolean())
 					return v1;
 				else
-					return getOp(interp, op2);
+					return getOp(interp, op2).evaluate(interp);
 			}
 			catch(LuaException e)
 			{

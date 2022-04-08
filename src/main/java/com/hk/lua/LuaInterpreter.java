@@ -602,6 +602,9 @@ public class LuaInterpreter implements Tokens
 		case T_GOTO:
 		case T_DOUBLECOLON:
 			throw new LuaException("goto statements and labels are not supported in this Lua interpreter.");
+		case T_SEMIC:
+			res = true;
+			break;
 		case T_BREAK:
 			if((flags & F_LOOP) != 0)
 			{
@@ -962,7 +965,7 @@ public class LuaInterpreter implements Tokens
 				case T_DIVIDE:
 				case T_FLR_DIVIDE:
 				case T_MODULO:
-					while(!ops.isEmpty() && (!ra && Tokenizer.prec(type) <= Tokenizer.prec(ops.peek()) || ra && Tokenizer.prec(type) == Tokenizer.prec(ops.peek())))
+					while(!ops.isEmpty() && (Tokenizer.prec(type) < Tokenizer.prec(ops.peek()) || !ra && Tokenizer.prec(type) == Tokenizer.prec(ops.peek())))
 					{
 						res.add(ops.pop());
 						res.add(ops.pop());
@@ -991,8 +994,8 @@ public class LuaInterpreter implements Tokens
 					while(!ops.isEmpty())
 					{
 						int n = ops.peek();
-						ra = n == T_CONCAT || n == T_POW;
-						if(!ra && Tokenizer.prec(type) <= Tokenizer.prec(n) || ra && Tokenizer.prec(type) == Tokenizer.prec(n))
+						ra = n == T_CONCAT || n == T_POW || n == T_NEGATE || n == T_UBNOT || n == T_POUND || n == T_NOT;
+						if(Tokenizer.prec(type) < Tokenizer.prec(n) || !ra && Tokenizer.prec(type) == Tokenizer.prec(n))
 						{
 							res.add(ops.pop());
 							res.add(ops.pop());
@@ -1081,7 +1084,7 @@ public class LuaInterpreter implements Tokens
 		else
 			return new LuaExpression(source).collect(arr);
 	}
-	
+
 	private static LuaFunctionExpression readFunction(Tokenizer tkz, String source, boolean self, String name) throws IOException
 	{
 		if(tkz.next() && tkz.type() == T_OPEN_PTS)

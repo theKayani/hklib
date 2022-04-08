@@ -132,7 +132,6 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 						LuaObject tmp = tbl.rawGet(LuaInteger.valueOf(i));
 						tbl.rawSet(LuaInteger.valueOf(i), tbl.rawGet(LuaInteger.valueOf(j)));
 						tbl.rawSet(LuaInteger.valueOf(j), tmp);
-						
 					}
 				}	
 			}

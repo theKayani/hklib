@@ -114,6 +114,19 @@ public class LuaTest extends TestCase
 		assertTrue(((LuaObject) obj).getBoolean());
 	}
 
+	public void testCode() throws FileNotFoundException
+	{
+		// ALMOST verbatim lua 5.3.4 'code.lua' test suite
+		final LuaInterpreter interp = Lua.reader(Assets.get("lua/code.lua"));
+
+		Lua.importStandard(interp);
+
+		Object obj = interp.execute();
+
+		assertTrue(obj instanceof LuaObject);
+		assertTrue(((LuaObject) obj).getBoolean());
+	}
+
 	@Override
 	public void tearDown()
 	{

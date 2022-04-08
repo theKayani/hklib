@@ -853,12 +853,12 @@ class Tokenizer implements Tokens
 		case T_FLR_DIVIDE:
 		case T_MODULO:
 			return 10;
+		case T_POW:
+			return 11;
 		case T_NOT:
 		case T_NEGATE:
 		case T_POUND:
 		case T_UBNOT:
-			return 11;
-		case T_POW:
 			return 12;
 		default:
 			return 0;
@@ -929,7 +929,7 @@ class Tokenizer implements Tokens
 		case T_UNTIL:                   return "T_UNTIL";
 		case T_VARARGS:                 return "T_VARARGS";
 		case T_WHILE:                   return "T_WHILE";
-		default:                        throw new Error("Undefined type (" + Integer.toHexString(type) + ")");
+		default:                        return null;
 		}
 	}
 }
