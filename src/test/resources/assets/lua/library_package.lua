@@ -19,6 +19,9 @@ assert(not package.loaded['stuff'])
 
 Vector = require('vector')
 
+assert(Vector)
+assert(package.loaded['vector'] == Vector)
+
 local triples = {
     { 3, 4, 5 }, { 6, 8,10 }, { 5, 12, 13 },
     { 9, 12, 15 }, { 8, 15, 17 }, { 12, 16, 20 },
@@ -37,3 +40,23 @@ local success, msg = pcall(require, 'does_not_exist')
 
 assert(not success)
 assert(type(msg) == 'string')
+
+assert(not package.loaded['colors'])
+local colors = require('colors')
+
+assert(colors)
+assert(package.loaded['colors'] == colors)
+
+
+local total = 0
+for k, v in pairs(colors) do
+    assert(type(k) == 'string')
+    assert(type(v) == 'table')
+    assert(type(v[1]) == 'number')
+    assert(type(v[2]) == 'number')
+    assert(type(v[3]) == 'number')
+    total = total + 1
+end
+assert(total == 147)
+
+return true

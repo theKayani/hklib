@@ -11,16 +11,16 @@ abstract class LuaMetatable extends LuaObject
 
 	LuaBoolean doEQ(LuaInterpreter interp, LuaObject o)
 	{
-		if(o == this)
+		if(rawEqual(o))
 			return LuaBoolean.TRUE;
-	
+
 		if(code() == o.code())
 		{
-			LuaObject mm1 = metatable.isNil() ? null : metatable.rawGet(new LuaString("__eq"));
+			LuaObject mm1 = metatable == null || metatable.isNil() ? null : metatable.rawGet(new LuaString("__eq"));
 			LuaObject mm2 = o.getMetatable().isNil() ? null : o.getMetatable().rawGet(new LuaString("__eq"));
 			LuaObject mm = mm1 == mm2 ? mm1 : null;
 
-			if(mm != null)
+			if(mm != null && !mm.isNil())
 			{
 				LuaObject res = mm.doCall(interp, new LuaObject[] { this, o });
 				res = res.evaluate(interp);

@@ -37,6 +37,8 @@ public class LuaLibrary<T extends Enum<T> & BiConsumer<Environment, LuaObject>>
 	public static final LuaLibrary<LuaLibraryHash> HASH = new LuaLibrary<>("hash", LuaLibraryHash.class);
 	/** Constant <code>DATE</code> */
 	public static final LuaLibrary<LuaLibraryDate> DATE = new LuaLibrary<>("date", LuaLibraryDate.class);
+	/** Constant <code>REFLECT</code> */
+	public static final LuaLibrary<LuaLibraryReflect> REFLECT = new LuaLibrary<>("java", LuaLibraryReflect.class);
 
 	final String table;
 	final BiConsumer<Environment, LuaObject>[] consumers;

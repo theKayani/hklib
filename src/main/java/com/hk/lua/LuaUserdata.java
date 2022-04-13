@@ -358,7 +358,7 @@ public abstract class LuaUserdata extends LuaMetatable
 		if(res != null)
 			return res;
 		else
-			throw LuaErrors.INVALID_LENGTH.create(name());
+			return rawLen();
 	}
 
 	/** {@inheritDoc} */
@@ -374,7 +374,7 @@ public abstract class LuaUserdata extends LuaMetatable
 				return func.doIndex(interp, key);
 		}
 		else
-			throw LuaErrors.INVALID_INDEX.create(name());
+			return rawGet(key);
 	}
 
 	/** {@inheritDoc} */
@@ -390,7 +390,7 @@ public abstract class LuaUserdata extends LuaMetatable
 				func.doNewIndex(interp, key, value);
 		}
 		else
-			throw LuaErrors.INVALID_INDEX.create(name());
+			rawSet(key, value);
 	}
 
 	/** {@inheritDoc} */

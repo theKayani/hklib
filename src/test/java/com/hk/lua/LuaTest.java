@@ -3,9 +3,12 @@ package com.hk.lua;
 import com.hk.Assets;
 import junit.framework.TestCase;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
@@ -83,7 +86,11 @@ public class LuaTest extends TestCase
 		interp.compile();
 		double compileTime = (System.nanoTime() - start) / 1E6D;
 
+		System.setProperty(LuaLibraryPackage.EXKEY_PATH, "./src/test/resources/assets/lua");
+
 		Lua.importStandard(interp);
+		interp.importLib(LuaLibrary.PACKAGE);
+		interp.importLib(LuaLibrary.REFLECT);
 
 		Object obj;
 		try

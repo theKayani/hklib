@@ -324,9 +324,11 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
-			Lua.checkArgs(name(), args, LuaType.TABLE, LuaType.ANY);
-
-			return args[0].rawGet(args[1]);
+			Lua.checkArgs(name(), args, LuaType.ANY, LuaType.ANY);
+			if(args[0].isTable() || args[0].isUserdata())
+				return args[0].rawGet(args[1]);
+			else
+				throw Lua.badArgument(0, name(), "expected table or userdata");
 		}
 	},
 	rawlen() {
@@ -341,9 +343,13 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
-			Lua.checkArgs(name(), args, LuaType.TABLE, LuaType.ANY, LuaType.ANY);
+			Lua.checkArgs(name(), args, LuaType.ANY, LuaType.ANY, LuaType.ANY);
 
-			args[0].rawSet(args[1], args[2]);
+			if(args[0].isTable() || args[0].isUserdata())
+				args[0].rawSet(args[1], args[2]);
+			else
+				throw Lua.badArgument(0, name(), "expected table or userdata");
+
 			return args[0];
 		}
 	},
