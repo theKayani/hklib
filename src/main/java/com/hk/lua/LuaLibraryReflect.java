@@ -5,9 +5,8 @@ import com.hk.lua.Lua.LuaMethod;
 
 import java.awt.*;
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.*;
 import java.util.*;
 
 /**
@@ -22,28 +21,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(toString(), args, LuaType.STRING);
-
-			String key = EXKEY_CLASS_PREFIX + args[0].getString();
-			if(interp.hasExtra(key))
-				return interp.getExtraLua(key);
-
-			try
-			{
-				return getJavaClass(interp, args[0]);
-			}
-			catch (ClassNotFoundException e)
-			{
-				return new LuaArgs(LuaNil.NIL, new LuaString("class not found: " + e.getLocalizedMessage()));
-			}
-		}
-
-		private LuaObject getJavaClass(LuaInterpreter interp, LuaObject arg) throws ClassNotFoundException
-		{
-			String key = EXKEY_CLASS_PREFIX + arg.getString();
-			Class<?> cls = Class.forName(arg.getString(), false, getClass().getClassLoader());
-			LuaJavaClass luaCls = new LuaJavaClass(cls);
-			interp.setExtra(key, luaCls);
-			return luaCls;
+			return getJavaClass(interp, args[0].getString());
 		}
 
 		@Override
@@ -51,8 +29,16 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		{
 			return "class";
 		}
+	},
+	reflect() {
+		@Override
+		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
+		{
+			Lua.checkArgs(toString(), args, LuaType.ANY);
+			return LuaNil.NIL;
+		}
 	};
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public LuaObject call(LuaInterpreter interp, LuaObject[] args)
@@ -67,6 +53,29 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		String name = toString();
 		if(name != null && !name.trim().isEmpty())
 			table.rawSet(new LuaString(name), Lua.newFunc(this));
+	}
+
+	private static LuaObject getJavaClass(LuaInterpreter interp, String name)
+	{
+		try
+		{
+			return getJavaClass(interp, Class.forName(name, false, ClassLoader.getSystemClassLoader()));
+		}
+		catch (ClassNotFoundException e)
+		{
+			return new LuaArgs(LuaNil.NIL, new LuaString("class not found: " + e.getLocalizedMessage()));
+		}
+	}
+
+	private static LuaJavaClass getJavaClass(LuaInterpreter interp, Class<?> cls)
+	{
+		String key = EXKEY_CLASS_PREFIX + cls.getName();
+		if(interp.hasExtra(key))
+			return interp.getExtra(key, LuaJavaClass.class);
+
+		LuaJavaClass luaCls = new LuaJavaClass(interp, cls);
+		interp.setExtra(key, luaCls);
+		return luaCls;
 	}
 
 	private static Object[] attemptConvert(String method, Class<?>[] cls, LuaObject[] args, boolean strict)
@@ -164,7 +173,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		}
 		else if(cls.equals(boolean.class) || cls.equals(Boolean.class))
 			return arg.getBoolean();
-		else if(arg.getUserdata() != null && cls.isAssignableFrom(arg.getUserdata().getClass()))
+		else if(arg.getUserdata() != null && cls.isInstance(arg.getUserdata()))
 			return arg.getUserdata();
 
 		throw new IllegalArgumentException();
@@ -172,25 +181,47 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 
 	private static class LuaJava extends LuaUserdata
 	{
-		protected Class<?> cls;
-		protected Object obj;
+		protected final LuaInterpreter interp;
+		protected final Class<?> cls;
+		protected final Object obj;
+
+		LuaJava(LuaInterpreter interp, Class<?> cls, Object obj)
+		{
+			this.interp = interp;
+			this.cls = cls;
+			this.obj = obj;
+
+			metatable = new LuaTable();
+			metatable.rawSet("__name", new LuaString(name()));
+			metatable.rawSet("__index", metatable);
+		}
 
 		@Override
 		public LuaObject rawGet(LuaObject key)
 		{
 			if(key.isString())
 			{
+				Object res = null;
 				try
 				{
-					return Lua.newLuaObject(cls.getField(key.getString()).get(obj));
+					Field field = cls.getField(key.getString());
+					res = field.get(obj);
+					return Lua.newLuaObject(res);
+				}
+				catch (UnsupportedOperationException e)
+				{
+					Objects.requireNonNull(res);
+					if(res instanceof Class<?>)
+						return getJavaClass(interp, (Class<?>) res);
+					else
+						return new LuaJavaInstance(interp, res.getClass(), res);
 				}
 				catch (NoSuchFieldException | IllegalAccessException e)
 				{
-					throw new LuaException(e.getLocalizedMessage());
+					throw new LuaException("no such field: " + e.getLocalizedMessage());
 				}
 			}
-			else
-				return super.rawGet(key);
+			return super.rawGet(key);
 		}
 
 		@Override
@@ -202,11 +233,14 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 				{
 					Field field = cls.getField(key.getString());
 
-					field.set(obj, attempt("rawset", 2, field.getType(), value));
+					if(Modifier.isFinal(field.getModifiers()))
+						throw new LuaException("cannot alter field " + field.getDeclaringClass().getName() + "." + field.getName() + " which is final");
+					else
+						field.set(obj, attempt("rawset", 2, field.getType(), value));
 				}
 				catch (NoSuchFieldException | IllegalAccessException e)
 				{
-					throw new LuaException(e.getLocalizedMessage());
+					throw new LuaException("no such field: " + e.getLocalizedMessage());
 				}
 			}
 			else
@@ -217,6 +251,106 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		public boolean rawEqual(LuaObject o)
 		{
 			return o != null && o.getClass() == getClass() && ((LuaJava) o).cls.equals(cls) && Objects.equals(((LuaJava) o).obj, obj);
+		}
+
+		@Override
+		public LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+		{
+			Lua.checkArgs(cls.getName(), args, LuaType.STRING);
+			String name = args[0].getString();
+			Class<?>[] params = new Class<?>[args.length - 1];
+			for (int i = 1; i < args.length; i++)
+			{
+				if(args[i].isString())
+				{
+					String s = args[i].getString();
+					switch(s)
+					{
+						case "byte":
+							params[i - 1] = byte.class;
+							break;
+						case "short":
+							params[i - 1] = short.class;
+							break;
+						case "integer":
+						case "int":
+							params[i - 1] = int.class;
+							break;
+						case "long":
+							params[i - 1] = long.class;
+							break;
+						case "float":
+							params[i - 1] = float.class;
+							break;
+						case "double":
+							params[i - 1] = double.class;
+							break;
+						case "char":
+							params[i - 1] = char.class;
+							break;
+						case "boolean":
+							params[i - 1] = boolean.class;
+							break;
+						case "string":
+							params[i - 1] = String.class;
+							break;
+						default:
+							try
+							{
+								params[i - 1] = Class.forName(s, false, ClassLoader.getSystemClassLoader());
+							}
+							catch (ClassNotFoundException e)
+							{
+								throw new LuaException("class not found: " + e.getLocalizedMessage());
+							}
+					}
+				}
+				else if(args[i] instanceof LuaJavaClass)
+					params[i - 1] = ((LuaJavaClass) args[i]).cls;
+				else
+					throw Lua.badArgument(i, cls.getName(), "expected string", "got " + args[i].name());
+			}
+
+			try
+			{
+				return createLuaFunc(cls.getMethod(name, params));
+			}
+			catch (NoSuchMethodException e)
+			{
+				return new LuaArgs(LuaNil.NIL, new LuaString("method not found: " + e.getLocalizedMessage()));
+			}
+		}
+
+		protected LuaObject createLuaFunc(final Method method)
+		{
+			return new LuaFunction() {
+				@Override
+				LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+				{
+					Object[] objects = attemptConvert(method.getName(), method.getParameterTypes(), args, true);
+
+					try
+					{
+						Object res = method.invoke(obj, objects);
+						try
+						{
+							return Lua.newLuaObject(res);
+						}
+						catch (UnsupportedOperationException e)
+						{
+							Objects.requireNonNull(res);
+							if(res instanceof Class<?>)
+								return getJavaClass(interp, (Class<?>) res);
+							else
+								return new LuaJavaInstance(interp, res.getClass(), res);
+						}
+					}
+					catch (IllegalAccessException | InvocationTargetException e)
+					{
+						throw new LuaException("cannot execute: " + e.getLocalizedMessage());
+					}
+				}
+			};
 		}
 
 		@Override
@@ -238,19 +372,21 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		}
 	}
 
-	static class LuaJavaClass extends LuaJava
+	public static class LuaJavaClass extends LuaJava
 	{
-		LuaJavaClass(Class<?> cls)
+		LuaJavaClass(LuaInterpreter interp, Class<?> cls)
 		{
-			this.cls = cls;
-
-			metatable = new LuaTable();
-			metatable.rawSet("__name", new LuaString(cls.getName() + "*"));
-			metatable.rawSet("__index", metatable);
+			super(interp, cls, null);
 
 			Constructor<?>[] constructors = cls.getConstructors();
 			if(constructors.length > 0)
 				setConstructor(constructors);
+
+			for (final Method method : cls.getMethods())
+			{
+				if(Modifier.isStatic(method.getModifiers()))
+					metatable.rawSet(method.getName(), createLuaFunc(method));
+			}
 		}
 
 		private void setConstructor(final Constructor<?>[] constructors)
@@ -268,7 +404,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 						{
 							try
 							{
-								return new LuaJavaInstance(LuaJavaClass.this, constructor.newInstance(result));
+								return new LuaJavaInstance(interp, LuaJavaClass.this.cls, constructor.newInstance(result));
 							}
 							catch (InstantiationException | IllegalAccessException | InvocationTargetException e)
 							{
@@ -276,18 +412,25 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 							}
 						}
 					}
-					return null;
+					return LuaNil.NIL;
 				}
 			});
 		}
 	}
 
-	static class LuaJavaInstance extends LuaJava
+	public static class LuaJavaInstance extends LuaJava
 	{
-		private LuaJavaInstance(LuaJavaClass cls, Object obj)
+		private LuaJavaInstance(LuaInterpreter interp, Class<?> cls, Object obj)
 		{
-			this.cls = cls.cls;
-			this.obj = obj;
+			super(interp, cls, Objects.requireNonNull(obj));
+			if(!cls.isInstance(obj))
+				throw new IllegalArgumentException("cannot cast " + obj + " to " + cls);
+
+			for (final Method method : cls.getMethods())
+			{
+				if(!Modifier.isStatic(method.getModifiers()))
+					metatable.rawSet(method.getName(), createLuaFunc(method));
+			}
 		}
 	}
 

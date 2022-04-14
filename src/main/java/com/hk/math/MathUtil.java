@@ -122,6 +122,18 @@ public class MathUtil
 	}
 
 	/**
+	 * <p>hypotSq.</p>
+	 *
+	 * @param a a double
+	 * @param b a double
+	 * @return a double
+	 */
+	public static double hypotSq(double a, double b)
+	{
+		return a * a + b * b;
+	}
+
+	/**
 	 * <p>hypot.</p>
 	 *
 	 * @param a a float
@@ -131,6 +143,18 @@ public class MathUtil
 	public static float hypot(float a, float b)
 	{
 		return (float) Math.sqrt(a * a + b * b);
+	}
+
+	/**
+	 * <p>hypot.</p>
+	 *
+	 * @param a a float
+	 * @param b a float
+	 * @return a float
+	 */
+	public static float hypotSq(float a, float b)
+	{
+		return a * a + b * b;
 	}
 
 	/**
