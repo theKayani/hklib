@@ -26,14 +26,14 @@ local p2 = Point.new(3, 4)
 assert(p2)
 assert(type(p2) == pointCls .. '*')
 assert(p2 == p2)
-assert(not (p1 == p2))
+assert(p1 ~= p2)
 assert(tostring(p2) == 'Point{x=3.0, y=4.0}')
 
 local p3 = Point.new(p2)
 assert(p3)
 assert(type(p3) == pointCls .. '*')
 assert(p2 == p3)
-assert(not (p1 == p3))
+assert(p1 ~= p3)
 assert(tostring(p3) == 'Point{x=3.0, y=4.0}')
 assert(tostring(p2) == tostring(p3))
 
@@ -86,7 +86,7 @@ local d0, d1, d2, d3, d4, d5, d6, d7, d8
 d0 = true
 
 d1, d2, d3, d4, d5, d6, d7, d8, d0 = Point.numbers(8)
-assert(d1 == 8 and d2 == 7 and d3 == 6 and d4 == 5 and d5 == 4 and d6 == 3 and d7 == 2 and d8 == 1 and not d9)
+assert(d1 == 8 and d2 == 7 and d3 == 6 and d4 == 5 and d5 == 4 and d6 == 3 and d7 == 2 and d8 == 1 and not d0)
 d1, d2, d3, d4, d5, d6, d7, d8 = Point.numbers(7)
 assert(d1 == 7 and d2 == 6 and d3 == 5 and d4 == 4 and d5 == 3 and d6 == 2 and d7 == 1 and not d8)
 d1, d2, d3, d4, d5, d6, d7 = Point.numbers(6)
@@ -105,9 +105,9 @@ assert(d1 == 1 and not d2)
 -- testing static fields
 local zeroPoint = rawget(Point, 'ZERO')
 assert(zeroPoint == p1)
-success, msg = pcall(rawset, Point, 'ZERO', 0)
-assert(not success)
-assert(msg:find 'ZERO(.*\\s.*)final')
+found, err = pcall(rawset, Point, 'ZERO', 0)
+assert(not found)
+assert(err:find 'ZERO(.*\\s.*)final')
 
 assert(rawget(Point, 'magic') == 4321234)
 rawset(Point, 'magic', 1111 * 1111)
@@ -117,13 +117,13 @@ assert(rawget(Point, 'magic') == 1234321)
 local Math = java.class 'java.lang.Math'
 
 assert(Math == Math)
-assert(not (Math == Point))
+assert(Math ~= Point)
 
 assert(rawget(Math, 'PI') == math.pi)
 
-local success, msg = pcall(rawset, Math, 'PI', 2)
-assert(not success)
-assert(msg:find 'java.lang.Math.PI(.*\\s.*)final')
+found, err = pcall(rawset, Math, 'PI', 2)
+assert(not found)
+assert(err:find 'java.lang.Math.PI(.*\\s.*)final')
 
 assert(Math.sqrt(4) == 2.0)
 assert(Math.toDegrees(math.pi) == 180)
@@ -137,19 +137,17 @@ function testType(f, vl, ...)
     assert(res == vl)
     assert(math.type(res) == math.type(vl))
 end
-testType(Math.max, 3.0, 2, 3)
 testType(Math.max, 3.0, 2.0, 3.0)
-success, msg = pcall(testType, Math.max, 3, 2.0, 3.0)
-assert(not success)
-assert(msg:find 'failed')
+found, err = pcall(testType, Math.max, 3, 2.0, 3.0)
+assert(not found)
+assert(err:find 'failed')
 
 testType(Math('max', 'int', 'int'), 3, 2, 3)
-testType(Math('max', 'int', 'int'), 3, 2.0, 3.0)
 testType(Math('max', 'double', 'double'), 3.0, 2, 3)
 
-testType(Math.abs, 3.0, 3)
+testType(Math.abs, 3, 3)
 testType(Math.abs, 3.0, 3.0)
-testType(Math.abs, 5.0, -5)
+testType(Math.abs, 5, -5)
 testType(Math('abs', 'long'), 5, -5)
 testType(Math('abs', 'float'), 5.0, -5)
 
