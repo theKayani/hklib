@@ -829,11 +829,50 @@ public class Lua
 		}
 	}
 
+	/**
+	 * <p>This method throws a 'bad argument' Lua exception. This is
+	 * usually used when a method gets an invalid parameter. With a
+	 * <code>null</code> extra parameter.</p>
+	 *
+	 * <p>Here are some examples:</p>
+	 *
+	 * <code>badArgument(0, "tostring", "expected string", "got nil")</code>
+	 * <p>Will produce: <code>bad argument #1 to 'tostring' (expected string, got nil)</code></p>
+	 *
+	 * <code>badArgument(3, "openAccount", "email cannot be empty")</code>
+	 * <p>Will produce: <code>bad argument #4 to 'openAccount' (email cannot be empty)</code></p>
+	 *
+	 * @param param the parameter index that threw the exception
+	 * @param method the name of the method to which the argument was
+	 *                  supplied
+	 * @param message the issue message, ex: 'expected table or nil'
+	 * @return an exception to be thrown with the appropriate message
+	 */
 	public static LuaException badArgument(int param, String method, String message)
 	{
 		throw badArgument(param, method, message, null);
 	}
 
+	/**
+	 * <p>This method throws a 'bad argument' Lua exception. This is
+	 * usually used when a method gets an invalid parameter.</p>
+	 *
+	 * <p>Here are some examples:</p>
+	 *
+	 * <code>badArgument(0, "tostring", "expected string", "got nil")</code>
+	 * <p>Will produce: <code>bad argument #1 to 'tostring' (expected string, got nil)</code></p>
+	 *
+	 * <code>badArgument(3, "openAccount", "email cannot be empty")</code>
+	 * <p>Will produce: <code>bad argument #4 to 'openAccount' (email cannot be empty)</code></p>
+	 *
+	 * @param param the parameter index that threw the exception
+	 * @param method the name of the method to which the argument was
+	 *                  supplied
+	 * @param message the issue message, ex: 'expected table or nil'
+	 * @param extra an extra message that is concatenated to the
+	 *                 message
+	 * @return an exception to be thrown with the appropriate message
+	 */
 	public static LuaException badArgument(int param, String method, String message, String extra)
 	{
 		return new LuaException("bad argument #" + (param + 1) + " to '" + method + "' (" + message + (extra == null ? "" : ", " + extra) + ")");
