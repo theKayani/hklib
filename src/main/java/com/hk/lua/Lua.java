@@ -878,6 +878,16 @@ public class Lua
 		return new LuaException("bad argument #" + (param + 1) + " to '" + method + "' (" + message + (extra == null ? "" : ", " + extra) + ")");
 	}
 
+	public static LuaObject wrapErr(Exception ex)
+	{
+		return wrapErr(ex.getLocalizedMessage());
+	}
+
+	public static LuaObject wrapErr(String message)
+	{
+		return new LuaArgs(NIL, new LuaString(message));
+	}
+
 	/**
 	 * @deprecated see {@link #checkArgs(String, LuaObject[], LuaType...)}
 	 */

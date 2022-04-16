@@ -117,7 +117,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 				}
 				catch (LuaException ex)
 				{
-					return new LuaArgs(LuaNil.NIL, new LuaString(ex.getLocalizedMessage()));
+					return Lua.wrapErr(ex);
 				}
 
 				return new LuaFunction()
@@ -286,7 +286,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			}
 			catch(LuaException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+				return Lua.wrapErr(e);
 			}
 			finally
 			{

@@ -225,7 +225,7 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 			for (String s : missed)
 				sb.append("\n\tno file: '").append(s).append('\'');
 
-			return new LuaArgs(LuaNil.NIL, new LuaString(sb.toString()));
+			return Lua.wrapErr(sb.toString());
 		}
 	};
 

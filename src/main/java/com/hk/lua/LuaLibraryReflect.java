@@ -28,7 +28,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 			}
 			catch (ClassNotFoundException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString("class not found: " + e.getLocalizedMessage()));
+				return Lua.wrapErr("class not found: " + e.getLocalizedMessage());
 			}
 		}
 
@@ -313,7 +313,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 			}
 			catch (NoSuchMethodException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString("method not found: " + e.getLocalizedMessage()));
+				return Lua.wrapErr("method not found: " + e.getLocalizedMessage());
 			}
 		}
 

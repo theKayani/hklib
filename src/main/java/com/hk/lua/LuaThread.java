@@ -30,7 +30,7 @@ public class LuaThread extends LuaObject
 	public LuaObject resume(LuaObject[] args)
 	{
 		if(completed.get())
-			return new LuaArgs(LuaNil.NIL, new LuaString("cannot resume dead coroutine"));
+			return Lua.wrapErr("cannot resume dead coroutine");
 
 		if(thread == null)
 		{
@@ -63,11 +63,11 @@ public class LuaThread extends LuaObject
 	public LuaObject yield(LuaObject[] args)
 	{
 		if(completed.get())
-			return new LuaArgs(LuaNil.NIL, new LuaString("cannot yield dead coroutine"));
+			return Lua.wrapErr("cannot yield dead coroutine");
 
 		if(thread == null)
-			return new LuaArgs(LuaNil.NIL, new LuaString("cannot yield, hasn't resumed yet"));
-		
+			return Lua.wrapErr("cannot yield, hasn't resumed yet");
+
 		interp.threads.pop();
 		thread.result = args;
 		thread.done.set(true);

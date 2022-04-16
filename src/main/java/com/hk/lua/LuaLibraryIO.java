@@ -70,7 +70,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			LuaObject obj = interp.getExtraLua(EXKEY_STDOUT);
 
 			if(!(obj instanceof LuaIOUserdata))
-				return new LuaArgs(LuaNil.NIL, new LuaString("expected output FILE* object"));
+				return Lua.wrapErr("expected output FILE* object");
 
 			try
 			{
@@ -78,7 +78,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			}
 			catch (IOException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+				return Lua.wrapErr(e);
 			}
 		}
 	},
@@ -106,7 +106,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 					}
 					catch (FileNotFoundException e)
 					{
-						return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+						return Lua.wrapErr(e);
 					}
 				}
 				interp.setExtra(EXKEY_STDIN, args[0]);
@@ -139,7 +139,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				LuaObject obj = interp.getExtraLua(EXKEY_STDIN);
 
 				if (!(obj instanceof LuaIOUserdata))
-					return new LuaArgs(LuaNil.NIL, new LuaString("expected input FILE* object"));
+					return Lua.wrapErr("expected input FILE* object");
 
 				fmts = getFormats(args, 0);
 				in = (LuaIOUserdata) obj;
@@ -167,10 +167,10 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
-			Lua.checkArgs(name(), args, LuaType.STRING, LuaType.STRING);
+			Lua.checkArgs(name(), args, LuaType.STRING);
 
 			String file = args[0].getString();
-			String mode = args[1].getString();
+			String mode = args.length > 1 ? args[1].getString() : "r";
 
 			boolean binary = mode.endsWith("b");
 
@@ -196,7 +196,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				{
 					case "r":
 						if(!f.exists())
-							return new LuaArgs(LuaNil.NIL, new LuaString("file not found"));
+							return Lua.wrapErr("file not found");
 						return new LuaReader(new FileReader(f));
 					case "w":
 						return new LuaWriter(new FileWriter(f, false));
@@ -235,7 +235,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 					}
 					catch (IOException e)
 					{
-						return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+						return Lua.wrapErr(e);
 					}
 				}
 				interp.setExtra(EXKEY_STDOUT, args[0]);
@@ -259,7 +259,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			LuaObject obj = interp.getExtraLua(EXKEY_STDIN);
 
 			if(!(obj instanceof LuaIOUserdata))
-				return new LuaArgs(LuaNil.NIL, new LuaString("expected input FILE* object"));
+				return Lua.wrapErr("expected input FILE* object");
 
 			int[] formats = getFormats(args, 0);
 			try
@@ -268,7 +268,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			}
 			catch (IOException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+				return Lua.wrapErr(e);
 			}
 		}
 	},
@@ -296,7 +296,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			LuaObject obj = interp.getExtraLua(EXKEY_STDOUT);
 
 			if(!(obj instanceof LuaIOUserdata))
-				return new LuaArgs(LuaNil.NIL, new LuaString("expected output FILE* object"));
+				return Lua.wrapErr("expected output FILE* object");
 
 			try
 			{
@@ -304,7 +304,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			}
 			catch (IOException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+				return Lua.wrapErr(e);
 			}
 		}
 	},
@@ -410,7 +410,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 					throw Lua.badArgument(0, "read", "expected FILE*");
 
 				if(!(args[0] instanceof LuaIOUserdata))
-					return new LuaArgs(LuaNil.NIL, new LuaString("bad file descriptor"));
+					return Lua.wrapErr("bad file descriptor");
 
 				try
 				{
@@ -418,7 +418,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				}
 				catch (IOException e)
 				{
-					return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+					return Lua.wrapErr(e);
 				}
 			}
 		});
@@ -429,7 +429,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 					throw Lua.badArgument(0, "lines", "expected FILE*");
 
 				if(!(args[0] instanceof LuaIOUserdata))
-					return new LuaArgs(LuaNil.NIL, new LuaString("bad file descriptor"));
+					return Lua.wrapErr("bad file descriptor");
 
 				final int[] formats = getFormats(args, 1);
 				final LuaIOUserdata input = (LuaIOUserdata) args[0];
@@ -466,7 +466,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 						((Closeable) args[0]).close();
 						return LuaBoolean.TRUE;
 					}
-					return new LuaArgs(LuaNil.NIL, new LuaString("bad file descriptor"));
+					return Lua.wrapErr("bad file descriptor");
 				}
 				catch (IOException ex)
 				{
@@ -486,7 +486,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 					if (args[0] instanceof LuaIOUserdata)
 						return ((LuaIOUserdata) args[0]).flush();
 
-					return new LuaArgs(LuaNil.NIL, new LuaString("bad file descriptor"));
+					return Lua.wrapErr("bad file descriptor");
 				}
 				catch (IOException ex)
 				{
@@ -599,7 +599,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 				}
 				catch (IOException e)
 				{
-					return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+					return Lua.wrapErr(e);
 				}
 				return LuaInteger.valueOf(offset);
 			}

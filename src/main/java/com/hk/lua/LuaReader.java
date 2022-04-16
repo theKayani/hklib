@@ -172,7 +172,7 @@ public class LuaReader extends LuaLibraryIO.LuaIOUserdata
 
 	private LuaObject readableError()
 	{
-		return new LuaArgs(LuaNil.NIL, new LuaString("invalid call to readable"));
+		return Lua.wrapErr("invalid call to readable");
 	}
 
 	@Override

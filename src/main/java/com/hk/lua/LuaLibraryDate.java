@@ -46,7 +46,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			}
 			catch (ParseException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString(e.getMessage()));
+				return Lua.wrapErr(e);
 			}
 		}
 	},

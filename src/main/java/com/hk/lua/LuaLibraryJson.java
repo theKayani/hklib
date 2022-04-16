@@ -43,7 +43,7 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 			}
 			catch (FileNotFoundException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+				return Lua.wrapErr(e);
 			}
 			catch (JsonFormatException e)
 			{
@@ -63,7 +63,7 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 			}
 			catch (IOException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+				return Lua.wrapErr(e);
 			}
 			catch (JsonFormatException e)
 			{
@@ -126,7 +126,7 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 			}
 			catch (FileNotFoundException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+				return Lua.wrapErr(e);
 			}
 		}
 	},

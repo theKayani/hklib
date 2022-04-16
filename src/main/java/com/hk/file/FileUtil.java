@@ -154,11 +154,14 @@ public class FileUtil
 	 */
 	public static boolean deleteDirectory(File file)
 	{
-		File[] list = Objects.requireNonNull(file.listFiles());
+		File[] list = file.listFiles();
 		boolean done = true;
-		for (File f : list)
+		if(list != null)
 		{
-			done &= deleteFile(f);
+			for (File f : list)
+			{
+				done &= deleteFile(f);
+			}
 		}
 
 		return done && file.delete();

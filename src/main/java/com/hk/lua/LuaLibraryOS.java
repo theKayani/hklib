@@ -64,7 +64,7 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 			}
 			catch (IOException | InterruptedException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+				return Lua.wrapErr(e);
 			}
 		}
 	},
@@ -135,7 +135,7 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 			}
 			catch (IOException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+				return Lua.wrapErr(e);
 			}
 		}
 	},
@@ -154,7 +154,7 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 			}
 			catch (IOException e)
 			{
-				return new LuaArgs(LuaNil.NIL, new LuaString(e.getLocalizedMessage()));
+				return Lua.wrapErr(e);
 			}
 		}
 	},

@@ -76,7 +76,7 @@ public class LuaWriter extends LuaLibraryIO.LuaIOUserdata
 				writer.write(value.getString());
 			}
 			else
-				return new LuaArgs(LuaNil.NIL, new LuaString("bad argument #" + param + " to 'write' (expected string or number)"));
+				return Lua.wrapErr("bad argument #" + param + " to 'write' (expected string or number)");
 
 			param++;
 		}
