@@ -1,34 +1,36 @@
 -- testing hashing functions
 local str = 'Hello World!'
-local hashFuncs = hash.funcs
-assert(type(hashFuncs) == 'table')
+assert(type(hash.funcs) == 'table')
 
 -- these three should always be available
+
 assert(hash.funcs.md5)
-assert(hash.funcs.sha_1)
-assert(hash.funcs.sha_256)
-
-assert(type(hashFuncs['md5']) == 'function')
-assert(type(hashFuncs['sha_1']) == 'function')
-assert(type(hashFuncs['sha_256']) == 'function')
-
 assert(type(hash.md5) == 'function')
-assert(type(hash.sha_1) == 'function')
-assert(type(hash.sha_256) == 'function')
-
-assert(hashFuncs['md5'] == hash.md5)
-assert(hashFuncs['sha_1'] == hash.sha_1)
-assert(hashFuncs['sha_256'] == hash.sha_256)
-
+assert(type(hash.funcs['md5']) == 'function')
+assert(hash.funcs['md5'] == hash.md5)
 assert(hash.md5(str) == 'ed076287532e86365e841e92bfc50d8c')
-assert(hash.sha_1(str) == '2ef7bde608ce5404e97d5f042f95f89f1c232871')
-assert(hash.sha_256(str) == '7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069')
+
+if hash.funcs.sha_1 then
+    assert(type(hash.sha_1) == 'function')
+    assert(type(hash.funcs['sha_1']) == 'function')
+    assert(hash.funcs['sha_1'] == hash.sha_1)
+    assert(hash.sha_1(str) == '2ef7bde608ce5404e97d5f042f95f89f1c232871')
+end
+
+if hash.funcs.sha_256 then
+    assert(type(hash.sha_256) == 'function')
+    assert(type(hash.funcs['sha_256']) == 'function')
+    assert(hash.funcs['sha_256'] == hash.sha_256)
+    assert(hash.sha_256(str) == '7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069')
+end
 
 if hash.funcs.sha_512 then
+    assert(type(hash.sha_512) == 'function')
+    assert(hash.funcs['sha_512'] == hash.sha_512)
     assert(hash.sha_512(str) == '861844d6704e8573fec34d967e20bcfef3d424cf48be04e6dc08f2bd58c729743371015ead891cc3cf1c9d34b49264b510751b1ff9e537937bc46b5d6ff4ecc8')
 end
 
-for algorithm, hashFunc in pairs(hashFuncs) do
+for algorithm, hashFunc in pairs(hash.funcs) do
     assert(hashFunc == hash[algorithm])
     assert(hashFunc(str) == hash[algorithm](str))
 end

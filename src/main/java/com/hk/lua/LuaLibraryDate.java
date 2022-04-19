@@ -92,8 +92,6 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
-			Lua.checkArgs(toString(), args, LuaType.STRING);
-
 			DateFormat df = interp.getExtra(EXKEY_DATE_FORMAT, DateFormat.class);
 			if(df instanceof SimpleDateFormat)
 				return new LuaString(((SimpleDateFormat) df).toPattern());
@@ -338,12 +336,23 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 				}
 			}
 		});
+		dateMetatable.rawSet("clone", new LuaFunction() {
+			@Override
+			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			{
+				Lua.checkArgs(toString(), args, LuaType.USERDATA);
+				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
+					throw Lua.badArgument(0, "clone", "DATE* expected");
+				else
+					return new LuaDateUserdata(((LuaDateUserdata) args[0]).calendar.getTime());
+			}
+		});
 	}
 	
 	public static class LuaDateUserdata extends LuaUserdata
 	{
 		private final GregorianCalendar calendar;
-		
+
 		public LuaDateUserdata(Date date)
 		{			
 			calendar = new GregorianCalendar();
@@ -357,8 +366,12 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		{
 			if(o == this)
 				return true;
-
-			return o instanceof LuaDateUserdata && calendar.equals(((LuaDateUserdata) o).calendar);
+			if(o.getUserdata() instanceof Date)
+			{
+				Date date = o.getUserdata(Date.class);
+				return calendar.getTime().equals(date);
+			}
+			return false;
 		}
 
 		@Override
@@ -366,7 +379,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		{
 			return LuaBoolean.valueOf(rawEqual(o));
 		}
-		
+
 		@Override
 		public LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
 		{

@@ -1,6 +1,7 @@
 package com.hk.lua;
 
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 
 import com.hk.Assets;
 
@@ -8,24 +9,17 @@ import junit.framework.TestCase;
 
 public class LuaLibraryDateTest extends TestCase
 {
-	private LuaInterpreter interp;
-	
-	@Override
-	public void setUp() throws FileNotFoundException
+	public void test() throws FileNotFoundException
 	{
-		interp = Lua.reader(Assets.get("lua/library_date.lua"));
-		
-		Lua.importStandard(interp);
-	}
-	
-	public void test()
-	{
-		interp.execute();
-	}
+		LuaInterpreter interp = Lua.reader(Assets.get("lua/library_date.lua"));
 
-	@Override
-	public void tearDown()
-	{
-		interp = null;
+		interp.setExtra(LuaLibraryDate.EXKEY_DATE_FORMAT, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+
+		Lua.importStandard(interp);
+
+		Object obj = interp.execute();
+
+		assertTrue(obj instanceof LuaObject);
+		assertTrue(((LuaObject) obj).getBoolean());
 	}
 }
