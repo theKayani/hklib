@@ -81,7 +81,7 @@ public interface Stream extends Closeable
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
 	void writeUTFString(String o) throws StreamException;
-	
+
 	/**
 	 * <p>writeRawString.</p>
 	 *
@@ -177,7 +177,7 @@ public interface Stream extends Closeable
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
 	String readUTFString() throws StreamException;
-	
+
 	/**
 	 * <p>readRawString.</p>
 	 *

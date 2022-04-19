@@ -14,7 +14,7 @@ public class Mat implements Serializable, Cloneable
 {
 	public final int rows, cols;
 	public final double[][] data;
-	
+
 	/**
 	 * <p>Constructor for Mat.</p>
 	 *
@@ -27,7 +27,7 @@ public class Mat implements Serializable, Cloneable
 		this.cols = cols;
 		this.data = new double[rows][cols];
 	}
-	
+
 	/**
 	 * <p>Constructor for Mat.</p>
 	 *
@@ -43,7 +43,7 @@ public class Mat implements Serializable, Cloneable
 			System.arraycopy(data[r], 0, this.data[r], 0, cols);
 		}
 	}
-	
+
 	/**
 	 * <p>randomize.</p>
 	 *
@@ -53,7 +53,7 @@ public class Mat implements Serializable, Cloneable
 	{
 		return randomize(ThreadLocalRandom.current());
 	}
-	
+
 	/**
 	 * <p>randomize.</p>
 	 *
@@ -71,7 +71,7 @@ public class Mat implements Serializable, Cloneable
 			}
 		});
 	}
-	
+
 	/**
 	 * <p>add.</p>
 	 *
@@ -89,7 +89,7 @@ public class Mat implements Serializable, Cloneable
 			}
 		});
 	}
-	
+
 	/**
 	 * <p>add.</p>
 	 *
@@ -107,7 +107,7 @@ public class Mat implements Serializable, Cloneable
 			}
 		});
 	}
-	
+
 	/**
 	 * <p>subtract.</p>
 	 *
@@ -125,7 +125,7 @@ public class Mat implements Serializable, Cloneable
 			}
 		});
 	}
-	
+
 	/**
 	 * <p>subtract.</p>
 	 *
@@ -143,7 +143,7 @@ public class Mat implements Serializable, Cloneable
 			}
 		});
 	}
-	
+
 	/**
 	 * <p>transpose.</p>
 	 *
@@ -160,7 +160,7 @@ public class Mat implements Serializable, Cloneable
 			}
 		});
 	}
-	
+
 	/**
 	 * <p>mult.</p>
 	 *
@@ -178,7 +178,7 @@ public class Mat implements Serializable, Cloneable
 			}
 		});
 	}
-	
+
 	/**
 	 * <p>elementMult.</p>
 	 *
@@ -196,7 +196,7 @@ public class Mat implements Serializable, Cloneable
 			}
 		});
 	}
-	
+
 	/**
 	 * <p>mult.</p>
 	 *
@@ -206,7 +206,7 @@ public class Mat implements Serializable, Cloneable
 	public Mat mult(final Mat mat)
 	{
 		if(cols != mat.rows) throw new RuntimeException("Rows don't match columns");
-		
+
 		return new Mat(rows, mat.cols).map(new MatFunc()
 		{
 			@Override
@@ -221,7 +221,7 @@ public class Mat implements Serializable, Cloneable
 			}
 		});
 	}
-	
+
 	/**
 	 * <p>map.</p>
 	 *
@@ -239,7 +239,7 @@ public class Mat implements Serializable, Cloneable
 		}
 		return this;
 	}
-	
+
 	/**
 	 * <p>toArray.</p>
 	 *
@@ -254,7 +254,7 @@ public class Mat implements Serializable, Cloneable
 		}
 		return arr;
 	}
-	
+
 	/**
 	 * <p>getColumn.</p>
 	 *
@@ -280,7 +280,7 @@ public class Mat implements Serializable, Cloneable
 	{
 		return new Mat(data);
 	}
-	
+
 	/**
 	 * <p>toArrayString.</p>
 	 *
@@ -290,7 +290,7 @@ public class Mat implements Serializable, Cloneable
 	{
 		return Arrays.deepToString(data);
 	}
-	
+
 	/**
 	 * <p>toString.</p>
 	 *
@@ -308,13 +308,13 @@ public class Mat implements Serializable, Cloneable
 
 				if(c < cols - 1) sb.append(", ");
 			}
-			
+
 			sb.append(']');
 			if(r < rows - 1) sb.append('\n');
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * <p>fromArray.</p>
 	 *
@@ -330,12 +330,12 @@ public class Mat implements Serializable, Cloneable
 		}
 		return mat;
 	}
-	
+
 	public interface MatFunc
 	{
 		double perform(double val, int r, int c);
 	}
-	
+
 	/** Constant <code>SIGMOID</code> */
 	public static final MatFunc SIGMOID = new MatFunc()
 	{
@@ -345,7 +345,7 @@ public class Mat implements Serializable, Cloneable
 			return 1 / (1 + Math.exp(-val));
 		}
 	};
-	
+
 	/** Constant <code>SIGMOID_DERIVATIVE</code> */
 	public static final MatFunc SIGMOID_DERIVATIVE = new MatFunc()
 	{
@@ -355,7 +355,7 @@ public class Mat implements Serializable, Cloneable
 			return val * (1 - val);
 		}
 	};
-	
+
 	/** Constant <code>TANH</code> */
 	public static final MatFunc TANH = new MatFunc()
 	{
@@ -365,7 +365,7 @@ public class Mat implements Serializable, Cloneable
 			return Math.tanh(val);
 		}
 	};
-	
+
 	/** Constant <code>TANH_DERIVATIVE</code> */
 	public static final MatFunc TANH_DERIVATIVE = new MatFunc()
 	{
@@ -375,6 +375,6 @@ public class Mat implements Serializable, Cloneable
 			return 1 - val * val;
 		}
 	};
-	
+
 	private static final long serialVersionUID = 3107367440033528127L;
 }

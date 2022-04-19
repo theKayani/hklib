@@ -392,7 +392,7 @@ public final class Vector3F implements Cloneable, Serializable
 		z = arr[off + 2];
 		return this;
 	}
-	
+
 	/**
 	 * <p>set.</p>
 	 *
@@ -475,7 +475,7 @@ public final class Vector3F implements Cloneable, Serializable
 		arr[off + 2] = z;
 		return arr;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *

@@ -7,7 +7,7 @@ class LuaVariable extends LuaLocation
 	final String variable;
 	private final String source;
 	private final boolean local;
-	
+
 	LuaVariable(String source, int line, String variable, boolean local)
 	{
 		super(line);
@@ -20,7 +20,7 @@ class LuaVariable extends LuaLocation
 	{
 		give(interp, null, obj);
 	}
-	
+
 	void give(LuaInterpreter interp, LuaObject parent, LuaObject obj)
 	{
 		if(next == null)
@@ -51,7 +51,7 @@ class LuaVariable extends LuaLocation
 			}
 		}
 	}
-	
+
 	@Override
 	LuaObject evaluate(LuaInterpreter interp)
 	{

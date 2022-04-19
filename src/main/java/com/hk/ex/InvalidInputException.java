@@ -57,6 +57,6 @@ public class InvalidInputException extends Exception
 	{
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
-	
+
 	private static final long serialVersionUID = 8793656911329713609L;
 }

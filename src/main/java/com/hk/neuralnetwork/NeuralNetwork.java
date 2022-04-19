@@ -24,7 +24,7 @@ public class NeuralNetwork implements Cloneable
 	public final Mat[] weights, biases;
 	private ActivationFunction activationFunction;
 	private double learningRate;
-	
+
 	/**
 	 * <p>Constructor for NeuralNetwork.</p>
 	 *
@@ -36,7 +36,7 @@ public class NeuralNetwork implements Cloneable
 	{
 		this(inputNodes, 1, hiddenNodes, outputNodes);
 	}
-	
+
 	/**
 	 * <p>Constructor for NeuralNetwork.</p>
 	 *
@@ -51,7 +51,7 @@ public class NeuralNetwork implements Cloneable
 		this.hiddenLayers = hiddenLayers;
 		this.hiddenNodes = hiddenNodes;
 		this.outputNodes = outputNodes;
-		
+
 		weights = new Mat[hiddenLayers + 1];
 		for(int i = 0; i < hiddenLayers + 1; i++)
 		{
@@ -67,10 +67,10 @@ public class NeuralNetwork implements Cloneable
 			{
 				weights[i] = new Mat(hiddenNodes, hiddenNodes);
 			}
-			
+
 			weights[i].randomize();
 		}
-		
+
 		biases = new Mat[hiddenLayers + 1];
 		for(int i = 0; i < hiddenLayers + 1; i++)
 		{
@@ -85,11 +85,11 @@ public class NeuralNetwork implements Cloneable
 
 			biases[i].randomize();
 		}
-		
+
 		learningRate = 0.01;
 		activationFunction = new ActivationFunction(Mat.SIGMOID, Mat.SIGMOID_DERIVATIVE);
 	}
-	
+
 	/**
 	 * <p>Constructor for NeuralNetwork.</p>
 	 *
@@ -107,7 +107,7 @@ public class NeuralNetwork implements Cloneable
 		{
 			weights[i] = copy.weights[i].clone();
 		}
-		
+
 		biases = new Mat[copy.biases.length];
 		for(int i = 0; i < biases.length; i++)
 		{
@@ -116,7 +116,7 @@ public class NeuralNetwork implements Cloneable
 		learningRate = copy.learningRate;
 		activationFunction = copy.activationFunction;
 	}
-	
+
 	/**
 	 * <p>process.</p>
 	 *
@@ -126,7 +126,7 @@ public class NeuralNetwork implements Cloneable
 	public double[] process(double[] inputArray)
 	{
 		if(inputArray.length != inputNodes) throw new RuntimeException("Input must have " + inputNodes + " element" + (inputNodes == 1 ? "" : "s"));
-		
+
 		Mat input = Mat.fromArray(inputArray);
 
 //		System.out.println(input.schtuff());
@@ -135,10 +135,10 @@ public class NeuralNetwork implements Cloneable
 			input = weights[i - 1].mult(input).add(biases[i - 1]).map(activationFunction.function);
 //			System.out.println(StringUtil.repeat("\t", i) + input.schtuff());
 		}
-		
+
 		return input.toArray();
 	}
-	
+
 	/**
 	 * <p>train.</p>
 	 *
@@ -159,30 +159,30 @@ public class NeuralNetwork implements Cloneable
 			input = weights[i - 1].mult(input).add(biases[i - 1]).map(activationFunction.function);
 			layers[i] = input;
 		}
-		
+
 		Mat target = Mat.fromArray(correct);
 		for(int i = hiddenLayers + 1; i > 0; i--)
 		{
 			// Calculate Error
 			Mat error = target.subtract(layers[i]);
-			
+
 			// Calculate Gradient
 			Mat gradient = layers[i].map(activationFunction.derivative);
 			gradient = gradient.elementMult(error);
 			gradient = gradient.mult(learningRate);
-			
+
 			// Calculate Delta
 			Mat delta = gradient.mult(layers[i - 1].transpose());
-			
+
 			// Adjust weights and biases
 			biases[i - 1] = biases[i - 1].add(gradient);
 			weights[i - 1] = weights[i - 1].add(delta);
-		
+
 			// Reset target for next loop
 			target = weights[i - 1].transpose().mult(error).add(layers[i - 1]);
 		}
 	}
-	
+
 	/**
 	 * <p>Getter for the field <code>learningRate</code>.</p>
 	 *
@@ -192,7 +192,7 @@ public class NeuralNetwork implements Cloneable
 	{
 		return learningRate;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>learningRate</code>.</p>
 	 *
@@ -204,7 +204,7 @@ public class NeuralNetwork implements Cloneable
 		this.learningRate = learningRate;
 		return this;
 	}
-	
+
 	/**
 	 * <p>Getter for the field <code>activationFunction</code>.</p>
 	 *
@@ -214,7 +214,7 @@ public class NeuralNetwork implements Cloneable
 	{
 		return activationFunction;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>activationFunction</code>.</p>
 	 *
@@ -226,7 +226,7 @@ public class NeuralNetwork implements Cloneable
 		this.activationFunction = activationFunction;
 		return this;
 	}
-	
+
 	/**
 	 * <p>mix.</p>
 	 *
@@ -241,14 +241,14 @@ public class NeuralNetwork implements Cloneable
 		{
 			throw new IllegalArgumentException("These neural networks aren't compatible");
 		}
-		
+
 		NeuralNetwork nn = clone();
 		if(weights)
 		{
 			for(int i = 0; i < hiddenLayers + 1; i++)
 			{
 				Mat weight = nn.weights[i];
-				
+
 				final int indx = i;
 				weight.map(new MatFunc()
 				{
@@ -265,7 +265,7 @@ public class NeuralNetwork implements Cloneable
 			for(int i = 0; i < hiddenLayers + 1; i++)
 			{
 				Mat bias = nn.biases[i];
-				
+
 				final int indx = i;
 				bias.map(new MatFunc()
 				{
@@ -279,7 +279,7 @@ public class NeuralNetwork implements Cloneable
 		}
 		return nn;
 	}
-	
+
 	/**
 	 * <p>mutateThis.</p>
 	 *
@@ -298,7 +298,7 @@ public class NeuralNetwork implements Cloneable
 		}
 		return this;
 	}
-	
+
 	/**
 	 * <p>clone.</p>
 	 *
@@ -308,7 +308,7 @@ public class NeuralNetwork implements Cloneable
 	{
 		return new NeuralNetwork(this);
 	}
-	
+
 	/**
 	 * <p>writeTo.</p>
 	 *
@@ -319,7 +319,7 @@ public class NeuralNetwork implements Cloneable
 	{
 		writeTo(file, true);
 	}
-	
+
 	/**
 	 * <p>writeTo.</p>
 	 *
@@ -335,7 +335,7 @@ public class NeuralNetwork implements Cloneable
 		out.close();
 		fout.close();
 	}
-	
+
 	/**
 	 * <p>writeTo.</p>
 	 *
@@ -370,7 +370,7 @@ public class NeuralNetwork implements Cloneable
 	{
 		readFrom(file, true);
 	}
-	
+
 	/**
 	 * <p>readFrom.</p>
 	 *
@@ -386,7 +386,7 @@ public class NeuralNetwork implements Cloneable
 		in.close();
 		fin.close();
 	}
-	
+
 	/**
 	 * <p>readFrom.</p>
 	 *
@@ -410,11 +410,11 @@ public class NeuralNetwork implements Cloneable
 			}
 		}
 	}
-	
+
 	public static class ActivationFunction
 	{
 		public final MatFunc function, derivative;
-		
+
 		public ActivationFunction(MatFunc function, MatFunc derivative)
 		{
 			this.function = function;

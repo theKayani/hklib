@@ -24,10 +24,10 @@ class LuaChunk extends LuaBlock
 			LuaObject[] objs = new LuaObject[args.length];
 			for(int i = 0; i < args.length; i++)
 				objs[i] = Lua.newLuaObject(args[i]);
-			
+
 			varargs = new LuaArgs(objs);
 		}
-		
+
 		myEnv.varargs = varargs;
 		Environment env = interp.env;
 		interp.env = myEnv;
@@ -49,7 +49,7 @@ class LuaChunk extends LuaBlock
 		interp.env = env;
 		return res;
 	}
-	
+
 	Object execute(LuaInterpreter interp)
 	{
 		return execute(interp, (Object[]) null);

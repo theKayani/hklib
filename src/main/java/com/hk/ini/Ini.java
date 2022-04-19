@@ -16,7 +16,7 @@ import com.hk.collections.lists.ListUtil;
 public class Ini
 {
 	private final Map<String, Map<String, Object>> data;
-	
+
 	/**
 	 * <p>Constructor for Ini.</p>
 	 */
@@ -24,7 +24,7 @@ public class Ini
 	{
 		data = new LinkedHashMap<>();
 	}
-	
+
 	/**
 	 * <p>remove.</p>
 	 *
@@ -41,7 +41,7 @@ public class Ini
 			map.remove(key);
 		return this;
 	}
-	
+
 	/**
 	 * <p>removeSection.</p>
 	 *
@@ -53,7 +53,7 @@ public class Ini
 		data.remove(section == null ? "" : section);
 		return this;
 	}
-	
+
 	/**
 	 * <p>set.</p>
 	 *
@@ -69,7 +69,7 @@ public class Ini
 		Map<String, Object> map = data.get(section);
 		if(map == null)
 			data.put(section, map = new LinkedHashMap<>());
-		
+
 		if(value instanceof Collection)
 		{
 			value = new ArrayList<>((Collection<?>) value);
@@ -82,11 +82,11 @@ public class Ini
 		}
 		else
 			value = value == null ? "" : value.toString();
-		
+
 		map.put(key, value);
 		return this;
 	}
-	
+
 	/**
 	 * <p>add.</p>
 	 *
@@ -140,7 +140,7 @@ public class Ini
 		}
 		return this;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -152,7 +152,7 @@ public class Ini
 	{
 		return get(section, key, null);
 	}
-	
+
 	/**
 	 * <p>getString.</p>
 	 *
@@ -168,12 +168,12 @@ public class Ini
 		Map<String, Object> map = data.get(section);
 		if(map == null)
 			return def;
-		
+
 		Object o = map.get(key);
-		
+
 		return o instanceof String ? (String) o : def;
 	}
-	
+
 	/**
 	 * <p>getInt.</p>
 	 *
@@ -185,7 +185,7 @@ public class Ini
 	{
 		return getInt(section, key, 0);
 	}
-	
+
 	/**
 	 * <p>getInt.</p>
 	 *
@@ -198,7 +198,7 @@ public class Ini
 	{
 		return (int) getLong(section, key, def);
 	}
-	
+
 	/**
 	 * <p>getLong.</p>
 	 *
@@ -210,7 +210,7 @@ public class Ini
 	{
 		return getLong(section, key, 0);
 	}
-	
+
 	/**
 	 * <p>getLong.</p>
 	 *
@@ -226,7 +226,7 @@ public class Ini
 		Map<String, Object> map = data.get(section);
 		if(map == null)
 			return def;
-		
+
 		Object o = map.get(key);
 		if(o instanceof String)
 		{
@@ -239,7 +239,7 @@ public class Ini
 		}
 		return def;
 	}
-	
+
 	/**
 	 * <p>getFloat.</p>
 	 *
@@ -251,7 +251,7 @@ public class Ini
 	{
 		return getFloat(section, key, 0);
 	}
-	
+
 	/**
 	 * <p>getFloat.</p>
 	 *
@@ -264,7 +264,7 @@ public class Ini
 	{
 		return (float) getDouble(section, key, def);
 	}
-	
+
 	/**
 	 * <p>getDouble.</p>
 	 *
@@ -276,7 +276,7 @@ public class Ini
 	{
 		return getDouble(section, key, 0);
 	}
-	
+
 	/**
 	 * <p>getDouble.</p>
 	 *
@@ -292,7 +292,7 @@ public class Ini
 		Map<String, Object> map = data.get(section);
 		if(map == null)
 			return def;
-		
+
 		Object o = map.get(key);
 		if(o instanceof String)
 		{
@@ -305,7 +305,7 @@ public class Ini
 		}
 		return def;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -322,12 +322,12 @@ public class Ini
 		Map<String, Object> map = data.get(section);
 		if(map == null)
 			return def;
-		
+
 		Object o = map.get(key);
-		
+
 		return o instanceof List ? ((List) o).toArray() : (o == null ? def : o);
 	}
-	
+
 	/**
 	 * <p>getArray.</p>
 	 *
@@ -339,7 +339,7 @@ public class Ini
 	{
 		return getArray(section, key, null);
 	}
-	
+
 	/**
 	 * <p>getArray.</p>
 	 *
@@ -353,7 +353,7 @@ public class Ini
 		Object o = get(section, key, def);
 		return o instanceof Object[] ? (Object[]) o : def;
 	}
-	
+
 	/**
 	 * <p>getSections.</p>
 	 *
@@ -363,7 +363,7 @@ public class Ini
 	{
 		return data.keySet().toArray(new String[0]);
 	}
-	
+
 	/**
 	 * <p>getKeys.</p>
 	 *
@@ -375,7 +375,7 @@ public class Ini
 		Map<String, Object> map = data.get(section == null ? "" : section);
 		if(map == null)
 			return null;
-		
+
 		List<String> keys = new ArrayList<>();
 		for(String s : map.keySet())
 		{
@@ -384,7 +384,7 @@ public class Ini
 		}
 		return keys.toArray(new String[0]);
 	}
-	
+
 	/**
 	 * <p>getComment.</p>
 	 *
@@ -396,7 +396,7 @@ public class Ini
 		Map<String, Object> map = data.get(section == null ? "" : section);
 		return map == null ? null : (String) map.get(null);
 	}
-	
+
 	/**
 	 * <p>setComment.</p>
 	 *
@@ -410,20 +410,20 @@ public class Ini
 		Map<String, Object> map = data.get(section);
 		if(map == null)
 			data.put(section, map = new LinkedHashMap<>());
-		
+
 		if(comment == null)
 			map.remove(null);
 		else
 			map.put(null, comment);
 		return this;
 	}
-	
+
 	/** {@inheritDoc} */
 	public boolean equals(Object o)
 	{
 		return o instanceof Ini && data.equals(((Ini) o).data);
 	}
-	
+
 	/**
 	 * <p>hashCode.</p>
 	 *
@@ -433,7 +433,7 @@ public class Ini
 	{
 		return ~data.hashCode();
 	}
-	
+
 	/**
 	 * <p>toString.</p>
 	 *

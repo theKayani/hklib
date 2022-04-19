@@ -52,7 +52,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		map = new LinkedHashMap<>(copy.map);
 	}
-	
+
 	/**
 	 * <p>getType.</p>
 	 *
@@ -62,7 +62,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return JsonType.OBJECT;
 	}
-	
+
 	/**
 	 * <p>contains.</p>
 	 *
@@ -73,7 +73,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.containsKey(name);
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -84,7 +84,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.get(name);
 	}
-	
+
 	/**
 	 * <p>isObject.</p>
 	 *
@@ -95,7 +95,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.containsKey(name) && map.get(name).isObject();
 	}
-	
+
 	/**
 	 * <p>getObject.</p>
 	 *
@@ -106,7 +106,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return get(name).getObject();
 	}
-	
+
 	/**
 	 * <p>isArray.</p>
 	 *
@@ -117,7 +117,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.containsKey(name) && get(name).isArray();
 	}
-	
+
 	/**
 	 * <p>getArray.</p>
 	 *
@@ -128,7 +128,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return get(name).getArray();
 	}
-	
+
 	/**
 	 * <p>isString.</p>
 	 *
@@ -139,7 +139,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.containsKey(name) && get(name).isString();
 	}
-	
+
 	/**
 	 * <p>getString.</p>
 	 *
@@ -150,7 +150,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return get(name).getString();
 	}
-	
+
 	/**
 	 * <p>isNumber.</p>
 	 *
@@ -161,7 +161,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.containsKey(name) && get(name).isNumber();
 	}
-	
+
 	/**
 	 * <p>getNumber.</p>
 	 *
@@ -172,7 +172,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return get(name).getNumber();
 	}
-	
+
 	/**
 	 * <p>getByte.</p>
 	 *
@@ -183,7 +183,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return get(name).getNumber().byteValue();
 	}
-	
+
 	/**
 	 * <p>getShort.</p>
 	 *
@@ -194,7 +194,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return get(name).getNumber().shortValue();
 	}
-	
+
 	/**
 	 * <p>getInt.</p>
 	 *
@@ -205,7 +205,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return get(name).getNumber().intValue();
 	}
-	
+
 	/**
 	 * <p>getLong.</p>
 	 *
@@ -216,7 +216,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return get(name).getNumber().longValue();
 	}
-	
+
 	/**
 	 * <p>getFloat.</p>
 	 *
@@ -227,7 +227,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return get(name).getNumber().floatValue();
 	}
-	
+
 	/**
 	 * <p>getDouble.</p>
 	 *
@@ -238,7 +238,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return get(name).getNumber().doubleValue();
 	}
-	
+
 	/**
 	 * <p>isBoolean.</p>
 	 *
@@ -249,7 +249,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.containsKey(name) && get(name).isBoolean();
 	}
-	
+
 	/**
 	 * <p>getBoolean.</p>
 	 *
@@ -260,7 +260,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return get(name).getBoolean();
 	}
-	
+
 	/**
 	 * <p>isNull.</p>
 	 *
@@ -271,7 +271,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.containsKey(name) && get(name).isNull();
 	}
-	
+
 	/**
 	 * <p>put.</p>
 	 *
@@ -352,7 +352,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return put(name, JsonBoolean.valueOf(value));
 	}
-	
+
 	/**
 	 * <p>remove.</p>
 	 *
@@ -363,7 +363,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.remove(name);
 	}
-	
+
 	/**
 	 * <p>removeAll.</p>
 	 *
@@ -374,7 +374,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 		map.clear();
 		return this;
 	}
-	
+
 	/**
 	 * <p>isEmpty.</p>
 	 *
@@ -384,7 +384,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.isEmpty();
 	}
-	
+
 	/**
 	 * <p>size.</p>
 	 *
@@ -394,7 +394,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.size();
 	}
-	
+
 	/**
 	 * <p>toMap.</p>
 	 *
@@ -405,13 +405,13 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	public <T> Map<String, T> toMap(JsonAdapter<T> adapter)
 	{
 		Map<String, T> map = new HashMap<>();
-		
+
 		for(Map.Entry<String, JsonValue> ent : this)
 			map.put(ent.getKey(), adapter.fromJson(ent.getValue()));
-		
+
 		return map;
 	}
-	
+
 	/**
 	 * <p>toMap.</p>
 	 *
@@ -427,17 +427,17 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 			if(adapter.getObjClass().isAssignableFrom(cls))
 			{
 				Map<String, T> map = new HashMap<>();
-				
+
 				for(Map.Entry<String, JsonValue> ent : this)
 					map.put(ent.getKey(), (T) adapter.fromJson(ent.getValue()));
-				
+
 				return map;
 			}
 		}
 
 		throw new JsonAdaptationException("No adapter for " + cls.getName());
 	}
-	
+
 	/**
 	 * <p>isObject.</p>
 	 *
@@ -447,7 +447,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return true;
 	}
-	
+
 	/**
 	 * <p>getObject.</p>
 	 *
@@ -457,7 +457,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return this;
 	}
-	
+
 	/**
 	 * <p>keys.</p>
 	 *
@@ -467,7 +467,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.keySet().iterator();
 	}
-	
+
 	/**
 	 * <p>iterator.</p>
 	 *
@@ -477,7 +477,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		return map.entrySet().iterator();
 	}
-	
+
 	/**
 	 * <p>values.</p>
 	 *

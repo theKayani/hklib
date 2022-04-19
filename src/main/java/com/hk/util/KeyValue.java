@@ -11,7 +11,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 {
 	public final String key;
 	public T value;
-	
+
 	/**
 	 * <p>Constructor for KeyValue.</p>
 	 *
@@ -21,7 +21,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	{
 		this(key, null);
 	}
-	
+
 	/**
 	 * <p>Constructor for KeyValue.</p>
 	 *
@@ -33,7 +33,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 		this.key = key;
 		this.value = value;
 	}
-	
+
 	/**
 	 * <p>hasKey.</p>
 	 *
@@ -43,7 +43,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	{
 		return key != null;
 	}
-	
+
 	/**
 	 * <p>Getter for the field <code>key</code>.</p>
 	 *
@@ -53,7 +53,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	{
 		return key;
 	}
-	
+
 	/**
 	 * <p>setNull.</p>
 	 *
@@ -64,7 +64,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 		value = null;
 		return this;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>value</code>.</p>
 	 *
@@ -76,7 +76,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 		this.value = value;
 		return this;
 	}
-	
+
 	/**
 	 * <p>hasValue.</p>
 	 *
@@ -86,7 +86,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	{
 		return value != null;
 	}
-	
+
 	/**
 	 * <p>Getter for the field <code>value</code>.</p>
 	 *
@@ -96,7 +96,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	{
 		return value;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public int compareTo(KeyValue<T> o)

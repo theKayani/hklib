@@ -69,7 +69,7 @@ public class Point2F
 	{
 		return y;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -83,7 +83,7 @@ public class Point2F
 		arr[off] = y;
 		return arr;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -104,7 +104,7 @@ public class Point2F
 	{
 		return get(new float[2]);
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>x</code>.</p>
 	 *

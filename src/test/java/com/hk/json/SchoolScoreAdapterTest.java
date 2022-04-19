@@ -17,11 +17,11 @@ public class SchoolScoreAdapterTest extends TestCase
 	{
 		schoolScoreAdapter = new SchoolScoreAdapter();
 	}
-	
+
 	public void testAdapter()
 	{
 		assertNotNull(schoolScoreAdapter);
-		
+
 		assertSame(SchoolScore.class, schoolScoreAdapter.getObjClass());
 	}
 
@@ -31,105 +31,105 @@ public class SchoolScoreAdapterTest extends TestCase
 
 		assertNotNull(value);
 		assertTrue(value.isArray());
-		
+
 		JsonArray arrayOrig = value.getArray();
 
 		assertNotNull(arrayOrig);
-		
+
 		List<SchoolScore> scores = arrayOrig.toList(schoolScoreAdapter);
-		
+
 		assertNotNull(scores);
 		assertEquals(100, scores.size());
-		
+
 		List<String> dbns = new ArrayList<>(scores.size());
-		
+
 		for(SchoolScore score : scores)
 			dbns.add(score.dbn);
-		
+
 		assertEquals(scores.size(), dbns.size());
-		
+
 		for(int i = 0; i < arrayOrig.size(); i++)
 			assertEquals(arrayOrig.get(i).getObject().getString("dbn"), dbns.get(i));
-		
+
 		assertEquals(arrayOrig, new JsonArray().addAll(scores, schoolScoreAdapter));
 	}
-	
+
 	public void testExceptions()
 	{
 		String expMsg1 = "can only convert objects";
 		String expMsg2 = "Expected exception";
 		String expMsg3 = "not a string";
-		
+
 		try
 		{
 			JsonNull.NULL.get(schoolScoreAdapter);
-			
+
 			fail(expMsg2);
 		}
 		catch(JsonAdaptationException ex)
 		{
 			assertTrue(ex.getLocalizedMessage().contains(expMsg1));
 		}
-		
+
 		try
 		{
 			new JsonString("null").get(schoolScoreAdapter);
-			
+
 			fail(expMsg2);
 		}
 		catch(JsonAdaptationException ex)
 		{
 			assertTrue(ex.getLocalizedMessage().contains(expMsg1));
 		}
-		
+
 		try
 		{
 			JsonBoolean.TRUE.get(schoolScoreAdapter);
-			
+
 			fail(expMsg2);
 		}
 		catch(JsonAdaptationException ex)
 		{
 			assertTrue(ex.getLocalizedMessage().contains(expMsg1));
 		}
-		
+
 		try
 		{
 			new JsonNumber(1.0).get(schoolScoreAdapter);
-			
+
 			fail(expMsg2);
 		}
 		catch(JsonAdaptationException ex)
 		{
 			assertTrue(ex.getLocalizedMessage().contains(expMsg1));
 		}
-		
+
 		try
 		{
 			new JsonNumber(1L).get(schoolScoreAdapter);
-			
+
 			fail(expMsg2);
 		}
 		catch(JsonAdaptationException ex)
 		{
 			assertTrue(ex.getLocalizedMessage().contains(expMsg1));
 		}
-		
+
 		try
 		{
 			new JsonArray().get(schoolScoreAdapter);
-			
+
 			fail(expMsg2);
 		}
 		catch(JsonAdaptationException ex)
 		{
 			assertTrue(ex.getLocalizedMessage().contains(expMsg1));
 		}
-		
+
 		try
 		{
 			new JsonArray().add(JsonNull.NULL).toList(schoolScoreAdapter);
-			
+
 			fail(expMsg2);
 		}
 		catch(JsonAdaptationException ex)
@@ -157,7 +157,7 @@ public class SchoolScoreAdapterTest extends TestCase
 			obj.put("sat_critical_reading_avg_score", "string");
 			obj.put("sat_math_avg_score", "string");
 			obj.put("sat_writing_avg_score", "string");
-			
+
 			obj.get(schoolScoreAdapter);
 
 			fail(expMsg2);
@@ -176,7 +176,7 @@ public class SchoolScoreAdapterTest extends TestCase
 			obj.put("sat_critical_reading_avg_score", "string");
 			obj.put("sat_math_avg_score", "string");
 			obj.put("sat_writing_avg_score", "string");
-			
+
 			obj.get(schoolScoreAdapter);
 
 			fail(expMsg2);
@@ -195,7 +195,7 @@ public class SchoolScoreAdapterTest extends TestCase
 			obj.put("sat_critical_reading_avg_score", "string");
 			obj.put("sat_math_avg_score", "string");
 			obj.put("sat_writing_avg_score", "string");
-			
+
 			obj.get(schoolScoreAdapter);
 
 			fail(expMsg2);
@@ -214,7 +214,7 @@ public class SchoolScoreAdapterTest extends TestCase
 			obj.put("sat_critical_reading_avg_score", 12345);
 			obj.put("sat_math_avg_score", "string");
 			obj.put("sat_writing_avg_score", "string");
-			
+
 			obj.get(schoolScoreAdapter);
 
 			fail(expMsg2);
@@ -233,7 +233,7 @@ public class SchoolScoreAdapterTest extends TestCase
 			obj.put("sat_critical_reading_avg_score", "string");
 			obj.put("sat_math_avg_score", 12345);
 			obj.put("sat_writing_avg_score", "string");
-			
+
 			obj.get(schoolScoreAdapter);
 
 			fail(expMsg2);
@@ -252,7 +252,7 @@ public class SchoolScoreAdapterTest extends TestCase
 			obj.put("sat_critical_reading_avg_score", "string");
 			obj.put("sat_math_avg_score", "string");
 			obj.put("sat_writing_avg_score", 12345);
-			
+
 			obj.get(schoolScoreAdapter);
 
 			fail(expMsg2);

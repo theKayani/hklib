@@ -224,7 +224,7 @@ public class ConcatTest extends TestCase
 	public void testConcat()
 	{
 		assertNull(Concat.concat(new Object[0][]));
-		
+
 		char[] charSum;
 
 		charSum = Concat.concat(new char[0]);

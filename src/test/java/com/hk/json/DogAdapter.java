@@ -6,7 +6,7 @@ class DogAdapter extends JsonAdapter<Dog>
 	{
 		super(Dog.class);
 	}
-	
+
 	@Override
 	public Dog fromJson(JsonValue val) throws JsonAdaptationException
 	{
@@ -17,7 +17,7 @@ class DogAdapter extends JsonAdapter<Dog>
 			String breed = obj.getString("breed");
 			int age = obj.getInt("age");
 			String color = obj.getString("color");
-			
+
 			return new Dog(name, breed, age, color);
 		}
 		else if(val.isNull())
@@ -34,12 +34,12 @@ class DogAdapter extends JsonAdapter<Dog>
 		else
 		{
 			JsonObject obj = new JsonObject();
-			
+
 			obj.put("name", val.name);
 			obj.put("breed", val.breed);
 			obj.put("age", val.age);
 			obj.put("color", val.color);
-			
+
 			return obj;
 		}
 	}

@@ -18,14 +18,14 @@ public enum LuaType
 	USERDATA,
 	THREAD,
 	ANY;
-	
+
 	public final String luaName;
-	
+
 	LuaType()
 	{
 		luaName = name().toLowerCase();
 	}
-	
+
 	/**
 	 * <p>applies.</p>
 	 *
@@ -47,7 +47,7 @@ public enum LuaType
 			return type == this;
 		}
 	}
-	
+
 	/**
 	 * <p>toString.</p>
 	 *
@@ -57,7 +57,7 @@ public enum LuaType
 	{
 		return luaName;
 	}
-	
+
 	/**
 	 * <p>size.</p>
 	 *
@@ -67,7 +67,7 @@ public enum LuaType
 	{
 		return values().length;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *

@@ -20,7 +20,7 @@ public class HTMLText
     private final Map<String, String> variables;
     private boolean blockWS;
     private int tabs;
-    
+
     /**
      * <p>Constructor for HTMLText.</p>
      */
@@ -32,7 +32,7 @@ public class HTMLText
         blockWS = false;
         tabs = 0;
     }
-    
+
     /**
      * <p>tabUp.</p>
      *
@@ -43,7 +43,7 @@ public class HTMLText
         tabs++;
         return this;
     }
-    
+
     /**
      * <p>tabDown.</p>
      *
@@ -54,7 +54,7 @@ public class HTMLText
         tabs--;
         return this;
     }
-    
+
     /**
      * <p>wr.</p>
      *
@@ -66,7 +66,7 @@ public class HTMLText
         sb.append(s);
         return this;
     }
-    
+
     /**
      * <p>wrln.</p>
      *
@@ -77,7 +77,7 @@ public class HTMLText
     {
         return wr(s).ln();
     }
-    
+
     /**
      * <p>tabs.</p>
      *
@@ -93,7 +93,7 @@ public class HTMLText
         }
         return this;
     }
-    
+
     /**
      * <p>ln.</p>
      *
@@ -104,7 +104,7 @@ public class HTMLText
         sb.append(blockWS ? ' ' : '\n');
         return this;
     }
-    
+
     /**
      * <p>br.</p>
      *
@@ -124,7 +124,7 @@ public class HTMLText
         sb.setLength(i);
         return wrln("<br/>");
     }
-    
+
     /**
      * <p>openBrace.</p>
      *
@@ -134,7 +134,7 @@ public class HTMLText
     {
         return tabs().wrln("{").tabUp();
     }
-    
+
     /**
      * <p>closeBrace.</p>
      *
@@ -144,7 +144,7 @@ public class HTMLText
     {
         return tabDown().tabs().wrln("}");
     }
-    
+
     /**
      * <p>pr.</p>
      *
@@ -155,7 +155,7 @@ public class HTMLText
     {
         return tabs().wr(s);
     }
-    
+
     /**
      * <p>prln.</p>
      *
@@ -166,7 +166,7 @@ public class HTMLText
     {
         return tabs().wrln(s);
     }
-    
+
     /**
      * <p>open.</p>
      *
@@ -178,7 +178,7 @@ public class HTMLText
     {
         return pr("<" + tag).appendAttrs(attrs).wrln(">").tabUp();
     }
-    
+
     /**
      * <p>close.</p>
      *
@@ -189,7 +189,7 @@ public class HTMLText
     {
         return tabDown().pr("</").wr(tag).wr(">").ln();
     }
-    
+
     /**
      * <p>el.</p>
      *
@@ -204,7 +204,7 @@ public class HTMLText
         appendAttrs(attrs);
         return html == null ? wrln("/>") : wr(">").wr(html).wr("</").wr(tag).wrln(">");
     }
-    
+
     private HTMLText appendAttrs(String[] attrs)
     {
     	int len = attrs.length;
@@ -234,10 +234,10 @@ public class HTMLText
             }
             sb.setLength(sb.length() - 1);
         }
-        
+
         return this;
     }
-    
+
     /**
      * <p>makeVar.</p>
      *
@@ -248,7 +248,7 @@ public class HTMLText
     {
         return makeVar(name, null);
     }
-    
+
     /**
      * <p>makeVar.</p>
      *
@@ -272,7 +272,7 @@ public class HTMLText
         }
         return this;
     }
-    
+
     /**
      * <p>setVar.</p>
      *
@@ -288,7 +288,7 @@ public class HTMLText
         }
         return this;
     }
-    
+
     /**
      * <p>getVars.</p>
      *
@@ -298,7 +298,7 @@ public class HTMLText
     {
         return variables.keySet().toArray(new String[0]);
     }
-    
+
     /**
      * <p>getVar.</p>
      *
@@ -309,7 +309,7 @@ public class HTMLText
     {
         return variables.get(name);
     }
-    
+
     /**
      * <p>hasVar.</p>
      *
@@ -320,7 +320,7 @@ public class HTMLText
     {
         return variables.containsKey(name);
     }
-    
+
     /**
      * <p>blockWS.</p>
      *
@@ -332,7 +332,7 @@ public class HTMLText
         blockWS = def;
         return this;
     }
-    
+
     /**
      * <p>isBlocking.</p>
      *
@@ -342,7 +342,7 @@ public class HTMLText
     {
         return blockWS;
     }
-    
+
     /**
      * <p>create.</p>
      *
@@ -370,5 +370,5 @@ public class HTMLText
         }
         return sb.toString().trim();
     }
-   
+
 }

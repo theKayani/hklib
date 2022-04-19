@@ -36,7 +36,7 @@ public class MathUtil
 	public static final float deg2radF = (float) deg2rad;
 	/** Constant <code>rad2degF=(float) rad2deg</code> */
 	public static final float rad2degF = (float) rad2deg;
-	
+
 	/**
 	 * <p>cube.</p>
 	 *
@@ -290,7 +290,7 @@ public class MathUtil
 	{
 		return (byte) (a < 0 ? -1 : a > 0 ? 1 : 0);
 	}
-	
+
 	/**
 	 * <p>between.</p>
 	 *
@@ -303,7 +303,7 @@ public class MathUtil
 	{
 		return val > max ? max : Math.max(val, min);
 	}
-	
+
 	/**
 	 * <p>between.</p>
 	 *
@@ -316,7 +316,7 @@ public class MathUtil
 	{
 		return val > max ? max : Math.max(val, min);
 	}
-	
+
 	/**
 	 * <p>between.</p>
 	 *
@@ -329,7 +329,7 @@ public class MathUtil
 	{
 		return val > max ? max : Math.max(val, min);
 	}
-	
+
 	/**
 	 * <p>between.</p>
 	 *
@@ -342,7 +342,7 @@ public class MathUtil
 	{
 		return val > max ? max : Math.max(val, min);
 	}
-	
+
 	/**
 	 * <p>between.</p>
 	 *
@@ -355,7 +355,7 @@ public class MathUtil
 	{
 		return val > max ? max : val < min ? min : val;
 	}
-	
+
 	/**
 	 * <p>between.</p>
 	 *
@@ -503,7 +503,7 @@ public class MathUtil
 		amt = between(0, amt, 1);
 		return a * amt + b * (1F - amt);
 	}
-	
+
 	/**
 	 * <p>byteHex.</p>
 	 *
@@ -514,7 +514,7 @@ public class MathUtil
 	{
 		return longHex(num, 2);
 	}
-	
+
 	/**
 	 * <p>shortHex.</p>
 	 *
@@ -525,7 +525,7 @@ public class MathUtil
 	{
 		return longHex(num, 4);
 	}
-	
+
 	/**
 	 * <p>intHex.</p>
 	 *
@@ -536,7 +536,7 @@ public class MathUtil
 	{
 		return longHex(num, 8);
 	}
-	
+
 	/**
 	 * <p>longHex.</p>
 	 *
@@ -547,7 +547,7 @@ public class MathUtil
 	{
 		return longHex(num, 16);
 	}
-	
+
 	/**
 	 * <p>longHex.</p>
 	 *
@@ -565,7 +565,7 @@ public class MathUtil
 		}
 		return new String(cs);
 	}
-	
+
 	/**
 	 * <p>byteBin.</p>
 	 *
@@ -576,7 +576,7 @@ public class MathUtil
 	{
 		return longBin(num, 8);
 	}
-	
+
 	/**
 	 * <p>shortBin.</p>
 	 *
@@ -587,7 +587,7 @@ public class MathUtil
 	{
 		return longBin(num, 16);
 	}
-	
+
 	/**
 	 * <p>intBin.</p>
 	 *
@@ -598,7 +598,7 @@ public class MathUtil
 	{
 		return longBin(num, 32);
 	}
-	
+
 	/**
 	 * <p>longBin.</p>
 	 *
@@ -609,7 +609,7 @@ public class MathUtil
 	{
 		return longBin(num, 64);
 	}
-	
+
 	/**
 	 * <p>longBin.</p>
 	 *
@@ -732,7 +732,7 @@ public class MathUtil
 	{
 		return 1F / (1F + FloatMath.exp(-t));
 	}
-	
+
 	/**
 	 * <p>map.</p>
 	 *
@@ -747,7 +747,7 @@ public class MathUtil
 	{
 		return (val - srcMin) / (srcMax - srcMin) * (dstMax - dstMin) + dstMin;
 	}
-	
+
 	/**
 	 * <p>map.</p>
 	 *
@@ -762,7 +762,7 @@ public class MathUtil
 	{
 		return (val - srcMin) / (srcMax - srcMin) * (dstMax - dstMin) + dstMin;
 	}
-	
+
 	/**
 	 * <p>map.</p>
 	 *

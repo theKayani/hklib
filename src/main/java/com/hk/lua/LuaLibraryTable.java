@@ -19,17 +19,17 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 			LuaObject i = args.length > 2 ? args[2] : LuaInteger.ONE;
 			LuaObject j = args.length > 3 ? args[3] : args[0].rawLen();
 			StringBuilder sb = new StringBuilder();
-			
+
 			while(i.doLE(interp, j).getBoolean())
 			{
 				sb.append(args[0].rawGet(i));
-				
+
 				if(i.doLT(interp, j).getBoolean())
 					sb.append(sep.getString());
-				
+
 				i = i.doAdd(interp, LuaInteger.ONE);
 			}
-			
+
 			return new LuaString(sb.toString());
 		}
 	},
@@ -47,7 +47,7 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 				args[0].rawSet(len.doAdd(interp, LuaInteger.ONE), args[0].rawGet(len));
 				len = len.doSub(interp, LuaInteger.ONE);
 			}
-			
+
 			args[0].rawSet(pos, value);
 			return LuaNil.NIL;
 		}
@@ -62,11 +62,11 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 			LuaObject e = args[2];
 			LuaObject t = args[3];
 			LuaObject a2 = args.length > 4 ? args[4] : a1;
-			
+
 			for(long l = f.getLong(); l <= e.getLong(); l++)
 			{
 				a2.rawSet(t, a1.rawGet(LuaInteger.valueOf(l)));
-				
+
 				t = t.doAdd(interp, LuaInteger.ONE);
 			}
 			return a2;
@@ -93,7 +93,7 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 			LuaObject len = args[0].rawLen();
 			LuaObject pos = args.length > 1 ? args[1] : len;
 			LuaObject curr = args[0].rawGet(pos);
-						
+
 			while(pos.doLE(interp, len).getBoolean())
 			{
 				pos = pos.doAdd(interp, LuaInteger.ONE);
@@ -109,7 +109,7 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 			Lua.checkArgs(name(), args, LuaType.TABLE);
 			LuaObject tbl = args[0];
 			LuaObject comp = args.length > 1 ? args[1] : null;
-			
+
 			long len = tbl.rawLen().getLong();
 			boolean swap;
 			for(long i = 1; i < len; i++)
@@ -126,7 +126,7 @@ public enum LuaLibraryTable implements BiConsumer<Environment, LuaObject>, LuaMe
 
 						swap = !o.evaluate(interp).getBoolean();
 					}
-					
+
 					if(swap)
 					{
 						LuaObject tmp = tbl.rawGet(LuaInteger.valueOf(i));

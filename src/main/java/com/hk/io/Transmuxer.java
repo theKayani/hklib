@@ -15,7 +15,7 @@ public class Transmuxer
 	private final int offset, length;
 	private final byte[] data;
 	private Boolean encoded;
-	
+
 	private Transmuxer(byte key, byte[] data, int offset, int length)
 	{
 		this.key = key;
@@ -23,7 +23,7 @@ public class Transmuxer
 		this.offset = offset;
 		this.length = length;
 	}
-	
+
 	/**
 	 * <p>encoded.</p>
 	 *
@@ -33,7 +33,7 @@ public class Transmuxer
 	{
 		return encoded != null && encoded;
 	}
-	
+
 	/**
 	 * <p>doEncode.</p>
 	 */
@@ -41,10 +41,10 @@ public class Transmuxer
 	{
 		if(encoded != null)
 			throw new IllegalStateException("already used");
-		
+
 		process(false);
 	}
-	
+
 	/**
 	 * <p>decoded.</p>
 	 *
@@ -65,7 +65,7 @@ public class Transmuxer
 
 		process(true);
 	}
-	
+
 	private void process(boolean flip)
 	{
 		long seed = 0;
@@ -90,7 +90,7 @@ public class Transmuxer
 			}
 		}
 	}
-	
+
 	/**
 	 * <p>make.</p>
 	 *
@@ -108,10 +108,10 @@ public class Transmuxer
 			throw new IllegalArgumentException("offset out of range");
 		if(length > data.length - offset)
 			throw new IllegalArgumentException("length out of range");
-		
+
 		return new Transmuxer(key, data, offset, length);
 	}
-	
+
 	/**
 	 * <p>make.</p>
 	 *
@@ -123,7 +123,7 @@ public class Transmuxer
 	{
 		return make(key, data, 0, data.length);
 	}
-	
+
 	/**
 	 * <p>make.</p>
 	 *
@@ -136,7 +136,7 @@ public class Transmuxer
 	{
 		return make(data[offset], data, offset + 1, length - 1);
 	}
-	
+
 	/**
 	 * <p>make.</p>
 	 *
@@ -147,7 +147,7 @@ public class Transmuxer
 	{
 		return make(data, 0, data.length);
 	}
-	
+
 	enum Muxer
 	{
 		FLIP
@@ -208,22 +208,22 @@ public class Transmuxer
 				}
 			}
 		};
-		
+
 		private final boolean ignore;
-		
+
 		Muxer()
 		{
 			this(false);
 		}
-		
+
 		Muxer(boolean ignore)
 		{
 			this.ignore = ignore;
 		}
-		
+
 		void process(byte key, byte[] data, int offset, int length)
 		{}
-		
+
 		void mux(byte key, byte[] data, int offset, int length)
 		{
 			process(key, data, offset, length);

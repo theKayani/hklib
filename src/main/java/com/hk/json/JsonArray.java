@@ -32,7 +32,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	{
 		list = new ArrayList<>(initialCapacity);
 	}
-	
+
 	/**
 	 * <p>Constructor for JsonArray.</p>
 	 *
@@ -42,7 +42,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	{
 		this.list = new ArrayList<>(values);
 	}
-	
+
 	/**
 	 * <p>Constructor for JsonArray.</p>
 	 *
@@ -52,7 +52,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	{
 		list = new ArrayList<>(copy.list);
 	}
-	
+
 	/**
 	 * <p>getType.</p>
 	 *
@@ -62,7 +62,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	{
 		return JsonType.ARRAY;
 	}
-	
+
 	/**
 	 * <p>add.</p>
 	 *
@@ -75,7 +75,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	{
 		return add(adapter.toJson(obj));
 	}
-	
+
 	/**
 	 * <p>add.</p>
 	 *
@@ -97,7 +97,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	{
 		if (this == value)
 			throw new IllegalArgumentException("Can't add this to this");
-		
+
 		list.add(value == null ? JsonNull.NULL : value);
 		return this;
 	}
@@ -145,7 +145,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	{
 		return add(JsonBoolean.valueOf(value));
 	}
-	
+
 	/**
 	 * <p>addAll.</p>
 	 *
@@ -158,7 +158,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 			add(val);
 		return this;
 	}
-	
+
 	/**
 	 * <p>addAll.</p>
 	 *
@@ -173,7 +173,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 			add(adapter.toJson(val));
 		return this;
 	}
-	
+
 	/**
 	 * <p>addAll.</p>
 	 *
@@ -196,7 +196,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 
 		throw new JsonAdaptationException("No adapter for " + cls.getName());
 	}
-	
+
 	/**
 	 * <p>addAll.</p>
 	 *
@@ -209,7 +209,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 			add(val);
 		return this;
 	}
-	
+
 	/**
 	 * <p>addAll.</p>
 	 *
@@ -428,7 +428,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	{
 		return list.remove(i);
 	}
-	
+
 	/**
 	 * <p>removeAll.</p>
 	 *
@@ -460,7 +460,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	{
 		return list.contains(value);
 	}
-	
+
 	/**
 	 * <p>toList.</p>
 	 *
@@ -471,13 +471,13 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	public <T> List<T> toList(JsonAdapter<T> adapter)
 	{
 		List<T> list = new ArrayList<>(size());
-		
+
 		for(JsonValue value : this.list)
 			list.add(adapter.fromJson(value));
-		
+
 		return list;
 	}
-	
+
 	/**
 	 * <p>toList.</p>
 	 *
@@ -493,17 +493,17 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 			if(adapter.getObjClass().isAssignableFrom(cls))
 			{
 				List<T> list = new ArrayList<>(size());
-				
+
 				for(JsonValue value : this.list)
 					list.add((T) adapter.fromJson(value));
-				
+
 				return list;
 			}
 		}
-		
+
 		throw new JsonAdaptationException("No adapter for " + cls.getName());
 	}
-	
+
 	/**
 	 * <p>isArray.</p>
 	 *
@@ -513,7 +513,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	{
 		return true;
 	}
-	
+
 	/**
 	 * <p>getArray.</p>
 	 *
@@ -523,7 +523,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	{
 		return this;
 	}
-	
+
 	/**
 	 * <p>listIterator.</p>
 	 *

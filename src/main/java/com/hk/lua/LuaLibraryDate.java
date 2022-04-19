@@ -80,7 +80,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 				Lua.checkArgs(toString(), args, LuaType.STRING);
 
 			df = new SimpleDateFormat(args[0].getString());
-			
+
 			if(tz != null)
 				df.setTimeZone(TimeZone.getTimeZone(tz));
 
@@ -108,14 +108,14 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		if(name != null && !name.trim().isEmpty())
 			table.rawSet(new LuaString(name), Lua.newFunc(this));
 	}
-	
+
 	static final LuaObject dateMetatable = new LuaTable();
-	
+
 	static
 	{
 		dateMetatable.rawSet("__name", new LuaString("DATE*"));
 		dateMetatable.rawSet("__index", dateMetatable);
-		
+
 		dateMetatable.rawSet("year", new LuaFunction() {
 			@Override
 			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
@@ -348,7 +348,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			}
 		});
 	}
-	
+
 	public static class LuaDateUserdata extends LuaUserdata
 	{
 		private final GregorianCalendar calendar;
@@ -357,7 +357,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		{			
 			calendar = new GregorianCalendar();
 			calendar.setTime(date);
-			
+
 			metatable = dateMetatable;
 		}
 
@@ -400,7 +400,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			else
 				return super.doLT(interp, o);
 		}
-		
+
 		@Override
 		public String name()
 		{
@@ -424,7 +424,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 			return df.format(calendar.getTime());
 		}
 	}
-	
+
 	/** Constant <code>EXKEY_DATE_FORMAT="date.format"</code> */
 	public static final String EXKEY_DATE_FORMAT = "date.format";
 	private static final DateFormat defaultFormat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);

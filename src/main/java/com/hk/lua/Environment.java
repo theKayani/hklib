@@ -151,7 +151,7 @@ public class Environment
 		else
 			return obj[0];
 	}
-	
+
 	/**
 	 * <p>This checks whether the variable exists in the local space.</p>
 	 *

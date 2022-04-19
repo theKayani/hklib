@@ -9,7 +9,7 @@ class LuaDoStatement extends LuaStatement
 		super(line);
 		this.block = block;
 	}
-	
+
 	@Override
 	LuaBlock getBlock()
 	{

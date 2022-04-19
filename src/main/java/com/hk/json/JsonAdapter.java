@@ -9,7 +9,7 @@ public abstract class JsonAdapter<T> implements Comparable<JsonAdapter<?>>
 {
 	private int priority = 0;
 	protected Class<? extends T> cls;
-	
+
 	/**
 	 * Method one is to manually set the {@code cls} variable
 	 */
@@ -25,7 +25,7 @@ public abstract class JsonAdapter<T> implements Comparable<JsonAdapter<?>>
 	{
 		this.cls = cls;
 	}
-	
+
 	/**
 	 * <p>fromJson.</p>
 	 *
@@ -34,7 +34,7 @@ public abstract class JsonAdapter<T> implements Comparable<JsonAdapter<?>>
 	 * @throws com.hk.json.JsonAdaptationException if any.
 	 */
 	public abstract T fromJson(JsonValue val) throws JsonAdaptationException;
-	
+
 	/**
 	 * <p>toJson.</p>
 	 *
@@ -58,7 +58,7 @@ public abstract class JsonAdapter<T> implements Comparable<JsonAdapter<?>>
 	{
 		return cls;
 	}
-	
+
 	/**
 	 * Set the priority to check this Object Class with future
 	 * attempts at adaptation
@@ -71,7 +71,7 @@ public abstract class JsonAdapter<T> implements Comparable<JsonAdapter<?>>
 		this.priority = priority;
 		return this;
 	}
-	
+
 	/**
 	 * Get the priority to check whether this adapter applies
 	 * to a certain class.
@@ -85,7 +85,7 @@ public abstract class JsonAdapter<T> implements Comparable<JsonAdapter<?>>
 	{
 		return priority;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public int compareTo(JsonAdapter<?> o)

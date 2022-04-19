@@ -11,12 +11,12 @@ class LuaAssignStatement extends LuaStatement
 		this.locations = locations;
 		this.exps = exps;
 	}
-	
+
 	LuaLocation[] getLocations()
 	{
 		return locations;
 	}
-	
+
 	LuaExpressions getExpressions()
 	{
 		return exps;

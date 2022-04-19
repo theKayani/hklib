@@ -19,7 +19,7 @@ public class LockableList<E> implements List<E>, Unlockable
 {
 	private final List<E> parent;
 	private final AtomicBoolean isLocked;
-	
+
 	/**
 	 * <p>Constructor for LockableList.</p>
 	 */
@@ -28,7 +28,7 @@ public class LockableList<E> implements List<E>, Unlockable
 		this.parent = new ArrayList<>();
 		isLocked = new AtomicBoolean(false);
 	}
-	
+
 	/**
 	 * <p>Constructor for LockableList.</p>
 	 *
@@ -45,7 +45,7 @@ public class LockableList<E> implements List<E>, Unlockable
 		this.parent = Requirements.requireNotNull(parent);
 		isLocked = locket;
 	}
-	
+
 	/**
 	 * <p>Constructor for LockableList.</p>
 	 *
@@ -251,35 +251,35 @@ public class LockableList<E> implements List<E>, Unlockable
 	{
 		return parent.toArray(arr);
 	}
-	
+
 	@Override
 	public boolean equals(Object o)
 	{
 		return parent.equals(o);
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
 		return parent.hashCode();
 	}
-	
+
 	@Override
 	public String toString()
 	{
 		return parent.toString();
 	}
-	
+
 	private void checkLocked()
 	{
 		if(isLocked.get())
 			throw new IllegalStateException("Access to Locked List");
 	}
-	
+
 	private class Itr implements Iterator<E>
 	{
 		private final Iterator<E> iterator;
-		
+
 		public Itr(Iterator<E> iterator)
 		{
 			this.iterator = iterator;
@@ -304,7 +304,7 @@ public class LockableList<E> implements List<E>, Unlockable
 			iterator.remove();
 		}
 	}
-	
+
 	private class ListItr implements ListIterator<E>
 	{
 		private final ListIterator<E> listIterator;

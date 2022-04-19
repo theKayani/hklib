@@ -394,9 +394,9 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		if(name != null && !name.trim().isEmpty())
 			table.rawSet(new LuaString(name), Lua.newFunc(this));
 	}
-	
+
 	static final LuaObject ioMetatable = new LuaTable();
-	
+
 	static
 	{
 		ioMetatable.rawSet("__name", new LuaString("FILE*"));

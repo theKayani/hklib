@@ -28,16 +28,16 @@ public class LuaFactory
 	private final List<Consumer<LuaInterpreter>> handlers;
 	private Reader reader;
 	private LuaStatement[] sts;
-	
+
 	LuaFactory(Reader reader, String source)
 	{
 		this.reader = reader;
 		this.source = source;
-		
+
 		libs = new LinkedList<>();
 		handlers = new LinkedList<>();
 	}
-	
+
 	/**
 	 * <p>Add a library to be injected into each built interpreter.
 	 * This means that the retrieved interpreter does not need this
@@ -50,7 +50,7 @@ public class LuaFactory
 		if(!libs.contains(lib))
 			libs.add(lib);
 	}
-	
+
 	/**
 	 * <p>Handlers are called on each interpreter built before they
 	 * are returned. This happens after libraries are injected.</p>
@@ -62,7 +62,7 @@ public class LuaFactory
 		if(!handlers.contains(handler))
 			handlers.add(handler);
 	}
-	
+
 	/**
 	 * <p>Remove a specific library if it was previously added using
 	 * the {@link #addLibrary(LuaLibrary)} method. If the given
@@ -74,7 +74,7 @@ public class LuaFactory
 	{
 		libs.remove(lib);
 	}
-	
+
 	/**
 	 * <p>Remove a handler from this factory. The handler would only
 	 * be removed if it was previously added using the {@link #addHandler(Consumer)}
@@ -86,7 +86,7 @@ public class LuaFactory
 	{
 		handlers.remove(handler);
 	}
-	
+
 	/**
 	 * <p>Fully read the reader and attempt to compile the Lua source
 	 * into an executable chunk. If there are any issues during
@@ -120,7 +120,7 @@ public class LuaFactory
 			reader = null;
 		}
 	}
-	
+
 	/**
 	 * <p>Build and return a new {@link LuaInterpreter} object
 	 * containing the given libraries as well as executing the
@@ -140,7 +140,7 @@ public class LuaFactory
 
 		for(Consumer<LuaInterpreter> handler : handlers)
 			handler.accept(interp);
-		
+
 		return interp;
 	}
 }

@@ -34,7 +34,7 @@ import com.hk.io.StringBuilderWriter;
 public class Json
 {
 	static final List<JsonAdapter<?>> globalAdapters = new SortedList<>();
-	
+
 	/**
 	 * <p>registerAdapter.</p>
 	 *
@@ -70,7 +70,7 @@ public class Json
 	{
 		return new HashSet<>(globalAdapters);
 	}
-	
+
 	/**
 	 * <p>read.</p>
 	 *
@@ -288,7 +288,7 @@ public class Json
 	{
 		return new JsonReader(new InputStreamReader(url.openStream()));
 	}
-	
+
 	/**
 	 * <p>write.</p>
 	 *
@@ -301,7 +301,7 @@ public class Json
 		jw.put(value);
 		jw.close();
 	}
-	
+
 	/**
 	 * <p>writer.</p>
 	 *
@@ -323,7 +323,7 @@ public class Json
 	{
 		return write(new StringBuilder(), value).toString();
 	}
-	
+
 	/**
 	 * <p>writePretty.</p>
 	 *
@@ -336,7 +336,7 @@ public class Json
 		writer(sb).setPrettyPrint().put(value).close();
 		return sb.toString();
 	}
-	
+
 	/**
 	 * <p>write.</p>
 	 *
@@ -351,7 +351,7 @@ public class Json
 		jw.close();
 		return sb;
 	}
-	
+
 	/**
 	 * <p>writer.</p>
 	 *
@@ -362,7 +362,7 @@ public class Json
 	{
 		return new JsonWriter(new StringBuilderWriter(sb));
 	}
-	
+
 	/**
 	 * <p>write.</p>
 	 *
@@ -376,7 +376,7 @@ public class Json
 		jw.put(value);
 		jw.close();
 	}
-	
+
 	/**
 	 * <p>writer.</p>
 	 *
@@ -388,7 +388,7 @@ public class Json
 	{
 		return new JsonWriter(new OutputStreamWriter(new FileOutputStream(file)));
 	}
-	
+
 	/**
 	 * <p>write.</p>
 	 *
@@ -403,7 +403,7 @@ public class Json
 		jw.put(value);
 		jw.close();
 	}
-	
+
 	/**
 	 * <p>writer.</p>
 	 *
@@ -416,7 +416,7 @@ public class Json
 	{
 		return new JsonWriter(new OutputStreamWriter(new FileOutputStream(file), charset));
 	}
-	
+
 	/**
 	 * <p>write.</p>
 	 *
@@ -429,7 +429,7 @@ public class Json
 		jw.put(value);
 		jw.close();
 	}
-	
+
 	/**
 	 * <p>writer.</p>
 	 *
@@ -440,7 +440,7 @@ public class Json
 	{
 		return new JsonWriter(new OutputStreamWriter(out));
 	}
-	
+
 	/**
 	 * <p>write.</p>
 	 *
@@ -454,7 +454,7 @@ public class Json
 		jw.put(value);
 		jw.close();
 	}
-	
+
 	/**
 	 * <p>writer.</p>
 	 *
@@ -466,7 +466,7 @@ public class Json
 	{
 		return new JsonWriter(new OutputStreamWriter(out, charset));
 	}
-	
+
 	//	@SuppressWarnings("unchecked")
 	/**
 	 * <p>fromJson.</p>
@@ -488,7 +488,7 @@ public class Json
 			return val.getArray().list;
 		else if(val.isObject())
 			return val.getObject().map;
-	
+
 		throw new JsonAdaptationException();
 	}
 

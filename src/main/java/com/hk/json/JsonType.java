@@ -13,14 +13,14 @@ public enum JsonType
 	NUMBER(JsonNumber.class),
 	BOOLEAN(JsonBoolean.class),
 	NULL(JsonNull.class);
-	
+
 	public final Class<? extends JsonValue> cls;
-	
+
 	JsonType(Class<? extends JsonValue> cls)
 	{
 		this.cls = cls;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *

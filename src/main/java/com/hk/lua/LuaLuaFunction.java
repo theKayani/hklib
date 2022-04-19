@@ -5,14 +5,14 @@ class LuaLuaFunction extends LuaFunction
 	private final Environment fenv;
 	private final String[] args;
 	private final LuaBody body;
-	
+
 	LuaLuaFunction(Environment fenv, String[] args, LuaBody body)
 	{
 		this.fenv = fenv;
 		this.args = args;
 		this.body = body;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)

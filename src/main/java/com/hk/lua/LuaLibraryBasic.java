@@ -31,7 +31,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 				else
 					throw new LuaException("assertion failed!");
 			}
-			
+
 			return new LuaArgs(args);
 		}
 
@@ -88,7 +88,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			final LuaTable tbl = (LuaTable) args[0];
 			LuaFunction met = new LuaFunction() {
 				long count = 1;
-				
+
 				@Override
 				LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
 				{
@@ -148,7 +148,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			{
 				File file = new File(args[0].getString());
 				final LuaChunk chunk = LuaInterpreter.readLua(new FileReader(file), file.getPath(), interp.global, true);
-				
+
 				return new LuaFunction()
 				{
 					@Override
@@ -207,10 +207,10 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 					while(itr.hasNext())
 					{
 						ent = itr.next();
-						
+
 						if(!ent.getKey().doEQ(interp, arg2).getBoolean())
 							continue;
-						
+
 						if(itr.hasNext())
 						{							
 							ent = itr.next();
@@ -299,11 +299,11 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			PrintStream out = interp.getExtra(EXKEY_OUTPUT , PrintStream.class, System.out);
-			
+
 			for(int i = 0; i < args.length; i++)
 			{
 				out.print(args[i].getString(interp));
-				
+
 				if(i < args.length - 1)
 					out.print('\t');
 			}
@@ -316,7 +316,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		public LuaBoolean call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.ANY, LuaType.ANY);
-			
+
 			return LuaBoolean.valueOf(args[0].rawEqual(args[1]));
 		}
 	},
@@ -364,10 +364,10 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 				int index = args[0].getInt();
 				while(index <= 0)
 					index += args.length;
-				
+
 				if(index > l)
 					return LuaNil.NIL;
-				
+
 				index--;
 				LuaObject[] arr = new LuaObject[l - index];
 				for(int i = 0; i < arr.length; i++)
@@ -406,10 +406,10 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			Lua.checkArgs(name(), args, LuaType.ANY);
 			LuaObject num = args[0];
 			int base = args.length > 1 ? args[1].getInt() : 10;
-			
+
 			if(base < 2 || base > 36)
 				throw Lua.badArgument(1, name(), "base out of range [2-36]");
-			
+
 			if(base == 10)
 			{
 				if(num.isString())
@@ -427,7 +427,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			{
 				if(!num.isString())
 					throw Lua.badArgument(0, name(), "expected string with base");
-				
+
 				return LuaInteger.valueOf(Long.parseLong(num.getString(), base));
 			}
 			return LuaNil.NIL;
@@ -480,7 +480,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 				return res;
 		}
 	};
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public LuaObject call(LuaInterpreter interp, LuaObject[] args)
@@ -496,7 +496,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 		if(name != null && !name.trim().isEmpty())
 			table.rawSet(new LuaString(name), Lua.newFunc(this));
 	}
-	
+
 	/** Constant <code>EXKEY_OUTPUT="system.out"</code> */
 	public static final String EXKEY_OUTPUT = "system.out";
 }

@@ -21,7 +21,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	abstract LuaBoolean doLE(LuaInterpreter interp, LuaObject o);
 	abstract LuaBoolean doLT(LuaInterpreter interp, LuaObject o);
 	abstract LuaBoolean doEQ(LuaInterpreter interp, LuaObject o);
-	
+
 	abstract LuaObject doConcat(LuaInterpreter interp, LuaObject o);
 	abstract LuaObject doAdd(LuaInterpreter interp, LuaObject o);
 	abstract LuaObject doSub(LuaInterpreter interp, LuaObject o);
@@ -74,7 +74,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param value a {@link com.hk.lua.LuaObject} object
 	 */
 	public abstract void rawSet(LuaObject key, LuaObject value);
-	
+
 	/**
 	 * <p>Get true or false defining whether this object 'exists' and
 	 * is not nil or false</p>
@@ -206,14 +206,14 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @return a boolean
 	 */
 	public abstract boolean isThread();
-	
+
 	/**
 	 * <p>type.</p>
 	 *
 	 * @return a {@link com.hk.lua.LuaType} object
 	 */
 	public abstract LuaType type();
-	
+
 	/**
 	 * <p>name.</p>
 	 *
@@ -223,7 +223,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		return type().luaName;
 	}
-	
+
 	/**
 	 * <p>setMetatable.</p>
 	 *
@@ -233,7 +233,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * <p>getMetatable.</p>
 	 *
@@ -249,7 +249,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		return this;
 	}
-	
+
 	/**
 	 * <p>getIndicies.</p>
 	 *
@@ -259,7 +259,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * <p>getEntries.</p>
 	 *
@@ -305,7 +305,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		return doIndex(interp, key);
 	}
-	
+
 	/**
 	 * <p>setIndex.</p>
 	 *
@@ -317,7 +317,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		setIndex(interp, LuaInteger.valueOf(key), Lua.newLuaObject(value));
 	}
-	
+
 	/**
 	 * <p>setIndex.</p>
 	 *
@@ -329,7 +329,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		setIndex(interp, new LuaString(key), Lua.newLuaObject(value));
 	}
-	
+
 	/**
 	 * <p>setIndex.</p>
 	 *
@@ -341,7 +341,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		setIndex(interp, key, Lua.newLuaObject(value));
 	}
-	
+
 	/**
 	 * <p>setIndex.</p>
 	 *
@@ -353,7 +353,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		setIndex(interp, LuaInteger.valueOf(key), value);
 	}
-	
+
 	/**
 	 * <p>setIndex.</p>
 	 *
@@ -365,7 +365,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		setIndex(interp, new LuaString(key), value);
 	}
-	
+
 	/**
 	 * <p>setIndex.</p>
 	 *
@@ -399,7 +399,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		return rawGet(new LuaString(key));
 	}
-	
+
 	/**
 	 * <p>rawSet.</p>
 	 *
@@ -410,7 +410,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		rawSet(LuaInteger.valueOf(key), Lua.newLuaObject(value));
 	}
-	
+
 	/**
 	 * <p>rawSet.</p>
 	 *
@@ -421,7 +421,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		rawSet(new LuaString(key), Lua.newLuaObject(value));
 	}
-	
+
 	/**
 	 * <p>rawSet.</p>
 	 *
@@ -432,7 +432,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		rawSet(key, Lua.newLuaObject(value));
 	}
-	
+
 	/**
 	 * <p>rawSet.</p>
 	 *
@@ -443,7 +443,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		rawSet(LuaInteger.valueOf(key), value);
 	}
-	
+
 	/**
 	 * <p>rawSet.</p>
 	 *
@@ -464,7 +464,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		return getString(null);
 	}
-	
+
 	/**
 	 * <p>getLength.</p>
 	 *
@@ -474,7 +474,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		return rawLen().getLong();
 	}
-	
+
 	/**
 	 * <p>call.</p>
 	 *
@@ -507,10 +507,10 @@ public abstract class LuaObject extends Lua.LuaValue
 		{
 			as = new LuaObject[0];
 		}
-		
+
 		return doCall(interp, as);
 	}
-	
+
 	/**
 	 * <p>getAsThread.</p>
 	 *
@@ -520,7 +520,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * <p>getUserdata.</p>
 	 *
@@ -530,7 +530,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * <p>getUserdata.</p>
 	 *
@@ -542,20 +542,20 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 		return cls.cast(getUserdata());
 	}
-		
+
 	/** {@inheritDoc} */
 	public boolean equals(Object o)
 	{
 		return o instanceof LuaObject && rawEqual((LuaObject) o);
 	}
-	
+
 	/**
 	 * <p>hashCode.</p>
 	 *
 	 * @return a int
 	 */
 	public abstract int hashCode();
-	
+
 	/**
 	 * <p>toString.</p>
 	 *

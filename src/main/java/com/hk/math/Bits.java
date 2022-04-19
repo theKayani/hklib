@@ -11,7 +11,7 @@ public class Bits implements Cloneable, Serializable
 {
 	private long val;
 	private final int size;
-	
+
 	/**
 	 * <p>Constructor for Bits.</p>
 	 */
@@ -39,7 +39,7 @@ public class Bits implements Cloneable, Serializable
 	public Bits(long val, int size)
 	{
 		this.size = MathUtil.between(1, size, 64);
-		
+
 		setVal(val);
 	}
 
@@ -86,7 +86,7 @@ public class Bits implements Cloneable, Serializable
 	{
 		return setBit(index, !getBit(index));
 	}
-	
+
 	/**
 	 * <p>setAll.</p>
 	 *
@@ -97,7 +97,7 @@ public class Bits implements Cloneable, Serializable
 	{
 		return setVal(b ? -1 : 0);
 	}
-	
+
 	/**
 	 * <p>Getter for the field <code>val</code>.</p>
 	 *
@@ -110,7 +110,7 @@ public class Bits implements Cloneable, Serializable
 			v |= 1L << i;
 		return val & v;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>val</code>.</p>
 	 *

@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 public class ImmutableArrayTest extends TestCase
 {
-	
+
 	@Override
 	public void setUp()
 	{}
@@ -16,7 +16,7 @@ public class ImmutableArrayTest extends TestCase
 	public void testImmutableArray()
 	{
 		int[] lens = { 0, 1, 10, 100 };
-		
+
 		for(int len : lens)
 		{
 			assertEquals(len, new ImmutableArray<String>(new String[len]).length);
@@ -34,13 +34,13 @@ public class ImmutableArrayTest extends TestCase
 				"x", "y", "z"
 		};
 		ImmutableArray<String> imStringArr = new ImmutableArray<>(stringArr);
-		
+
 		for(int i = 0; i < stringArr.length; i++)
 			assertSame(stringArr[i], imStringArr.get(i));
 
 		File[] fileArr = File.listRoots();
 		ImmutableArray<File> imFileArr = new ImmutableArray<>(fileArr);
-		
+
 		for(int i = 0; i < fileArr.length; i++)
 			assertSame(fileArr[i], imFileArr.get(i));
 
@@ -48,7 +48,7 @@ public class ImmutableArrayTest extends TestCase
 		for(int i = 0; i < objArr.length; i++)
 			objArr[i] = new Object();
 		ImmutableArray<Object> imObjArr = new ImmutableArray<>(objArr);
-		
+
 		for(int i = 0; i < objArr.length; i++)
 			assertSame(objArr[i], imObjArr.get(i));
 
@@ -58,7 +58,7 @@ public class ImmutableArrayTest extends TestCase
 		doubleArr[18] = Double.MAX_VALUE;
 		doubleArr[19] = Double.MIN_VALUE;
 		ImmutableArray<Double> imDoubleArr = new ImmutableArray<>(doubleArr);
-		
+
 		for(int i = 0; i < doubleArr.length; i++)
 			assertSame(doubleArr[i], imDoubleArr.get(i));
 
@@ -68,7 +68,7 @@ public class ImmutableArrayTest extends TestCase
 			0.5D, 0.25D, 0.125D
 		};
 		imDoubleArr = new ImmutableArray<>(pDoubleArr);
-		
+
 		for(int i = 0; i < pDoubleArr.length; i++)
 			assertEquals(pDoubleArr[i], imDoubleArr.get(i));
 	}
@@ -84,7 +84,7 @@ public class ImmutableArrayTest extends TestCase
 		};
 		ImmutableArray<String> imStringArr = new ImmutableArray<>(stringArr);
 		Iterator<String> stringItr = imStringArr.iterator();
-		
+
 		i = 0;
 		while(stringItr.hasNext())
 			assertSame(stringArr[i++], stringItr.next());

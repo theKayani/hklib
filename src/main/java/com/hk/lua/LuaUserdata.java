@@ -73,7 +73,7 @@ public abstract class LuaUserdata extends LuaMetatable
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
-	
+
 	/**
 	 * <p>name.</p>
 	 *

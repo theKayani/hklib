@@ -21,7 +21,7 @@ public class StringUtil
 		for(int i = s.length() - 1; i >= 0; i--)
 		{
 			char a = s.charAt(i);
-			
+
 			if(i == 0 || Character.isAlphabetic(s.charAt(i - 1)))
 				a = Character.toLowerCase(a);
 
@@ -29,7 +29,7 @@ public class StringUtil
 		}
 		return r.toString();
 	}
-	
+
 	/**
 	 * <p>commaFormat.</p>
 	 *
@@ -39,7 +39,7 @@ public class StringUtil
 	public static String commaFormat(long num)
 	{
 		if(num == 0) return "0";
-		
+
 		boolean neg = num < 0;
 		num = neg ? -num : num;
 		int amt = 0;
@@ -47,16 +47,16 @@ public class StringUtil
 		while(num > 0)
 		{
 			if(amt > 0 && amt % 3 == 0) sb.insert(0, ",");
-			
+
 			amt++;
 			sb.insert(0, num % 10);
 			num /= 10;
 		}
 		if(neg) sb.insert(0, '-');
-		
+
 		return sb.toString();
 	}
-	
+
 	/**
 	 * <p>atLeast.</p>
 	 *
@@ -69,7 +69,7 @@ public class StringUtil
 	{
 		return atLeast(length, s, padding, true);
 	}
-	
+
 	/**
 	 * <p>atLeast.</p>
 	 *
@@ -136,7 +136,7 @@ public class StringUtil
 		}
 		return cs.length() > 0;
 	}
-	
+
 	/**
 	 * <p>isDecimal.</p>
 	 *
@@ -150,6 +150,6 @@ public class StringUtil
 			return isNumeric(s.substring(0, i)) && isNumeric(s.substring(i + 1));
 		return isNumeric(s);
 	}
-	
+
 	private StringUtil() {}
 }

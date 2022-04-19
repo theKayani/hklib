@@ -3,13 +3,13 @@ package com.hk.lua;
 class LuaBody extends LuaBlock
 {
 	private final String func;
-	
+
 	LuaBody(LuaStatement[] sts, String source, String func)
 	{
 		super(sts, source);
 		this.func = func;
 	}
-	
+
 	Object execute(LuaInterpreter interp, Environment fenv, String[] argNames, LuaObject[] args)
 	{
 		Environment env = interp.env;
@@ -24,7 +24,7 @@ class LuaBody extends LuaBlock
 			{
 				LuaObject[] tmp = new LuaObject[args.length - argNames.length + 1];
 				System.arraycopy(args, i, tmp, 0, tmp.length);
-	
+
 				interp.env.varargs = new LuaArgs(tmp);
 			}
 			else

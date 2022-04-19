@@ -61,7 +61,7 @@ public final class Vector2F implements Serializable, Cloneable
 	{
 		set(copy);
 	}
-	
+
 	/**
 	 * <p>getIndx.</p>
 	 *
@@ -97,7 +97,7 @@ public final class Vector2F implements Serializable, Cloneable
 	{
 		return y;
 	}
-	
+
 	/**
 	 * <p>setIndx.</p>
 	 *

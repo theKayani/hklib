@@ -77,7 +77,7 @@ public class IniUtil
 		}
 		return sb.toString();
 	}
-	
+
 	private static String unescape(String str)
 	{
 		if(str.length() > 1 &&
@@ -98,7 +98,7 @@ public class IniUtil
 				continue;
 			}
 			c = str.charAt(++i);
-			
+
 			if(c == '\\')
 				sb.append('\\');
 			else if(c == '\'')
@@ -144,7 +144,7 @@ public class IniUtil
 						i += 4;
 					}
 				}
-				
+
 				if(!hasUni)
 				{
 					sb.append('\\').append(c);
@@ -153,11 +153,11 @@ public class IniUtil
 		}
 		return sb.toString();
 	}
-	
+
 	private static void load(Ini ini, BufferedReader rd) throws IOException
 	{
 		String line;
-		
+
 		StringBuilder comment = new StringBuilder();
 		String section = null;
 		int eqIndx;
@@ -208,7 +208,7 @@ public class IniUtil
 			}
 		}
 	}
-	
+
 	/**
 	 * <p>loadFrom.</p>
 	 *
@@ -218,11 +218,11 @@ public class IniUtil
 	public static Ini loadFrom(CharSequence data)
 	{
 		Ini ini = new Ini();
-		
+
 		String s = data == null ? null : data.toString();
 		if(s == null || s.trim().isEmpty())
 			return ini;
-		
+
 		try
 		{
 			BufferedReader rd = new BufferedReader(new StringReader(s));
@@ -235,7 +235,7 @@ public class IniUtil
 		}
 		return ini;
 	}
-	
+
 	/**
 	 * <p>loadFrom.</p>
 	 *
@@ -246,7 +246,7 @@ public class IniUtil
 	{
 		return loadFrom(file, Charset.defaultCharset());
 	}
-	
+
 	/**
 	 * <p>loadFrom.</p>
 	 *
@@ -258,7 +258,7 @@ public class IniUtil
 	{
 		if(!file.exists())
 			return null;
-		
+
 		try
 		{
 			Ini ini = new Ini();
@@ -272,7 +272,7 @@ public class IniUtil
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	/**
 	 * <p>save.</p>
 	 *
@@ -283,7 +283,7 @@ public class IniUtil
 	{
 		save(ini, file, Charset.defaultCharset());
 	}
-	
+
 	/**
 	 * <p>save.</p>
 	 *
@@ -294,7 +294,7 @@ public class IniUtil
 	public static void save(Ini ini, File file, Charset charset)
 	{
 		String s = save(ini, new StringBuilder()).toString();
-		
+
 		try
 		{
 			OutputStreamWriter fw = new OutputStreamWriter(new FileOutputStream(file), charset);
@@ -306,7 +306,7 @@ public class IniUtil
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	/**
 	 * <p>save.</p>
 	 *
@@ -317,7 +317,7 @@ public class IniUtil
 	{
 		return save(ini, new StringBuilder()).toString();
 	}
-	
+
 	/**
 	 * <p>save.</p>
 	 *

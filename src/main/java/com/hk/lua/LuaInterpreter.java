@@ -34,7 +34,7 @@ public class LuaInterpreter implements Tokens
 	final Stack<LuaThread> threads;
 	Environment global, env;
 	String currSource;
-	
+
 	LuaInterpreter(LuaStatement[] sts, String source)
 	{
 		this.reader = null;
@@ -46,7 +46,7 @@ public class LuaInterpreter implements Tokens
 
 		mainChunk = new LuaChunk(sts, source, global, true);
 	}
-	
+
 	LuaInterpreter(Reader reader, String source)
 	{
 		this.reader = reader;
@@ -55,11 +55,11 @@ public class LuaInterpreter implements Tokens
 		extraData = new HashMap<>();
 		threads = new Stack<>();
 		required = new HashMap<>();
-		
+
 		if(reader == null)
 			mainChunk = new LuaChunk(new LuaStatement[0], source, global, false);
 	}
-	
+
 	/**
 	 * <p>Check whether a certain key has a value under it, whether null or not.</p>
 	 *
@@ -74,7 +74,7 @@ public class LuaInterpreter implements Tokens
 	{
 		return extraData.containsKey(key);
 	}
-	
+
 	/**
 	 * <p>Get the extra data under a certain key.</p>
 	 *
@@ -89,7 +89,7 @@ public class LuaInterpreter implements Tokens
 	{
 		return extraData.get(key);
 	}
-	
+
 	/**
 	 * <p>Get the extra data under a certain key. The data returned
 	 * should be able to be cast to the <code>cls</code> specified.
@@ -109,7 +109,7 @@ public class LuaInterpreter implements Tokens
 	{
 		return getExtra(key, cls, null);
 	}
-	
+
 	/**
 	 * <p>Get the extra data under a certain key, or a default if there
 	 * data found under the key was null or not found.</p>
@@ -174,7 +174,7 @@ public class LuaInterpreter implements Tokens
 	{
 		return getExtra(key, String.class);
 	}
-	
+
 	/**
 	 * <p>Set the data under a certain key. This value can then later be
 	 * retrieved using the {@link #getExtra} methods. These have
@@ -194,7 +194,7 @@ public class LuaInterpreter implements Tokens
 		extraData.put(key, value);
 		return this;
 	}
-	
+
 	/**
 	 * <p>Remove a certain key from the extra data. This will result in
 	 * the default value being used (if passed) or a null value when
@@ -212,7 +212,7 @@ public class LuaInterpreter implements Tokens
 		extraData.remove(key);
 		return this;
 	}
-	
+
 	/**
 	 * <p>Get the global Lua environment with global variables and
 	 * functions. Conventionally, the developer would use this method
@@ -231,7 +231,7 @@ public class LuaInterpreter implements Tokens
 	{
 		return global;
 	}
-	
+
 	/**
 	 * Immediately execute a string of Lua code using this global
 	 * environment under a new Lua chunk.
@@ -258,7 +258,7 @@ public class LuaInterpreter implements Tokens
 	{
 		return require(null, reader);
 	}
-	
+
 	/**
 	 * Immediately execute a reader of Lua code using this global
 	 * environment under a new Lua chunk. This function executes the
@@ -299,7 +299,7 @@ public class LuaInterpreter implements Tokens
 	{
 		return required.containsKey(new LuaString(module));
 	}
-	
+
 	/**
 	 * <p>Import the individual elements of a Lua Library directly into
 	 * the global environment. Whether the elements are placed in the
@@ -322,11 +322,11 @@ public class LuaInterpreter implements Tokens
 			tbl = global.lua_G;
 		else
 			global.setVar(lib.table, tbl = new LuaTable());
-		
+
 		for(BiConsumer<Environment, LuaObject> consumer : lib.consumers)
 			consumer.accept(global, tbl);
 	}
-	
+
 	/**
 	 * <p>Execute the interpreter using the previously provided
 	 * reader. If the {@link #compile} was not called first, the code
@@ -358,7 +358,7 @@ public class LuaInterpreter implements Tokens
 			throw ex;
 		}
 	}
-	
+
 	/**
 	 * <p>Attempt to fully read the provided {@link java.io.Reader} and
 	 * interpret it as Lua code. If there are any Lua syntax errors,
@@ -375,7 +375,7 @@ public class LuaInterpreter implements Tokens
 	{
 		if(mainChunk != null)
 			return;
-		
+
 		try
 		{
 			mainChunk = readLua(reader, mainSrc, global, false);
@@ -386,7 +386,7 @@ public class LuaInterpreter implements Tokens
 			throw new UncheckedIOException(e);
 		}
 	}
-	
+
 	static LuaChunk readLua(Reader rdr, String source, Environment env, boolean secondary) throws IOException
 	{
 		Tokenizer tkz = new Tokenizer(rdr);
@@ -409,12 +409,12 @@ public class LuaInterpreter implements Tokens
 			rdr.close();
 		}
 	}
-	
+
 	private static LuaBlock readBlock(Tokenizer tkz, String source, int flags) throws IOException
 	{
 		return new LuaBlock(readStatements(tkz, source, flags), source);
 	}
-	
+
 	static LuaStatement[] readStatements(Tokenizer tkz, String source, int flags) throws IOException
 	{
 		List<LuaStatement> lst = new ArrayList<>();
@@ -431,7 +431,7 @@ public class LuaInterpreter implements Tokens
 		}
 		return lst.toArray(new LuaStatement[0]);
 	}
-	
+
 	private static boolean readStatement(Tokenizer tkz, String source, List<LuaStatement> lst, int flags) throws IOException
 	{
 		boolean res = false;
@@ -446,7 +446,7 @@ public class LuaInterpreter implements Tokens
 			if(tkz.next() && tkz.type() == T_THEN)
 			{
 				block = readBlock(tkz, source, flags | F_IF);
-				
+
 				LuaIfStatement ifSt = new LuaIfStatement(line, exp, block);
 				res = true;
 				lst.add(ifSt);
@@ -523,18 +523,18 @@ public class LuaInterpreter implements Tokens
 				ids.add(id);
 				if(!tkz.next())
 					throw unexpected(tkz, source, "for");
-				
+
 				LuaForStatement fst;
 				switch(tkz.type())
 				{
 				case T_EQUALS:
 					Lua.LuaValue exp1 = readExpression(tkz, source, true);
-					
+
 					if(!tkz.next() || tkz.type() != T_COMMA)
 						throw unexpected(tkz, source, "numeric for, expected ','");
-					
+
 					Lua.LuaValue exp2 = readExpression(tkz, source, true);
-										
+
 					Lua.LuaValue exp3 = LuaInteger.ONE;
 					if(tkz.next())
 					{
@@ -573,15 +573,15 @@ public class LuaInterpreter implements Tokens
 				default:
 					throw unexpected(tkz, source, "for");
 				}
-				
+
 				if(!tkz.next() || tkz.type() != T_DO)
 					throw unexpected(tkz, source, "for, expected 'do'");
-				
+
 				fst.body = new LuaBody(readStatements(tkz, source, flags | F_FOR), source, null);
 
 				if(!tkz.next() || tkz.type() != T_END)
 					throw unexpected(tkz, source, "for, expected 'end'");
-				
+
 				res = true;
 				lst.add(fst);
 				break;
@@ -631,7 +631,7 @@ public class LuaInterpreter implements Tokens
 
 						tkz.next();
 					} while(true);
-					
+
 					if(tkz.type() == T_EQUALS)
 					{
 						LuaExpressions exps = readExpressions(tkz, source, true);
@@ -648,10 +648,10 @@ public class LuaInterpreter implements Tokens
 				case T_FUNCTION:
 					if(!tkz.next() || tkz.type() != T_IDENTIFIER)
 						throw unexpected(tkz, source, "name");
-					
+
 					String name = (String) tkz.value();
 					LuaVariable var = new LuaVariable(source, tkz.line(), name, true);
-					
+
 					res = true;
 					lst.add(new LuaAssignStatement(line, new LuaVariable[] { var }, new LuaExpressions(readFunction(tkz, source, false, name))));
 					break;
@@ -670,7 +670,7 @@ public class LuaInterpreter implements Tokens
 				while(last.next != null)
 					last = last.next;
 				String name;
-				
+
 				LuaFunctionExpression fexp;
 				if(tkz.next() && tkz.type() == T_COLON)
 				{
@@ -688,7 +688,7 @@ public class LuaInterpreter implements Tokens
 						name = ((LuaField) last).name;
 					else
 						name = ((LuaVariable) last).variable;
-					
+
 					tkz.prev();
 					fexp = readFunction(tkz, source, false, name);
 				}
@@ -701,7 +701,7 @@ public class LuaInterpreter implements Tokens
 		case T_OPEN_PTS:
 		case T_IDENTIFIER:
 			LuaLocation[] locs = readLocations(tkz, source);
-			
+
 			res = true;
 			if(locs.length == 1 && locs[0].isCall())
 			{				
@@ -718,7 +718,7 @@ public class LuaInterpreter implements Tokens
 		default:
 			return false;
 		}
-		
+
 		if(tkz.next() && tkz.type() != T_SEMIC)
 			tkz.prev();
 
@@ -731,7 +731,7 @@ public class LuaInterpreter implements Tokens
 		do
 		{
 			lst.add(readLocation(tkz, source, true));
-			
+
 			if(tkz.next())
 			{
 				if(tkz.type() != T_COMMA)
@@ -745,10 +745,10 @@ public class LuaInterpreter implements Tokens
 			else
 				break;
 		} while(true);
-		
+
 		return lst.toArray(new LuaLocation[0]);
 	}
-	
+
 	private static LuaExpressions readExpressions(Tokenizer tkz, String source, boolean strict) throws IOException
 	{
 		List<LuaExpression> lst = new ArrayList<>();
@@ -760,7 +760,7 @@ public class LuaInterpreter implements Tokens
 				return null;
 			strict = true;
 			lst.add(exp);
-			
+
 			if(tkz.next())
 			{
 				if(tkz.type() != T_COMMA)
@@ -772,7 +772,7 @@ public class LuaInterpreter implements Tokens
 			else
 				break;
 		} while(true);
-		
+
 		return new LuaExpressions(lst.toArray(new LuaExpression[0]));
 	}
 
@@ -780,7 +780,7 @@ public class LuaInterpreter implements Tokens
 	{		
 		int line;
 		LuaLocation root;
-		
+
 		switch(tkz.type())
 		{
 		case T_IDENTIFIER:
@@ -807,7 +807,7 @@ public class LuaInterpreter implements Tokens
 		default:
 			throw unexpected(tkz, source, "variable");
 		}
-		
+
 		LuaLocation curr = root;
 		tklbl:
 		while(tkz.next())
@@ -931,7 +931,7 @@ public class LuaInterpreter implements Tokens
 		List<Object> res = new ArrayList<>();
 		boolean hasValue = false, ra;
 		int type, line;
-		
+
 		tklbl:
 		while(tkz.next())
 		{
@@ -1065,7 +1065,7 @@ public class LuaInterpreter implements Tokens
 				}
 			}
 		}
-		
+
 		if(res.size() == 0)
 		{
 			if(strict)
@@ -1073,7 +1073,7 @@ public class LuaInterpreter implements Tokens
 			else
 				return null;
 		}
-		
+
 		while(!ops.isEmpty())
 			res.add(ops.pop());
 
@@ -1103,22 +1103,22 @@ public class LuaInterpreter implements Tokens
 						tkz.next();
 						break;
 					}
-					
+
 					if(tkz.type() != T_IDENTIFIER)
 						throw unexpected(tkz, source, "function, expected name");
-					
+
 					args.add((String) tkz.value());
-	
+
 					if(!tkz.next() || tkz.type() != T_COMMA)
 						break;
-	
+
 					tkz.next();
 				} while(true);
-				
+
 				if(tkz.type() != T_CLSE_PTS)
 					throw unexpected(tkz, source, "function, expected ')'");
 			}
-			
+
 			LuaStatement[] sts = readStatements(tkz, source, F_FUNCTION);
 			if(tkz.next() && tkz.type() == T_END)
 				return new LuaFunctionExpression(source, args.toArray(new String[0]), new LuaBody(sts, source, name));
@@ -1128,14 +1128,14 @@ public class LuaInterpreter implements Tokens
 		else
 			throw unexpected(tkz, source, "function, expected '('");
 	}
-	
+
 	private static LuaTableExpression readTable(Tokenizer tkz, String source) throws IOException
 	{
 		if(tkz.type() != T_OPEN_BRC)
 			throw unexpected(tkz, source, "table, expected '{'");
-		
+
 		List<Object> res = new ArrayList<>();
-		
+
 		tklbl:
 		while(tkz.next())
 		{
@@ -1172,7 +1172,7 @@ public class LuaInterpreter implements Tokens
 				res.add(readExpression(tkz, source, true));
 				break;
 			}
-			
+
 			if(tkz.next())
 			{
 				switch(tkz.type())
@@ -1186,10 +1186,10 @@ public class LuaInterpreter implements Tokens
 				}
 			}
 		}
-		
+
 		if(tkz.next() && tkz.type() == T_CLSE_BRC)
 			return new LuaTableExpression(source).collect(res.toArray());
-		
+
 		throw unexpected(tkz, source);
 	}
 
@@ -1197,7 +1197,7 @@ public class LuaInterpreter implements Tokens
 	{
 		return unexpected(tkz, source, null);
 	}
-	
+
 	static LuaException unexpected(Tokenizer tkz, String source, String section)
 	{
 		String s = "unexpected ";

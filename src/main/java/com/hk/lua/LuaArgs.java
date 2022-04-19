@@ -4,7 +4,7 @@ class LuaArgs extends LuaObject
 {
 	final LuaObject obj;
 	final LuaObject[] objs;
-	
+
 	LuaArgs(LuaObject... res)
 	{
 		objs = res;
@@ -261,7 +261,7 @@ class LuaArgs extends LuaObject
 	{
 		return obj.doCall(interp, args);
 	}
-	
+
 	@Override
 	LuaObject evaluate(LuaInterpreter interp)
 	{

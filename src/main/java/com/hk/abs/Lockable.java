@@ -23,7 +23,7 @@ public interface Lockable
 	 * @return if this object is locked or not
 	 */
 	boolean isLocked();
-	
+
 	/**
 	 * Lock the current object, given it can be locked by the current
 	 * call. This might mean the resource is inaccessible or

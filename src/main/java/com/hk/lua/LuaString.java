@@ -315,37 +315,37 @@ class LuaString extends LuaMetatable
 	{
 		return value.hashCode();
 	}
-	
+
 	static Number getNumber(String value)
 	{
 		value = value.trim();
-		
+
 		boolean isFloat = false;
 		int index = 0, n;
 		double decimal = 0;
 		boolean negative = false;
-		
+
 		if(index < value.length() && (value.charAt(index) == '+' || value.charAt(index) == '-'))
 		{
 			negative = value.charAt(index) == '-';
 			value = value.substring(1);
 		}
-		
+
 		if(value.startsWith("0x") || value.startsWith("0X"))
 		{
 			index = 2;
-			
+
 			while(index < value.length())
 			{
 				if((n = Tokenizer.num(value.charAt(index))) >= 16)
 					break;
-				
+
 				decimal *= 16;
 				decimal += n;
-				
+
 				index++;
 			}
-			
+
 			if(index < value.length() && value.charAt(index) == '.')
 			{
 				double fraction = 0;
@@ -354,40 +354,40 @@ class LuaString extends LuaMetatable
 				{
 					if((n = Tokenizer.num(value.charAt(index))) >= 16)
 						break;
-					
+
 					fraction += n / place;
 					place *= 16;
 					index++;
 				}
-				
+
 				decimal += fraction;
 				isFloat = true;
 			}
-			
+
 			if(index < value.length() && (value.charAt(index) == 'p' || value.charAt(index) == 'P'))
 			{
 				index++;
 				boolean neg = false;
-				
+
 				if(index < value.length() && (value.charAt(index) == '-' || value.charAt(index) == '+'))
 				{
 					neg = value.charAt(index) == '-';
-					
+
 					index++;
 				}
-				
+
 				double exponent = 0;
 				while(index < value.length())
 				{
 					if((n = Tokenizer.num(value.charAt(index))) >= 10)
 						break;
-					
+
 					exponent *= 10;
 					exponent += n;
 
 					index++;
 				}
-				
+
 				decimal *= Math.pow(2, neg ? -exponent : exponent);
 				isFloat = true;
 			}
@@ -398,10 +398,10 @@ class LuaString extends LuaMetatable
 			{
 				if((n = Tokenizer.num(value.charAt(index))) >= 10)
 					break;
-				
+
 				decimal *= 10;
 				decimal += n;
-				
+
 				index++;
 			}
 
@@ -414,49 +414,49 @@ class LuaString extends LuaMetatable
 				{
 					if((n = Tokenizer.num(value.charAt(index))) >= 10)
 						break;
-					
+
 					fraction += n / place;
 					place *= 10;
-					
+
 					index++;
 				}
-				
+
 				decimal += fraction;
 				isFloat = true;
 			}
-			
+
 			if(index < value.length() && (value.charAt(index) == 'e' || value.charAt(index) == 'E'))
 			{
 				index++;
 				boolean neg = false;
-				
+
 				if(index < value.length() && (value.charAt(index) == '-' || value.charAt(index) == '+'))
 				{
 					neg = value.charAt(index) == '-';
-					
+
 					index++;
 				}
-				
+
 				double exponent = 0;
 				while(index < value.length())
 				{
 					if((n = Tokenizer.num(value.charAt(index))) >= 10)
 						break;
-					
+
 					exponent *= 10;
 					exponent += n;
 
 					index++;
 				}
-				
+
 				decimal *= Math.pow(10, neg ? -exponent : exponent);
 				isFloat = true;
 			}
 		}
-		
+
 		if(negative)
 			decimal = -decimal;
-		
+
 		if(index != value.length())
 			return null;
 		else if(!isFloat && decimal == (double) (long) decimal)

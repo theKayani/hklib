@@ -10,9 +10,9 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 			JsonObject obj = val.getObject();
 			String dbn = obj.getString("dbn");
 			String schoolName = obj.getString("school_name");
-			
+
 			SchoolScore score = new SchoolScore(dbn, schoolName);
-			
+
 			int satTestTakers = -1;
 			try
 			{
@@ -21,7 +21,7 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 			catch (NumberFormatException ignored)
 			{}
 			score.setSatTestTakers(satTestTakers);
-			
+
 			int satReadingAvg = -1;
 			try
 			{
@@ -30,7 +30,7 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 			catch (NumberFormatException ignored)
 			{}
 			score.setSatReadingAvg(satReadingAvg);
-			
+
 			int satMathAvg = -1;
 			try
 			{
@@ -48,7 +48,7 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 			catch (NumberFormatException ignored)
 			{}
 			score.setSatWritingAvg(satWritingAvg);
-			
+
 			return score;
 		}
 		else
@@ -62,17 +62,17 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 
 		obj.put("dbn", val.dbn);
 		obj.put("school_name", val.schoolName);
-		
+
 		if(val.getSatTestTakers() == -1)
 			obj.put("num_of_sat_test_takers", "s");
 		else
 			obj.put("num_of_sat_test_takers", String.valueOf(val.getSatTestTakers()));
-		
+
 		if(val.getSatReadingAvg() == -1)
 			obj.put("sat_critical_reading_avg_score", "s");
 		else
 			obj.put("sat_critical_reading_avg_score", String.valueOf(val.getSatReadingAvg()));
-		
+
 		if(val.getSatMathAvg() == -1)
 			obj.put("sat_math_avg_score", "s");
 		else
@@ -85,7 +85,7 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 
 		return obj;
 	}
-	
+
 	public Class<? extends SchoolScore> getObjClass()
 	{
 		return SchoolScore.class;

@@ -144,7 +144,7 @@ public class OutStream implements Stream
 		for (byte b : bs)
 			write((byte) (~b & 0xFF));
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public void writeRawString(String o) throws StreamException

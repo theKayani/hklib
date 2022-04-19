@@ -10,7 +10,7 @@ import java.io.Serializable;
 public final class Version implements Comparable<Version>, Serializable, Cloneable
 {
 	public final int major, minor, revision;
-	
+
 	/**
 	 * <p>Constructor for Version.</p>
 	 *
@@ -24,7 +24,7 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 		this.minor = Requirements.requireInBounds(0, minor, Integer.MAX_VALUE);
 		this.revision = Requirements.requireInBounds(0, revision, Integer.MAX_VALUE);
 	}
-	
+
 	/**
 	 * <p>Constructor for Version.</p>
 	 *
@@ -48,7 +48,7 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 			throw new IllegalArgumentException("Invalid number found: " + versionString);
 		}
 	}
-	
+
 	/**
 	 * <p>clone.</p>
 	 *
@@ -75,7 +75,7 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 		}
 		return mjc;
 	}
-	
+
 	/**
 	 * <p>toString.</p>
 	 *
@@ -85,7 +85,7 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 	{
 		return major + "." + minor + "." + revision;
 	}
-	
+
 	/**
 	 * <p>hashCode.</p>
 	 *
@@ -99,7 +99,7 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 		hash = hash * 31 + revision;
 		return hash;
 	}
-	
+
 	/** {@inheritDoc} */
 	public boolean equals(Object o)
 	{

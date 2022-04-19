@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 public class MathUtilTest extends TestCase
 {
 	private Random rng;
-	
+
 	@Override
 	public void setUp()
 	{
@@ -17,7 +17,7 @@ public class MathUtilTest extends TestCase
 	public void testLongBin()
 	{
 		long l;
-		
+
 		l = 0b1111111111111111111111111111111111111111111111111111111111111000L;
 		assertEquals(MathUtil.longBin(l), "1111111111111111111111111111111111111111111111111111111111111000");
 
@@ -164,7 +164,7 @@ public class MathUtilTest extends TestCase
 		assertEquals(MathUtil.log(64F, 2F), 6F);
 		assertEquals(MathUtil.log(9D, 3D), 2D);
 		assertEquals(MathUtil.log(9F, 3F), 2F);
-		
+
 //		for(int i = 0; i < 1000; i++)
 //		{
 //			int n = rng.nextInt(73) + 1;
@@ -186,84 +186,84 @@ public class MathUtilTest extends TestCase
 	{
 		double d;
 		float f;
-		
+
 		d = MathUtil.max(1D, 2D, 3D);
 		assertEquals(d, 3D);
-		
+
 		d = MathUtil.max(0D, 1D, 2D, 3D);
 		assertEquals(d, 3D);
-		
+
 		d = MathUtil.max(3D, 2D, 1D);
 		assertEquals(d, 3D);
-		
+
 		d = MathUtil.max(3D, 2D, 1D, 0D);
 		assertEquals(d, 3D);
-		
+
 		d = MathUtil.max(-1D, -2D, -3D);
 		assertEquals(d, -1D);
-		
+
 		d = MathUtil.max(-0D, -1D, -2D, -3D);
 		assertEquals(d, -0D);
-		
+
 		d = MathUtil.max(-3D, -2D, -1D);
 		assertEquals(d, -1D);
-		
+
 		d = MathUtil.max(-3D, -2D, -1D, -0D);
 		assertEquals(d, -0D);
-		
+
 		f = MathUtil.max(1F, 2F, 3F);
 		assertEquals(f, 3F);
-		
+
 		f = MathUtil.max(0F, 1F, 2F, 3F);
 		assertEquals(f, 3F);
-		
+
 		f = MathUtil.max(3F, 2F, 1F);
 		assertEquals(f, 3F);
-		
+
 		f = MathUtil.max(3F, 2F, 1F, 0F);
 		assertEquals(f, 3F);
-		
+
 		f = MathUtil.max(-1F, -2F, -3F);
 		assertEquals(f, -1F);
-		
+
 		f = MathUtil.max(-0F, -1F, -2F, -3F);
 		assertEquals(f, -0F);
-		
+
 		f = MathUtil.max(-3F, -2F, -1F);
 		assertEquals(f, -1F);
-		
+
 		f = MathUtil.max(-3F, -2F, -1F, -0F);
 		assertEquals(f, -0F);
-		
+
 		int[] sizes = { 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000 };
 		for(int size : sizes)
 		{
 			String label = "with size <" + size + ">";
 			double[] ds = new double[size];
-			
+
 			for(int i = 0; i < ds.length; i++)
 				ds[i] = i + 1;
-			
+
 			assertEquals(label, MathUtil.max(ds), (double) size);
-			
+
 			for(int i = 0; i < ds.length; i++)
 				ds[i] = size + 1 - (i + 1);
-			
+
 			assertEquals(label, MathUtil.max(ds), (double) size);
-			
+
 			for(int i = 0; i < ds.length; i++)
 				ds[i] = -i;
-			
+
 			assertEquals(label, MathUtil.max(ds), 0D);
-			
+
 			for(int i = 0; i < ds.length; i++)
 				ds[i] = i - size + 1;
-			
+
 			assertEquals(label, MathUtil.max(ds), 0D);
-			
+
 			for(int i = 0; i < ds.length; i++)
 				ds[i] = i + 1;
-	
+
 			for(int i = ds.length - 1; i > 0; i--)
 			{
 				int j = rng.nextInt(i);
@@ -272,32 +272,32 @@ public class MathUtilTest extends TestCase
 				ds[j] = tmp;
 			}
 			assertEquals(label, MathUtil.max(ds), (double) size);
-		
+
 			float[] fs = new float[size];
-			
+
 			for(int i = 0; i < fs.length; i++)
 				fs[i] = i + 1;
-			
+
 			assertEquals(label, MathUtil.max(fs), (float) size);
-			
+
 			for(int i = 0; i < fs.length; i++)
 				fs[i] = size + 1 - (i + 1);
-			
+
 			assertEquals(label, MathUtil.max(fs), (float) size);
-			
+
 			for(int i = 0; i < fs.length; i++)
 				fs[i] = -i;
-			
+
 			assertEquals(label, MathUtil.max(fs), 0F);
-			
+
 			for(int i = 0; i < fs.length; i++)
 				fs[i] = i - size + 1;
-			
+
 			assertEquals(label, MathUtil.max(fs), 0F);
-			
+
 			for(int i = 0; i < fs.length; i++)
 				fs[i] = i + 1;
-	
+
 			for(int i = fs.length - 1; i > 0; i--)
 			{
 				int j = rng.nextInt(i);
@@ -313,84 +313,84 @@ public class MathUtilTest extends TestCase
 	{
 		double d;
 		float f;
-		
+
 		d = MathUtil.min(1D, 2D, 3D);
 		assertEquals(d, 1D);
-		
+
 		d = MathUtil.min(0D, 1D, 2D, 3D);
 		assertEquals(d, 0D);
-		
+
 		d = MathUtil.min(3D, 2D, 1D);
 		assertEquals(d, 1D);
-		
+
 		d = MathUtil.min(3D, 2D, 1D, 0D);
 		assertEquals(d, 0D);
-		
+
 		d = MathUtil.min(-1D, -2D, -3D);
 		assertEquals(d, -3D);
-		
+
 		d = MathUtil.min(-0D, -1D, -2D, -3D);
 		assertEquals(d, -3D);
-		
+
 		d = MathUtil.min(-3D, -2D, -1D);
 		assertEquals(d, -3D);
-		
+
 		d = MathUtil.min(-3D, -2D, -1D, -0D);
 		assertEquals(d, -3D);
-		
+
 		f = MathUtil.min(1F, 2F, 3F);
 		assertEquals(f, 1F);
-		
+
 		f = MathUtil.min(0F, 1F, 2F, 3F);
 		assertEquals(f, 0F);
-		
+
 		f = MathUtil.min(3F, 2F, 1F);
 		assertEquals(f, 1F);
-		
+
 		f = MathUtil.min(3F, 2F, 1F, 0F);
 		assertEquals(f, 0F);
-		
+
 		f = MathUtil.min(-1F, -2F, -3F);
 		assertEquals(f, -3F);
-		
+
 		f = MathUtil.min(-0F, -1F, -2F, -3F);
 		assertEquals(f, -3F);
-		
+
 		f = MathUtil.min(-3F, -2F, -1F);
 		assertEquals(f, -3F);
-		
+
 		f = MathUtil.min(-3F, -2F, -1F, -0F);
 		assertEquals(f, -3F);
-		
+
 		int[] sizes = { 5, 10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000 };
 		for(int size : sizes)
 		{
 			String label = "with size <" + size + ">";
 			double[] ds = new double[size];
-			
+
 			for(int i = 0; i < ds.length; i++)
 				ds[i] = i + 1;
-			
+
 			assertEquals(label, MathUtil.min(ds), 1D);
-			
+
 			for(int i = 0; i < ds.length; i++)
 				ds[i] = size + 1 - (i + 1);
-			
+
 			assertEquals(label, MathUtil.min(ds), 1D);
-			
+
 			for(int i = 0; i < ds.length; i++)
 				ds[i] = -i;
-			
+
 			assertEquals(label, MathUtil.min(ds), (double) -(size - 1));
-			
+
 			for(int i = 0; i < ds.length; i++)
 				ds[i] = i - size + 1;
-			
+
 			assertEquals(label, MathUtil.min(ds), (double) -(size - 1));
-			
+
 			for(int i = 0; i < ds.length; i++)
 				ds[i] = i + 1;
-	
+
 			for(int i = ds.length - 1; i > 0; i--)
 			{
 				int j = rng.nextInt(i);
@@ -399,32 +399,32 @@ public class MathUtilTest extends TestCase
 				ds[j] = tmp;
 			}
 			assertEquals(label, MathUtil.min(ds), 1D);
-		
+
 			float[] fs = new float[size];
-			
+
 			for(int i = 0; i < fs.length; i++)
 				fs[i] = i + 1;
-			
+
 			assertEquals(label, MathUtil.min(fs), 1F);
-			
+
 			for(int i = 0; i < fs.length; i++)
 				fs[i] = size + 1 - (i + 1);
-			
+
 			assertEquals(label, MathUtil.min(fs), 1F);
-			
+
 			for(int i = 0; i < fs.length; i++)
 				fs[i] = -i;
-			
+
 			assertEquals(label, MathUtil.min(fs), (float) -(size - 1));
-			
+
 			for(int i = 0; i < fs.length; i++)
 				fs[i] = i - size + 1;
-			
+
 			assertEquals(label, MathUtil.min(fs), (float) -(size - 1));
-			
+
 			for(int i = 0; i < fs.length; i++)
 				fs[i] = i + 1;
-	
+
 			for(int i = fs.length - 1; i > 0; i--)
 			{
 				int j = rng.nextInt(i);
@@ -443,8 +443,8 @@ public class MathUtilTest extends TestCase
 		assertEquals(MathUtil.lerp(1D, 2D, 0.5D), 1.5D);
 		assertEquals(MathUtil.lerp(-1D, 1D, 0.5D), 0D);
 		assertEquals(MathUtil.lerp(0D, 100D, 0.5D), 50D);
-		
-		
+
+
 		double d;
 		for(int i = 0; i < 1000; i++)
 		{
@@ -498,18 +498,18 @@ public class MathUtilTest extends TestCase
 
 		assertEquals(-1F, MathUtil.sign(-100F));
 		assertEquals(-1D, MathUtil.sign(-100D));
-		
+
 		for(int i = 0; i < 1000; i++)
 		{
 			assertEquals((byte) 1, MathUtil.sign((byte) (rng.nextInt(Byte.MAX_VALUE - 1) + 1)));
 			assertEquals((short) 1, MathUtil.sign((short) (rng.nextInt(Short.MAX_VALUE - 1) + 1)));
 			assertEquals(1, MathUtil.sign(rng.nextInt(Integer.MAX_VALUE - 1) + 1));
-			
+
 			long l = rng.nextInt();
 			l = ((long) (rng.nextInt(Integer.MAX_VALUE - 1) + 1) << 32L) + l;
 			assertEquals(1L, MathUtil.sign(l));
 		}
-		
+
 		for(int i = 0; i < 1000; i++)
 		{
 			assertEquals((byte) -1, MathUtil.sign((byte) (-rng.nextInt(-(Byte.MIN_VALUE + 1)) - 1)));
@@ -757,7 +757,7 @@ public class MathUtilTest extends TestCase
 			null,
 			{ 2000L, 1500L, 500L }
 		};
-		
+
 		int state = 3;
 		for(long[] arr : arrs)
 		{
@@ -800,7 +800,7 @@ public class MathUtilTest extends TestCase
 	public void testSquare()
 	{
 		float f;
-		
+
 		for(int i = 0; i < 1000; i++)
 		{
 			f = rng.nextFloat() * Integer.MAX_VALUE;
@@ -808,7 +808,7 @@ public class MathUtilTest extends TestCase
 		}
 
 		double d;
-		
+
 		for(int i = 0; i < 1000; i++)
 		{
 			d = rng.nextDouble() * Long.MAX_VALUE;
@@ -816,7 +816,7 @@ public class MathUtilTest extends TestCase
 		}
 
 		int n;
-		
+
 		for(int i = 0; i < 1000; i++)
 		{
 			n = rng.nextInt();
@@ -824,7 +824,7 @@ public class MathUtilTest extends TestCase
 		}
 
 		long l;
-		
+
 		for(int i = 0; i < 1000; i++)
 		{
 			l = rng.nextLong();
@@ -894,7 +894,7 @@ public class MathUtilTest extends TestCase
 			null,
 			{ 24L, 300L, 600L },
 		};
-		
+
 		int state = 3;
 		for(long[] arr : arrs)
 		{
@@ -937,7 +937,7 @@ public class MathUtilTest extends TestCase
 	public void testCube()
 	{
 		float f;
-		
+
 		for(int i = 0; i < 1000; i++)
 		{
 			f = rng.nextFloat() * Integer.MAX_VALUE;
@@ -945,7 +945,7 @@ public class MathUtilTest extends TestCase
 		}
 
 		double d;
-		
+
 		for(int i = 0; i < 1000; i++)
 		{
 			d = rng.nextDouble() * Long.MAX_VALUE;
@@ -953,7 +953,7 @@ public class MathUtilTest extends TestCase
 		}
 
 		int n;
-		
+
 		for(int i = 0; i < 1000; i++)
 		{
 			n = rng.nextInt();
@@ -961,7 +961,7 @@ public class MathUtilTest extends TestCase
 		}
 
 		long l;
-		
+
 		for(int i = 0; i < 1000; i++)
 		{
 			l = rng.nextLong();
@@ -979,7 +979,7 @@ public class MathUtilTest extends TestCase
 		// TODO: MathUtil.map(float, float, float, float, float)
 
 		// TODO: MathUtil.map(int, int, int, int, int)
-		
+
 		assertEquals(50, MathUtil.map(6, 3, 9, 25, 75));
 	}
 

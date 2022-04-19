@@ -12,7 +12,7 @@ import com.hk.array.ArrayUtil;
 public class TexCoord4F implements Cloneable, Serializable
 {
 	public float ux, uy, vx, vy;
-	
+
 	/**
 	 * <p>Constructor for TexCoord4F.</p>
 	 */
@@ -20,7 +20,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	{
 		set(0);
 	}
-	
+
 	/**
 	 * <p>Constructor for TexCoord4F.</p>
 	 *
@@ -30,7 +30,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	{
 		set(tc);
 	}
-	
+
 	/**
 	 * <p>Constructor for TexCoord4F.</p>
 	 *
@@ -40,7 +40,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	{
 		set(val);
 	}
-	
+
 	/**
 	 * <p>Constructor for TexCoord4F.</p>
 	 *
@@ -53,7 +53,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	{
 		set(ux, uy, vx, vy);
 	}
-	
+
 	/**
 	 * <p>add.</p>
 	 *
@@ -101,7 +101,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		this.vy += tc.vy;
 		return this;
 	}
-	
+
 	/**
 	 * <p>subtract.</p>
 	 *
@@ -149,7 +149,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		this.vy -= tc.vy;
 		return this;
 	}
-	
+
 	/**
 	 * <p>multiply.</p>
 	 *
@@ -197,7 +197,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		this.vy *= tc.vy;
 		return this;
 	}
-	
+
 	/**
 	 * <p>divide.</p>
 	 *
@@ -246,7 +246,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		return this;
 	}
 
-	
+
 	/**
 	 * <p>interpolate.</p>
 	 *
@@ -297,7 +297,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		this.vy = (1F - amt) * this.vy + amt * tc.vy;
 		return this;
 	}
-	
+
 	/**
 	 * <p>zero.</p>
 	 *
@@ -308,7 +308,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		ux = uy = vx = vy = 0;
 		return this;
 	}
-	
+
 	/**
 	 * <p>identity.</p>
 	 *
@@ -320,7 +320,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		vx = vy = 1;
 		return this;
 	}
-	
+
 	/**
 	 * <p>set.</p>
 	 *
@@ -453,7 +453,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	{
 		return ux;
 	}
-	
+
 	/**
 	 * <p>getUY.</p>
 	 *
@@ -463,7 +463,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	{
 		return uy;
 	}
-	
+
 	/**
 	 * <p>getVX.</p>
 	 *
@@ -473,7 +473,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	{
 		return vx;
 	}
-	
+
 	/**
 	 * <p>getVY.</p>
 	 *
@@ -483,7 +483,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	{
 		return vy;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -493,7 +493,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	{
 		return ArrayUtil.toFloatArray(ux, uy, vx, vy);
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -504,7 +504,7 @@ public class TexCoord4F implements Cloneable, Serializable
 	{
 		return get(arr, 0);
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -520,7 +520,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		arr[3 + off] = vy;
 		return arr;
 	}
-	
+
 	/**
 	 * <p>abs.</p>
 	 *
@@ -534,7 +534,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		this.vy = Math.abs(vy);
 		return this;
 	}
-	
+
 	/**
 	 * <p>negate.</p>
 	 *
@@ -548,7 +548,7 @@ public class TexCoord4F implements Cloneable, Serializable
 		this.vy = -vy;
 		return this;
 	}
-	
+
 	/**
 	 * <p>negative.</p>
 	 *

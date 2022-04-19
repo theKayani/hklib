@@ -15,33 +15,33 @@ public class Tokenizer
 	private final LineNumberReader rdr;
 
 	boolean inStatement, inExpression, inComment/*, inLineStatement */;
-	
+
 	private String prevToken, token;
 	private Object prevValue, value;
 	private int prevType, type;
-	
+
 	Tokenizer(Reader rdr)
 	{
 		this.rdr = new LineNumberReader(rdr);
 		sb = new StringBuilder(256);
 	}
-	
+
 	int read() throws IOException
 	{
 		return rdr.read();
 	}
-	
+
 	boolean prev()
 	{
 		if(token == null)
 			return false;
-		
+
 		prevToken = token;
 		prevValue = value;
 		prevType = type;
 		return true;
 	}
-	
+
 	boolean next() throws IOException
 	{
 		if(prevToken != null)
@@ -51,7 +51,7 @@ public class Tokenizer
 			type = prevType;
 			return true;
 		}
-		
+
 		token = null;
 		value = null;
 		type = 0;
@@ -70,7 +70,7 @@ public class Tokenizer
 			if(c == '"' || c == '\'')
 			{
 				char q = c;
-				
+
 				while(true)
 				{
 					c = (char) rdr.read();
@@ -93,7 +93,7 @@ public class Tokenizer
 			}
 			else if(c >= '0' && c <= '9')
 			{
-				
+
 			}
 			else
 			{
@@ -112,7 +112,7 @@ public class Tokenizer
 			{
 				rdr.mark(1);
 				c = (char) rdr.read();
-				
+
 				if((short) c == -1)
 				{
 					type = T_NULL;
@@ -163,37 +163,37 @@ public class Tokenizer
 				else
 					sb.append(c);
 			}
-			
+
 			if(sb.length() <= 0)
 				return false;
-			
+
 			token = sb.toString();
 			sb.setLength(0);
-			
+
 			return true;
 		}
 	}
-	
+
 	String token()
 	{
 		return token;
 	}
-	
+
 	int type()
 	{
 		return type;
 	}
-	
+
 //	private static boolean isIdentifierStart(char c)
 //	{
 //		return c == '_' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z';
 //	}
-	
+
 //	private static boolean isIdentifierPart(char c)
 //	{
 //		return isIdentifierStart(c) || c >= '0' && c <= '9';
 //	}
-	
+
 	static final int T_NULL = 0;
 	static final int T_OPEN_BRACE = 1;
 	static final int T_MODULO = 2;

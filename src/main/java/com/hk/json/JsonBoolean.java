@@ -13,7 +13,7 @@ public class JsonBoolean extends JsonValue
 	{
 		this.value = value;
 	}
-	
+
 	/**
 	 * <p>getType.</p>
 	 *
@@ -33,7 +33,7 @@ public class JsonBoolean extends JsonValue
 	{
 		return true;
 	}
-	
+
 	/**
 	 * <p>getBoolean.</p>
 	 *
@@ -57,7 +57,7 @@ public class JsonBoolean extends JsonValue
 	{
 		return o instanceof JsonBoolean && value == ((JsonBoolean) o).value;
 	}
-	
+
 	/**
 	 * <p>toString.</p>
 	 *
@@ -67,7 +67,7 @@ public class JsonBoolean extends JsonValue
 	{
 		return Boolean.toString(value);
 	}
-	
+
 	/**
 	 * <p>valueOf.</p>
 	 *

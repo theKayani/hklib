@@ -8,7 +8,7 @@ package com.hk.json;
 public class JsonValueAdapter<T extends JsonValue> extends JsonAdapter<T>
 {
 	private final JsonType type;
-	
+
 	/**
 	 * <p>Constructor for JsonValueAdapter.</p>
 	 *
@@ -38,7 +38,7 @@ public class JsonValueAdapter<T extends JsonValue> extends JsonAdapter<T>
 		super.setPriority(priority);
 		return this;
 	}
-	
+
 	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override

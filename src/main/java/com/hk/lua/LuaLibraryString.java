@@ -23,7 +23,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			String str = args[0].getString();
 			LuaObject i = args.length > 1 ? args[1] : LuaInteger.ONE;
 			LuaObject j = args.length > 2 ? args[2] : i;
-			
+
 			LuaObject[] res = new LuaObject[j.doSub(interp, i).getInt() + 1];
 			for(int k = 0; k < res.length; k++)
 			{
@@ -32,7 +32,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			}
 			return new LuaArgs(res);
 		}
-		
+
 		public String toString()
 		{
 			return "byte";
@@ -47,7 +47,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			{
 				if(!args[i].isInteger())
 					throw Lua.badArgument(i, "char", "integer expected");
-				
+
 				cs[i] = (char) args[i].getInt();
 			}
 			return new LuaString(new String(cs));
@@ -76,7 +76,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			while(init < 0)
 				init += str.length();
 			boolean plain = args.length > 3 && args[3].getBoolean();
-			
+
 			if(plain)
 			{
 				int indx = str.indexOf(pattern, init);
@@ -100,7 +100,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 						else
 							arr[i + 1] = new LuaString(g);
 					}
-					
+
 					return new LuaArgs(arr);
 				}
 			}
@@ -184,7 +184,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 								else
 									arr[i - 1] = new LuaString(g);
 							}
-							
+
 							return new LuaArgs(arr);
 						}
 						else
@@ -263,7 +263,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 					break;
 				case TABLE:
 					obj = ((LuaObject) repl).doIndex(interp, new LuaString(mtr.groupCount() > 0 ? mtr.group(1) : mtr.group()));
-					
+
 					if(obj == null || obj.isNil())
 						r = mtr.group();
 					else
@@ -272,7 +272,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 					break;
 				case FUNCTION:
 					LuaObject[] ags;
-					
+
 					if(mtr.groupCount() > 0)
 					{
 						ags = new LuaObject[mtr.groupCount()];
@@ -324,7 +324,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			int init = args.length > 2 ? args[2].getInt() - 1 : 0;
 			while(init < 0)
 				init += str.length();
-			
+
 			Pattern ptn = toJavaPattern(pattern);
 			Matcher mtr = ptn.matcher(str);
 			if(mtr.find(init))
@@ -345,7 +345,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 				{
 					lst.add(new LuaString(mtr.group()));
 				}
-				
+
 				return new LuaArgs(lst.toArray(new LuaObject[0]));
 			}
 
@@ -374,7 +374,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			String str = args[0].getString();
 			LuaObject n = args[1];
 			LuaObject sep = args.length > 2 ? args[2] : new LuaString("");
-			
+
 			StringBuilder sb = new StringBuilder(str.length() * n.getInt() + sep.getString().length() * (n.getInt() - 1));
 			for(int i = 0; i < n.getInt(); i++)
 			{
@@ -434,9 +434,9 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			return new LuaString(args[0].getString().toUpperCase());
 		}
 	};
-	
+
 	final LuaObject func;
-	
+
 	LuaLibraryString()
 	{
 		func = Lua.newFunc(this);
@@ -468,7 +468,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 	}
 
 	static final LuaTable stringMetatable;
-	
+
 	static
 	{
 		Map<LuaObject, LuaObject> map = new LinkedHashMap<>();

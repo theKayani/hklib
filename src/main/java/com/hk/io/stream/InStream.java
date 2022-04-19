@@ -27,7 +27,7 @@ public class InStream implements Stream
 	{
 		this(in, true);
 	}
-	
+
 	/**
 	 * <p>Constructor for InStream.</p>
 	 *
@@ -313,7 +313,7 @@ public class InStream implements Stream
 		}
 		return arr;
 	}
-	
+
 	private void checkType(byte type, String name) throws StreamException
 	{
 		byte t = errorCheck ? read() : type;

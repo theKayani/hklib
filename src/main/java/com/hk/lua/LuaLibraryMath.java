@@ -213,7 +213,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 				rng = new Random();
 				interp.setExtra(EXKEY_MATH_RNG, rng);
 			}
-			
+
 			if(args.length > 1)
 			{
 				Lua.checkArgs(name(), args, LuaType.NUMBER, LuaType.NUMBER);
@@ -291,7 +291,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.ANY);
-			
+
 			if(args[0].isInteger())
 				return args[0];
 			else if(args[0].isString())
@@ -344,7 +344,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 		if(name != null && !name.trim().isEmpty())
 			table.rawSet(new LuaString(name), Lua.newFunc(this));
 	}
-	
+
 	/** Constant <code>EXKEY_MATH_RNG="math.rng"</code> */
 	public static final String EXKEY_MATH_RNG = "math.rng";
 }

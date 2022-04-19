@@ -28,7 +28,7 @@ public class JsonNumber extends JsonValue
 	{
 		this.value = value;
 	}
-	
+
 	/**
 	 * <p>getType.</p>
 	 *
@@ -48,7 +48,7 @@ public class JsonNumber extends JsonValue
 	{
 		return true;
 	}
-	
+
 	/**
 	 * <p>getNumber.</p>
 	 *

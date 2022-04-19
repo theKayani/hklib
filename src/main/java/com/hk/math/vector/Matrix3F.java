@@ -1243,7 +1243,7 @@ public final class Matrix3F implements Serializable, Cloneable
 		m.m22 = i * indet;
 		return m;
 	}
-	
+
 	/**
 	 * <p>apply.</p>
 	 *
@@ -1253,7 +1253,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	public Vector2F apply(Vector2F def)
 	{
 		if(def == null) def = new Vector2F(0, 1);
-		
+
 		return def;
 	}
 

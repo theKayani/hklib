@@ -12,7 +12,7 @@ import java.util.LinkedList;
 public class LuaOGTest extends TestCase
 {
 	private LuaInterpreter interp;
-	
+
 	@Override
 	protected void setUp()
 	{
@@ -30,29 +30,29 @@ public class LuaOGTest extends TestCase
 		interp.importLib(LuaLibrary.JSON);
 		interp.importLib(LuaLibrary.HASH);
 	}
-	
+
 	public void testInterpreter()
 	{
 		assertNotNull(interp);
 	}
-	
+
 	public void testNil()
 	{
 		String base = "return nil";
 		assertEquals(Lua.NIL, interp.require(base));
-		
+
 		assertEquals(interp.require(base), interp.require(base));
 	}
-	
+
 	public void testBoolean()
 	{
 		String base = "return true";
 		assertEquals(Lua.TRUE, interp.require(base));
 		assertEquals(Lua.FALSE, interp.require("return false"));
-		
+
 		assertEquals(interp.require(base), interp.require(base));
 	}
-	
+
 	public void testString()
 	{
 		String base = "return ''";
@@ -62,10 +62,10 @@ public class LuaOGTest extends TestCase
 		assertEquals(Lua.newString("quotes"), interp.require("return \"quotes\""));
 		assertEquals(Lua.newString('6'), interp.require("return '6'"));
 		assertEquals(Lua.newString((String) null), interp.require("return nil"));
-		
+
 		assertEquals(interp.require(base), interp.require(base));
 	}
-	
+
 	public void testNumber()
 	{
 		String base = "return 0";
@@ -97,10 +97,10 @@ public class LuaOGTest extends TestCase
 		assertEquals(Lua.newNumber(1.0), interp.require("return 1.0"));
 		assertEquals(Lua.newNumber(2.0), interp.require("return 2.0"));
 		assertEquals(Lua.newNumber(5.0), interp.require("return 5.0"));
-		
+
 		assertEquals(interp.require(base), interp.require(base));
 	}
-	
+
 	public void testInteger()
 	{
 		String base = "return 9223372036854775807";
@@ -113,19 +113,19 @@ public class LuaOGTest extends TestCase
 
 		assertEquals(interp.require(base), interp.require(base));
 	}
-	
+
 	public void testFloat()
 	{
 		String base = "return 1E99";
 		assertEquals(Lua.newNumber(1E99D), interp.require(base));
-		
+
 		assertEquals(interp.require(base), interp.require(base));
 	}
-	
+
 	public void testTable()
 	{
 		String base = "return {}";
-		
+
 		assertEquals(Collections.<LuaObject, LuaObject>emptyMap(), ((LuaTable) interp.require(base)).map);
 
 		assertEquals(((LuaTable) interp.require(base)).map, ((LuaTable) interp.require(base)).map);
@@ -135,7 +135,7 @@ public class LuaOGTest extends TestCase
 	{
 		String base = "return string.byte";
 		assertEquals(LuaLibraryString._byte.func, interp.require(base));
-		
+
 		assertEquals(interp.require(base), interp.require(base));
 	}
 
@@ -251,7 +251,7 @@ public class LuaOGTest extends TestCase
 		assertTrue(wtr.isClosed());
 		assertTrue(expected.isEmpty());
 	}
-	
+
 	protected void tearDown()
 	{
 		interp = null;

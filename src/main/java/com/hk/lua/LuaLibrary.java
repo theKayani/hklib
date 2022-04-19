@@ -42,7 +42,7 @@ public class LuaLibrary<T extends Enum<T> & BiConsumer<Environment, LuaObject>>
 
 	final String table;
 	final BiConsumer<Environment, LuaObject>[] consumers;
-	
+
 	/**
 	 * <p>Constructor for LuaLibrary.</p>
 	 *

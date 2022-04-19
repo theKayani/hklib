@@ -8,18 +8,18 @@ class LuaExpression extends Lua.LuaValue
 {
 	private final String source;
 	protected Object root;
-	
+
 	LuaExpression(String source)
 	{
 		this.source = source;
 	}
-	
+
 	LuaExpression(String source, Lua.LuaValue value)
 	{
 		this.root = value;
 		this.source = source;
 	}
-	
+
 	LuaExpression collect(Object[] values)
 	{
 //		StringBuilder sb = new StringBuilder();
@@ -47,11 +47,11 @@ class LuaExpression extends Lua.LuaValue
 
 		if(root != null)
 			throw new Error();
-		
+
 		Stack<Object> stack = new Stack<>();
 		Object value;
 		int line;
-		
+
 		for(int i = 0; i < values.length; i += 2)
 		{
 			value = values[i];
@@ -98,7 +98,7 @@ class LuaExpression extends Lua.LuaValue
 //				throw new LuaException(source, line, "Unexpected");
 			}
 		}
-		
+
 		root = stack.pop();
 		return this;
 	}
@@ -108,12 +108,12 @@ class LuaExpression extends Lua.LuaValue
 	{
 		return ((Lua.LuaValue) root).evaluate(interp);
 	}
-	
+
 	boolean isCall()
 	{
 		return root instanceof LuaLocation && ((LuaLocation) root).isCall() || root instanceof VarargsNode;
 	}
-	
+
 	private class VarargsNode extends Node
 	{
 		private VarargsNode(int line)
@@ -127,7 +127,7 @@ class LuaExpression extends Lua.LuaValue
 			return interp.env.varargs;
 		}
 	}
-	
+
 	private class AndNode extends Node
 	{
 		private AndNode(Object op2, Object op1, int line)
@@ -152,7 +152,7 @@ class LuaExpression extends Lua.LuaValue
 			}
 		}
 	}
-	
+
 	private class OrNode extends Node
 	{
 		private OrNode(Object op2, Object op1, int line)
@@ -177,7 +177,7 @@ class LuaExpression extends Lua.LuaValue
 			}
 		}
 	}
-	
+
 	private class UnaryNotNode extends Node
 	{
 		private UnaryNotNode(Object op1, int line)
@@ -198,7 +198,7 @@ class LuaExpression extends Lua.LuaValue
 			}
 		}
 	}
-	
+
 	private class NotNode extends Node
 	{
 		private NotNode(Object op1, int line)
@@ -219,14 +219,14 @@ class LuaExpression extends Lua.LuaValue
 			}
 		}
 	}
-	
+
 	private class NegateNode extends Node
 	{
 		private NegateNode(Object op1, int line)
 		{
 			super(null, op1, T_NEGATE, line);
 		}
-		
+
 		@Override
 		protected LuaObject evaluate(LuaInterpreter interp)
 		{
@@ -240,14 +240,14 @@ class LuaExpression extends Lua.LuaValue
 			}
 		}
 	}
-	
+
 	private class LengthNode extends Node
 	{
 		private LengthNode(Object op1, int line)
 		{
 			super(null, op1, T_POUND, line);
 		}
-		
+
 		@Override
 		protected LuaObject evaluate(LuaInterpreter interp)
 		{
@@ -261,12 +261,12 @@ class LuaExpression extends Lua.LuaValue
 			}
 		}
 	}
-	
+
 	private class Node extends Lua.LuaValue
 	{
 		protected final Object op1, op2;
 		protected final int type, line;
-		
+
 		private Node(Object op2, Object op1, int type, int line)
 		{
 			this.op2 = op2;
@@ -274,7 +274,7 @@ class LuaExpression extends Lua.LuaValue
 			this.type = type;
 			this.line = line;
 		}
-		
+
 		protected LuaObject getOp(LuaInterpreter interp, Object op)
 		{
 			if(op instanceof Lua.LuaValue)
@@ -282,7 +282,7 @@ class LuaExpression extends Lua.LuaValue
 			else
 				throw new Error();
 		}
-		
+
 		@Override
 		protected LuaObject evaluate(LuaInterpreter interp)
 		{

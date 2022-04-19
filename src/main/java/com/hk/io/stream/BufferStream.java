@@ -25,7 +25,7 @@ public class BufferStream implements Stream
 	public final int off, end;
 	private boolean littleEndian;
 	private int pos;
-	
+
 	/**
 	 * <p>Constructor for BufferStream.</p>
 	 *
@@ -35,7 +35,7 @@ public class BufferStream implements Stream
 	{
 		this(new byte[size]);
 	}
-	
+
 	/**
 	 * <p>Constructor for BufferStream.</p>
 	 *
@@ -45,7 +45,7 @@ public class BufferStream implements Stream
 	{
 		this(buf, 0, buf.length);
 	}
-	
+
 	/**
 	 * <p>Constructor for BufferStream.</p>
 	 *
@@ -147,7 +147,7 @@ public class BufferStream implements Stream
 	{
 		wr(o, StandardCharsets.UTF_16);
 	}
-	
+
 	private void wr(String s, Charset cs)
 	{
 		writeInt(s.length());
@@ -167,7 +167,7 @@ public class BufferStream implements Stream
 			ObjectOutputStream oout = new ObjectOutputStream(bout);
 			oout.writeObject(o);
 			oout.close();
-			
+
 			int len = bout.size();
 			writeInt(len);
 			ensure(len);
@@ -176,7 +176,7 @@ public class BufferStream implements Stream
 				@Override
 				public void write(int b)
 				{}
-				
+
 				@Override
 				public void write(byte[] b, int off, int len)
 				{
@@ -242,7 +242,7 @@ public class BufferStream implements Stream
 			o |= buf[pos + (littleEndian ? i : 3 - i)] << (i * 8);
 		}
 		pos += 4;
-		
+
 		return o;
 	}
 
@@ -294,7 +294,7 @@ public class BufferStream implements Stream
 	{
 		return rd(StandardCharsets.UTF_16);
 	}
-	
+
 	private String rd(Charset cs)
 	{
 		int len = readInt();
@@ -339,7 +339,7 @@ public class BufferStream implements Stream
 		if(pos + bytes > end)
 			throw new OutOfBoundsException("Exceeded by " + (pos + bytes - end));
 	}
-	
+
 	/**
 	 * <p>getPosition.</p>
 	 *
@@ -349,7 +349,7 @@ public class BufferStream implements Stream
 	{
 		return pos;
 	}
-	
+
 	/**
 	 * <p>available.</p>
 	 *
@@ -359,7 +359,7 @@ public class BufferStream implements Stream
 	{
 		return end - pos;
 	}
-	
+
 	/**
 	 * <p>reset.</p>
 	 */
@@ -367,7 +367,7 @@ public class BufferStream implements Stream
 	{
 		pos = off;
 	}
-	
+
 	/**
 	 * <p>setBigEndian.</p>
 	 *
@@ -377,7 +377,7 @@ public class BufferStream implements Stream
 	{
 		this.littleEndian = !bigEndian;
 	}
-	
+
 	/**
 	 * <p>isBigEndian.</p>
 	 *
@@ -387,7 +387,7 @@ public class BufferStream implements Stream
 	{
 		return !littleEndian;
 	}
-	
+
 	/**
 	 * <p>shift.</p>
 	 *
@@ -407,7 +407,7 @@ public class BufferStream implements Stream
 			pos -= a;
 		}
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *

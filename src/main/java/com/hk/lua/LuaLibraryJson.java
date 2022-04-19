@@ -36,7 +36,7 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.STRING);
-			
+
 			try
 			{
 				return toLua(Json.read(new File(args[0].getString())));
@@ -56,7 +56,7 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.STRING);
-			
+
 			try
 			{
 				return toLua(Json.read(new URL(args[0].getString())));
@@ -95,7 +95,7 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.ANY);
-			
+
 			return new LuaString(Json.write(toJson(args[0])));
 		}
 	},
@@ -104,7 +104,7 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
 			Lua.checkArgs(name(), args, LuaType.ANY);
-			
+
 			StringBuilder sb = new StringBuilder();
 			JsonWriter writer = Json.writer(sb);
 			writer.setPrettyPrint();
@@ -183,19 +183,19 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 			if(len > 0)
 			{
 				JsonArray arr = new JsonArray();
-				
+
 				for(long i = 1; i <= len; i++)
 					arr.add(toJson(obj.rawGet(i)));
-				
+
 				return arr;
 			}
 			else
 			{
 				JsonObject o = new JsonObject();
-				
+
 				for(LuaObject indx : obj.getIndicies())
 					o.put(indx.getString(), toJson(obj.rawGet(indx)));
-				
+
 				return o;
 			}
 		}
@@ -233,7 +233,7 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 			long i = 1;
 			for(JsonValue val2 : val.getArray())
 				tbl.rawSet(LuaInteger.valueOf(i++), toLua(val2));
-				
+
 			return tbl;
 		}
 		return LuaNil.NIL;

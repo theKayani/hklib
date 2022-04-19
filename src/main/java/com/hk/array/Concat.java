@@ -236,7 +236,7 @@ public class Concat
 					len += str.length();
 			}
 		}
-		
+
 		char[] chs = new char[len];
 		len = 0;
 		for (String[] arr : arrs)

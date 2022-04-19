@@ -14,7 +14,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 {
 	public final String str;
 	private int position;
-	
+
 	/**
 	 * <p>Constructor for StrReader.</p>
 	 *
@@ -24,7 +24,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		this(str, 0);
 	}
-	
+
 	/**
 	 * <p>Constructor for StrReader.</p>
 	 *
@@ -36,7 +36,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 		this.str = Requirements.requireNotNull(str);
 		this.position = position;
 	}
-	
+
 	/**
 	 * <p>indx.</p>
 	 *
@@ -46,7 +46,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return position;
 	}
-	
+
 	/**
 	 * <p>hasNext.</p>
 	 *
@@ -56,7 +56,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return position < length();
 	}
-	
+
 	/**
 	 * <p>hasNext.</p>
 	 *
@@ -67,7 +67,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return position + amt < length();
 	}
-	
+
 	/**
 	 * <p>hasPrev.</p>
 	 *
@@ -77,7 +77,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return position > 1;
 	}
-	
+
 	/**
 	 * <p>hasPrev.</p>
 	 *
@@ -88,7 +88,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return position - amt > 1;
 	}
-	
+
 	/**
 	 * <p>next.</p>
 	 *
@@ -98,7 +98,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return inBound(position) ? str.charAt(position++) : '\u0000';
 	}
-	
+
 	/**
 	 * <p>peek.</p>
 	 *
@@ -108,7 +108,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return inBound(position) ? str.charAt(position) : '\u0000';
 	}
-	
+
 	/**
 	 * <p>current.</p>
 	 *
@@ -118,7 +118,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return inBound(position - 1) ? str.charAt(position - 1) : '\u0000';
 	}
-	
+
 	/**
 	 * <p>prev.</p>
 	 *
@@ -128,7 +128,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return inBound(position - 2) ? str.charAt(position -= 2) : '\u0000';
 	}
-	
+
 	/**
 	 * <p>poll.</p>
 	 *
@@ -138,7 +138,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return inBound(position - 2) ? str.charAt(position - 2) : '\u0000';
 	}
-	
+
 	/**
 	 * <p>nextString.</p>
 	 *
@@ -151,7 +151,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 		position += Math.max(0, amt);
 		return s;
 	}
-	
+
 	/**
 	 * <p>peekString.</p>
 	 *
@@ -169,7 +169,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 		}
 		return s.toString();
 	}
-	
+
 	/**
 	 * <p>prevString.</p>
 	 *
@@ -182,7 +182,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 		position -= Math.max(0, amt);
 		return s;
 	}
-	
+
 	/**
 	 * <p>pollString.</p>
 	 *
@@ -220,7 +220,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 		}
 		return pos != position;
 	}
-	
+
 	/**
 	 * <p>getCurrentLine.</p>
 	 *
@@ -252,7 +252,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return str.length();
 	}
-	
+
 	/**
 	 * <p>charsLeft.</p>
 	 *
@@ -269,7 +269,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return new StrReader(str.substring(indx1, indx2));
 	}
-	
+
 	/**
 	 * <p>clone.</p>
 	 *
@@ -279,7 +279,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return new StrReader(str, position);
 	}
-	
+
 	/**
 	 * <p>toString.</p>
 	 *
@@ -289,7 +289,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	{
 		return str;
 	}
-	
+
 	/**
 	 * <p>hashCode.</p>
 	 *
@@ -302,7 +302,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 		hash = hash * 31 + position;
 		return hash;
 	}
-	
+
 	/** {@inheritDoc} */
 	public boolean equals(Object obj)
 	{

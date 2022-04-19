@@ -14,12 +14,12 @@ import java.util.List;
 public class TemplateReader
 {
 	private final Tokenizer tkz;
-	
+
 	TemplateReader(Reader rdr)
 	{
 		this.tkz = new Tokenizer(rdr);
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -41,7 +41,7 @@ public class TemplateReader
 	private Template compileTemplate() throws IOException
 	{
 		List<Object> lst = new ArrayList<>();
-		
+
 		while(tkz.next())
 		{
 			if(tkz.type() == Tokenizer.T_OPEN_BRACE && tkz.next())
@@ -132,7 +132,7 @@ public class TemplateReader
 //		}
 //		return new Value(postfix);
 //	}
-	
+
 //	private String readString() throws IOException
 //	{
 //		if(c != '"')
@@ -195,7 +195,7 @@ public class TemplateReader
 //		
 //		return sb.toString();
 //	}
-	
+
 //	private void ws() throws IOException
 //	{
 //		while(true)

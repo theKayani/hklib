@@ -8,7 +8,7 @@ public class JsonAdapterTest extends TestCase
 	public void setUp()
 	{
 //		Json.registerAdapter(new InterfaceAdapter<>(Point.class));
-		
+
 //		InterfaceAdapter<MyInterface> adapter = new InterfaceAdapter<>(MyInterface.class, true);
 //		Json.registerAdapter(adapter);
 
@@ -54,7 +54,7 @@ public class JsonAdapterTest extends TestCase
 //		System.out.println(Arrays.deepToString(point.myPointss()));
 //
 //		System.out.println("------------------------");
-		
+
 //		file2.delete();
 //		Json.writer(file2).setPrettyPrint().put(adapter.toJson(myImpl1)).close();
 //		MyInterface myImpl2 = Json.read(file1).get(adapter);
@@ -62,7 +62,7 @@ public class JsonAdapterTest extends TestCase
 //		System.out.println(myImpl1);
 //		System.out.println(myImpl2);
 	}
-	
+
 	public void testDoNotFail()
 	{
 		assertTrue(true);

@@ -20,7 +20,7 @@ public class LuaThread extends LuaObject
 		this.function = function;
 		completed = new AtomicBoolean();
 	}
-	
+
 	/**
 	 * <p>resume.</p>
 	 *
@@ -43,17 +43,17 @@ public class LuaThread extends LuaObject
 			thread.done.set(false);
 		}
 		interp.threads.push(this);
-		
+
 		do {}
 		while(!thread.done.get());
-		
+
 		LuaObject[] tmp = new LuaObject[thread.result.length + 1];
 		tmp[0] = LuaBoolean.TRUE;
 		System.arraycopy(thread.result, 0, tmp, 1, thread.result.length);
-		
+
 		return new LuaArgs(tmp);
 	}
-	
+
 	/**
 	 * <p>yield.</p>
 	 *
@@ -74,10 +74,10 @@ public class LuaThread extends LuaObject
 
 		do {}
 		while(thread.done.get());
-		
+
 		return new LuaArgs(thread.result);
 	}
-	
+
 	/**
 	 * <p>status.</p>
 	 *
@@ -372,7 +372,7 @@ public class LuaThread extends LuaObject
 	{
 		throw LuaErrors.INVALID_CALL.create(name());
 	}
-	
+
 	/**
 	 * <p>getAsThread.</p>
 	 *
@@ -415,7 +415,7 @@ public class LuaThread extends LuaObject
 			try
 			{
 				LuaObject obj = function.doCall(interp, args);
-	
+
 				if(obj.isNil())
 					result = new LuaObject[] { LuaNil.NIL };
 				else if(obj instanceof LuaArgs)

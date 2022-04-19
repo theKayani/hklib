@@ -19,7 +19,7 @@ public class VecMath
 	{
 		return closestToSegment(v1, v2, point).distance(point);
 	}
-	
+
 	/**
 	 * <p>closestToSegment.</p>
 	 *
@@ -56,7 +56,7 @@ public class VecMath
 
 		return closestPoint;
 	}
-	
+
 	private VecMath()
 	{}
 }

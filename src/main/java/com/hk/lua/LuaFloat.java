@@ -3,7 +3,7 @@ package com.hk.lua;
 class LuaFloat extends LuaObject
 {	
 	private final double value;
-	
+
 	LuaFloat(double value)
 	{
 		this.value = value == -0 ? 0 : value;
@@ -36,14 +36,14 @@ class LuaFloat extends LuaObject
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public boolean getBoolean()
 	{
 		return true;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
@@ -57,7 +57,7 @@ class LuaFloat extends LuaObject
 	{
 		return value;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public long getLong()
@@ -297,7 +297,7 @@ class LuaFloat extends LuaObject
 		long bits = Double.doubleToLongBits(value);
 		return (int) (bits ^ (bits >>> 32));
 	}
-	
+
 	static final LuaFloat NaN = new LuaFloat(Double.NaN);
 	static final LuaFloat POSITIVE_INFINITY = new LuaFloat(Double.POSITIVE_INFINITY);
 	static final LuaFloat NEGATIVE_INFINITY = new LuaFloat(Double.NEGATIVE_INFINITY);

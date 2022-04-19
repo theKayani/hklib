@@ -27,10 +27,10 @@ public class FileUtil
 	{
 		if(file1 == null && file2 == null || file1.equals(file2) || !file1.exists() && !file2.exists())
 			return true;
-		
+
 		if(!file1.exists() || !file2.exists() || file1.length() != file2.length())
 			return false;
-		
+
 		try
 		{
 			FileInputStream fs1 = new FileInputStream(file1);
@@ -48,7 +48,7 @@ public class FileUtil
 				}
 				if(len < 0)
 					break;
-				
+
 				if(!Arrays.equals(b1, b2))
 				{
 					len = 0;
@@ -65,7 +65,7 @@ public class FileUtil
 		}
 		return false;
 	}
-	
+
 	/**
 	 * <p>createFile.</p>
 	 *
@@ -220,7 +220,7 @@ public class FileUtil
 			writeToFile(file, s);
 		}
 	}
-	
+
 	/**
 	 * <p>resetFile.</p>
 	 *
@@ -232,7 +232,7 @@ public class FileUtil
 		resetFile(file);
 		writeToFile(file, data);
 	}
-	
+
 	/**
 	 * <p>resetFile.</p>
 	 *

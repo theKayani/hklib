@@ -15,14 +15,14 @@ public class JsonReader
 	private final LineNumberReader rdr;
 	private char c;
 	private boolean readFully;
-	
+
 	JsonReader(Reader rdr)
 	{
 		this.rdr = new LineNumberReader(rdr);
-		
+
 		setReadFully();
 	}
-	
+
 	/**
 	 * <p>unsetReadFully.</p>
 	 *
@@ -33,7 +33,7 @@ public class JsonReader
 		this.readFully = false;
 		return this;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>readFully</code>.</p>
 	 *
@@ -44,7 +44,7 @@ public class JsonReader
 		this.readFully = true;
 		return this;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -70,7 +70,7 @@ public class JsonReader
 			throw new UncheckedIOException(ex);
 		}
 	}
-	
+
 	/**
 	 * <p>close.</p>
 	 */
@@ -85,14 +85,14 @@ public class JsonReader
 			throw new UncheckedIOException(ex);
 		}
 	}
-	
+
 	private JsonValue parseValue() throws IOException
 	{
 		ws();
 		int i = rdr.read();
 		if(i == -1)
 			throw eof("value");
-		
+
 		JsonValue val;
 		c = (char) i;
 		if(c == '{')
@@ -122,7 +122,7 @@ public class JsonReader
 		}
 		else
 			throw unexpected();
-		
+
 		ws();
 		return val;
 	}
@@ -135,7 +135,7 @@ public class JsonReader
 		int i = rdr.read();
 		if(i == -1)
 			throw eof("object");
-		
+
 		JsonObject obj = new JsonObject();
 		String name;
 		JsonValue val;
@@ -149,11 +149,11 @@ public class JsonReader
 				i = rdr.read();
 				if(i == -1)
 					throw eof("object");
-				
+
 				c = (char) i;
 				if(c != ':')
 					throw unexpected();
-				
+
 				val = parseValue();
 				obj.put(name, val);
 
@@ -161,11 +161,11 @@ public class JsonReader
 				i = rdr.read();
 				if(i == -1)
 					throw eof("object");
-				
+
 				c = (char) i;
 				if(c != ',')
 					break;
-				
+
 				ws();
 				i = rdr.read();
 				if(i == -1)
@@ -188,7 +188,7 @@ public class JsonReader
 		int i = rdr.read();
 		if(i == -1)
 			throw eof("array");
-		
+
 		JsonArray arr = new JsonArray();
 		JsonValue val;
 		c = (char) i;
@@ -204,7 +204,7 @@ public class JsonReader
 				i = rdr.read();
 				if(i == -1)
 					throw eof("array");
-				
+
 				c = (char) i;
 				if(c != ',')
 					break;
@@ -227,7 +227,7 @@ public class JsonReader
 		int i;
 		boolean decimal = false;
 		StringBuilder sb = new StringBuilder();
-		
+
 		if(c == '-')
 		{
 			sb.append('-');
@@ -235,14 +235,14 @@ public class JsonReader
 			i = rdr.read();
 			if(i == -1)
 				throw eof("number");
-			
+
 			c = (char) i;
 		}
-		
+
 		if(c >= '0' && c <= '9')
 		{
 			sb.append(c);
-			
+
 			if(c != '0')
 			{
 				readDigits(sb);
@@ -250,12 +250,12 @@ public class JsonReader
 		}
 		else
 			throw unexpected();
-		
+
 		rdr.mark(1);
-		
+
 		i = rdr.read();
 		c = (char) i;
-		
+
 		if(c == '.')
 		{
 			decimal = true;
@@ -265,7 +265,7 @@ public class JsonReader
 		}
 		else
 			rdr.reset();
-		
+
 		rdr.mark(1);
 
 		i = rdr.read();
@@ -277,17 +277,17 @@ public class JsonReader
 
 			i = rdr.read();
 			c = (char) i;
-			
+
 			StringBuilder sb2 = new StringBuilder();
 			if(c == '-' || c == '+')
 				sb2.append(c);
 			else
 				rdr.reset();
-			
+
 			if(!readDigits(sb2))
 				throw unexpected();
 
-			
+
 			try
 			{
 				double val = Double.parseDouble(sb.toString());
@@ -323,7 +323,7 @@ public class JsonReader
 				(c = (char) rdr.read()) == 's' &&
 				(c = (char) rdr.read()) == 'e')
 			return JsonBoolean.FALSE;
-		
+
 		throw unexpected();
 	}
 
@@ -333,7 +333,7 @@ public class JsonReader
 			(c = (char) rdr.read()) != 'l' || (c = (char) rdr.read()) != 'l')
 		throw unexpected();
 	}
-	
+
 	private boolean readDigits(StringBuilder sb) throws IOException
 	{
 		boolean read = false;
@@ -341,12 +341,12 @@ public class JsonReader
 		while(true)
 		{
 			rdr.mark(1);
-			
+
 			i = rdr.read();
 			if(i == -1)
 				break;
 			c = (char) i;
-			
+
 			if(c >= '0' && c <= '9')
 			{
 				read = true;
@@ -358,10 +358,10 @@ public class JsonReader
 				break;
 			}
 		}
-		
+
 		return read;
 	}
-	
+
 	private String readString() throws IOException
 	{
 		if(c != '"')
@@ -374,7 +374,7 @@ public class JsonReader
 			i = rdr.read();
 			if(i == -1)
 				throw eof("string");
-			
+
 			c = (char) i;
 			if(c == '\\')
 			{
@@ -410,7 +410,7 @@ public class JsonReader
 							throw eof("string");
 						cs[j] = testHex(i);
 					}
-					
+
 					sb.append((char) Integer.parseInt(new String(cs), 16));
 				}
 				else
@@ -421,10 +421,10 @@ public class JsonReader
 			else
 				break;
 		}
-		
+
 		return sb.toString();
 	}
-	
+
 	private void ws() throws IOException
 	{
 		while(true)
@@ -438,7 +438,7 @@ public class JsonReader
 			}
 		}
 	}
-	
+
 	private char testHex(int i)
 	{
 		char c = (char) i;
@@ -452,20 +452,20 @@ public class JsonReader
 	        case 'E': case 'F':
 	            return c;
 		}
-		
+
 		throw unexpected("unicode escape");
 	}
-	
+
 	private JsonFormatException eof(String section)
 	{
 		return new JsonFormatException("EOF while reading " + section + " (Line " + (rdr.getLineNumber() + 1) + ")");
 	}
-	
+
 	private JsonFormatException unexpected()
 	{
 		return unexpected(null);
 	}
-	
+
 	private JsonFormatException unexpected(String section)
 	{
 		String s = "Unexpected char '";

@@ -138,7 +138,7 @@ public interface Tokens
 	int T_OR				= 0x310;
 	/** Constant <code>T_GOTO=0x311</code> */
 	int T_GOTO				= 0x311;
-	
+
 	// ERRORS
 	/** Constant <code>T_NULL=0x400</code> */
 	int T_NULL 			= 0x400;
@@ -146,7 +146,7 @@ public interface Tokens
 	int T_INC_STRING 		= 0x401;
 	/** Constant <code>T_INC_NUMBER=0x402</code> */
 	int T_INC_NUMBER 		= 0x402;
-	
+
 	// FLAGS
 	/** Constant <code>F_ELSEIF=0x0001</code> */
 	int F_ELSEIF           = 0x0001;

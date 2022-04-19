@@ -219,7 +219,7 @@ public class Lua
 	{
 		return new LuaInterpreter((Reader) null, source);
 	}
-	
+
 	/**
 	 * <p>Construct a {@link LuaInterpreter} from a reader using the
 	 * specified parameter as the source.</p>
@@ -279,7 +279,7 @@ public class Lua
 	{
 		return new LuaInterpreter(Objects.requireNonNull(rdr), source);
 	}
-	
+
 	/**
 	 * <p>Construct a {@link LuaInterpreter} from a reader using
 	 * STDIN as the source.</p>
@@ -421,7 +421,7 @@ public class Lua
 		factory.addLibrary(LuaLibrary.HASH);
 		factory.addLibrary(LuaLibrary.DATE);
 	}
-	
+
 	/**
 	 * <p>Convert, or attempt to convert, the given object into the Lua object
 	 * equivalent. Here's a quick overview of how conversions happen:</p>
@@ -493,11 +493,11 @@ public class Lua
 			int len = Array.getLength(o);
 			if(len == 0)
 				return LuaNil.NIL;
-			
+
 			LuaObject[] objs = new LuaObject[len];
 			for(int i = 0; i < len; i++)
 				objs[i] = Lua.newLuaObject(Array.get(o, i));
-			
+
 			return new LuaArgs(objs);
 		}
 		else if(o instanceof Map<?, ?>)
@@ -546,7 +546,7 @@ public class Lua
 	{
 		return LuaBoolean.valueOf(value);
 	}
-	
+
 	/**
 	 * <p>Convert the specified parameter into a Lua string.</p>
 	 * <p>Calling {@link LuaObject#isString()} on the result will
@@ -560,7 +560,7 @@ public class Lua
 	{
 		return cs == null ? LuaNil.NIL : newString(cs.toString());
 	}
-	
+
 	/**
 	 * <p>Convert the specified parameter into a Lua string.</p>
 	 * <p>Calling {@link LuaObject#isString()} on the result will
@@ -573,7 +573,7 @@ public class Lua
 	{
 		return newString(String.valueOf(c));
 	}
-	
+
 	/**
 	 * <p>Convert the specified parameter into a Lua string.</p>
 	 * <p>Calling {@link LuaObject#isString()} on the result will
@@ -587,7 +587,7 @@ public class Lua
 	{
 		return cs == null ? LuaNil.NIL : new LuaString(new String(cs));
 	}
-	
+
 	/**
 	 * <p>Convert the specified parameter into a Lua string.</p>
 	 * <p>Calling {@link LuaObject#isString()} on the result will
@@ -601,7 +601,7 @@ public class Lua
 	{
 		return str == null ? LuaNil.NIL : new LuaString(str);
 	}
-	
+
 	/**
 	 * <p>Convert the specified parameter into a Lua float.</p>
 	 * <p>Calling {@link LuaObject#isNumber()} on the result will
@@ -615,7 +615,7 @@ public class Lua
 	{
 		return new LuaFloat(value);
 	}
-	
+
 	/**
 	 * <p>Convert the specified parameter into a Lua integer.</p>
 	 * <p>Calling {@link LuaObject#isNumber()} or
@@ -628,7 +628,7 @@ public class Lua
 	{
 		return LuaInteger.valueOf(value);
 	}
-	
+
 	/**
 	 * <p>Convert the specified parameters into a Lua args object.</p>
 	 * <p>This is similar to returning multiple values from a lua
@@ -644,7 +644,7 @@ public class Lua
 	{
 		return new LuaArgs(args);
 	}
-	
+
 	/**
 	 * <p>Convert this potential LuaObject into an array of objects.</p>
 	 * <p>If the parameter is a Lua varargs object, then the result
@@ -662,7 +662,7 @@ public class Lua
 		else
 			return new LuaObject[] { o };
 	}
-	
+
 	/**
 	 * <p>Convert an empty map into a new Lua table. The internal map
 	 * is a {@link java.util.LinkedHashMap}.</p>
@@ -680,7 +680,7 @@ public class Lua
 	{
 		return new LuaTable();
 	}
-	
+
 	/**
 	 * <p>Convert a given map into a new Lua table. The map is
 	 * wrapped in a {@link java.util.LinkedHashMap} first.</p>
@@ -694,7 +694,7 @@ public class Lua
 	{
 		return new LuaTable(new LinkedHashMap<>(map));
 	}
-	
+
 	/**
 	 * <p>Convert a given iterable into a new Lua sequence. The
 	 * indices are incremented by one since arrays start at 1 in Lua.</p>
@@ -712,10 +712,10 @@ public class Lua
 
 		for (LuaObject luaObject : iterable)
 			tbl.rawSet(i++, (o = luaObject) == null ? LuaNil.NIL : o);
-		
+
 		return tbl;
 	}
-	
+
 	/**
 	 * <p>Convert a Java function into a Lua function. This operation
 	 * uses Java Reflection. Take a look at the following example:</p>
@@ -744,7 +744,7 @@ public class Lua
 	{
 		return newJavaFunc(null, cls, methodName);
 	}
-	
+
 	/**
 	 * <p>Convert a Java function into a Lua function. This operation
 	 * uses Java Reflection.</p>
@@ -758,7 +758,7 @@ public class Lua
 	{
 		return newJavaFunc(o, o.getClass(), methodName);
 	}
-	
+
 	private static LuaObject newJavaFunc(Object o, Class<?> cls, String methodName)
 	{
 		Method[] ms = cls.getDeclaredMethods();
@@ -774,7 +774,7 @@ public class Lua
 		}
 		return LuaNil.NIL;
 	}
-	
+
 	/**
 	 * <p>Convert a {@link LuaMethod} into a Lua function.</p>
 	 * <p>This returns a Lua object that can be executed.</p>
@@ -796,7 +796,7 @@ public class Lua
 			}
 		};
 	}
-	
+
 	/**
 	 * <p>Lua <code>nil</code></p>
 	 * <p>Calling {@link LuaObject#isNil()} on the result will
@@ -897,7 +897,7 @@ public class Lua
 		checkArgs(method, args, types);
 	}
 
-	
+
 	/**
 	 * <p>Annotate a Java method with this class to automatically
 	 * assure parameters being passed to the annotated method. Take
@@ -948,7 +948,7 @@ public class Lua
 	{
 		abstract LuaObject evaluate(LuaInterpreter interp);
 	}
-	
+
 	private Lua()
 	{}
 

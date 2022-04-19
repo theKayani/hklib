@@ -9,7 +9,7 @@ public abstract class JsonValue
 {
 	JsonValue()
 	{}
-	
+
 	/**
 	 * <p>isObject.</p>
 	 *
@@ -19,14 +19,14 @@ public abstract class JsonValue
 	{
 		return false;
 	}
-	
+
 	/**
 	 * <p>getType.</p>
 	 *
 	 * @return a {@link com.hk.json.JsonType} object
 	 */
 	public abstract JsonType getType();
-	
+
 	/**
 	 * <p>getObject.</p>
 	 *
@@ -46,7 +46,7 @@ public abstract class JsonValue
 	{
 		return false;
 	}
-	
+
 	/**
 	 * <p>getArray.</p>
 	 *
@@ -66,7 +66,7 @@ public abstract class JsonValue
 	{
 		return false;
 	}
-	
+
 	/**
 	 * <p>getString.</p>
 	 *
@@ -86,7 +86,7 @@ public abstract class JsonValue
 	{
 		return false;
 	}
-	
+
 	/**
 	 * <p>getNumber.</p>
 	 *
@@ -106,7 +106,7 @@ public abstract class JsonValue
 	{
 		return false;
 	}
-	
+
 	/**
 	 * <p>getBoolean.</p>
 	 *
@@ -116,7 +116,7 @@ public abstract class JsonValue
 	{
 		throw new IllegalStateException("not a boolean");
 	}
-	
+
 	/**
 	 * <p>is.</p>
 	 *
@@ -129,7 +129,7 @@ public abstract class JsonValue
 	{
 		return adapter.getObjClass().isAssignableFrom(cls);
 	}
-	
+
 	/**
 	 * <p>is.</p>
 	 *
@@ -146,7 +146,7 @@ public abstract class JsonValue
 		}
 		return false;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -159,7 +159,7 @@ public abstract class JsonValue
 	{
 		return adapter.fromJson(this);
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -188,7 +188,7 @@ public abstract class JsonValue
 	{
 		return false;
 	}
-	
+
 	/**
 	 * <p>toString.</p>
 	 *

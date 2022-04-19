@@ -24,7 +24,7 @@ public final class Color3F implements Serializable, Cloneable
 	{
 		a = 1F;
 	}
-	
+
 	/**
 	 * <p>Constructor for Color3F.</p>
 	 *
@@ -34,7 +34,7 @@ public final class Color3F implements Serializable, Cloneable
 	{
 		set(rgb);
 	}
-	
+
 	/**
 	 * <p>Constructor for Color3F.</p>
 	 *
@@ -253,7 +253,7 @@ public final class Color3F implements Serializable, Cloneable
 		this.a = a;
 		return this;
 	}
-	
+
 	/**
 	 * <p>set.</p>
 	 *
@@ -264,7 +264,7 @@ public final class Color3F implements Serializable, Cloneable
 	{
 		return set(rgb, false);
 	}
-	
+
 	/**
 	 * <p>set.</p>
 	 *
@@ -975,7 +975,7 @@ public final class Color3F implements Serializable, Cloneable
 	{
 		return "(" + r + ", " + g + ", " + b + ", " + a + ")";
 	}
-	
+
 	/**
 	 * <p>randColor.</p>
 	 *

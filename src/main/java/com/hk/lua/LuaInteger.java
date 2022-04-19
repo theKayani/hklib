@@ -3,7 +3,7 @@ package com.hk.lua;
 class LuaInteger extends LuaObject
 {
 	private final long value;
-	
+
 	private LuaInteger(long value)
 	{
 		this.value = value;
@@ -337,9 +337,9 @@ class LuaInteger extends LuaObject
 		long bits = Double.doubleToLongBits(value);
 		return (int) (bits ^ (bits >>> 32));
 	}
-	
+
 	private static final LuaInteger[] map;
-	
+
 	static
 	{
 		long l = -2048;
@@ -347,7 +347,7 @@ class LuaInteger extends LuaObject
 		for(int i = 0; i < 4096; i++)
 			map[i] = new LuaInteger(l++);
 	}
-	
+
 	static LuaInteger valueOf(long l)
 	{
 		if(l >= -2048 && l < 2048)

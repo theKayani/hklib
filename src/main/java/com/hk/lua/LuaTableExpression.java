@@ -13,11 +13,11 @@ class LuaTableExpression extends LuaExpression
 		Lua.LuaValue[] vl = new Lua.LuaValue[array.length];
 		for(int i = 0; i < array.length; i++)
 			vl[i] = (Lua.LuaValue) array[i];
-		
+
 		root = vl;
 		return this;
 	}
-	
+
 	LuaObject evaluate(LuaInterpreter interp)
 	{
 		LuaTable tbl = new LuaTable();
@@ -33,7 +33,7 @@ class LuaTableExpression extends LuaExpression
 					LuaObject[] os = ((LuaArgs) obj).objs;
 					for(LuaObject o : os)
 						tbl.rawSet(LuaInteger.valueOf(index++), o);
-					
+
 				}
 				else
 					tbl.rawSet(LuaInteger.valueOf(index++), obj);
@@ -43,7 +43,7 @@ class LuaTableExpression extends LuaExpression
 		}
 		return tbl;
 	}
-	
+
 	boolean isCall()
 	{
 		return false;

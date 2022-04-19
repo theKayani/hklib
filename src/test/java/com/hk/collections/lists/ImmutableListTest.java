@@ -356,14 +356,14 @@ public class ImmutableListTest extends TestCase
 		assertEquals(dblItr.previousIndex(), 2);
 		assertFalse(dblItr.hasNext());
 	}
-	
+
 	public void testFails()
 	{
 		ImmutableList<String> strLst = new ImmutableList<>(Collections.<String>emptyList());
 		assertEquals(strLst.size(), 0);
 		failAdd(strLst, "ERROR");
 		assertEquals(strLst.size(), 0);
-		
+
 		ImmutableList<Object> objLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(objLst.size(), 0);
 		failAdd(objLst, new Object());
@@ -374,7 +374,7 @@ public class ImmutableListTest extends TestCase
 		failAdd(dblLst, 0D);
 		assertEquals(dblLst.size(), 0);
 	}
-	
+
 	private <E> void failAdd(ImmutableList<E> lst, E val)
 	{
 		try

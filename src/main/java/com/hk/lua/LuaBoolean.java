@@ -4,14 +4,14 @@ class LuaBoolean extends LuaObject
 {
 	static final LuaBoolean TRUE = new LuaBoolean(true);
 	static final LuaBoolean FALSE = new LuaBoolean(false);
-	
+
 	private final boolean value;
-	
+
 	private LuaBoolean(boolean value)
 	{
 		this.value = value;
 	}
-	
+
 	/**
 	 * <p>not.</p>
 	 *
@@ -49,7 +49,7 @@ class LuaBoolean extends LuaObject
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)

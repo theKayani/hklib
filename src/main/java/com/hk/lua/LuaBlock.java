@@ -6,7 +6,7 @@ class LuaBlock implements Tokens
 {
 	final String source;
 	protected final LuaStatement[] sts;
-	
+
 	LuaBlock(LuaStatement[] sts, String source)
 	{
 		this.sts = sts;
@@ -21,7 +21,7 @@ class LuaBlock implements Tokens
 		interp.env = env;
 		return res;
 	}
-	
+
 	/**
 	 * <p>run.</p>
 	 *
@@ -205,7 +205,7 @@ class LuaBlock implements Tokens
 			e.internal();
 			new LuaException(source, st.line, "in main chunk", e);
 		}
-		
+
 		return e;
 	}
 }

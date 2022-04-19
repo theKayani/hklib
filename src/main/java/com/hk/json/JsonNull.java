@@ -13,7 +13,7 @@ public class JsonNull extends JsonValue
 
 	private JsonNull()
 	{}
-	
+
 	/**
 	 * <p>getType.</p>
 	 *
@@ -47,7 +47,7 @@ public class JsonNull extends JsonValue
 	{
 		return o instanceof JsonNull;
 	}
-	
+
 	/**
 	 * <p>toString.</p>
 	 *

@@ -199,7 +199,7 @@ public enum LuaLibraryHash implements BiConsumer<Environment, LuaObject>, LuaMet
 		if(name != null && !name.trim().isEmpty())
 			table.rawSet(new LuaString(name), Lua.newFunc(this));
 	}
-	
+
 	/**
 	 * <p>hash.</p>
 	 *
@@ -228,6 +228,6 @@ public enum LuaLibraryHash implements BiConsumer<Environment, LuaObject>, LuaMet
 			return Lua.wrapErr(e);
 		}
 	}
-	
+
 	private static final char[] hex = "0123456789abcdef".toCharArray();
 }

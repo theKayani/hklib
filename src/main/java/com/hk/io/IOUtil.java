@@ -180,7 +180,7 @@ public final class IOUtil
 		catch (IOException ignored)
 		{}
 	}
-	
+
 	@Deprecated
 	/*
 	  renamed to closeWithRE

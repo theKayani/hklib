@@ -3,7 +3,7 @@ package com.hk.lua;
 class LuaNil extends LuaObject
 {
 	static final LuaNil NIL = new LuaNil();
-	
+
 	private LuaNil()
 	{}
 

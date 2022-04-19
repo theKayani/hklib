@@ -14,14 +14,14 @@ public class Node<T> implements Iterator<Node<T>>
 {
 	public Node<T> next;
 	public T value;
-	
+
 	/**
 	 * <p>Constructor for Node.</p>
 	 */
 	public Node()
 	{
 	}
-	
+
 	/**
 	 * <p>Constructor for Node.</p>
 	 *
@@ -32,7 +32,7 @@ public class Node<T> implements Iterator<Node<T>>
 	{
 		parent.next = this;
 	}
-	
+
 	/**
 	 * <p>Constructor for Node.</p>
 	 *
@@ -42,7 +42,7 @@ public class Node<T> implements Iterator<Node<T>>
 	{
 		this.value = value;
 	}
-	
+
 	/**
 	 * <p>Constructor for Node.</p>
 	 *
@@ -54,7 +54,7 @@ public class Node<T> implements Iterator<Node<T>>
 		parent.next = this;
 		this.value = value;
 	}
-	
+
 	/**
 	 * <p>Constructor for Node.</p>
 	 *
@@ -66,7 +66,7 @@ public class Node<T> implements Iterator<Node<T>>
 		this.value = value;
 		this.next = next;
 	}
-	
+
 	/**
 	 * <p>Getter for the field <code>next</code>.</p>
 	 *
@@ -76,7 +76,7 @@ public class Node<T> implements Iterator<Node<T>>
 	{
 		return next;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>next</code>.</p>
 	 *
@@ -88,7 +88,7 @@ public class Node<T> implements Iterator<Node<T>>
 		this.next = next;
 		return this;
 	}
-	
+
 	/**
 	 * <p>Getter for the field <code>value</code>.</p>
 	 *
@@ -98,7 +98,7 @@ public class Node<T> implements Iterator<Node<T>>
 	{
 		return value;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>value</code>.</p>
 	 *
@@ -146,7 +146,7 @@ public class Node<T> implements Iterator<Node<T>>
 		}
 		return curr;
 	}
-	
+
 	/**
 	 * <p>add.</p>
 	 *
@@ -157,7 +157,7 @@ public class Node<T> implements Iterator<Node<T>>
 	{
 		return new Node<>(this, value);
 	}
-	
+
 	/**
 	 * <p>addLast.</p>
 	 *
@@ -168,7 +168,7 @@ public class Node<T> implements Iterator<Node<T>>
 	{
 		return last().add(value);
 	}
-	
+
 	/**
 	 * <p>insert.</p>
 	 *
@@ -182,7 +182,7 @@ public class Node<T> implements Iterator<Node<T>>
 		else
 			return next = new Node<>(value, next);
 	}
-	
+
 	/**
 	 * <p>append.</p>
 	 *
@@ -199,7 +199,7 @@ public class Node<T> implements Iterator<Node<T>>
 		next = node;
 		return this;
 	}
-	
+
 	/**
 	 * <p>appendLast.</p>
 	 *
@@ -210,7 +210,7 @@ public class Node<T> implements Iterator<Node<T>>
 	{
 		return last().setNext(node);
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -227,7 +227,7 @@ public class Node<T> implements Iterator<Node<T>>
 		}
 		return curr.value;
 	}
-	
+
 	/**
 	 * <p>size.</p>
 	 *
@@ -269,10 +269,10 @@ public class Node<T> implements Iterator<Node<T>>
 			lst.add(curr.value);
 			curr = curr.next;
 		} while(curr != null);
-		
+
 		return lst;
 	}
-	
+
 	/**
 	 * <p>toString.</p>
 	 *
@@ -293,20 +293,20 @@ public class Node<T> implements Iterator<Node<T>>
 		sb.append("]");
 		return sb.toString();
 	}
-	
+
 	private class Enum implements Enumeration<T>
 	{
 		private Node<T> curr = Node.this;
 
 		@Override
-		
+
 		public boolean hasMoreElements()
 		{
 			return curr != null;
 		}
 
 		@Override
-		
+
 		public T nextElement()
 		{
 			T value = curr.value;

@@ -8,7 +8,7 @@ abstract class LuaForStatement extends LuaStatement
 	{
 		super(line);
 	}
-	
+
 	LuaBody getBody()
 	{
 		return body;

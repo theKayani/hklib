@@ -21,7 +21,7 @@ public interface MyInterface
 	String myString();
 	String[] myStrings();
 	String[][] myStringss();
-	
+
 	float myFloat();
 	float[] myFloats();
 	float[][] myFloatss();
@@ -32,7 +32,7 @@ public interface MyInterface
 	boolean myBoolean();
 	boolean[] myBooleans();
 	boolean[][] myBooleanss();
-	
+
 	Point myPoint();
 	Point[] myPoints();
 	Point[][] myPointss();

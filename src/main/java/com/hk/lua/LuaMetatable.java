@@ -3,7 +3,7 @@ package com.hk.lua;
 abstract class LuaMetatable extends LuaObject
 {
 	protected LuaObject metatable;
-	
+
 	LuaMetatable()
 	{
 		metatable = LuaNil.NIL;
@@ -35,7 +35,7 @@ abstract class LuaMetatable extends LuaObject
 	{
 		this.metatable = metatable == null ? LuaNil.NIL : metatable;
 	}
-	
+
 	/**
 	 * <p>Getter for the field <code>metatable</code>.</p>
 	 *
@@ -45,7 +45,7 @@ abstract class LuaMetatable extends LuaObject
 	{
 		return metatable == null ? LuaNil.NIL : metatable;
 	}
-	
+
 	/**
 	 * <p>event.</p>
 	 *
@@ -63,7 +63,7 @@ abstract class LuaMetatable extends LuaObject
 		else
 			return null;
 	}
-	
+
 	/**
 	 * <p>getHandler.</p>
 	 *

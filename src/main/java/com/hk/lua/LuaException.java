@@ -16,7 +16,7 @@ public class LuaException extends RuntimeException
 	final boolean primary;
 	boolean internal;
 	Stack<LuaException> stacktrace;
-	
+
 	@SuppressWarnings("CopyConstructorMissesField")
 	LuaException(LuaException parent)
 	{
@@ -27,12 +27,12 @@ public class LuaException extends RuntimeException
 		stacktrace = parent.stacktrace;
 		stacktrace.push(this);
 	}
-	
+
 	LuaException(String source, int lineNumber, String message)
 	{
 		this(source, lineNumber, message, null);
 	}
-	
+
 	LuaException(String source, int lineNumber, String message, LuaException cause)
 	{
 		super(source + ":" + (lineNumber + 1) + ": " + message);
@@ -50,7 +50,7 @@ public class LuaException extends RuntimeException
 			stacktrace = new Stack<>();
 		}
 	}
-	
+
 	/**
 	 * <p>Constructor for LuaException.</p>
 	 *
@@ -64,7 +64,7 @@ public class LuaException extends RuntimeException
 		lineNumber = -1;
 		stacktrace = new Stack<>();
 	}
-	
+
 	LuaException internal()
 	{
 		internal = true;
@@ -91,7 +91,7 @@ public class LuaException extends RuntimeException
     {
     	return (LuaException) super.getCause();
     }
-    
+
     /**
      * <p>printStackTrace.</p>
      */
@@ -161,15 +161,15 @@ public class LuaException extends RuntimeException
 	static class LuaExitException extends RuntimeException
 	{
 		final int code;
-		
+
 		LuaExitException(int code)
 		{
 			this.code = code;
 		}
-	
+
 		private static final long serialVersionUID = -5800760852156641968L;
 	}
-	
+
 	private interface WrappedPrinter
 	{
 		void print(Object o);

@@ -127,7 +127,7 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 		{
 			Lua.checkArgs(toString(), args, LuaType.STRING);
 			String fileName = args[0].getString();
-			
+
 			try
 			{
 				Files.delete(Paths.get(fileName));
@@ -146,7 +146,7 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 			Lua.checkArgs(toString(), args, LuaType.STRING, LuaType.STRING);
 			String oldName = args[0].getString();
 			String newName = args[1].getString();
-			
+
 			try
 			{
 				Files.move(Paths.get(oldName), Paths.get(newName));
@@ -184,18 +184,18 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 					throw new LuaException("field 'month' is not an integer");
 				if(!year.isInteger())
 					throw new LuaException("field 'year' is not an integer");
-				
+
 				cal.set(year.getInt(), month.getInt() - 1, day.getInt());
 				time = cal.getTimeInMillis();
-				
+
 				LuaObject ex = tbl.rawGet(new LuaString("hour"));
 				if(ex.isInteger())
 					time += ex.getLong() * 60 * 60 * 1000;
-				
+
 				ex = tbl.rawGet(new LuaString("min"));
 				if(ex.isInteger())
 					time += ex.getLong() * 60 * 1000;
-				
+
 				ex = tbl.rawGet(new LuaString("sec"));				
 				if(ex.isInteger())
 					time += ex.getLong() * 1000;

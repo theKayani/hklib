@@ -71,7 +71,7 @@ public final class Point implements Serializable, Cloneable
 	{
 		return y;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -85,7 +85,7 @@ public final class Point implements Serializable, Cloneable
 		arr[off] = y;
 		return arr;
 	}
-	
+
 	/**
 	 * <p>get.</p>
 	 *
@@ -106,7 +106,7 @@ public final class Point implements Serializable, Cloneable
 	{
 		return get(new int[2]);
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>x</code>.</p>
 	 *
@@ -194,7 +194,7 @@ public final class Point implements Serializable, Cloneable
 	{
 		return set(arr, 0);
 	}
-	
+
 	/**
 	 * <p>add.</p>
 	 *
@@ -208,7 +208,7 @@ public final class Point implements Serializable, Cloneable
 		this.y += y;
 		return this;
 	}
-	
+
 	/**
 	 * <p>add.</p>
 	 *
@@ -221,7 +221,7 @@ public final class Point implements Serializable, Cloneable
 		y += val;
 		return this;
 	}
-	
+
 	/**
 	 * <p>add.</p>
 	 *
@@ -234,7 +234,7 @@ public final class Point implements Serializable, Cloneable
 		y += p.y;
 		return this;
 	}
-	
+
 	/**
 	 * <p>sub.</p>
 	 *
@@ -248,7 +248,7 @@ public final class Point implements Serializable, Cloneable
 		this.y -= y;
 		return this;
 	}
-	
+
 	/**
 	 * <p>sub.</p>
 	 *
@@ -261,7 +261,7 @@ public final class Point implements Serializable, Cloneable
 		y -= val;
 		return this;
 	}
-	
+
 	/**
 	 * <p>sub.</p>
 	 *
@@ -274,7 +274,7 @@ public final class Point implements Serializable, Cloneable
 		y -= p.y;
 		return this;
 	}
-	
+
 	/**
 	 * <p>mult.</p>
 	 *
@@ -288,7 +288,7 @@ public final class Point implements Serializable, Cloneable
 		this.y *= y;
 		return this;
 	}
-	
+
 	/**
 	 * <p>mult.</p>
 	 *
@@ -301,7 +301,7 @@ public final class Point implements Serializable, Cloneable
 		y *= val;
 		return this;
 	}
-	
+
 	/**
 	 * <p>mult.</p>
 	 *
@@ -314,7 +314,7 @@ public final class Point implements Serializable, Cloneable
 		y *= p.y;
 		return this;
 	}
-	
+
 	/**
 	 * <p>div.</p>
 	 *
@@ -328,7 +328,7 @@ public final class Point implements Serializable, Cloneable
 		this.y /= y;
 		return this;
 	}
-	
+
 	/**
 	 * <p>div.</p>
 	 *
@@ -341,7 +341,7 @@ public final class Point implements Serializable, Cloneable
 		y /= val;
 		return this;
 	}
-	
+
 	/**
 	 * <p>div.</p>
 	 *
@@ -354,7 +354,7 @@ public final class Point implements Serializable, Cloneable
 		y /= p.y;
 		return this;
 	}
-	
+
 	/**
 	 * <p>negate.</p>
 	 *
@@ -366,7 +366,7 @@ public final class Point implements Serializable, Cloneable
 		y = -y;
 		return this;
 	}
-	
+
 	/**
 	 * <p>negative.</p>
 	 *
@@ -376,7 +376,7 @@ public final class Point implements Serializable, Cloneable
 	{
 		return abs().negate();
 	}
-	
+
 	/**
 	 * <p>abs.</p>
 	 *
@@ -388,7 +388,7 @@ public final class Point implements Serializable, Cloneable
 		y = Math.abs(y);
 		return this;
 	}
-	
+
 	/**
 	 * <p>toString.</p>
 	 *
@@ -398,13 +398,13 @@ public final class Point implements Serializable, Cloneable
 	{
 		return "(" + x + ", " + y + ")";
 	}
-	
+
 	/** {@inheritDoc} */
 	public boolean equals(Object o)
 	{
 		return o instanceof Point && ((Point) o).x == x && ((Point) o).y == y;
 	}
-	
+
 	/**
 	 * <p>hashCode.</p>
 	 *
@@ -417,7 +417,7 @@ public final class Point implements Serializable, Cloneable
 		hash = 17 * hash + y;
 		return hash;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public Point clone()

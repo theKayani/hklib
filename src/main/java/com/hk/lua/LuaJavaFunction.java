@@ -9,13 +9,13 @@ class LuaJavaFunction extends LuaFunction
 {
 	protected final Method method;
 	protected final Object obj;
-	
+
 	LuaJavaFunction(Method method, Object obj)
 	{
 		this.method = method;
 		this.obj = obj;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
@@ -35,11 +35,11 @@ class LuaJavaFunction extends LuaFunction
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	static class LuaJavaArgFunction extends LuaJavaFunction
 	{
 		private final LuaType[] argTypes;
-		
+
 		LuaJavaArgFunction(Method method, Object obj)
 		{
 			super(method, obj);
@@ -57,7 +57,7 @@ class LuaJavaFunction extends LuaFunction
 
 				newArgs[i] = args[i];
 			}
-			
+
 			try
 			{
 				return Lua.newLuaObject(method.invoke(obj, newArgs));

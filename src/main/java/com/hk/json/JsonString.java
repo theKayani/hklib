@@ -10,7 +10,7 @@ import com.hk.util.Requirements;
 public class JsonString extends JsonValue
 {
 	private final String value;
-	
+
 	/**
 	 * <p>Constructor for JsonString.</p>
 	 *
@@ -20,7 +20,7 @@ public class JsonString extends JsonValue
 	{
 		this.value = Requirements.requireNotNull(value);
 	}
-	
+
 	/**
 	 * <p>getType.</p>
 	 *
@@ -40,7 +40,7 @@ public class JsonString extends JsonValue
 	{
 		return true;
 	}
-	
+
 	/**
 	 * <p>getString.</p>
 	 *

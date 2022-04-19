@@ -189,7 +189,7 @@ public class Rectangle extends Shape
 	{
 		return y + height;
 	}
-	
+
 	/**
 	 * <p>center.</p>
 	 */

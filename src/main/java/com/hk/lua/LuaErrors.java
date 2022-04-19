@@ -15,14 +15,14 @@ public enum LuaErrors
 	INVALID_DUAL_COMPARISON         ("attempt to compare two %s values"),	
 	INVALID_INDEX                   ("attempt to index a %s value"),
 	INVALID_CALL                    ("attempt to call a %s value");
-	
+
 	private final String message;
-	
+
 	LuaErrors(String message)
 	{
 		this.message = message;
 	}
-	
+
 	LuaException create(Object... args)
 	{
 		return new LuaException(String.format(message, args));

@@ -40,7 +40,7 @@ abstract class LuaFunction extends LuaObject
 	{
 		return true;
 	}
-	
+
 	/** {@inheritDoc} */
 	@Override
 	public String getString(LuaInterpreter interp)
@@ -89,7 +89,7 @@ abstract class LuaFunction extends LuaObject
 	{
 		return false;
 	}
-	
+
 	/**
 	 * <p>isInteger.</p>
 	 *
@@ -106,7 +106,7 @@ abstract class LuaFunction extends LuaObject
 	{
 		return false;
 	}
-	
+
 	/**
 	 * <p>isFunction.</p>
 	 *
@@ -271,7 +271,7 @@ abstract class LuaFunction extends LuaObject
 	{
 		return T_FUNCTION;
 	}
-	
+
 	/**
 	 * <p>type.</p>
 	 *

@@ -20,12 +20,12 @@ public class JsonWriter
 	@SuppressWarnings("unused")
 	private boolean prettyPrint, ignoreNulls, unicodeEscape, slashEscape, singleQuoteEscape;
 	private int tabs;
-	
+
 	JsonWriter(Writer wtr)
 	{
 		this.wtr = new BufferedWriter(wtr);
 	}
-	
+
 	/**
 	 * <p>unsetPrettyPrint.</p>
 	 *
@@ -36,7 +36,7 @@ public class JsonWriter
 		this.prettyPrint = false;
 		return this;
 	}
-	
+
 	/**
 	 * <p>unsetIgnoreNulls.</p>
 	 *
@@ -47,7 +47,7 @@ public class JsonWriter
 		this.ignoreNulls = false;
 		return this;
 	}
-	
+
 	/**
 	 * <p>unsetUnicodeEscape.</p>
 	 *
@@ -58,7 +58,7 @@ public class JsonWriter
 		this.unicodeEscape = false;
 		return this;
 	}
-	
+
 	/**
 	 * <p>unsetSlashEscape.</p>
 	 *
@@ -69,7 +69,7 @@ public class JsonWriter
 		this.slashEscape = false;
 		return this;
 	}
-	
+
 	/**
 	 * <p>unsetSingleQuoteEscape.</p>
 	 *
@@ -80,7 +80,7 @@ public class JsonWriter
 		this.singleQuoteEscape = false;
 		return this;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>singleQuoteEscape</code>.</p>
 	 *
@@ -91,7 +91,7 @@ public class JsonWriter
 		this.singleQuoteEscape = true;
 		return this;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>slashEscape</code>.</p>
 	 *
@@ -102,7 +102,7 @@ public class JsonWriter
 		this.slashEscape = true;
 		return this;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>unicodeEscape</code>.</p>
 	 *
@@ -113,7 +113,7 @@ public class JsonWriter
 		this.unicodeEscape = true;
 		return this;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>ignoreNulls</code>.</p>
 	 *
@@ -124,7 +124,7 @@ public class JsonWriter
 		this.ignoreNulls = true;
 		return this;
 	}
-	
+
 	/**
 	 * <p>Setter for the field <code>prettyPrint</code>.</p>
 	 *
@@ -135,7 +135,7 @@ public class JsonWriter
 		this.prettyPrint = true;
 		return this;
 	}
-	
+
 	/**
 	 * <p>put.</p>
 	 *
@@ -155,7 +155,7 @@ public class JsonWriter
 		}
 		return this;
 	}
-	
+
 	/**
 	 * <p>close.</p>
 	 */
@@ -207,16 +207,16 @@ public class JsonWriter
 			{
 				if(prettyPrint)
 					wtr.write(StringUtil.repeat("\t", tabs));
-				
+
 				writeString(entry.getKey());
 				wtr.write(':');
 				if(prettyPrint)
 					wtr.write(' ');
 				writeValue(entry.getValue());
-				
+
 				if(i++ < size - 1)
 					wtr.write(',');
-				
+
 				if(prettyPrint)
 					wtr.write('\n');
 			}
@@ -268,7 +268,7 @@ public class JsonWriter
 		for(int i = 0; i < str.length(); i++)
 		{
 			c = str.charAt(i);
-			
+
 			if(c == '"' || c == '\\' || (c == '/' && slashEscape) || (c == '\'' && singleQuoteEscape))
 			{
 				wtr.write('\\');

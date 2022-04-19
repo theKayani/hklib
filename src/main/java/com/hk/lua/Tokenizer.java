@@ -16,7 +16,7 @@ class Tokenizer implements Tokens
 	private String token;
 	private Object value;
 	private int type, line;
-	
+
 	Tokenizer(Reader rdr)
 	{
 		this.rdr = new LineNumberReader(rdr);
@@ -24,12 +24,12 @@ class Tokenizer implements Tokens
 		prev = new LinkedList<>();
 		sb = new StringBuilder(256);
 	}
-	
+
 	void prev()
 	{
 		if(token == null)
 			return;
-		
+
 		next.push(new Object[] { token, value, type, line });
 		if(prev.isEmpty())
 		{
@@ -46,7 +46,7 @@ class Tokenizer implements Tokens
 			line = (int) arr[3];
 		}
 	}
-	
+
 	boolean next() throws IOException
 	{
 		if(token != null)
@@ -64,7 +64,7 @@ class Tokenizer implements Tokens
 			line = (int) arr[3];
 			return true;
 		}
-		
+
 		token = null;
 		value = null;
 		type = 0;
@@ -79,18 +79,18 @@ class Tokenizer implements Tokens
 		if(isIdentifierStart(c))
 		{
 			sb.append(c);
-			
+
 			while(true)
 			{
 				rdr.mark(1);
 				c = (char) rdr.read();
-				
+
 				if(!isIdentifierPart(c))
 				{
 					rdr.reset();
 					break;
 				}
-				
+
 				sb.append(c);
 			}
 			value = token = sb.toString();
@@ -297,7 +297,7 @@ class Tokenizer implements Tokens
 						while(true)
 						{
 							c = (char) rdr.read();
-														
+
 							if(c == ']')
 							{
 								c = (char) rdr.read();
@@ -320,7 +320,7 @@ class Tokenizer implements Tokens
 							}
 							else if(!first || c != '\n')
 								sb.append(c);
-							
+
 							first = false;
 						}
 						value = token = sb.toString();
@@ -434,7 +434,7 @@ class Tokenizer implements Tokens
 		}
 		return true;
 	}
-	
+
 	private boolean readString(StringBuilder sb) throws IOException
 	{
 		char q = c;
@@ -513,22 +513,22 @@ class Tokenizer implements Tokens
 		int n;
 		double decimal = 0;
 		long integer = 0;
-		
+
 		while((n = num(c)) < 10)
 		{
 			sb.append(c);
-			
+
 			decimal *= 10;
 			integer *= 10;
 			decimal += n;
 			integer += n;
 			if(integer < 0)
 				isFloat = true;
-			
+
 			rdr.mark(1);
 			c = (char) rdr.read();
 		}
-		
+
 		if(c == '.')
 		{
 			sb.append('.');
@@ -538,26 +538,26 @@ class Tokenizer implements Tokens
 			{
 				rdr.mark(1);
 				c = (char) rdr.read();
-				
+
 				if((n = num(c)) >= 10)
 					break;
-				
+
 				sb.append(c);
 				fraction += n / place;
 				place *= 10;
 			}
-			
+
 			decimal += fraction;
 			isFloat = true;
 		}
-		
+
 		if(c == 'e' || c == 'E')
 		{
 			rdr.mark(1);
 			c = (char) rdr.read();
-			
+
 			boolean neg = false;
-			
+
 			if(c == '-' || c == '+')
 			{
 				sb.append('.');
@@ -565,24 +565,24 @@ class Tokenizer implements Tokens
 			}
 			else
 				rdr.reset();
-			
+
 			double exponent = 0;
 			while(true)
 			{
 				rdr.mark(1);
 				c = (char) rdr.read();
-				
+
 				if((n = num(c)) >= 10)
 					break;
-				
+
 				sb.append(c);
 				exponent *= 10;
 				exponent += n;
 			}
-			
+
 			exponent = Math.pow(10, neg ? -exponent : exponent);
 			decimal *= exponent;
-						
+
 			isFloat = true;
 		}
 
@@ -593,27 +593,27 @@ class Tokenizer implements Tokens
 		else
 			return integer;
 	}
-	
+
 	private Number readHex(StringBuilder sb) throws IOException
 	{
 		boolean isFloat = false;
 		int n;
 		double decimal = 0;
-		
+
 		while(true)
 		{
 			rdr.mark(1);
 			c = (char) rdr.read();
-			
+
 			if((n = num(c)) >= 16)
 				break;
-			
+
 			sb.append(c);
-			
+
 			decimal *= 16;
 			decimal += n;
 		}
-		
+
 		if(c == '.')
 		{
 			sb.append('.');
@@ -623,26 +623,26 @@ class Tokenizer implements Tokens
 			{
 				rdr.mark(1);
 				c = (char) rdr.read();
-				
+
 				if((n = num(c)) >= 16)
 					break;
-				
+
 				sb.append(c);
 				fraction += n / place;
 				place *= 16;
 			}
-			
+
 			decimal += fraction;
 			isFloat = true;
 		}
-		
+
 		if(c == 'p' || c == 'P')
 		{
 			rdr.mark(1);
 			c = (char) rdr.read();
-			
+
 			boolean neg = false;
-			
+
 			if(c == '-' || c == '+')
 			{
 				sb.append('.');
@@ -650,32 +650,32 @@ class Tokenizer implements Tokens
 			}
 			else
 				rdr.reset();
-			
+
 			double exponent = 0;
 			while(true)
 			{
 				rdr.mark(1);
 				c = (char) rdr.read();
-				
+
 				if((n = num(c)) >= 10)
 					break;
-				
+
 				sb.append(c);
 				exponent *= 10;
 				exponent += n;
 			}
-			
+
 			decimal *= Math.pow(2, neg ? -exponent : exponent);
 			isFloat = true;
 		}
 		rdr.reset();
-		
+
 		if(!isFloat && decimal == (double) (long) decimal)
 			return (long) decimal;
 		else
 			return decimal;
 	}
-	
+
 	static int num(char c)
 	{
 		switch(c)
@@ -727,22 +727,22 @@ class Tokenizer implements Tokens
 	{
 		return token;
 	}
-	
+
 	Object value()
 	{
 		return value;
 	}
-	
+
 	int type()
 	{
 		return type;
 	}
-	
+
 	int line()
 	{
 		return line;
 	}
-	
+
 	<T> T value(Class<T> cls)
 	{
 		return cls.cast(value);
@@ -759,25 +759,25 @@ class Tokenizer implements Tokens
 				if((c = (char) rdr.read()) == '-')
 				{
 					int level = -1;
-					
+
 					c = (char) rdr.read();
 					if(c == '[')
 					{
 						int nl = 0;
 						while((c = (char) rdr.read()) == '=')
 							nl++;
-						
+
 						if(c == '[')
 						{
 							level = nl;
 						}
 					}
-					
+
 					do
 					{
 						if((short) c == -1)
 							break;
-						
+
 						if(level < 0 && c == '\n')
 						{
 							break;
@@ -787,11 +787,11 @@ class Tokenizer implements Tokens
 							int nl = 0;
 							while((c = (char) rdr.read()) == '=')
 								nl++;
-							
+
 							if(nl == level && c == ']')
 								break;
 						}
-						
+
 						c = (char) rdr.read();
 					} while(true);
 				}
@@ -808,17 +808,17 @@ class Tokenizer implements Tokens
 			}
 		}
 	}
-	
+
 	private static boolean isIdentifierStart(char c)
 	{
 		return c == '_' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z';
 	}
-	
+
 	private static boolean isIdentifierPart(char c)
 	{
 		return isIdentifierStart(c) || c >= '0' && c <= '9';
 	}
-	
+
 	static int prec(int type)
 	{
 		switch(type)
@@ -864,7 +864,7 @@ class Tokenizer implements Tokens
 			return 0;
 		}
 	}
-	
+
 	static String label(int type)
 	{
 		switch(type)

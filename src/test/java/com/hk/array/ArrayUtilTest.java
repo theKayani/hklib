@@ -13,79 +13,79 @@ public class ArrayUtilTest extends TestCase
 	public void testToBooleanArray()
 	{
 		boolean[] bs;
-		
+
 		bs = ArrayUtil.toBooleanArray(Collections.<Boolean>emptyList());
-		
+
 		assertEquals(0, bs.length);
-		
+
 		bs = ArrayUtil.toBooleanArray(Collections.singletonList(true));
-		
+
 		assertEquals(1, bs.length);
 		assertTrue(bs[0]);
-		
+
 		bs = ArrayUtil.toBooleanArray(Collections.singletonList(false));
-		
+
 		assertEquals(1, bs.length);
 		assertFalse(bs[0]);
-		
+
 		bs = ArrayUtil.toBooleanArray(Arrays.asList(true, true));
-		
+
 		assertEquals(2, bs.length);
 		assertTrue(bs[0]);
 		assertTrue(bs[1]);
-		
+
 		bs = ArrayUtil.toBooleanArray(Arrays.asList(false, true));
-		
+
 		assertEquals(2, bs.length);
 		assertFalse(bs[0]);
 		assertTrue(bs[1]);
-		
+
 		bs = ArrayUtil.toBooleanArray(Arrays.asList(true, false));
-		
+
 		assertEquals(2, bs.length);
 		assertTrue(bs[0]);
 		assertFalse(bs[1]);
-		
+
 		bs = ArrayUtil.toBooleanArray(Arrays.asList(false, false));
-		
+
 		assertEquals(2, bs.length);
 		assertFalse(bs[0]);
 		assertFalse(bs[1]);
-		
+
 		bs = ArrayUtil.toBooleanArray();
-		
+
 		assertEquals(0, bs.length);
-		
+
 		bs = ArrayUtil.toBooleanArray(true);
-		
+
 		assertEquals(1, bs.length);
 		assertTrue(bs[0]);
-		
+
 		bs = ArrayUtil.toBooleanArray(false);
-		
+
 		assertEquals(1, bs.length);
 		assertFalse(bs[0]);
-		
+
 		bs = ArrayUtil.toBooleanArray(true, true);
-		
+
 		assertEquals(2, bs.length);
 		assertTrue(bs[0]);
 		assertTrue(bs[1]);
-		
+
 		bs = ArrayUtil.toBooleanArray(false, true);
-		
+
 		assertEquals(2, bs.length);
 		assertFalse(bs[0]);
 		assertTrue(bs[1]);
-		
+
 		bs = ArrayUtil.toBooleanArray(true, false);
-		
+
 		assertEquals(2, bs.length);
 		assertTrue(bs[0]);
 		assertFalse(bs[1]);
-		
+
 		bs = ArrayUtil.toBooleanArray(false, false);
-		
+
 		assertEquals(2, bs.length);
 		assertFalse(bs[0]);
 		assertFalse(bs[1]);
@@ -94,79 +94,79 @@ public class ArrayUtilTest extends TestCase
 	public void testToCharArray()
 	{
 		char[] cs;
-		
+
 		cs = ArrayUtil.toCharArray(Collections.<Character>emptyList());
-		
+
 		assertEquals(0, cs.length);
-		
+
 		cs = ArrayUtil.toCharArray(Collections.singletonList('a'));
-		
+
 		assertEquals(1, cs.length);
 		assertEquals('a', cs[0]);
-		
+
 		cs = ArrayUtil.toCharArray(Collections.singletonList('b'));
-		
+
 		assertEquals(1, cs.length);
 		assertEquals('b', cs[0]);
-		
+
 		cs = ArrayUtil.toCharArray(Arrays.asList('a', 'a'));
-		
+
 		assertEquals(2, cs.length);
 		assertEquals('a', cs[0]);
 		assertEquals('a', cs[1]);
-		
+
 		cs = ArrayUtil.toCharArray(Arrays.asList('b', 'a'));
-		
+
 		assertEquals(2, cs.length);
 		assertEquals('b', cs[0]);
 		assertEquals('a', cs[1]);
-		
+
 		cs = ArrayUtil.toCharArray(Arrays.asList('a', 'b'));
-		
+
 		assertEquals(2, cs.length);
 		assertEquals('a', cs[0]);
 		assertEquals('b', cs[1]);
-		
+
 		cs = ArrayUtil.toCharArray(Arrays.asList('b', 'b'));
-		
+
 		assertEquals(2, cs.length);
 		assertEquals('b', cs[0]);
 		assertEquals('b', cs[1]);
-		
+
 		cs = ArrayUtil.toCharArray();
-		
+
 		assertEquals(0, cs.length);
-		
+
 		cs = ArrayUtil.toCharArray('a');
-		
+
 		assertEquals(1, cs.length);
 		assertEquals('a', cs[0]);
-		
+
 		cs = ArrayUtil.toCharArray('b');
-		
+
 		assertEquals(1, cs.length);
 		assertEquals('b', cs[0]);
-		
+
 		cs = ArrayUtil.toCharArray('a', 'a');
-		
+
 		assertEquals(2, cs.length);
 		assertEquals('a', cs[0]);
 		assertEquals('a', cs[1]);
-		
+
 		cs = ArrayUtil.toCharArray('b', 'a');
-		
+
 		assertEquals(2, cs.length);
 		assertEquals('b', cs[0]);
 		assertEquals('a', cs[1]);
-		
+
 		cs = ArrayUtil.toCharArray('a', 'b');
-		
+
 		assertEquals(2, cs.length);
 		assertEquals('a', cs[0]);
 		assertEquals('b', cs[1]);
-		
+
 		cs = ArrayUtil.toCharArray('b', 'b');
-		
+
 		assertEquals(2, cs.length);
 		assertEquals('b', cs[0]);
 		assertEquals('b', cs[1]);
@@ -175,41 +175,41 @@ public class ArrayUtilTest extends TestCase
 	public void testToObjShortArray()
 	{
 		Short[] ss;
-		
+
 		ss = ArrayUtil.toObjShortArray(new short[0]);
-		
+
 		assertEquals(0, ss.length);
-		
+
 		ss = ArrayUtil.toObjShortArray(new short[] { 1 });
-		
+
 		assertEquals(1, ss.length);
 		assertEquals(Short.valueOf((short) 1), ss[0]);
-		
+
 		ss = ArrayUtil.toObjShortArray(new short[] { -1 });
-		
+
 		assertEquals(1, ss.length);
 		assertEquals(Short.valueOf((short) -1), ss[0]);
-		
+
 		ss = ArrayUtil.toObjShortArray(new short[] { 1, 1 });
-		
+
 		assertEquals(2, ss.length);
 		assertEquals(Short.valueOf((short) 1), ss[0]);
 		assertEquals(Short.valueOf((short) 1), ss[1]);
-		
+
 		ss = ArrayUtil.toObjShortArray(new short[] { -1, 1 });
-		
+
 		assertEquals(2, ss.length);
 		assertEquals(Short.valueOf((short) -1), ss[0]);
 		assertEquals(Short.valueOf((short) 1), ss[1]);
-		
+
 		ss = ArrayUtil.toObjShortArray(new short[] { 1, -1 });
-		
+
 		assertEquals(2, ss.length);
 		assertEquals(Short.valueOf((short) 1), ss[0]);
 		assertEquals(Short.valueOf((short) -1), ss[1]);
-		
+
 		ss = ArrayUtil.toObjShortArray(new short[] { -1, -1 });
-		
+
 		assertEquals(2, ss.length);
 		assertEquals(Short.valueOf((short) -1), ss[0]);
 		assertEquals(Short.valueOf((short) -1), ss[1]);
@@ -218,79 +218,79 @@ public class ArrayUtilTest extends TestCase
 	public void testToLongArray()
 	{
 		long[] ls;
-		
+
 		ls = ArrayUtil.toLongArray(Collections.<Long>emptyList());
-		
+
 		assertEquals(0, ls.length);
-		
+
 		ls = ArrayUtil.toLongArray(Collections.singletonList(1L));
-		
+
 		assertEquals(1, ls.length);
 		assertEquals(1L, ls[0]);
-		
+
 		ls = ArrayUtil.toLongArray(Collections.singletonList(-1L));
-		
+
 		assertEquals(1, ls.length);
 		assertEquals(-1L, ls[0]);
-		
+
 		ls = ArrayUtil.toLongArray(Arrays.asList(1L, 1L));
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(1L, ls[0]);
 		assertEquals(1L, ls[1]);
-		
+
 		ls = ArrayUtil.toLongArray(Arrays.asList(-1L, 1L));
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(-1L, ls[0]);
 		assertEquals(1L, ls[1]);
-		
+
 		ls = ArrayUtil.toLongArray(Arrays.asList(1L, -1L));
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(1L, ls[0]);
 		assertEquals(-1L, ls[1]);
-		
+
 		ls = ArrayUtil.toLongArray(Arrays.asList(-1L, -1L));
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(-1L, ls[0]);
 		assertEquals(-1L, ls[1]);
-		
+
 		ls = ArrayUtil.toLongArray();
-		
+
 		assertEquals(0, ls.length);
-		
+
 		ls = ArrayUtil.toLongArray(1L);
-		
+
 		assertEquals(1, ls.length);
 		assertEquals(1L, ls[0]);
-		
+
 		ls = ArrayUtil.toLongArray(-1L);
-		
+
 		assertEquals(1, ls.length);
 		assertEquals(-1L, ls[0]);
-		
+
 		ls = ArrayUtil.toLongArray(1L, 1L);
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(1L, ls[0]);
 		assertEquals(1L, ls[1]);
-		
+
 		ls = ArrayUtil.toLongArray(-1L, 1L);
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(-1L, ls[0]);
 		assertEquals(1L, ls[1]);
-		
+
 		ls = ArrayUtil.toLongArray(1L, -1L);
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(1L, ls[0]);
 		assertEquals(-1L, ls[1]);
-		
+
 		ls = ArrayUtil.toLongArray(-1L, -1L);
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(-1L, ls[0]);
 		assertEquals(-1L, ls[1]);
@@ -309,7 +309,7 @@ public class ArrayUtilTest extends TestCase
 		ArrayUtil.swap(strings2, 1, 0);
 		assertEquals("my", strings2[0]);
 		assertEquals("string", strings2[1]);
-		
+
 		String[] strings3 = { "long", "john", "silver" };
 		ArrayUtil.swap(strings3, 0, 1);
 		assertEquals("john", strings3[0]);
@@ -381,7 +381,7 @@ public class ArrayUtilTest extends TestCase
 		ArrayUtil.swap(bools2, 1, 0);
 		assertTrue(bools2[0]);
 		assertFalse(bools2[1]);
-		
+
 		boolean[] bools3 = { false, true, false };
 		ArrayUtil.swap(bools3, 0, 1);
 		assertTrue(bools3[0]);
@@ -453,7 +453,7 @@ public class ArrayUtilTest extends TestCase
 		ArrayUtil.swap(longs2, 1, 0);
 		assertEquals(23L, longs2[0]);
 		assertEquals(-34L, longs2[1]);
-		
+
 		long[] longs3 = { 45L, -54L, 67L };
 		ArrayUtil.swap(longs3, 0, 1);
 		assertEquals(-54L, longs3[0]);
@@ -525,7 +525,7 @@ public class ArrayUtilTest extends TestCase
 		ArrayUtil.swap(shorts2, 1, 0);
 		assertEquals((short) -100, shorts2[0]);
 		assertEquals((short) 100, shorts2[1]);
-		
+
 		short[] shorts3 = { (short) 525, (short) 256, (short) -16365 };
 		ArrayUtil.swap(shorts3, 0, 1);
 		assertEquals((short) 256, shorts3[0]);
@@ -597,7 +597,7 @@ public class ArrayUtilTest extends TestCase
 		ArrayUtil.swap(bytes2, 1, 0);
 		assertEquals((byte) 127, bytes2[0]);
 		assertEquals((byte) -128, bytes2[1]);
-		
+
 		byte[] bytes3 = { (byte) 1, (byte) 10, (byte) 100 };
 		ArrayUtil.swap(bytes3, 0, 1);
 		assertEquals((byte) 10, bytes3[0]);
@@ -669,7 +669,7 @@ public class ArrayUtilTest extends TestCase
 		ArrayUtil.swap(chars2, 1, 0);
 		assertEquals('a', chars2[0]);
 		assertEquals('A', chars2[1]);
-		
+
 		char[] chars3 = { 'x', 'y', 'z' };
 		ArrayUtil.swap(chars3, 0, 1);
 		assertEquals('y', chars3[0]);
@@ -741,7 +741,7 @@ public class ArrayUtilTest extends TestCase
 		ArrayUtil.swap(doubles2, 1, 0);
 		assertEquals(Math.PI, doubles2[0]);
 		assertEquals(Math.E, doubles2[1]);
-		
+
 		double[] doubles3 = { -1D, 0D, 1D };
 		ArrayUtil.swap(doubles3, 0, 1);
 		assertEquals(0D, doubles3[0]);
@@ -813,7 +813,7 @@ public class ArrayUtilTest extends TestCase
 		ArrayUtil.swap(ints2, 1, 0);
 		assertEquals(-1, ints2[0]);
 		assertEquals(1, ints2[1]);
-		
+
 		int[] ints3 = { 1000, 1000000, 1000000000 };
 		ArrayUtil.swap(ints3, 0, 1);
 		assertEquals(1000000, ints3[0]);
@@ -885,7 +885,7 @@ public class ArrayUtilTest extends TestCase
 		ArrayUtil.swap(floats2, 1, 0);
 		assertEquals(Float.MIN_VALUE, floats2[0]);
 		assertEquals(Float.MAX_VALUE, floats2[1]);
-		
+
 		float[] floats3 = { 1E10F, 1E5F, 1E1F };
 		ArrayUtil.swap(floats3, 0, 1);
 		assertEquals(1E5F, floats3[0]);
@@ -950,41 +950,41 @@ public class ArrayUtilTest extends TestCase
 	public void testToObjLongArray()
 	{
 		Long[] ls;
-		
+
 		ls = ArrayUtil.toObjLongArray(new long[0]);
-		
+
 		assertEquals(0, ls.length);
-		
+
 		ls = ArrayUtil.toObjLongArray(new long[] { 1 });
-		
+
 		assertEquals(1, ls.length);
 		assertEquals(Long.valueOf(1L), ls[0]);
-		
+
 		ls = ArrayUtil.toObjLongArray(new long[] { -1 });
-		
+
 		assertEquals(1, ls.length);
 		assertEquals(Long.valueOf(-1L), ls[0]);
-		
+
 		ls = ArrayUtil.toObjLongArray(new long[] { 1, 1 });
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(Long.valueOf(1L), ls[0]);
 		assertEquals(Long.valueOf(1L), ls[1]);
-		
+
 		ls = ArrayUtil.toObjLongArray(new long[] { -1, 1 });
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(Long.valueOf(-1L), ls[0]);
 		assertEquals(Long.valueOf(1L), ls[1]);
-		
+
 		ls = ArrayUtil.toObjLongArray(new long[] { 1, -1 });
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(Long.valueOf(1L), ls[0]);
 		assertEquals(Long.valueOf(-1L), ls[1]);
-		
+
 		ls = ArrayUtil.toObjLongArray(new long[] { -1, -1 });
-		
+
 		assertEquals(2, ls.length);
 		assertEquals(Long.valueOf(-1L), ls[0]);
 		assertEquals(Long.valueOf(-1L), ls[1]);
@@ -993,7 +993,7 @@ public class ArrayUtilTest extends TestCase
 	public void testShuffleArray()
 	{
 		Random rng = new Random(1846005705852173447L);
-		
+
 		byte[] byteArr = new byte[1024];
 		Set<Byte> byteSet1 = new HashSet<>();
 		Set<Byte> byteSet2 = new HashSet<>();
@@ -1014,87 +1014,87 @@ public class ArrayUtilTest extends TestCase
 			int[] intArr = new int[rng.nextInt(bound) + 1];
 			Set<Integer> intSet1 = new HashSet<>();
 			Set<Integer> intSet2 = new HashSet<>();
-			
+
 			for(int i = 0; i < intArr.length; i++)
 			{
 				int r = rng.nextInt();
 				intArr[i] = r;
 				intSet1.add(r);
 			}
-			
+
 			assertSame(intArr, ArrayUtil.shuffleArray(intArr, rng));
 
 			for (int j : intArr)
 			{
 				intSet2.add(j);
 			}
-			
+
 			assertEquals(intSet1, intSet2);
-			
+
 			float[] floatArr = new float[rng.nextInt(bound) + 1];
 			Set<Float> floatSet1 = new HashSet<>();
 			Set<Float> floatSet2 = new HashSet<>();
-			
+
 			for(int i = 0; i < floatArr.length; i++)
 			{
 				float r = rng.nextFloat();
 				floatArr[i] = r;
 				floatSet1.add(r);
 			}
-			
+
 			assertSame(floatArr, ArrayUtil.shuffleArray(floatArr, rng));
 
 			for (float value : floatArr)
 			{
 				floatSet2.add(value);
 			}
-			
+
 			assertEquals(floatSet1, floatSet2);
-			
+
 			double[] doubleArr = new double[rng.nextInt(bound) + 1];
 			Set<Double> doubleSet1 = new HashSet<>();
 			Set<Double> doubleSet2 = new HashSet<>();
-			
+
 			for(int i = 0; i < doubleArr.length; i++)
 			{
 				double r = rng.nextDouble();
 				doubleArr[i] = r;
 				doubleSet1.add(r);
 			}
-			
+
 			assertSame(doubleArr, ArrayUtil.shuffleArray(doubleArr, rng));
 
 			for (double v : doubleArr)
 			{
 				doubleSet2.add(v);
 			}
-			
+
 			assertEquals(doubleSet1, doubleSet2);
-			
+
 			long[] longArr = new long[rng.nextInt(bound) + 1];
 			Set<Long> longSet1 = new HashSet<>();
 			Set<Long> longSet2 = new HashSet<>();
-			
+
 			for(int i = 0; i < longArr.length; i++)
 			{
 				long r = rng.nextLong();
 				longArr[i] = r;
 				longSet1.add(r);
 			}
-			
+
 			assertSame(longArr, ArrayUtil.shuffleArray(longArr, rng));
 
 			for (long l : longArr)
 			{
 				longSet2.add(l);
 			}
-			
+
 			assertEquals(longSet1, longSet2);
-			
+
 			String[] strArr = new String[rng.nextInt(bound) + 1];
 			Set<String> strSet1 = new HashSet<>();
 			Set<String> strSet2 = new HashSet<>();
-			
+
 			for(int i = 0; i < strArr.length; i++)
 			{
 				char c = (char) (rng.nextInt(Character.MAX_RADIX - Character.MIN_RADIX) + Character.MIN_RADIX);
@@ -1103,13 +1103,13 @@ public class ArrayUtilTest extends TestCase
 				strArr[i] = r;
 				strSet1.add(r);
 			}
-			
+
 			assertSame(strArr, ArrayUtil.shuffleArray(strArr, rng));
 
 			Collections.addAll(strSet2, strArr);
-			
+
 			assertEquals(strSet1, strSet2);
-			
+
 			bound *= 10;
 		}
 	}
@@ -1117,41 +1117,41 @@ public class ArrayUtilTest extends TestCase
 	public void testToObjByteArray()
 	{
 		Byte[] bs;
-		
+
 		bs = ArrayUtil.toObjByteArray(new byte[0]);
-		
+
 		assertEquals(0, bs.length);
-		
+
 		bs = ArrayUtil.toObjByteArray(new byte[] { 1 });
-		
+
 		assertEquals(1, bs.length);
 		assertEquals(Byte.valueOf((byte) 1), bs[0]);
-		
+
 		bs = ArrayUtil.toObjByteArray(new byte[] { -1 });
-		
+
 		assertEquals(1, bs.length);
 		assertEquals(Byte.valueOf((byte) -1), bs[0]);
-		
+
 		bs = ArrayUtil.toObjByteArray(new byte[] { 1, 1 });
-		
+
 		assertEquals(2, bs.length);
 		assertEquals(Byte.valueOf((byte) 1), bs[0]);
 		assertEquals(Byte.valueOf((byte) 1), bs[1]);
-		
+
 		bs = ArrayUtil.toObjByteArray(new byte[] { -1, 1 });
-		
+
 		assertEquals(2, bs.length);
 		assertEquals(Byte.valueOf((byte) -1), bs[0]);
 		assertEquals(Byte.valueOf((byte) 1), bs[1]);
-		
+
 		bs = ArrayUtil.toObjByteArray(new byte[] { 1, -1 });
-		
+
 		assertEquals(2, bs.length);
 		assertEquals(Byte.valueOf((byte) 1), bs[0]);
 		assertEquals(Byte.valueOf((byte) -1), bs[1]);
-		
+
 		bs = ArrayUtil.toObjByteArray(new byte[] { -1, -1 });
-		
+
 		assertEquals(2, bs.length);
 		assertEquals(Byte.valueOf((byte) -1), bs[0]);
 		assertEquals(Byte.valueOf((byte) -1), bs[1]);
@@ -1160,79 +1160,79 @@ public class ArrayUtilTest extends TestCase
 	public void testToFloatArray()
 	{
 		float[] fs;
-		
+
 		fs = ArrayUtil.toFloatArray(Collections.<Float>emptyList());
-		
+
 		assertEquals(0, fs.length);
-		
+
 		fs = ArrayUtil.toFloatArray(Collections.singletonList(1F));
-		
+
 		assertEquals(1, fs.length);
 		assertEquals(1F, fs[0]);
-		
+
 		fs = ArrayUtil.toFloatArray(Collections.singletonList(-1F));
-		
+
 		assertEquals(1, fs.length);
 		assertEquals(-1F, fs[0]);
-		
+
 		fs = ArrayUtil.toFloatArray(Arrays.asList(1F, 1F));
-		
+
 		assertEquals(2, fs.length);
 		assertEquals(1F, fs[0]);
 		assertEquals(1F, fs[1]);
-		
+
 		fs = ArrayUtil.toFloatArray(Arrays.asList(-1F, 1F));
-		
+
 		assertEquals(2, fs.length);
 		assertEquals(-1F, fs[0]);
 		assertEquals(1F, fs[1]);
-		
+
 		fs = ArrayUtil.toFloatArray(Arrays.asList(1F, -1F));
-		
+
 		assertEquals(2, fs.length);
 		assertEquals(1F, fs[0]);
 		assertEquals(-1F, fs[1]);
-		
+
 		fs = ArrayUtil.toFloatArray(Arrays.asList(-1F, -1F));
-		
+
 		assertEquals(2, fs.length);
 		assertEquals(-1F, fs[0]);
 		assertEquals(-1F, fs[1]);
-		
+
 		fs = ArrayUtil.toFloatArray();
-		
+
 		assertEquals(0, fs.length);
-		
+
 		fs = ArrayUtil.toFloatArray(1F);
-		
+
 		assertEquals(1, fs.length);
 		assertEquals(1F, fs[0]);
-		
+
 		fs = ArrayUtil.toFloatArray(-1F);
-		
+
 		assertEquals(1, fs.length);
 		assertEquals(-1F, fs[0]);
-		
+
 		fs = ArrayUtil.toFloatArray(1F, 1F);
-		
+
 		assertEquals(2, fs.length);
 		assertEquals(1F, fs[0]);
 		assertEquals(1F, fs[1]);
-		
+
 		fs = ArrayUtil.toFloatArray(-1F, 1F);
-		
+
 		assertEquals(2, fs.length);
 		assertEquals(-1F, fs[0]);
 		assertEquals(1F, fs[1]);
-		
+
 		fs = ArrayUtil.toFloatArray(1F, -1F);
-		
+
 		assertEquals(2, fs.length);
 		assertEquals(1F, fs[0]);
 		assertEquals(-1F, fs[1]);
-		
+
 		fs = ArrayUtil.toFloatArray(-1F, -1F);
-		
+
 		assertEquals(2, fs.length);
 		assertEquals(-1F, fs[0]);
 		assertEquals(-1F, fs[1]);
@@ -1241,79 +1241,79 @@ public class ArrayUtilTest extends TestCase
 	public void testToShortArray()
 	{
 		short[] ss;
-		
+
 		ss = ArrayUtil.toShortArray(Collections.<Short>emptyList());
-		
+
 		assertEquals(0, ss.length);
-		
+
 		ss = ArrayUtil.toShortArray(Collections.singletonList((short) 1));
-		
+
 		assertEquals(1, ss.length);
 		assertEquals((short) 1, ss[0]);
-		
+
 		ss = ArrayUtil.toShortArray(Collections.singletonList((short) -1));
-		
+
 		assertEquals(1, ss.length);
 		assertEquals((short) -1, ss[0]);
-		
+
 		ss = ArrayUtil.toShortArray(Arrays.asList((short) 1, (short) 1));
-		
+
 		assertEquals(2, ss.length);
 		assertEquals((short) 1, ss[0]);
 		assertEquals((short) 1, ss[1]);
-		
+
 		ss = ArrayUtil.toShortArray(Arrays.asList((short) -1, (short) 1));
-		
+
 		assertEquals(2, ss.length);
 		assertEquals((short) -1, ss[0]);
 		assertEquals((short) 1, ss[1]);
-		
+
 		ss = ArrayUtil.toShortArray(Arrays.asList((short) 1, (short) -1));
-		
+
 		assertEquals(2, ss.length);
 		assertEquals((short) 1, ss[0]);
 		assertEquals((short) -1, ss[1]);
-		
+
 		ss = ArrayUtil.toShortArray(Arrays.asList((short) -1, (short) -1));
-		
+
 		assertEquals(2, ss.length);
 		assertEquals((short) -1, ss[0]);
 		assertEquals((short) -1, ss[1]);
-		
+
 		ss = ArrayUtil.toShortArray();
-		
+
 		assertEquals(0, ss.length);
-		
+
 		ss = ArrayUtil.toShortArray((short) 1);
-		
+
 		assertEquals(1, ss.length);
 		assertEquals((short) 1, ss[0]);
-		
+
 		ss = ArrayUtil.toShortArray((short) -1);
-		
+
 		assertEquals(1, ss.length);
 		assertEquals((short) -1, ss[0]);
-		
+
 		ss = ArrayUtil.toShortArray((short) 1, (short) 1);
-		
+
 		assertEquals(2, ss.length);
 		assertEquals((short) 1, ss[0]);
 		assertEquals((short) 1, ss[1]);
-		
+
 		ss = ArrayUtil.toShortArray((short) -1, (short) 1);
-		
+
 		assertEquals(2, ss.length);
 		assertEquals((short) -1, ss[0]);
 		assertEquals((short) 1, ss[1]);
-		
+
 		ss = ArrayUtil.toShortArray((short) 1, (short) -1);
-		
+
 		assertEquals(2, ss.length);
 		assertEquals((short) 1, ss[0]);
 		assertEquals((short) -1, ss[1]);
-		
+
 		ss = ArrayUtil.toShortArray((short) -1, (short) -1);
-		
+
 		assertEquals(2, ss.length);
 		assertEquals((short) -1, ss[0]);
 		assertEquals((short) -1, ss[1]);
@@ -1397,41 +1397,41 @@ public class ArrayUtilTest extends TestCase
 	public void testToObjDoubleArray()
 	{
 		Double[] ds;
-		
+
 		ds = ArrayUtil.toObjDoubleArray(new double[0]);
-		
+
 		assertEquals(0, ds.length);
-		
+
 		ds = ArrayUtil.toObjDoubleArray(new double[] { 1 });
-		
+
 		assertEquals(1, ds.length);
 		assertEquals(1D, ds[0]);
-		
+
 		ds = ArrayUtil.toObjDoubleArray(new double[] { -1 });
-		
+
 		assertEquals(1, ds.length);
 		assertEquals(-1D, ds[0]);
-		
+
 		ds = ArrayUtil.toObjDoubleArray(new double[] { 1, 1 });
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(1D, ds[0]);
 		assertEquals(1D, ds[1]);
-		
+
 		ds = ArrayUtil.toObjDoubleArray(new double[] { -1, 1 });
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(-1D, ds[0]);
 		assertEquals(1D, ds[1]);
-		
+
 		ds = ArrayUtil.toObjDoubleArray(new double[] { 1, -1 });
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(1D, ds[0]);
 		assertEquals(-1D, ds[1]);
-		
+
 		ds = ArrayUtil.toObjDoubleArray(new double[] { -1, -1 });
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(-1D, ds[0]);
 		assertEquals(-1D, ds[1]);
@@ -1440,41 +1440,41 @@ public class ArrayUtilTest extends TestCase
 	public void testToObjCharacterArray()
 	{
 		Character[] cs;
-		
+
 		cs = ArrayUtil.toObjCharacterArray(new char[0]);
-		
+
 		assertEquals(0, cs.length);
-		
+
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'X' });
-		
+
 		assertEquals(1, cs.length);
 		assertEquals(new Character('X'), cs[0]);
-		
+
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'Y' });
-		
+
 		assertEquals(1, cs.length);
 		assertEquals(new Character('Y'), cs[0]);
-		
+
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'X', 'X' });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(new Character('X'), cs[0]);
 		assertEquals(new Character('X'), cs[1]);
-		
+
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'Y', 'X' });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(new Character('Y'), cs[0]);
 		assertEquals(new Character('X'), cs[1]);
-		
+
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'X', 'Y' });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(new Character('X'), cs[0]);
 		assertEquals(new Character('Y'), cs[1]);
-		
+
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'Y', 'Y' });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(new Character('Y'), cs[0]);
 		assertEquals(new Character('Y'), cs[1]);
@@ -1483,79 +1483,79 @@ public class ArrayUtilTest extends TestCase
 	public void testToDoubleArray()
 	{
 		double[] ds;
-		
+
 		ds = ArrayUtil.toDoubleArray(Collections.<Double>emptyList());
-		
+
 		assertEquals(0, ds.length);
-		
+
 		ds = ArrayUtil.toDoubleArray(Collections.singletonList(1D));
-		
+
 		assertEquals(1, ds.length);
 		assertEquals(1D, ds[0]);
-		
+
 		ds = ArrayUtil.toDoubleArray(Collections.singletonList(-1D));
-		
+
 		assertEquals(1, ds.length);
 		assertEquals(-1D, ds[0]);
-		
+
 		ds = ArrayUtil.toDoubleArray(Arrays.asList(1D, 1D));
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(1D, ds[0]);
 		assertEquals(1D, ds[1]);
-		
+
 		ds = ArrayUtil.toDoubleArray(Arrays.asList(-1D, 1D));
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(-1D, ds[0]);
 		assertEquals(1D, ds[1]);
-		
+
 		ds = ArrayUtil.toDoubleArray(Arrays.asList(1D, -1D));
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(1D, ds[0]);
 		assertEquals(-1D, ds[1]);
-		
+
 		ds = ArrayUtil.toDoubleArray(Arrays.asList(-1D, -1D));
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(-1D, ds[0]);
 		assertEquals(-1D, ds[1]);
-		
+
 		ds = ArrayUtil.toDoubleArray();
-		
+
 		assertEquals(0, ds.length);
-		
+
 		ds = ArrayUtil.toDoubleArray(1D);
-		
+
 		assertEquals(1, ds.length);
 		assertEquals(1D, ds[0]);
-		
+
 		ds = ArrayUtil.toDoubleArray(-1D);
-		
+
 		assertEquals(1, ds.length);
 		assertEquals(-1D, ds[0]);
-		
+
 		ds = ArrayUtil.toDoubleArray(1D, 1D);
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(1D, ds[0]);
 		assertEquals(1D, ds[1]);
-		
+
 		ds = ArrayUtil.toDoubleArray(-1D, 1D);
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(-1D, ds[0]);
 		assertEquals(1D, ds[1]);
-		
+
 		ds = ArrayUtil.toDoubleArray(1D, -1D);
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(1D, ds[0]);
 		assertEquals(-1D, ds[1]);
-		
+
 		ds = ArrayUtil.toDoubleArray(-1D, -1D);
-		
+
 		assertEquals(2, ds.length);
 		assertEquals(-1D, ds[0]);
 		assertEquals(-1D, ds[1]);
@@ -1564,79 +1564,79 @@ public class ArrayUtilTest extends TestCase
 	public void testToByteArray()
 	{
 		byte[] bs;
-		
+
 		bs = ArrayUtil.toByteArray(Collections.<Byte>emptyList());
-		
+
 		assertEquals(0, bs.length);
-		
+
 		bs = ArrayUtil.toByteArray(Collections.singletonList((byte) 1));
-		
+
 		assertEquals(1, bs.length);
 		assertEquals((byte) 1, bs[0]);
-		
+
 		bs = ArrayUtil.toByteArray(Collections.singletonList((byte) -1));
-		
+
 		assertEquals(1, bs.length);
 		assertEquals((byte) -1, bs[0]);
-		
+
 		bs = ArrayUtil.toByteArray(Arrays.asList((byte) 1, (byte) 1));
-		
+
 		assertEquals(2, bs.length);
 		assertEquals((byte) 1, bs[0]);
 		assertEquals((byte) 1, bs[1]);
-		
+
 		bs = ArrayUtil.toByteArray(Arrays.asList((byte) -1, (byte) 1));
-		
+
 		assertEquals(2, bs.length);
 		assertEquals((byte) -1, bs[0]);
 		assertEquals((byte) 1, bs[1]);
-		
+
 		bs = ArrayUtil.toByteArray(Arrays.asList((byte) 1, (byte) -1));
-		
+
 		assertEquals(2, bs.length);
 		assertEquals((byte) 1, bs[0]);
 		assertEquals((byte) -1, bs[1]);
-		
+
 		bs = ArrayUtil.toByteArray(Arrays.asList((byte) -1, (byte) -1));
-		
+
 		assertEquals(2, bs.length);
 		assertEquals((byte) -1, bs[0]);
 		assertEquals((byte) -1, bs[1]);
-		
+
 		bs = ArrayUtil.toByteArray();
-		
+
 		assertEquals(0, bs.length);
-		
+
 		bs = ArrayUtil.toByteArray((byte) 1);
-		
+
 		assertEquals(1, bs.length);
 		assertEquals((byte) 1, bs[0]);
-		
+
 		bs = ArrayUtil.toByteArray((byte) -1);
-		
+
 		assertEquals(1, bs.length);
 		assertEquals((byte) -1, bs[0]);
-		
+
 		bs = ArrayUtil.toByteArray((byte) 1, (byte) 1);
-		
+
 		assertEquals(2, bs.length);
 		assertEquals((byte) 1, bs[0]);
 		assertEquals((byte) 1, bs[1]);
-		
+
 		bs = ArrayUtil.toByteArray((byte) -1, (byte) 1);
-		
+
 		assertEquals(2, bs.length);
 		assertEquals((byte) -1, bs[0]);
 		assertEquals((byte) 1, bs[1]);
-		
+
 		bs = ArrayUtil.toByteArray((byte) 1, (byte) -1);
-		
+
 		assertEquals(2, bs.length);
 		assertEquals((byte) 1, bs[0]);
 		assertEquals((byte) -1, bs[1]);
-		
+
 		bs = ArrayUtil.toByteArray((byte) -1, (byte) -1);
-		
+
 		assertEquals(2, bs.length);
 		assertEquals((byte) -1, bs[0]);
 		assertEquals((byte) -1, bs[1]);
@@ -1645,79 +1645,79 @@ public class ArrayUtilTest extends TestCase
 	public void testToIntArray()
 	{
 		int[] is;
-		
+
 		is = ArrayUtil.toIntArray(Collections.<Integer>emptyList());
-		
+
 		assertEquals(0, is.length);
-		
+
 		is = ArrayUtil.toIntArray(Collections.singletonList(1));
-		
+
 		assertEquals(1, is.length);
 		assertEquals(1, is[0]);
-		
+
 		is = ArrayUtil.toIntArray(Collections.singletonList(-1));
-		
+
 		assertEquals(1, is.length);
 		assertEquals(-1, is[0]);
-		
+
 		is = ArrayUtil.toIntArray(Arrays.asList(1, 1));
-		
+
 		assertEquals(2, is.length);
 		assertEquals(1, is[0]);
 		assertEquals(1, is[1]);
-		
+
 		is = ArrayUtil.toIntArray(Arrays.asList(-1, 1));
-		
+
 		assertEquals(2, is.length);
 		assertEquals(-1, is[0]);
 		assertEquals(1, is[1]);
-		
+
 		is = ArrayUtil.toIntArray(Arrays.asList(1, -1));
-		
+
 		assertEquals(2, is.length);
 		assertEquals(1, is[0]);
 		assertEquals(-1, is[1]);
-		
+
 		is = ArrayUtil.toIntArray(Arrays.asList(-1, -1));
-		
+
 		assertEquals(2, is.length);
 		assertEquals(-1, is[0]);
 		assertEquals(-1, is[1]);
-		
+
 		is = ArrayUtil.toIntArray();
-		
+
 		assertEquals(0, is.length);
-		
+
 		is = ArrayUtil.toIntArray(1);
-		
+
 		assertEquals(1, is.length);
 		assertEquals(1, is[0]);
-		
+
 		is = ArrayUtil.toIntArray(-1);
-		
+
 		assertEquals(1, is.length);
 		assertEquals(-1, is[0]);
-		
+
 		is = ArrayUtil.toIntArray(1, 1);
-		
+
 		assertEquals(2, is.length);
 		assertEquals(1, is[0]);
 		assertEquals(1, is[1]);
-		
+
 		is = ArrayUtil.toIntArray(-1, 1);
-		
+
 		assertEquals(2, is.length);
 		assertEquals(-1, is[0]);
 		assertEquals(1, is[1]);
-		
+
 		is = ArrayUtil.toIntArray(1, -1);
-		
+
 		assertEquals(2, is.length);
 		assertEquals(1, is[0]);
 		assertEquals(-1, is[1]);
-		
+
 		is = ArrayUtil.toIntArray(-1, -1);
-		
+
 		assertEquals(2, is.length);
 		assertEquals(-1, is[0]);
 		assertEquals(-1, is[1]);
@@ -1728,39 +1728,39 @@ public class ArrayUtilTest extends TestCase
 		String[] ss;
 
 		ss = ArrayUtil.toArray();
-		
+
 		assertEquals(0, ss.length);
-		
+
 		ss = ArrayUtil.toArray("come with me");
-		
+
 		assertEquals(1, ss.length);
 		assertEquals("come with me", ss[0]);
-		
+
 		ss = ArrayUtil.toArray("abc123");
-		
+
 		assertEquals(1, ss.length);
 		assertEquals("abc123", ss[0]);
-		
+
 		ss = ArrayUtil.toArray("come with me", "come with me");
-		
+
 		assertEquals(2, ss.length);
 		assertEquals("come with me", ss[0]);
 		assertEquals("come with me", ss[1]);
-		
+
 		ss = ArrayUtil.toArray("abc123", "come with me");
-		
+
 		assertEquals(2, ss.length);
 		assertEquals("abc123", ss[0]);
 		assertEquals("come with me", ss[1]);
-		
+
 		ss = ArrayUtil.toArray("come with me", "abc123");
-		
+
 		assertEquals(2, ss.length);
 		assertEquals("come with me", ss[0]);
 		assertEquals("abc123", ss[1]);
-		
+
 		ss = ArrayUtil.toArray("abc123", "abc123");
-		
+
 		assertEquals(2, ss.length);
 		assertEquals("abc123", ss[0]);
 		assertEquals("abc123", ss[1]);
@@ -1769,41 +1769,41 @@ public class ArrayUtilTest extends TestCase
 	public void testToObjBooleanArray()
 	{
 		Boolean[] cs;
-		
+
 		cs = ArrayUtil.toObjBooleanArray(new boolean[0]);
-		
+
 		assertEquals(0, cs.length);
-		
+
 		cs = ArrayUtil.toObjBooleanArray(new boolean[] { false });
-		
+
 		assertEquals(1, cs.length);
 		assertEquals(Boolean.FALSE, cs[0]);
-		
+
 		cs = ArrayUtil.toObjBooleanArray(new boolean[] { true });
-		
+
 		assertEquals(1, cs.length);
 		assertEquals(Boolean.TRUE, cs[0]);
-		
+
 		cs = ArrayUtil.toObjBooleanArray(new boolean[] { false, false });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Boolean.FALSE, cs[0]);
 		assertEquals(Boolean.FALSE, cs[1]);
-		
+
 		cs = ArrayUtil.toObjBooleanArray(new boolean[] { true, false });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Boolean.TRUE, cs[0]);
 		assertEquals(Boolean.FALSE, cs[1]);
-		
+
 		cs = ArrayUtil.toObjBooleanArray(new boolean[] { false, true });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Boolean.FALSE, cs[0]);
 		assertEquals(Boolean.TRUE, cs[1]);
-		
+
 		cs = ArrayUtil.toObjBooleanArray(new boolean[] { true, true });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Boolean.TRUE, cs[0]);
 		assertEquals(Boolean.TRUE, cs[1]);
@@ -1814,13 +1814,13 @@ public class ArrayUtilTest extends TestCase
 		String[] strCopy;
 		String[] strArr1 = { };
 		strCopy = ArrayUtil.growArray(strArr1);
-		
+
 		assertNotSame(strArr1, strCopy);
 		assertEquals(strArr1.length + 1, strCopy.length);
 
 		String[] strArr2 = { "ab", "cd", "ef" };
 		strCopy = ArrayUtil.growArray(strArr2);
-		
+
 		assertNotSame(strArr2, strCopy);
 		assertEquals(strArr2.length + 1, strCopy.length);
 		for(int i = 0; i < strArr2.length; i++)
@@ -1829,13 +1829,13 @@ public class ArrayUtilTest extends TestCase
 		boolean[] boolCopy;
 		boolean[] boolArr1 = { };
 		boolCopy = ArrayUtil.growArray(boolArr1);
-		
+
 		assertNotSame(boolArr1, boolCopy);
 		assertEquals(boolArr1.length + 1, boolCopy.length);
 
 		boolean[] boolArr2 = { true, true, true };
 		boolCopy = ArrayUtil.growArray(boolArr2);
-		
+
 		assertNotSame(boolArr2, boolCopy);
 		assertEquals(boolArr2.length + 1, boolCopy.length);
 		for(int i = 0; i < boolArr2.length; i++)
@@ -1844,13 +1844,13 @@ public class ArrayUtilTest extends TestCase
 		long[] longCopy;
 		long[] longArr1 = { };
 		longCopy = ArrayUtil.growArray(longArr1);
-		
+
 		assertNotSame(longArr1, longCopy);
 		assertEquals(longArr1.length + 1, longCopy.length);
 
 		long[] longArr2 = { -1L, 0L, 1L };
 		longCopy = ArrayUtil.growArray(longArr2);
-		
+
 		assertNotSame(longArr2, longCopy);
 		assertEquals(longArr2.length + 1, longCopy.length);
 		for(int i = 0; i < longArr2.length; i++)
@@ -1859,13 +1859,13 @@ public class ArrayUtilTest extends TestCase
 		short[] shortCopy;
 		short[] shortArr1 = { };
 		shortCopy = ArrayUtil.growArray(shortArr1);
-		
+
 		assertNotSame(shortArr1, shortCopy);
 		assertEquals(shortArr1.length + 1, shortCopy.length);
 
 		short[] shortArr2 = { Short.MIN_VALUE, 0, Short.MAX_VALUE };
 		shortCopy = ArrayUtil.growArray(shortArr2);
-		
+
 		assertNotSame(shortArr2, shortCopy);
 		assertEquals(shortArr2.length + 1, shortCopy.length);
 		for(int i = 0; i < shortArr2.length; i++)
@@ -1874,13 +1874,13 @@ public class ArrayUtilTest extends TestCase
 		byte[] byteCopy;
 		byte[] byteArr1 = { };
 		byteCopy = ArrayUtil.growArray(byteArr1);
-		
+
 		assertNotSame(byteArr1, byteCopy);
 		assertEquals(byteArr1.length + 1, byteCopy.length);
 
 		byte[] byteArr2 = { Byte.MIN_VALUE, 0, Byte.MAX_VALUE };
 		byteCopy = ArrayUtil.growArray(byteArr2);
-		
+
 		assertNotSame(byteArr2, byteCopy);
 		assertEquals(byteArr2.length + 1, byteCopy.length);
 		for(int i = 0; i < byteArr2.length; i++)
@@ -1889,13 +1889,13 @@ public class ArrayUtilTest extends TestCase
 		char[] charCopy;
 		char[] charArr1 = { };
 		charCopy = ArrayUtil.growArray(charArr1);
-		
+
 		assertNotSame(charArr1, charCopy);
 		assertEquals(charArr1.length + 1, charCopy.length);
 
 		char[] charArr2 = { 'a', 'b', '1', '2' };
 		charCopy = ArrayUtil.growArray(charArr2);
-		
+
 		assertNotSame(charArr2, charCopy);
 		assertEquals(charArr2.length + 1, charCopy.length);
 		for(int i = 0; i < charArr2.length; i++)
@@ -1904,13 +1904,13 @@ public class ArrayUtilTest extends TestCase
 		double[] doubleCopy;
 		double[] doubleArr1 = { };
 		doubleCopy = ArrayUtil.growArray(doubleArr1);
-		
+
 		assertNotSame(doubleArr1, doubleCopy);
 		assertEquals(doubleArr1.length + 1, doubleCopy.length);
 
 		double[] doubleArr2 = { Double.MIN_VALUE, 0, Double.MAX_VALUE };
 		doubleCopy = ArrayUtil.growArray(doubleArr2);
-		
+
 		assertNotSame(doubleArr2, doubleCopy);
 		assertEquals(doubleArr2.length + 1, doubleCopy.length);
 		for(int i = 0; i < doubleArr2.length; i++)
@@ -1919,13 +1919,13 @@ public class ArrayUtilTest extends TestCase
 		int[] intCopy;
 		int[] intArr1 = { };
 		intCopy = ArrayUtil.growArray(intArr1);
-		
+
 		assertNotSame(intArr1, intCopy);
 		assertEquals(intArr1.length + 1, intCopy.length);
 
 		int[] intArr2 = { Integer.MIN_VALUE, 0, Integer.MAX_VALUE };
 		intCopy = ArrayUtil.growArray(intArr2);
-		
+
 		assertNotSame(intArr2, intCopy);
 		assertEquals(intArr2.length + 1, intCopy.length);
 		for(int i = 0; i < intArr2.length; i++)
@@ -1934,13 +1934,13 @@ public class ArrayUtilTest extends TestCase
 		float[] floatCopy;
 		float[] floatArr1 = { };
 		floatCopy = ArrayUtil.growArray(floatArr1);
-		
+
 		assertNotSame(floatArr1, floatCopy);
 		assertEquals(floatArr1.length + 1, floatCopy.length);
 
 		float[] floatArr2 = { Float.MIN_VALUE, 0, Float.MAX_VALUE };
 		floatCopy = ArrayUtil.growArray(floatArr2);
-		
+
 		assertNotSame(floatArr2, floatCopy);
 		assertEquals(floatArr2.length + 1, floatCopy.length);
 		for(int i = 0; i < floatArr2.length; i++)
@@ -1957,41 +1957,41 @@ public class ArrayUtilTest extends TestCase
 	public void testToObjFloatArray()
 	{
 		Float[] cs;
-		
+
 		cs = ArrayUtil.toObjFloatArray(new float[0]);
-		
+
 		assertEquals(0, cs.length);
-		
+
 		cs = ArrayUtil.toObjFloatArray(new float[] { Float.MIN_VALUE });
-		
+
 		assertEquals(1, cs.length);
 		assertEquals(Float.MIN_VALUE, cs[0]);
-		
+
 		cs = ArrayUtil.toObjFloatArray(new float[] { Float.MAX_VALUE });
-		
+
 		assertEquals(1, cs.length);
 		assertEquals(Float.MAX_VALUE, cs[0]);
-		
+
 		cs = ArrayUtil.toObjFloatArray(new float[] { Float.MIN_VALUE, Float.MIN_VALUE });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Float.MIN_VALUE, cs[0]);
 		assertEquals(Float.MIN_VALUE, cs[1]);
-		
+
 		cs = ArrayUtil.toObjFloatArray(new float[] { Float.MAX_VALUE, Float.MIN_VALUE });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Float.MAX_VALUE, cs[0]);
 		assertEquals(Float.MIN_VALUE, cs[1]);
-		
+
 		cs = ArrayUtil.toObjFloatArray(new float[] { Float.MIN_VALUE, Float.MAX_VALUE });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Float.MIN_VALUE, cs[0]);
 		assertEquals(Float.MAX_VALUE, cs[1]);
-		
+
 		cs = ArrayUtil.toObjFloatArray(new float[] { Float.MAX_VALUE, Float.MAX_VALUE });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Float.MAX_VALUE, cs[0]);
 		assertEquals(Float.MAX_VALUE, cs[1]);
@@ -2000,41 +2000,41 @@ public class ArrayUtilTest extends TestCase
 	public void testToObjIntegerArray()
 	{
 		Integer[] cs;
-		
+
 		cs = ArrayUtil.toObjIntegerArray(new int[0]);
-		
+
 		assertEquals(0, cs.length);
-		
+
 		cs = ArrayUtil.toObjIntegerArray(new int[] { Integer.MIN_VALUE });
-		
+
 		assertEquals(1, cs.length);
 		assertEquals(Integer.valueOf(Integer.MIN_VALUE), cs[0]);
-		
+
 		cs = ArrayUtil.toObjIntegerArray(new int[] { Integer.MAX_VALUE });
-		
+
 		assertEquals(1, cs.length);
 		assertEquals(Integer.valueOf(Integer.MAX_VALUE), cs[0]);
-		
+
 		cs = ArrayUtil.toObjIntegerArray(new int[] { Integer.MIN_VALUE, Integer.MIN_VALUE });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Integer.valueOf(Integer.MIN_VALUE), cs[0]);
 		assertEquals(Integer.valueOf(Integer.MIN_VALUE), cs[1]);
-		
+
 		cs = ArrayUtil.toObjIntegerArray(new int[] { Integer.MAX_VALUE, Integer.MIN_VALUE });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Integer.valueOf(Integer.MAX_VALUE), cs[0]);
 		assertEquals(Integer.valueOf(Integer.MIN_VALUE), cs[1]);
-		
+
 		cs = ArrayUtil.toObjIntegerArray(new int[] { Integer.MIN_VALUE, Integer.MAX_VALUE });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Integer.valueOf(Integer.MIN_VALUE), cs[0]);
 		assertEquals(Integer.valueOf(Integer.MAX_VALUE), cs[1]);
-		
+
 		cs = ArrayUtil.toObjIntegerArray(new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE });
-		
+
 		assertEquals(2, cs.length);
 		assertEquals(Integer.valueOf(Integer.MAX_VALUE), cs[0]);
 		assertEquals(Integer.valueOf(Integer.MAX_VALUE), cs[1]);

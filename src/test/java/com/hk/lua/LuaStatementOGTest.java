@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 public class LuaStatementOGTest extends TestCase
 {
 	private LuaInterpreter interp;
-	
+
 	@Override
 	protected void setUp()
 	{
@@ -25,7 +25,7 @@ public class LuaStatementOGTest extends TestCase
 		interp.importLib(LuaLibrary.JSON);
 		interp.importLib(LuaLibrary.HASH);
 	}
-	
+
 	public void testDo()
 	{
 		String[] tests = {
@@ -39,10 +39,10 @@ public class LuaStatementOGTest extends TestCase
 				"return \"\"",
 				"return '123'"
 		};
-		
+
 		for(String test : tests)
 			assertEquals(interp.require("do " + test + " end"), interp.require(test));
-		
+
 		for(String test : tests)
 			assertEquals(interp.require(StringUtil.repeat("do ", 100) + test + StringUtil.repeat(" end", 100)), interp.require(test));
 	}

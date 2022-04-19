@@ -11,13 +11,13 @@ class LuaRepeatStatement extends LuaStatement
 		this.exp = exp;
 		this.block = block;
 	}
-	
+
 	@Override
 	LuaBlock getBlock()
 	{
 		return block;
 	}
-	
+
 	@Override
 	LuaExpression getExpression()
 	{

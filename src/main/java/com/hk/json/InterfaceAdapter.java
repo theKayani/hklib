@@ -20,7 +20,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	private final Map<String, JsonField> fields;
 	private final boolean dynamicAddition;
 	private Set<JsonAdapter<?>> adapters;
-	
+
 	/**
 	 * <p>Constructor for InterfaceAdapter.</p>
 	 *
@@ -40,7 +40,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	public InterfaceAdapter(Class<? extends T> interfaceCls, boolean dynamicAddition)
 	{
 		super(interfaceCls);
-		
+
 		if(!interfaceCls.isInterface())
 			throw new IllegalArgumentException("class must be an interface");
 
@@ -58,14 +58,14 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		{
 			throw new RuntimeException(e);
 		}
-		
+
 		fields = new HashMap<>();
 		adapters = null;
 		this.dynamicAddition = dynamicAddition;
 
 		setupFields();
 	}
-	
+
 	/**
 	 * <p>Getter for the field <code>dynamicAddition</code>.</p>
 	 *
@@ -75,7 +75,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	{
 		return dynamicAddition;
 	}
-	
+
 	/**
 	 * <p>addAdapter.</p>
 	 *
@@ -86,14 +86,14 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	{
 		if(adapters == null)
 			adapters = new HashSet<>();
-		
+
 		if(adapter instanceof InterfaceAdapter)
 			((InterfaceAdapter<?>) adapter).adapters = adapters;
 
 		adapters.add(adapter);
 		return this;
 	}
-	
+
 	/**
 	 * <p>removeAdapter.</p>
 	 *
@@ -106,7 +106,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 			adapters.remove(adapter);
 		return this;
 	}
-	
+
 	/**
 	 * <p>setAdapterSet.</p>
 	 *
@@ -116,7 +116,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	public InterfaceAdapter<T> setAdapterSet(Set<JsonAdapter<?>> adapterSet)
 	{
 		adapters = adapterSet;
-		
+
 		if(adapterSet != null)
 		{
 			for(JsonAdapter<?> adapter : adapters)
@@ -125,10 +125,10 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 					((InterfaceAdapter<?>) adapter).adapters = adapters;
 			}
 		}
-		
+
 		return this;
 	}
-	
+
 	/**
 	 * <p>getAdapterSet.</p>
 	 *
@@ -142,7 +142,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	private void setupFields()
 	{
 		Method[] methods = cls.getMethods();
-		
+
 		for(Method method : methods)
 		{
 			if(method.getParameterTypes().length != 0)
@@ -187,16 +187,16 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		{
 			InterfaceHandler handler = (InterfaceHandler) Proxy.getInvocationHandler(val);
 			JsonObject obj = new JsonObject();
-			
+
 			for(Map.Entry<String, Object> ent : handler.map.entrySet())
 				obj.put(ent.getKey(), fields.get(ent.getKey()).convertBack(ent.getValue()));
-			
+
 			return obj;
 		}
 		else
 			throw new JsonAdaptationException("Cannot serialize implementation of " + cls + ", " + val);
 	}
-	
+
 	private JsonField toField(String name, Class<?> cls)
 	{
 		if(cls == void.class)
@@ -248,10 +248,10 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		else
 		{
 			Set<JsonAdapter<?>> adps = adapters;
-			
+
 			if(adps == null)
 				adps = Json.getGlobalAdapters();
-			
+
 			for(JsonAdapter<?> adapter : adps)
 			{
 				if(adapter.getObjClass().isAssignableFrom(cls))
@@ -268,7 +268,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 
 		throw new UnsupportedOperationException("Cannot deserialize " + cls);
 	}
-	
+
 	private class InterfaceHandler implements InvocationHandler
 	{
 //		private final JsonObject obj;
@@ -278,7 +278,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		{
 			JsonObject obj = val.getObject();
 			Map<JsonField, JsonValue> fieldAdapters = new HashMap<>();
-			
+
 			for(Map.Entry<String, JsonValue> ent : obj)
 			{
 				JsonField field = fields.get(ent.getKey());
@@ -287,7 +287,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 				else
 					throw new JsonAdaptationException("Unexpected field in JSON object '" + ent.getKey() + "'");
 			}
-			
+
 			if(fieldAdapters.size() != fields.size())
 			{
 				Set<JsonField> missing = new HashSet<>(fields.values());
@@ -295,13 +295,13 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 
 				throw new JsonAdaptationException("Missing attributes for interface: " + missing);
 			}
-			
+
 			map = new HashMap<>();
-			
+
 			for(Map.Entry<JsonField, JsonValue> ent : fieldAdapters.entrySet())
 				map.put(ent.getKey().name, ent.getKey().convert(ent.getValue()));
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
@@ -344,7 +344,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 				return map.get(method.getName());
 		}
 	}
-	
+
 	private static class JsonField
 	{
 		private final String name;
@@ -352,7 +352,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 		private final JsonField arrayField;
 		private final Class<?> otherCls;
 		private final JsonAdapter<?> adapter;
-		
+
 		private JsonField(String name, Class<?> otherCls, JsonAdapter<?> adapter)
 		{
 			this.name = name;
@@ -370,7 +370,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 			this.otherCls = null;
 			this.adapter = null;
 		}
-		
+
 		private JsonField(String name, int type)
 		{
 			this.name = name;
@@ -396,7 +396,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 			adapter = null;
 			this.type = type;
 		}
-		
+
 		private Object convert(JsonValue val)
 		{
 			switch(type)
@@ -414,7 +414,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 			case TYPE_CHAR:
 				if(val.getString().length() != 1)
 					throw new JsonAdaptationException("'" + name + "' should be a string with a single character");
-				
+
 				return val.getString().charAt(0);
 			case TYPE_STRING:
 				return val.isNull() ? null : val.getString();
@@ -427,10 +427,10 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 			case TYPE_ARRAY:
 				List<JsonValue> lst = val.getArray().list;
 				Object arr = Objects.requireNonNull(arrayField).array(lst.size());
-				
+
 				for(int i = 0; i < lst.size(); i++)
 					Array.set(arr, i, arrayField.convert(lst.get(i)));
-				
+
 				return arr;
 			case TYPE_ADAPTER:
 				return Objects.requireNonNull(adapter).fromJson(val);
@@ -438,7 +438,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 				throw new Error();
 			}
 		}
-		
+
 		private JsonValue convertBack(Object val)
 		{
 			switch(type)
@@ -462,10 +462,10 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 			case TYPE_ARRAY:
 				int len = Array.getLength(val);
 				JsonArray arr = new JsonArray(len);
-				
+
 				for(int i = 0; i < len; i++)
 					arr.add(Objects.requireNonNull(arrayField).convertBack(Array.get(val, i)));
-				
+
 				return arr;
 			case TYPE_ADAPTER:
 				return Objects.requireNonNull(adapter).tryTo(val);
@@ -473,7 +473,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 				throw new Error();
 			}
 		}
-		
+
 		private Object array(int size)
 		{
 			switch(type)
@@ -505,7 +505,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 				throw new Error();
 			}
 		}
-		
+
 		private Class<?> toClass()
 		{
 			switch(type)
@@ -538,14 +538,14 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 				throw new Error();
 			}
 		}
-		
+
 		@Override
 		public String toString()
 		{
 			return name;
 		}
 	}
-	
+
 	private static final int TYPE_JSON = 0;
 	private static final int TYPE_BYTE = 1;
 	private static final int TYPE_SHORT = 2;

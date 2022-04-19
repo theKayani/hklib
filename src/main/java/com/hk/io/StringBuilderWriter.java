@@ -12,7 +12,7 @@ import com.hk.util.Requirements;
 public class StringBuilderWriter extends Writer
 {
 	private final StringBuilder sb;
-	
+
 	/**
 	 * <p>Constructor for StringBuilderWriter.</p>
 	 */
@@ -20,7 +20,7 @@ public class StringBuilderWriter extends Writer
 	{
 		this.sb = new StringBuilder();
 	}
-	
+
 	/**
 	 * <p>Constructor for StringBuilderWriter.</p>
 	 *
@@ -30,7 +30,7 @@ public class StringBuilderWriter extends Writer
 	{
 		this.sb = new StringBuilder(initialCapacity);
 	}
-	
+
 	/**
 	 * <p>Constructor for StringBuilderWriter.</p>
 	 *
@@ -61,7 +61,7 @@ public class StringBuilderWriter extends Writer
 	{
 		// tada
 	}
-	
+
 	/**
 	 * <p>getBuilder.</p>
 	 *
@@ -71,7 +71,7 @@ public class StringBuilderWriter extends Writer
 	{
 		return sb;
 	}
-	
+
 	/**
 	 * <p>toString.</p>
 	 *

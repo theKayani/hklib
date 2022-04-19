@@ -6,14 +6,14 @@ import java.util.Set;
 class LuaTable extends LuaMetatable
 {
 	protected final Map<LuaObject, LuaObject> map;
-	
+
 	LuaTable()
 	{
 //		this(new java.util.TreeMap<LuaObject, LuaObject>());
 //		this(new java.util.HashMap<LuaObject, LuaObject>());
 		this(new java.util.LinkedHashMap<LuaObject, LuaObject>());
 	}
-	
+
 	LuaTable(Map<LuaObject, LuaObject> map)
 	{
 		this.map = map;
@@ -43,7 +43,7 @@ class LuaTable extends LuaMetatable
 			}
 			count++;
 		}
-		
+
 		return LuaInteger.valueOf(count - 1);
 	}
 
@@ -61,7 +61,7 @@ class LuaTable extends LuaMetatable
 	{
 		if(key.isNil() || (key.isNumber() && Double.isNaN(key.getDouble())))
 			return;
-		
+
 		if(value.isNil())
 			map.remove(key);
 		else
@@ -94,7 +94,7 @@ class LuaTable extends LuaMetatable
 	public String getString(LuaInterpreter interp)
 	{
 //		return toString();
-		
+
 		LuaObject res = event(interp, "tostring", LuaNil.NIL);
 		if(res != null)
 			return res.getString();
@@ -360,7 +360,7 @@ class LuaTable extends LuaMetatable
 			if(key != null && !key.isNil())
 				return key;
 		}
-		
+
 		LuaObject func = getHandler("index", LuaNil.NIL);
 		if(func != null)
 		{
@@ -397,7 +397,7 @@ class LuaTable extends LuaMetatable
 		LuaObject[] tmp = new LuaObject[args.length + 1];
 		tmp[0] = this;
 		System.arraycopy(args, 0, tmp, 1, args.length);
-		
+
 		LuaObject res = event(interp, "call", LuaNil.NIL, tmp);
 		if(res != null)
 			return res;
@@ -418,7 +418,7 @@ class LuaTable extends LuaMetatable
 	{
 		return map.entrySet();
 	}
-	
+
 	@Override
 	int code()
 	{
