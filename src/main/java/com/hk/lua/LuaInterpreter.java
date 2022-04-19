@@ -32,8 +32,7 @@ public class LuaInterpreter implements Tokens
 	private Reader reader;
 	final Map<LuaObject, LuaObject> required;
 	final Stack<LuaThread> threads;
-	final Environment global;
-	Environment env;
+	Environment global, env;
 	String currSource;
 	
 	LuaInterpreter(LuaStatement[] sts, String source)
@@ -318,7 +317,7 @@ public class LuaInterpreter implements Tokens
 	 */
 	public <T extends Enum<T> & BiConsumer<Environment, LuaObject>> void importLib(LuaLibrary<T> lib)
 	{
-		LuaTable tbl;
+		LuaObject tbl;
 		if(lib.table == null || lib.table.trim().isEmpty())
 			tbl = global.lua_G;
 		else

@@ -377,10 +377,9 @@ local function run(self, opts)
     return passed==#testnames
 end
 
-for k, v in pairs(lunity) do
-    _G[k] = v
-end
-
 return function(name)
-    return setmetatable({}, {__call=run, name=name or '(test suite)'})
+    return setmetatable(
+            {test=setmetatable({}, {__call=run, name=name or '(test suite)'})},
+            {__index=lunity}
+    )
 end

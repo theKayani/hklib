@@ -16,50 +16,6 @@ public class LuaLibraryIOTest extends TestCase
 		// TODO: create or delete
 	}
 
-	public void test() throws FileNotFoundException
-	{
-		File src = Assets.get("lua/library_io.lua");
-
-		LuaInterpreter interp = Lua.reader(src);
-
-		Lua.importStandard(interp);
-
-		Environment globals = interp.getGlobals();
-		globals.setVar("require", Lua.newFunc(new Lua.LuaMethod() {
-			@Override
-			public LuaObject call(LuaInterpreter interp, LuaObject[] args)
-			{
-				Lua.checkArgs("require", args, LuaType.STRING);
-
-				String arg = args[0].getString();
-				String path = arg.replace(".", File.separator);
-
-				Reader rdr;
-				try
-				{
-					rdr = new FileReader(Assets.get("lua/" + path + ".lua"));
-				}
-				catch (FileNotFoundException e)
-				{
-					return Lua.newVarargs(Lua.NIL, Lua.newString(e.getLocalizedMessage()));
-				}
-
-				return interp.require(arg, rdr);
-			}
-		}));
-		globals.setVar("print", Lua.newFunc(new Lua.LuaMethod() {
-			@Override
-			public LuaObject call(LuaInterpreter interp, LuaObject[] args)
-			{
-				return Lua.NIL;
-			}
-		}));
-
-		assertNull(interp.execute());
-		assertFalse("Lua exited with code (" + interp.getExtra(Lua.EXIT_CODE) + ")",
-				interp.hasExtra(Lua.EXIT_CODE));
-	}
-
 	public void testCWD() throws FileNotFoundException
 	{
 		LuaInterpreter interp = Lua.reader(Assets.get("lua/test_cwd.lua"));

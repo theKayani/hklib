@@ -147,7 +147,14 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 				newargs[i - 1] = arg;
 			}
 
-			return new LuaString(String.format(str, newargs));
+			try
+			{
+				return new LuaString(String.format(str, newargs));
+			}
+			catch (IllegalFormatException e)
+			{
+				throw new LuaException(e.getClass().getSimpleName() + ": " + e.getLocalizedMessage());
+			}
 		}
 	},
 	gmatch() {

@@ -32,16 +32,14 @@ class LuaTableExpression extends LuaExpression
 				{
 					LuaObject[] os = ((LuaArgs) obj).objs;
 					for(LuaObject o : os)
-						tbl.doNewIndex(interp, LuaInteger.valueOf(index++), o);
+						tbl.rawSet(LuaInteger.valueOf(index++), o);
 					
 				}
 				else
-					tbl.doNewIndex(interp, LuaInteger.valueOf(index++), obj);
+					tbl.rawSet(LuaInteger.valueOf(index++), obj);
 			}
 			else
-			{
-				tbl.doNewIndex(interp, array[i].evaluate(interp), obj);
-			}
+				tbl.rawSet(array[i].evaluate(interp), obj);
 		}
 		return tbl;
 	}

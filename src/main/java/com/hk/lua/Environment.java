@@ -16,35 +16,32 @@ public class Environment
 	 * The interpreter this environment is currently running under.
 	 */
 	public final LuaInterpreter interp;
-	final LuaTable lua_G;
+	LuaObject lua_G;
 	LuaObject varargs;
-	private final Map<String, LuaObject[]> globals, locals;
-	private final Map<LuaObject, LuaObject> globalMap;
-	
+	private final Map<String, LuaObject[]> locals;
+
 	Environment(LuaInterpreter interp, Environment parent, boolean onlyGlobals)
 	{
 		this.interp = interp;
 		if(parent == null)
 		{
-			globals = new HashMap<>();
-			lua_G = new LuaGTable(globalMap = new HashMap<>());
-			globals.put("_G", new LuaObject[] { lua_G });
+			lua_G = new LuaTable();
+			lua_G.rawSet("_G", lua_G);
+			lua_G.rawSet("_ENV", lua_G);
 			locals = new HashMap<>();
 			varargs = LuaNil.NIL;
 		}
 		else
 		{
-			globals = parent.globals;
 			if(onlyGlobals)
 				locals = new HashMap<>();
 			else
 				locals = new HashMap<>(parent.locals);
 			varargs = parent.varargs;
-			globalMap = parent.globalMap;
 			lua_G = parent.lua_G;
 		}
 	}
-	
+
 	/**
 	 * <p>This method sets a value to a variable. If the variable is
 	 * local, this will reassign the local variable. If the variable
@@ -56,25 +53,42 @@ public class Environment
 	 */
 	public void setVar(String name, LuaObject value)
 	{
-		if(locals.containsKey(name))
-			locals.get(name)[0] = value;
-		else
+		setVar(new LuaString(name), value);
+	}
+
+	/**
+	 * <p>This method sets a value to a variable. If the variable is
+	 * local, this will reassign the local variable. If the variable
+	 * is global or doesn't exist yet, this will assign the global
+	 * variable.</p>
+	 *
+	 * @param key the key of the variable
+	 * @param value value of the variable
+	 */
+	public void setVar(LuaObject key, LuaObject value)
+	{
+		boolean isStr = key.isString();
+		if(isStr && locals.containsKey(key.getString()))
 		{
-			if(value.isNil())
+			if(key.getString().equals("_ENV"))
 			{
-				globals.remove(name);
-				globalMap.remove(new LuaString(name));
-			}
-			else if(globals.containsKey(name))
-			{
-				globals.get(name)[0] = value;
-				globalMap.put(new LuaString(name), value);
+				Environment newEnv = new Environment(interp, interp.env, false);
+				newEnv.lua_G = value;
+				interp.env = newEnv;
 			}
 			else
+				locals.get(key.getString())[0] = value;
+		}
+		else
+		{
+			if(isStr && key.getString().equals("_ENV"))
 			{
-				globals.put(name, new LuaObject[] { value });
-				globalMap.put(new LuaString(name), value);
+				Environment newEnv = new Environment(interp, interp.env, false);
+				newEnv.lua_G = value;
+				interp.global = interp.env = newEnv;
 			}
+			else
+				lua_G.doNewIndex(interp, key, value);
 		}
 	}
 
@@ -92,12 +106,18 @@ public class Environment
 	 */
 	public void setLocal(String name, LuaObject value)
 	{
-		if(locals.containsKey(name))
+		if(name.equals("_ENV"))
+		{
+			Environment newEnv = new Environment(interp, interp.env, false);
+			newEnv.lua_G = value;
+			interp.env = newEnv;
+		}
+		else if(locals.containsKey(name))
 			locals.get(name)[0] = value;
 		else
 			locals.put(name, new LuaObject[] { value });
 	}
-	
+
 	/**
 	 * <p>Retrieve the value of the variable under the specified
 	 * name. If this variable exists in the local space, this method
@@ -110,14 +130,26 @@ public class Environment
 	 */
 	public LuaObject getVar(String name)
 	{
-		LuaObject[] obj = locals.get(name);
-		if(obj == null)
-		{
-			obj = globals.get(name);
-			return obj == null ? LuaNil.NIL : obj[0];
-		}
+		return getVar(new LuaString(name));
+	}
 
-		return obj[0];
+	/**
+	 * <p>Retrieve the value of the variable under the specified
+	 * key. If this variable exists in the local space, this method
+	 * will return the local value. Otherwise it will return the
+	 * global value if one exists. If one does not exist in the
+	 * global space, this will return <code>nil</code>.</p>
+	 *
+	 * @param key the key of the variable to retrieve
+	 * @return value of the variable specified
+	 */
+	public LuaObject getVar(LuaObject key)
+	{
+		LuaObject[] obj = key.isString() ? locals.get(key.getString()) : null;
+		if(obj == null)
+			return lua_G.doIndex(interp, key);
+		else
+			return obj[0];
 	}
 	
 	/**
@@ -129,29 +161,5 @@ public class Environment
 	public boolean isLocal(String name)
 	{
 		return locals.containsKey(name);
-	}
-	
-	private class LuaGTable extends LuaTable
-	{
-		private LuaGTable(Map<LuaObject, LuaObject> map)
-		{
-			super(map);
-		}
-
-		@Override
-		public void rawSet(LuaObject key, LuaObject value)
-		{
-//			super.rawSet(key, value);
-			if(key.isString())
-				setVar(key.getString(), value);
-		}
-		
-		@Override
-		void doNewIndex(LuaInterpreter interp, LuaObject key, LuaObject value)
-		{
-//			super.doNewIndex(key, value);
-			if(key.isString())
-				setVar(key.getString(), value);
-		}
 	}
 }

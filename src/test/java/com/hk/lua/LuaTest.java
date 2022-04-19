@@ -149,10 +149,37 @@ public class LuaTest extends TestCase
 
 	public void testClosures() throws FileNotFoundException
 	{
-		// ALMOST verbatim lua 5.3.4 'calls.lua' test suite
+		// ALMOST verbatim lua 5.3.4 'closures.lua' test suite
 		final LuaInterpreter interp = Lua.reader(Assets.get("lua/closures.lua"));
 
 		Lua.importStandard(interp);
+
+		Object obj = interp.execute();
+
+		assertTrue(obj instanceof LuaObject);
+		assertTrue(((LuaObject) obj).getBoolean());
+	}
+
+	public void testEnvironments() throws FileNotFoundException
+	{
+		final LuaInterpreter interp = Lua.reader(Assets.get("lua/test_env.lua"));
+
+		Lua.importStandard(interp);
+
+		Object obj = interp.execute();
+
+		assertTrue(obj instanceof LuaObject);
+		assertTrue(((LuaObject) obj).getBoolean());
+	}
+
+	public void testLunity() throws FileNotFoundException
+	{
+		final LuaInterpreter interp = Lua.reader(Assets.get("lua/test_lunity.lua"));
+
+		interp.setExtra(LuaLibraryPackage.EXKEY_PATH, "./src/test/resources/assets/lua/?.lua;./src/test/resources/assets/lua/?/init.lua");
+
+		Lua.importStandard(interp);
+		interp.importLib(LuaLibrary.PACKAGE);
 
 		Object obj = interp.execute();
 
