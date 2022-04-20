@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/theKayani/hklib.svg?branch=main)](https://travis-ci.com/theKayani/hklib)
+[![Build Status](https://travis-ci.com/theKayani/hklib.svg?branch=main)](https://travis-ci.com/github/theKayani/hklib)
 [![Maven Central](https://img.shields.io/maven-central/v/com.thekayani/hklib.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.thekayani%22%20AND%20a:%22hklib%22)
 [![javadoc](https://javadoc.io/badge2/com.thekayani/hklib/javadoc.svg)](https://javadoc.io/doc/com.thekayani/hklib)
 
@@ -7,7 +7,7 @@
 
 This is a collection of useful classes and functionalities that I found myself in need of over my years as a developer.
 
-##### Version: 1.2.0
+##### Version: 1.2.1
 
 ### Current Features
  - Extensive and customizable `LuaInterpreter` with strong Java integration
@@ -44,14 +44,14 @@ Add `hklib` dependency
     <dependency>
         <groupId>com.thekayani</groupId>
         <artifactId>hklib</artifactId>
-        <version>1.2.0</version>
+        <version>1.2.1</version>
     </dependency>
 
 ### Gradle
 Add `hklib` dependency
 
     dependencies {
-	        implementation 'com.thekayani:hklib:1.2.0'
+	        implementation 'com.thekayani:hklib:1.2.1'
 	}
 
 ### Flat `jar` File
@@ -62,7 +62,7 @@ the `-classpath` flag with the `java` command. Or added into your own project in
 IDEs.
 
 #### Others
-You can explore the other ways over at https://search.maven.org/artifact/com.thekayani/hklib
+You can explore the other ways over at [search.maven.org](https://search.maven.org/artifact/com.thekayani/hklib)
 
 ## Development
 
