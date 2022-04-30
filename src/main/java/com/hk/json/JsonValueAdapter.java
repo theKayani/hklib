@@ -1,5 +1,7 @@
 package com.hk.json;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * <p>JsonValueAdapter class.</p>
  *
@@ -42,7 +44,7 @@ public class JsonValueAdapter<T extends JsonValue> extends JsonAdapter<T>
 	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
-	public T fromJson(JsonValue val) throws JsonAdaptationException
+	public T fromJson(@NotNull JsonValue val) throws JsonAdaptationException
 	{
 		if(val.getType() != type)
 			throw new JsonAdaptationException("expected a " + type.name().toLowerCase() + ", not a " + val.getType().name().toLowerCase());
@@ -50,6 +52,7 @@ public class JsonValueAdapter<T extends JsonValue> extends JsonAdapter<T>
 	}
 
 	/** {@inheritDoc} */
+	@NotNull
 	@Override
 	public JsonValue toJson(T val) throws JsonAdaptationException
 	{

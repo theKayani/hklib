@@ -1,9 +1,11 @@
 package com.hk.json;
 
+import org.jetbrains.annotations.NotNull;
+
 public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 {
 	@Override
-	public SchoolScore fromJson(JsonValue val) throws JsonAdaptationException
+	public SchoolScore fromJson(@NotNull JsonValue val) throws JsonAdaptationException
 	{
 		if(val.isObject())
 		{
@@ -55,6 +57,7 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 			throw new JsonAdaptationException("can only convert objects to school scores");
 	}
 
+	@NotNull
 	@Override
 	public JsonValue toJson(SchoolScore val) throws JsonAdaptationException
 	{

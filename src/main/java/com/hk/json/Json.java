@@ -25,6 +25,8 @@ import java.util.Set;
 
 import com.hk.collections.lists.SortedList;
 import com.hk.io.StringBuilderWriter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>Json class.</p>
@@ -33,6 +35,20 @@ import com.hk.io.StringBuilderWriter;
  */
 public class Json
 {
+	public static final JsonAdapter<JsonValue> defaultAdapter = new JsonAdapter<JsonValue>() {
+		@Override
+		public JsonValue fromJson(@NotNull JsonValue val) throws JsonAdaptationException
+		{
+			return val;
+		}
+
+		@NotNull
+		@Override
+		public JsonValue toJson(JsonValue val) throws JsonAdaptationException
+		{
+			return val;
+		}
+	};
 	static final List<JsonAdapter<?>> globalAdapters = new SortedList<>();
 
 	/**
@@ -42,7 +58,8 @@ public class Json
 	 * @param <T> a T class
 	 * @return a T object
 	 */
-	public static <T extends JsonAdapter<?>> T registerAdapter(T adapter)
+	@NotNull
+	public static <T extends JsonAdapter<?>> T registerAdapter(@NotNull T adapter)
 	{
 		globalAdapters.add(adapter);
 		return adapter;
@@ -53,12 +70,10 @@ public class Json
 	 *
 	 * @param adapter a T object
 	 * @param <T> a T class
-	 * @return a T object
 	 */
-	public static <T extends JsonAdapter<?>> T unregisterAdapter(T adapter)
+	public static <T extends JsonAdapter<?>> void unregisterAdapter(@NotNull T adapter)
 	{
 		globalAdapters.remove(adapter);
-		return adapter;
 	}
 
 	/**
@@ -66,6 +81,7 @@ public class Json
 	 *
 	 * @return a {@link java.util.Set} object
 	 */
+	@NotNull
 	public static Set<JsonAdapter<?>> getGlobalAdapters()
 	{
 		return new HashSet<>(globalAdapters);
@@ -78,7 +94,8 @@ public class Json
 	 * @return a {@link com.hk.json.JsonValue} object
 	 * @throws com.hk.json.JsonFormatException if any.
 	 */
-	public static JsonValue read(Reader rdr) throws JsonFormatException
+	@NotNull
+	public static JsonValue read(@NotNull Reader rdr) throws JsonFormatException
 	{
 		JsonReader jr = reader(rdr);
 		JsonValue val = jr.get();
@@ -92,7 +109,8 @@ public class Json
 	 * @param rdr a {@link java.io.Reader} object
 	 * @return a {@link com.hk.json.JsonReader} object
 	 */
-	public static JsonReader reader(Reader rdr)
+	@NotNull
+	public static JsonReader reader(@NotNull Reader rdr)
 	{
 		return new JsonReader(rdr);
 	}
@@ -104,7 +122,8 @@ public class Json
 	 * @return a {@link com.hk.json.JsonValue} object
 	 * @throws com.hk.json.JsonFormatException if any.
 	 */
-	public static JsonValue read(String str) throws JsonFormatException
+	@NotNull
+	public static JsonValue read(@NotNull String str) throws JsonFormatException
 	{
 		JsonReader jr = reader(str);
 		JsonValue val = jr.get();
@@ -118,7 +137,8 @@ public class Json
 	 * @param str a {@link java.lang.String} object
 	 * @return a {@link com.hk.json.JsonReader} object
 	 */
-	public static JsonReader reader(String str)
+	@NotNull
+	public static JsonReader reader(@NotNull String str)
 	{
 		return new JsonReader(new StringReader(str));
 	}
@@ -130,7 +150,8 @@ public class Json
 	 * @return a {@link com.hk.json.JsonValue} object
 	 * @throws com.hk.json.JsonFormatException if any.
 	 */
-	public static JsonValue read(char[] array) throws JsonFormatException
+	@NotNull
+	public static JsonValue read(@NotNull char[] array) throws JsonFormatException
 	{
 		JsonReader jr = reader(array);
 		JsonValue val = jr.get();
@@ -144,7 +165,8 @@ public class Json
 	 * @param array an array of {@link char} objects
 	 * @return a {@link com.hk.json.JsonReader} object
 	 */
-	public static JsonReader reader(char[] array)
+	@NotNull
+	public static JsonReader reader(@NotNull char[] array)
 	{
 		return new JsonReader(new CharArrayReader(array));
 	}
@@ -157,7 +179,8 @@ public class Json
 	 * @throws com.hk.json.JsonFormatException if any.
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static JsonValue read(File file) throws JsonFormatException, FileNotFoundException
+	@NotNull
+	public static JsonValue read(@NotNull File file) throws JsonFormatException, FileNotFoundException
 	{
 		JsonReader jr = reader(file);
 		JsonValue val = jr.get();
@@ -172,7 +195,8 @@ public class Json
 	 * @return a {@link com.hk.json.JsonReader} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static JsonReader reader(File file) throws FileNotFoundException
+	@NotNull
+	public static JsonReader reader(@NotNull File file) throws FileNotFoundException
 	{
 		return new JsonReader(new FileReader(file));
 	}
@@ -186,7 +210,8 @@ public class Json
 	 * @throws com.hk.json.JsonFormatException if any.
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static JsonValue read(File file, Charset charset) throws JsonFormatException, FileNotFoundException
+	@NotNull
+	public static JsonValue read(@NotNull File file, @NotNull Charset charset) throws JsonFormatException, FileNotFoundException
 	{
 		JsonReader jr = reader(file, charset);
 		JsonValue val = jr.get();
@@ -202,7 +227,8 @@ public class Json
 	 * @return a {@link com.hk.json.JsonReader} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static JsonReader reader(File file, Charset charset) throws FileNotFoundException
+	@NotNull
+	public static JsonReader reader(@NotNull File file, @NotNull Charset charset) throws FileNotFoundException
 	{
 		return new JsonReader(new InputStreamReader(new FileInputStream(file), charset));
 	}
@@ -214,7 +240,8 @@ public class Json
 	 * @return a {@link com.hk.json.JsonValue} object
 	 * @throws com.hk.json.JsonFormatException if any.
 	 */
-	public static JsonValue read(InputStream input) throws JsonFormatException
+	@NotNull
+	public static JsonValue read(@NotNull InputStream input) throws JsonFormatException
 	{
 		JsonReader jr = reader(input);
 		JsonValue val = jr.get();
@@ -228,7 +255,8 @@ public class Json
 	 * @param input a {@link java.io.InputStream} object
 	 * @return a {@link com.hk.json.JsonReader} object
 	 */
-	public static JsonReader reader(InputStream input)
+	@NotNull
+	public static JsonReader reader(@NotNull InputStream input)
 	{
 		return new JsonReader(new InputStreamReader(input));
 	}
@@ -241,7 +269,8 @@ public class Json
 	 * @return a {@link com.hk.json.JsonValue} object
 	 * @throws com.hk.json.JsonFormatException if any.
 	 */
-	public static JsonValue read(InputStream input, Charset charset) throws JsonFormatException
+	@NotNull
+	public static JsonValue read(@NotNull InputStream input, @NotNull Charset charset) throws JsonFormatException
 	{
 		JsonReader jr = reader(input, charset);
 		JsonValue val = jr.get();
@@ -256,7 +285,8 @@ public class Json
 	 * @param charset a {@link java.nio.charset.Charset} object
 	 * @return a {@link com.hk.json.JsonReader} object
 	 */
-	public static JsonReader reader(InputStream input, Charset charset)
+	@NotNull
+	public static JsonReader reader(@NotNull InputStream input, @NotNull Charset charset)
 	{
 		return new JsonReader(new InputStreamReader(input, charset));
 	}
@@ -269,7 +299,8 @@ public class Json
 	 * @throws com.hk.json.JsonFormatException if any.
 	 * @throws java.io.IOException if any.
 	 */
-	public static JsonValue read(URL url) throws JsonFormatException, IOException
+	@NotNull
+	public static JsonValue read(@NotNull URL url) throws JsonFormatException, IOException
 	{
 		JsonReader jr = reader(url);
 		JsonValue val = jr.get();
@@ -284,7 +315,8 @@ public class Json
 	 * @return a {@link com.hk.json.JsonReader} object
 	 * @throws java.io.IOException if any.
 	 */
-	public static JsonReader reader(URL url) throws IOException
+	@NotNull
+	public static JsonReader reader(@NotNull URL url) throws IOException
 	{
 		return new JsonReader(new InputStreamReader(url.openStream()));
 	}
@@ -295,7 +327,7 @@ public class Json
 	 * @param wtr a {@link java.io.Writer} object
 	 * @param value a {@link com.hk.json.JsonValue} object
 	 */
-	public static void write(Writer wtr, JsonValue value)
+	public static void write(@NotNull Writer wtr, @NotNull JsonValue value)
 	{
 		JsonWriter jw = writer(wtr);
 		jw.put(value);
@@ -308,7 +340,8 @@ public class Json
 	 * @param wtr a {@link java.io.Writer} object
 	 * @return a {@link com.hk.json.JsonWriter} object
 	 */
-	public static JsonWriter writer(Writer wtr)
+	@NotNull
+	public static JsonWriter writer(@NotNull Writer wtr)
 	{
 		return new JsonWriter(wtr);
 	}
@@ -319,7 +352,7 @@ public class Json
 	 * @param value a {@link com.hk.json.JsonValue} object
 	 * @return a {@link java.lang.String} object
 	 */
-	public static String write(JsonValue value)
+	public static String write(@NotNull JsonValue value)
 	{
 		return write(new StringBuilder(), value).toString();
 	}
@@ -330,7 +363,8 @@ public class Json
 	 * @param value a {@link com.hk.json.JsonValue} object
 	 * @return a {@link java.lang.String} object
 	 */
-	public static String writePretty(JsonValue value)
+	@NotNull
+	public static String writePretty(@NotNull JsonValue value)
 	{
 		StringBuilder sb = new StringBuilder();
 		writer(sb).setPrettyPrint().put(value).close();
@@ -344,7 +378,8 @@ public class Json
 	 * @param value a {@link com.hk.json.JsonValue} object
 	 * @return a {@link java.lang.StringBuilder} object
 	 */
-	public static StringBuilder write(StringBuilder sb, JsonValue value)
+	@NotNull
+	public static StringBuilder write(@NotNull StringBuilder sb, @NotNull JsonValue value)
 	{
 		JsonWriter jw = writer(sb);
 		jw.put(value);
@@ -358,7 +393,8 @@ public class Json
 	 * @param sb a {@link java.lang.StringBuilder} object
 	 * @return a {@link com.hk.json.JsonWriter} object
 	 */
-	public static JsonWriter writer(StringBuilder sb)
+	@NotNull
+	public static JsonWriter writer(@NotNull StringBuilder sb)
 	{
 		return new JsonWriter(new StringBuilderWriter(sb));
 	}
@@ -370,7 +406,7 @@ public class Json
 	 * @param value a {@link com.hk.json.JsonValue} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static void write(File file, JsonValue value) throws FileNotFoundException
+	public static void write(@NotNull File file, @NotNull JsonValue value) throws FileNotFoundException
 	{
 		JsonWriter jw = writer(file);
 		jw.put(value);
@@ -384,7 +420,8 @@ public class Json
 	 * @return a {@link com.hk.json.JsonWriter} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static JsonWriter writer(File file) throws FileNotFoundException
+	@NotNull
+	public static JsonWriter writer(@NotNull File file) throws FileNotFoundException
 	{
 		return new JsonWriter(new OutputStreamWriter(new FileOutputStream(file)));
 	}
@@ -397,7 +434,7 @@ public class Json
 	 * @param value a {@link com.hk.json.JsonValue} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static void write(File file, Charset charset, JsonValue value) throws FileNotFoundException
+	public static void write(@NotNull File file, @NotNull Charset charset, @NotNull JsonValue value) throws FileNotFoundException
 	{
 		JsonWriter jw = writer(file, charset);
 		jw.put(value);
@@ -412,7 +449,8 @@ public class Json
 	 * @return a {@link com.hk.json.JsonWriter} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static JsonWriter writer(File file, Charset charset) throws FileNotFoundException
+	@NotNull
+	public static JsonWriter writer(@NotNull File file, @NotNull Charset charset) throws FileNotFoundException
 	{
 		return new JsonWriter(new OutputStreamWriter(new FileOutputStream(file), charset));
 	}
@@ -423,7 +461,7 @@ public class Json
 	 * @param out a {@link java.io.OutputStream} object
 	 * @param value a {@link com.hk.json.JsonValue} object
 	 */
-	public static void write(OutputStream out, JsonValue value)
+	public static void write(@NotNull OutputStream out, @NotNull JsonValue value)
 	{
 		JsonWriter jw = writer(out);
 		jw.put(value);
@@ -436,7 +474,8 @@ public class Json
 	 * @param out a {@link java.io.OutputStream} object
 	 * @return a {@link com.hk.json.JsonWriter} object
 	 */
-	public static JsonWriter writer(OutputStream out)
+	@NotNull
+	public static JsonWriter writer(@NotNull OutputStream out)
 	{
 		return new JsonWriter(new OutputStreamWriter(out));
 	}
@@ -448,7 +487,7 @@ public class Json
 	 * @param charset a {@link java.nio.charset.Charset} object
 	 * @param value a {@link com.hk.json.JsonValue} object
 	 */
-	public static void write(OutputStream out, Charset charset, JsonValue value)
+	public static void write(@NotNull OutputStream out, @NotNull Charset charset, @NotNull JsonValue value)
 	{
 		JsonWriter jw = writer(out, charset);
 		jw.put(value);
@@ -462,7 +501,8 @@ public class Json
 	 * @param charset a {@link java.nio.charset.Charset} object
 	 * @return a {@link com.hk.json.JsonWriter} object
 	 */
-	public static JsonWriter writer(OutputStream out, Charset charset)
+	@NotNull
+	public static JsonWriter writer(@NotNull OutputStream out, @NotNull Charset charset)
 	{
 		return new JsonWriter(new OutputStreamWriter(out, charset));
 	}
@@ -474,7 +514,8 @@ public class Json
 	 * @param val a {@link com.hk.json.JsonValue} object
 	 * @return a {@link java.lang.Object} object
 	 */
-	public static Object fromJson(JsonValue val)
+	@Nullable
+	public static Object fromJson(@Nullable JsonValue val)
 	{
 		if(val == null || val.isNull())
 			return null;
@@ -499,7 +540,8 @@ public class Json
 	 * @return a {@link com.hk.json.JsonValue} object
 	 */
 	@SuppressWarnings("unchecked")
-	public static JsonValue toJson(Object obj)
+	@NotNull
+	public static JsonValue toJson(@Nullable Object obj)
 	{
 		if(obj == null)
 		{

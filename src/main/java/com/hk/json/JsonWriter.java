@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.hk.math.MathUtil;
 import com.hk.str.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>JsonWriter class.</p>
@@ -142,7 +143,8 @@ public class JsonWriter
 	 * @param val a {@link com.hk.json.JsonValue} object
 	 * @return a {@link com.hk.json.JsonWriter} object
 	 */
-	public JsonWriter put(JsonValue val)
+	@NotNull
+	public JsonWriter put(@NotNull JsonValue val)
 	{
 		try
 		{

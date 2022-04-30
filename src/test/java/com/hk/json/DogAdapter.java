@@ -1,5 +1,8 @@
 package com.hk.json;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 class DogAdapter extends JsonAdapter<Dog>
 {	
 	DogAdapter()
@@ -8,7 +11,7 @@ class DogAdapter extends JsonAdapter<Dog>
 	}
 
 	@Override
-	public Dog fromJson(JsonValue val) throws JsonAdaptationException
+	public Dog fromJson(@NotNull JsonValue val) throws JsonAdaptationException
 	{
 		if(val.isObject())
 		{
@@ -26,8 +29,9 @@ class DogAdapter extends JsonAdapter<Dog>
 			throw new JsonAdaptationException();
 	}
 
+	@NotNull
 	@Override
-	public JsonValue toJson(Dog val) throws JsonAdaptationException
+	public JsonValue toJson(@Nullable Dog val) throws JsonAdaptationException
 	{
 		if(val == null)
 			return JsonNull.NULL;

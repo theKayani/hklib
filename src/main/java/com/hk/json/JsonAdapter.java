@@ -1,5 +1,8 @@
 package com.hk.json;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * <p>Abstract JsonAdapter class.</p>
  *
@@ -29,11 +32,12 @@ public abstract class JsonAdapter<T> implements Comparable<JsonAdapter<?>>
 	/**
 	 * <p>fromJson.</p>
 	 *
-	 * @param val a {@link com.hk.json.JsonValue} object
+	 * @param val a {@link JsonValue} object
 	 * @return a T object
 	 * @throws com.hk.json.JsonAdaptationException if any.
 	 */
-	public abstract T fromJson(JsonValue val) throws JsonAdaptationException;
+	@Nullable
+	public abstract T fromJson(@NotNull JsonValue val) throws JsonAdaptationException;
 
 	/**
 	 * <p>toJson.</p>
@@ -42,7 +46,8 @@ public abstract class JsonAdapter<T> implements Comparable<JsonAdapter<?>>
 	 * @return a {@link com.hk.json.JsonValue} object
 	 * @throws com.hk.json.JsonAdaptationException if any.
 	 */
-	public abstract JsonValue toJson(T val) throws JsonAdaptationException;
+	@NotNull
+	public abstract JsonValue toJson(@Nullable T val) throws JsonAdaptationException;
 
 	JsonValue tryTo(Object obj) throws JsonAdaptationException
 	{

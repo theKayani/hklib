@@ -1,5 +1,7 @@
 package com.hk.json;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
@@ -166,7 +168,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
-	public T fromJson(JsonValue val) throws JsonAdaptationException
+	public T fromJson(@NotNull JsonValue val) throws JsonAdaptationException
 	{
 		try
 		{
@@ -179,6 +181,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	}
 
 	/** {@inheritDoc} */
+	@NotNull
 	@SuppressWarnings("unchecked")
 	@Override
 	public JsonValue toJson(T val) throws JsonAdaptationException
