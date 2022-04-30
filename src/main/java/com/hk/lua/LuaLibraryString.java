@@ -7,6 +7,8 @@ import java.util.regex.PatternSyntaxException;
 
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>LuaLibraryString class.</p>
@@ -169,7 +171,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 			final Matcher mtr = ptn.matcher(str);
 			return new LuaFunction() {
 				@Override
-				LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+				LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 				{
 					if(mtr.find())
 					{

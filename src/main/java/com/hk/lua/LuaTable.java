@@ -1,5 +1,8 @@
 package com.hk.lua;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -19,45 +22,49 @@ class LuaTable extends LuaMetatable
 		this.map = map;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param o*/
 	@Override
-	public boolean rawEqual(LuaObject o)
+	public boolean rawEqual(@NotNull LuaObject o)
 	{
 		return o == this;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @return*/
 	@Override
-	public LuaObject rawLen()
+	public @NotNull LuaObject rawLen()
 	{
 		LuaObject a, b;
-		int count = 1;
-		while(map.containsKey(LuaInteger.valueOf(count)))
+		int count = 0;
+
+		while(true)
 		{
-			if(count > 1)
-			{
-				a = map.get(LuaInteger.valueOf(count));
-				b = map.get(LuaInteger.valueOf(count - 1));
-				if((a == null || a.isNil()) && (b == null || b.isNil()))
-					break;
-			}
+			a = rawGet(LuaInteger.valueOf(count + 1));
+			b = rawGet(LuaInteger.valueOf(count + 2));
+			if(a.isNil() && b.isNil())
+				break;
+
 			count++;
 		}
 
-		return LuaInteger.valueOf(count - 1);
+		return LuaInteger.valueOf(count);
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @return*/
 	@Override
-	public LuaObject rawGet(LuaObject key)
+	public @NotNull LuaObject rawGet(@NotNull LuaObject key)
 	{
 		LuaObject obj = map.get(key);
 		return obj == null ? LuaNil.NIL : obj;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param key
+	 * @param value*/
 	@Override
-	public void rawSet(LuaObject key, LuaObject value)
+	public void rawSet(@NotNull LuaObject key, @NotNull LuaObject value)
 	{
 		if(key.isNil() || (key.isNumber() && Double.isNaN(key.getDouble())))
 			return;
@@ -89,17 +96,20 @@ class LuaTable extends LuaMetatable
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param interp
+	 * @return*/
 	@Override
-	public String getString(LuaInterpreter interp)
+	public @NotNull String getString(@Nullable LuaInterpreter interp)
 	{
-//		return toString();
+		if(interp != null)
+		{
+			LuaObject res = event(interp, "tostring", LuaNil.NIL);
+			if (res != null)
+				return res.getString();
+		}
 
-		LuaObject res = event(interp, "tostring", LuaNil.NIL);
-		if(res != null)
-			return res.getString();
-		else
-			return "table: 0x" + Integer.toHexString(hashCode()) + Integer.toHexString(System.identityHashCode(map));
+		return "table: 0x" + Integer.toHexString(hashCode()) + Integer.toHexString(System.identityHashCode(map));
 	}
 
 	/** {@inheritDoc} */
@@ -166,7 +176,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
+	LuaBoolean doLE(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "le", o);
 		if(res != null)
@@ -182,7 +192,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
+	LuaBoolean doLT(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "lt", o);
 		if(res != null)
@@ -192,7 +202,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doConcat(LuaInterpreter interp, LuaObject o)
+	LuaObject doConcat(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "concat", o);
 		if(res != null)
@@ -202,7 +212,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doAdd(LuaInterpreter interp, LuaObject o)
+	LuaObject doAdd(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "add", o);
 		if(res != null)
@@ -212,7 +222,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doSub(LuaInterpreter interp, LuaObject o)
+	LuaObject doSub(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "sub", o);
 		if(res != null)
@@ -222,7 +232,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doMul(LuaInterpreter interp, LuaObject o)
+	LuaObject doMul(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "mul", o);
 		if(res != null)
@@ -232,7 +242,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doDiv(LuaInterpreter interp, LuaObject o)
+	LuaObject doDiv(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "div", o);
 		if(res != null)
@@ -242,7 +252,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doIDiv(LuaInterpreter interp, LuaObject o)
+	LuaObject doIDiv(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "idiv", o);
 		if(res != null)
@@ -252,7 +262,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doMod(LuaInterpreter interp, LuaObject o)
+	LuaObject doMod(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "mod", o);
 		if(res != null)
@@ -262,7 +272,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doPow(LuaInterpreter interp, LuaObject o)
+	LuaObject doPow(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "pow", o);
 		if(res != null)
@@ -272,7 +282,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doBAND(LuaInterpreter interp, LuaObject o)
+	LuaObject doBAND(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "band", o);
 		if(res != null)
@@ -282,7 +292,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doBOR(LuaInterpreter interp, LuaObject o)
+	LuaObject doBOR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "bor", o);
 		if(res != null)
@@ -292,7 +302,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doBXOR(LuaInterpreter interp, LuaObject o)
+	LuaObject doBXOR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "bxor", o);
 		if(res != null)
@@ -302,7 +312,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doSHL(LuaInterpreter interp, LuaObject o)
+	LuaObject doSHL(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "shl", o);
 		if(res != null)
@@ -312,7 +322,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doSHR(LuaInterpreter interp, LuaObject o)
+	LuaObject doSHR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "shr", o);
 		if(res != null)
@@ -322,7 +332,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doBNOT(LuaInterpreter interp)
+	LuaObject doBNOT(@Nullable LuaInterpreter interp)
 	{
 		LuaObject res = event(interp, "bnot", LuaNil.NIL);
 		if(res != null)
@@ -332,7 +342,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doUnm(LuaInterpreter interp)
+	LuaObject doUnm(@Nullable LuaInterpreter interp)
 	{
 		LuaObject res = event(interp, "unm", LuaNil.NIL);
 		if(res != null)
@@ -342,7 +352,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doLen(LuaInterpreter interp)
+	LuaObject doLen(@Nullable LuaInterpreter interp)
 	{
 		LuaObject res = event(interp, "len", LuaNil.NIL);
 		if(res != null)
@@ -352,7 +362,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doIndex(LuaInterpreter interp, LuaObject key)
+	LuaObject doIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key)
 	{
 		if(map.containsKey(key))
 		{
@@ -374,7 +384,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	void doNewIndex(LuaInterpreter interp, LuaObject key, LuaObject value)
+	void doNewIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key, @NotNull LuaObject value)
 	{
 		LuaObject v = map.get(key);
 		if(v == null || v.isNil())
@@ -392,7 +402,7 @@ class LuaTable extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+	LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 	{
 		LuaObject[] tmp = new LuaObject[args.length + 1];
 		tmp[0] = this;
@@ -425,14 +435,16 @@ class LuaTable extends LuaMetatable
 		return T_TABLE;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @return*/
 	@Override
-	public LuaType type()
+	public @NotNull LuaType type()
 	{
 		return LuaType.TABLE;
 	}
 
 	/** {@inheritDoc} */
+	@NotNull
 	@Override
 	public String toString()
 	{

@@ -10,6 +10,8 @@ import java.util.GregorianCalendar;
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 import com.hk.math.Rand;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>LuaLibraryOS class.</p>
@@ -28,7 +30,7 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 			{
 				table.rawSet(new LuaString(name), new LuaFunction() {
 					@Override
-					LuaObject doCall(LuaInterpreter interp, LuaObject[] args) {
+					LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args) {
 						return new LuaFloat((System.nanoTime() - nanos) / 1E9D);
 					}
 				});

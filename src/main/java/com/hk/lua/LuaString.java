@@ -1,5 +1,8 @@
 package com.hk.lua;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 class LuaString extends LuaMetatable
 {
 	private final String value;
@@ -10,30 +13,35 @@ class LuaString extends LuaMetatable
 		metatable = LuaLibraryString.stringMetatable;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @return*/
 	@Override
-	public LuaObject rawLen()
+	public @NotNull LuaObject rawLen()
 	{
 		return LuaInteger.valueOf(value.length());
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param o*/
 	@Override
-	public boolean rawEqual(LuaObject o)
+	public boolean rawEqual(@NotNull LuaObject o)
 	{
 		return o.isString() && value.equals(o.getString());
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @return*/
 	@Override
-	public LuaObject rawGet(LuaObject key)
+	public @NotNull LuaObject rawGet(@NotNull LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param key
+	 * @param value*/
 	@Override
-	public void rawSet(LuaObject key, LuaObject value)
+	public void rawSet(@NotNull LuaObject key, @NotNull LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
@@ -45,9 +53,11 @@ class LuaString extends LuaMetatable
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param interp
+	 * @return*/
 	@Override
-	public String getString(LuaInterpreter interp)
+	public @NotNull String getString(@Nullable LuaInterpreter interp)
 	{
 		return value;
 	}
@@ -139,7 +149,7 @@ class LuaString extends LuaMetatable
 	}
 
 	@Override
-	LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
+	LuaBoolean doLE(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		if (o.code() == T_STRING) {
 			return LuaBoolean.valueOf(value.compareTo(o.getString()) <= 0);
@@ -148,7 +158,7 @@ class LuaString extends LuaMetatable
 	}
 
 	@Override
-	LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
+	LuaBoolean doLT(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		if (o.code() == T_STRING) {
 			return LuaBoolean.valueOf(value.compareTo(o.getString()) < 0);
@@ -157,13 +167,13 @@ class LuaString extends LuaMetatable
 	}
 
 	@Override
-	LuaBoolean doEQ(LuaInterpreter interp, LuaObject o)
+	LuaBoolean doEQ(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return LuaBoolean.valueOf(o.isString() && value.equals(o.getString()));
 	}
 
 	@Override
-	LuaObject doConcat(LuaInterpreter interp, LuaObject o)
+	LuaObject doConcat(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		switch(o.code())
 		{
@@ -176,67 +186,67 @@ class LuaString extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doAdd(LuaInterpreter interp, LuaObject o)
+	LuaObject doAdd(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return new LuaFloat(getDouble() + o.getDouble());
 	}
 
 	@Override
-	LuaObject doSub(LuaInterpreter interp, LuaObject o)
+	LuaObject doSub(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return new LuaFloat(getDouble() - o.getDouble());
 	}
 
 	@Override
-	LuaObject doMul(LuaInterpreter interp, LuaObject o)
+	LuaObject doMul(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return new LuaFloat(getDouble() * o.getDouble());
 	}
 
 	@Override
-	LuaObject doDiv(LuaInterpreter interp, LuaObject o)
+	LuaObject doDiv(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return new LuaFloat(getDouble() / o.getDouble());
 	}
 
 	@Override
-	LuaObject doIDiv(LuaInterpreter interp, LuaObject o)
+	LuaObject doIDiv(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return LuaInteger.valueOf(getLong() / o.getLong());
 	}
 
 	@Override
-	LuaObject doMod(LuaInterpreter interp, LuaObject o)
+	LuaObject doMod(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return new LuaFloat(getDouble() % o.getDouble());
 	}
 
 	@Override
-	LuaObject doPow(LuaInterpreter interp, LuaObject o)
+	LuaObject doPow(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return new LuaFloat(Math.pow(getDouble(), o.getDouble()));
 	}
 
 	@Override
-	LuaObject doBAND(LuaInterpreter interp, LuaObject o)
+	LuaObject doBAND(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return LuaInteger.valueOf(getLong() & o.getLong());
 	}
 
 	@Override
-	LuaObject doBOR(LuaInterpreter interp, LuaObject o)
+	LuaObject doBOR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return LuaInteger.valueOf(getLong() | o.getLong());
 	}
 
 	@Override
-	LuaObject doBXOR(LuaInterpreter interp, LuaObject o)
+	LuaObject doBXOR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return LuaInteger.valueOf(getLong() ^ o.getLong());
 	}
 
 	@Override
-	LuaObject doSHL(LuaInterpreter interp, LuaObject o)
+	LuaObject doSHL(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		if (o.getInt() == 64) {
 			return LuaInteger.ZERO;
@@ -245,7 +255,7 @@ class LuaString extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doSHR(LuaInterpreter interp, LuaObject o)
+	LuaObject doSHR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		if (o.getInt() == 64) {
 			return LuaInteger.ZERO;
@@ -254,44 +264,45 @@ class LuaString extends LuaMetatable
 	}
 
 	@Override
-	LuaObject doBNOT(LuaInterpreter interp)
+	LuaObject doBNOT(@Nullable LuaInterpreter interp)
 	{
 		return LuaInteger.valueOf(~getLong());
 	}
 
 	@Override
-	LuaObject doUnm(LuaInterpreter interp)
+	LuaObject doUnm(@Nullable LuaInterpreter interp)
 	{
 		return new LuaFloat(-getDouble());
 	}
 
 	@Override
-	LuaObject doLen(LuaInterpreter interp)
+	LuaObject doLen(@Nullable LuaInterpreter interp)
 	{
 		return rawLen();
 	}
 
 	@Override
-	LuaObject doIndex(LuaInterpreter interp, LuaObject key)
+	LuaObject doIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key)
 	{
 		return metatable.doIndex(interp, key);
 	}
 
 	@Override
-	void doNewIndex(LuaInterpreter interp, LuaObject key, LuaObject value)
+	void doNewIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key, @NotNull LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
 	@Override
-	LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+	LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 	{
 		throw LuaErrors.INVALID_CALL.create(name());
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param metatable*/
 	@Override
-	public void setMetatable(LuaObject metatable)
+	public void setMetatable(@NotNull LuaObject metatable)
 	{
 		throw new UnsupportedOperationException();
 	}
@@ -302,9 +313,10 @@ class LuaString extends LuaMetatable
 		return T_STRING;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @return*/
 	@Override
-	public LuaType type()
+	public @NotNull LuaType type()
 	{
 		return LuaType.STRING;
 	}

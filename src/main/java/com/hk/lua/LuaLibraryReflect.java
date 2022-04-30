@@ -3,6 +3,8 @@ package com.hk.lua;
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 import com.hk.util.Node;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.*;
 import java.util.Arrays;
@@ -193,7 +195,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		}
 
 		@Override
-		public LuaObject rawGet(LuaObject key)
+		public @NotNull LuaObject rawGet(@NotNull LuaObject key)
 		{
 			if(key.isString())
 			{
@@ -221,7 +223,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		}
 
 		@Override
-		public void rawSet(LuaObject key, LuaObject value)
+		public void rawSet(@NotNull LuaObject key, @NotNull LuaObject value)
 		{
 			if(key.isString())
 			{
@@ -244,13 +246,13 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		}
 
 		@Override
-		public boolean rawEqual(LuaObject o)
+		public boolean rawEqual(@NotNull LuaObject o)
 		{
 			return o != null && o.getClass() == getClass() && ((LuaJava) o).cls.equals(cls) && Objects.equals(((LuaJava) o).obj, obj);
 		}
 
 		@Override
-		public LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+		public LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 		{
 			Lua.checkArgs(cls.getName(), args, LuaType.STRING);
 			String name = args[0].getString();
@@ -321,7 +323,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		{
 			metatable.rawSet(name, new LuaFunction() {
 				@Override
-				LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+				LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 				{
 					for (Method method : methods)
 					{
@@ -361,7 +363,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		{
 			return new LuaFunction() {
 				@Override
-				LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+				LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 				{
 					Object[] objects = attemptConvert(method.getName(), method.getParameterTypes(), args, true);
 
@@ -390,7 +392,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		}
 
 		@Override
-		public String name()
+		public @NotNull String name()
 		{
 			return (obj == null ? "class " : "") + cls.getName() + "*";
 		}
@@ -402,7 +404,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		}
 
 		@Override
-		public String getString(LuaInterpreter interp)
+		public @NotNull String getString(@Nullable LuaInterpreter interp)
 		{
 			return obj == null ? cls.toString() : obj.toString();
 		}
@@ -419,7 +421,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 			{
 				metatable.rawSet("new", new LuaFunction() {
 					@Override
-					LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+					LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 					{
 						for (Constructor<?> constructor : constructors)
 						{

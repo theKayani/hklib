@@ -172,6 +172,17 @@ public class LuaTest extends TestCase
 		assertTrue(((LuaObject) obj).getBoolean());
 	}
 
+	public void testLargeRecords() throws FileNotFoundException
+	{
+		final LuaInterpreter interp = Lua.reader(Assets.get("lua/large_records.lua"));
+
+		Lua.importStandard(interp);
+
+		Object obj = interp.execute();
+
+		assertEquals(Lua.newNumber(880), obj);
+	}
+
 	public void testLunity() throws FileNotFoundException
 	{
 		final LuaInterpreter interp = Lua.reader(Assets.get("lua/test_lunity.lua"));

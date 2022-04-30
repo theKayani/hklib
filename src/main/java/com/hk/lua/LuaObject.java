@@ -1,5 +1,8 @@
 package com.hk.lua;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -18,39 +21,39 @@ public abstract class LuaObject extends Lua.LuaValue
 	{
 	}
 
-	abstract LuaBoolean doLE(LuaInterpreter interp, LuaObject o);
-	abstract LuaBoolean doLT(LuaInterpreter interp, LuaObject o);
-	abstract LuaBoolean doEQ(LuaInterpreter interp, LuaObject o);
+	abstract LuaBoolean doLE(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaBoolean doLT(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaBoolean doEQ(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
 
-	abstract LuaObject doConcat(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doAdd(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doSub(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doMul(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doDiv(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doIDiv(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doMod(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doPow(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doBAND(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doBOR(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doBXOR(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doSHL(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doSHR(LuaInterpreter interp, LuaObject o);
-	abstract LuaObject doBNOT(LuaInterpreter interp);
-	abstract LuaObject doUnm(LuaInterpreter interp);
-	abstract LuaObject doLen(LuaInterpreter interp);
-	abstract LuaObject doIndex(LuaInterpreter interp, LuaObject key);
-	abstract void doNewIndex(LuaInterpreter interp, LuaObject key, LuaObject value);
-	abstract LuaObject doCall(LuaInterpreter interp, LuaObject[] args);
+	abstract LuaObject doConcat(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doAdd(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doSub(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doMul(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doDiv(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doIDiv(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doMod(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doPow(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doBAND(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doBOR(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doBXOR(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doSHL(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doSHR(@Nullable LuaInterpreter interp, @NotNull LuaObject o);
+	abstract LuaObject doBNOT(@Nullable LuaInterpreter interp);
+	abstract LuaObject doUnm(@Nullable LuaInterpreter interp);
+	abstract LuaObject doLen(@Nullable LuaInterpreter interp);
+	abstract LuaObject doIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key);
+	abstract void doNewIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key, @NotNull LuaObject value);
+	abstract LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args);
 
 	abstract int code();
 
 	/**
 	 * <p>Return whether another LuaObject is of equal value to this one.</p>
 	 *
-	 * @param o a {@link com.hk.lua.LuaObject} object
+	 * @param o a {@link LuaObject} object
 	 * @return a boolean dictating whether these objects are of equal value.
 	 */
-	public abstract boolean rawEqual(LuaObject o);
+	public abstract boolean rawEqual(@NotNull LuaObject o);
 
 	/**
 	 * <p>Return the length of this Lua object. This only applies to
@@ -58,22 +61,23 @@ public abstract class LuaObject extends Lua.LuaValue
 	 *
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
+	@NotNull
 	public abstract LuaObject rawLen();
 
 	/**
 	 * <p>Get the raw value using a Lua object as a key to map the val.</p>
 	 *
-	 * @param key a {@link com.hk.lua.LuaObject} object
+	 * @param key a {@link LuaObject} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public abstract LuaObject rawGet(LuaObject key);
+	@NotNull
+	public abstract LuaObject rawGet(@NotNull LuaObject key);
 	/**
 	 * <p>Set the raw value using a Lua object as a key to map the val.</p>
-	 *
-	 * @param key a {@link com.hk.lua.LuaObject} object
-	 * @param value a {@link com.hk.lua.LuaObject} object
+	 *  @param key a {@link LuaObject} object
+	 * @param value a {@link LuaObject} object
 	 */
-	public abstract void rawSet(LuaObject key, LuaObject value);
+	public abstract void rawSet(@NotNull LuaObject key, @NotNull LuaObject value);
 
 	/**
 	 * <p>Get true or false defining whether this object 'exists' and
@@ -89,10 +93,11 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * the "__tostring" method. If this object is a string, this
 	 * parameter is ignored.</p>
 	 *
-	 * @param interp a {@link com.hk.lua.LuaInterpreter} object
+	 * @param interp a {@link LuaInterpreter} object
 	 * @return a {@link java.lang.String} representation of this object
 	 */
-	public abstract String getString(LuaInterpreter interp);
+	@NotNull
+	public abstract String getString(@Nullable LuaInterpreter interp);
 
 	/**
 	 * <p>Get the double value of this Lua object if it's a number.</p>
@@ -212,6 +217,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 *
 	 * @return a {@link com.hk.lua.LuaType} object
 	 */
+	@NotNull
 	public abstract LuaType type();
 
 	/**
@@ -219,6 +225,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String name()
 	{
 		return type().luaName;
@@ -227,9 +234,9 @@ public abstract class LuaObject extends Lua.LuaValue
 	/**
 	 * <p>setMetatable.</p>
 	 *
-	 * @param metatable a {@link com.hk.lua.LuaObject} object
+	 * @param metatable a {@link LuaObject} object
 	 */
-	public void setMetatable(LuaObject metatable)
+	public void setMetatable(@NotNull LuaObject metatable)
 	{
 		throw new UnsupportedOperationException();
 	}
@@ -239,13 +246,15 @@ public abstract class LuaObject extends Lua.LuaValue
 	 *
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
+	@NotNull
 	public LuaObject getMetatable()
 	{
 		return LuaNil.NIL;
 	}
 
 	@Override
-	LuaObject evaluate(LuaInterpreter interps)
+	@NotNull
+	LuaObject evaluate(@NotNull LuaInterpreter interps)
 	{
 		return this;
 	}
@@ -277,7 +286,8 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a long
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public LuaObject getIndex(LuaInterpreter interp, long key)
+	@NotNull
+	public LuaObject getIndex(@Nullable LuaInterpreter interp, long key)
 	{
 		return getIndex(interp, LuaInteger.valueOf(key));
 	}
@@ -289,7 +299,8 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a {@link java.lang.String} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public LuaObject getIndex(LuaInterpreter interp, String key)
+	@NotNull
+	public LuaObject getIndex(@Nullable LuaInterpreter interp, @NotNull String key)
 	{
 		return getIndex(interp, new LuaString(key));
 	}
@@ -301,7 +312,8 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a {@link com.hk.lua.LuaObject} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public LuaObject getIndex(LuaInterpreter interp, LuaObject key)
+	@NotNull
+	public LuaObject getIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key)
 	{
 		return doIndex(interp, key);
 	}
@@ -313,7 +325,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a long
 	 * @param value a {@link java.lang.Object} object
 	 */
-	public void setIndex(LuaInterpreter interp, long key, Object value)
+	public void setIndex(@Nullable LuaInterpreter interp, long key, Object value)
 	{
 		setIndex(interp, LuaInteger.valueOf(key), Lua.newLuaObject(value));
 	}
@@ -325,7 +337,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a {@link java.lang.String} object
 	 * @param value a {@link java.lang.Object} object
 	 */
-	public void setIndex(LuaInterpreter interp, String key, Object value)
+	public void setIndex(@Nullable LuaInterpreter interp, @NotNull String key, @Nullable Object value)
 	{
 		setIndex(interp, new LuaString(key), Lua.newLuaObject(value));
 	}
@@ -337,7 +349,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a {@link com.hk.lua.LuaObject} object
 	 * @param value a {@link java.lang.Object} object
 	 */
-	public void setIndex(LuaInterpreter interp, LuaObject key, Object value)
+	public void setIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key, @Nullable Object value)
 	{
 		setIndex(interp, key, Lua.newLuaObject(value));
 	}
@@ -349,7 +361,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a long
 	 * @param value a {@link com.hk.lua.LuaObject} object
 	 */
-	public void setIndex(LuaInterpreter interp, long key, LuaObject value)
+	public void setIndex(@Nullable LuaInterpreter interp, long key, @NotNull LuaObject value)
 	{
 		setIndex(interp, LuaInteger.valueOf(key), value);
 	}
@@ -361,7 +373,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a {@link java.lang.String} object
 	 * @param value a {@link com.hk.lua.LuaObject} object
 	 */
-	public void setIndex(LuaInterpreter interp, String key, LuaObject value)
+	public void setIndex(@Nullable LuaInterpreter interp, String key, @NotNull LuaObject value)
 	{
 		setIndex(interp, new LuaString(key), value);
 	}
@@ -373,7 +385,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a {@link com.hk.lua.LuaObject} object
 	 * @param value a {@link com.hk.lua.LuaObject} object
 	 */
-	public void setIndex(LuaInterpreter interp, LuaObject key, LuaObject value)
+	public void setIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key, @NotNull LuaObject value)
 	{
 		doNewIndex(interp, key, value);
 	}
@@ -384,6 +396,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a long
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
+	@NotNull
 	public LuaObject rawGet(long key)
 	{
 		return rawGet(LuaInteger.valueOf(key));
@@ -395,7 +408,8 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a {@link java.lang.String} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public LuaObject rawGet(String key)
+	@NotNull
+	public LuaObject rawGet(@NotNull String key)
 	{
 		return rawGet(new LuaString(key));
 	}
@@ -406,7 +420,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a long
 	 * @param value a {@link java.lang.Object} object
 	 */
-	public void rawSet(long key, Object value)
+	public void rawSet(long key, @Nullable Object value)
 	{
 		rawSet(LuaInteger.valueOf(key), Lua.newLuaObject(value));
 	}
@@ -417,7 +431,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a {@link java.lang.String} object
 	 * @param value a {@link java.lang.Object} object
 	 */
-	public void rawSet(String key, Object value)
+	public void rawSet(@NotNull String key, @Nullable Object value)
 	{
 		rawSet(new LuaString(key), Lua.newLuaObject(value));
 	}
@@ -428,7 +442,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a {@link com.hk.lua.LuaObject} object
 	 * @param value a {@link java.lang.Object} object
 	 */
-	public void rawSet(LuaObject key, Object value)
+	public void rawSet(@NotNull LuaObject key, @Nullable Object value)
 	{
 		rawSet(key, Lua.newLuaObject(value));
 	}
@@ -439,7 +453,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a long
 	 * @param value a {@link com.hk.lua.LuaObject} object
 	 */
-	public void rawSet(long key, LuaObject value)
+	public void rawSet(long key, @NotNull LuaObject value)
 	{
 		rawSet(LuaInteger.valueOf(key), value);
 	}
@@ -450,7 +464,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param key a {@link java.lang.String} object
 	 * @param value a {@link com.hk.lua.LuaObject} object
 	 */
-	public void rawSet(String key, LuaObject value)
+	public void rawSet(@NotNull String key, @NotNull LuaObject value)
 	{
 		rawSet(new LuaString(key), value);
 	}
@@ -460,6 +474,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public final String getString()
 	{
 		return getString(null);
@@ -482,7 +497,8 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param args a {@link com.hk.lua.LuaObject} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public LuaObject call(LuaInterpreter interp, LuaObject... args)
+	@NotNull
+	public LuaObject call(@NotNull LuaInterpreter interp, LuaObject... args)
 	{
 		return doCall(interp, args == null ? new LuaObject[0] : args);
 	}
@@ -494,7 +510,8 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param args a {@link java.lang.Object} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public LuaObject callFunction(LuaInterpreter interp, Object... args)
+	@NotNull
+	public LuaObject callFunction(@NotNull LuaInterpreter interp, Object... args)
 	{
 		LuaObject[] as;
 		if(args != null)
@@ -526,6 +543,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 *
 	 * @return a {@link java.lang.Object} object
 	 */
+	@Nullable
 	public Object getUserdata()
 	{
 		throw new UnsupportedOperationException();
@@ -538,7 +556,8 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @param <T> a T class
 	 * @return a T object
 	 */
-	public <T> T getUserdata(Class<T> cls)
+	@Nullable
+	public <T> T getUserdata(@NotNull Class<T> cls)
 	{
 		return cls.cast(getUserdata());
 	}
@@ -561,6 +580,7 @@ public abstract class LuaObject extends Lua.LuaValue
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String toString()
 	{
 		return getString();

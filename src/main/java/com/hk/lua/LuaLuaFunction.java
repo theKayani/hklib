@@ -1,5 +1,8 @@
 package com.hk.lua;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 class LuaLuaFunction extends LuaFunction
 {
 	private final Environment fenv;
@@ -13,15 +16,17 @@ class LuaLuaFunction extends LuaFunction
 		this.body = body;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param interp
+	 * @return*/
 	@Override
-	public String getString(LuaInterpreter interp)
+	public @NotNull String getString(@Nullable LuaInterpreter interp)
 	{
 		return "function: 0x" + Integer.toHexString(hashCode()) + Integer.toHexString(System.identityHashCode(body));
 	}
 
 	@Override
-	LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+	LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 	{
 		Object res = body.execute(interp, fenv, this.args, args);
 		if(res instanceof LuaObject[])

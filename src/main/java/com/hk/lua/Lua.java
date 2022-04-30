@@ -1,5 +1,8 @@
 package com.hk.lua;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -97,7 +100,8 @@ public class Lua
 	 * @param source Source of code for error messages
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 */
-	public static LuaFactory factory(Reader rdr, String source)
+	@NotNull
+	public static LuaFactory factory(@NotNull Reader rdr, @NotNull String source)
 	{
 		return new LuaFactory(Objects.requireNonNull(rdr), source);
 	}
@@ -109,7 +113,8 @@ public class Lua
 	 * @param rdr Lua code
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 */
-	public static LuaFactory factory(Reader rdr)
+	@NotNull
+	public static LuaFactory factory(@NotNull Reader rdr)
 	{
 		return new LuaFactory(Objects.requireNonNull(rdr), STDIN);
 	}
@@ -121,7 +126,8 @@ public class Lua
 	 * @param str Lua code
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 */
-	public static LuaFactory factory(String str)
+	@NotNull
+	public static LuaFactory factory(@NotNull String str)
 	{
 		return new LuaFactory(new StringReader(str), STDIN);
 	}
@@ -134,7 +140,8 @@ public class Lua
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static LuaFactory factory(File file) throws FileNotFoundException
+	@NotNull
+	public static LuaFactory factory(@NotNull File file) throws FileNotFoundException
 	{
 		return new LuaFactory(new FileReader(file), file.getName());
 	}
@@ -149,7 +156,8 @@ public class Lua
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static LuaFactory factory(File file, Charset charset) throws FileNotFoundException
+	@NotNull
+	public static LuaFactory factory(@NotNull File file, @NotNull Charset charset) throws FileNotFoundException
 	{
 		return new LuaFactory(new InputStreamReader(new FileInputStream(file), charset), file.getName());
 	}
@@ -162,7 +170,8 @@ public class Lua
 	 * @param input Lua code
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 */
-	public static LuaFactory factory(InputStream input)
+	@NotNull
+	public static LuaFactory factory(@NotNull InputStream input)
 	{
 		return new LuaFactory(new InputStreamReader(input), STDIN);
 	}
@@ -176,7 +185,8 @@ public class Lua
 	 * @param charset to use when reading the stream
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 */
-	public static LuaFactory factory(InputStream input, Charset charset)
+	@NotNull
+	public static LuaFactory factory(@NotNull InputStream input, @NotNull Charset charset)
 	{
 		return new LuaFactory(new InputStreamReader(input, charset), STDIN);
 	}
@@ -189,7 +199,8 @@ public class Lua
 	 * @return a {@link com.hk.lua.LuaFactory} object
 	 * @throws java.io.IOException if any.
 	 */
-	public static LuaFactory factory(URL url) throws IOException
+	@NotNull
+	public static LuaFactory factory(@NotNull URL url) throws IOException
 	{
 		return new LuaFactory(new InputStreamReader(url.openStream()), url.getFile());
 	}
@@ -201,6 +212,7 @@ public class Lua
 	 *
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
+	@NotNull
 	public static LuaInterpreter interpreter()
 	{
 		return new LuaInterpreter((Reader) null, STDIN);
@@ -215,7 +227,8 @@ public class Lua
 	 * @param source Source of code for error messages
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
-	public static LuaInterpreter interpreter(String source)
+	@NotNull
+	public static LuaInterpreter interpreter(@NotNull String source)
 	{
 		return new LuaInterpreter((Reader) null, source);
 	}
@@ -275,7 +288,8 @@ public class Lua
 	 * @param source Source of code for error messages
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
-	public static LuaInterpreter reader(Reader rdr, String source)
+	@NotNull
+	public static LuaInterpreter reader(@NotNull Reader rdr, @NotNull String source)
 	{
 		return new LuaInterpreter(Objects.requireNonNull(rdr), source);
 	}
@@ -287,7 +301,8 @@ public class Lua
 	 * @param rdr Lua code
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
-	public static LuaInterpreter reader(Reader rdr)
+	@NotNull
+	public static LuaInterpreter reader(@NotNull Reader rdr)
 	{
 		return new LuaInterpreter(Objects.requireNonNull(rdr), STDIN);
 	}
@@ -299,7 +314,8 @@ public class Lua
 	 * @param str Lua code
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
-	public static LuaInterpreter reader(String str)
+	@NotNull
+	public static LuaInterpreter reader(@NotNull String str)
 	{
 		return new LuaInterpreter(new StringReader(str), STDIN);
 	}
@@ -313,7 +329,8 @@ public class Lua
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static LuaInterpreter reader(File file) throws FileNotFoundException
+	@NotNull
+	public static LuaInterpreter reader(@NotNull File file) throws FileNotFoundException
 	{
 		return new LuaInterpreter(new FileReader(file), file.getName());
 	}
@@ -328,7 +345,8 @@ public class Lua
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static LuaInterpreter reader(File file, Charset charset) throws FileNotFoundException
+	@NotNull
+	public static LuaInterpreter reader(@NotNull File file, @NotNull Charset charset) throws FileNotFoundException
 	{
 		return new LuaInterpreter(new InputStreamReader(new FileInputStream(file), charset), file.getName());
 	}
@@ -341,7 +359,8 @@ public class Lua
 	 * @param input Lua code
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
-	public static LuaInterpreter reader(InputStream input)
+	@NotNull
+	public static LuaInterpreter reader(@NotNull InputStream input)
 	{
 		return new LuaInterpreter(new InputStreamReader(input), STDIN);
 	}
@@ -355,7 +374,8 @@ public class Lua
 	 * @param charset to use when reading the stream
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 */
-	public static LuaInterpreter reader(InputStream input, Charset charset)
+	@NotNull
+	public static LuaInterpreter reader(@NotNull InputStream input, @NotNull Charset charset)
 	{
 		return new LuaInterpreter(new InputStreamReader(input, charset), STDIN);
 	}
@@ -368,7 +388,8 @@ public class Lua
 	 * @return a {@link com.hk.lua.LuaInterpreter} object
 	 * @throws java.io.IOException if any.
 	 */
-	public static LuaInterpreter reader(URL url) throws IOException
+	@NotNull
+	public static LuaInterpreter reader(@NotNull URL url) throws IOException
 	{
 		return new LuaInterpreter(new InputStreamReader(url.openStream()), url.getFile());
 	}
@@ -378,7 +399,7 @@ public class Lua
 	 * three additional libraries regarding hashing, JSON, and dates.
 	 * @param interp The environment to import the libraries into
 	 */
-	public static void importStandard(LuaInterpreter interp)
+	public static void importStandard(@NotNull LuaInterpreter interp)
 	{
 		interp.importLib(LuaLibrary.BASIC);
 		interp.importLib(LuaLibrary.COROUTINE);
@@ -404,7 +425,7 @@ public class Lua
 	 *
 	 * @param factory The environment to import the libraries into
 	 */
-	public static void importStandard(LuaFactory factory)
+	public static void importStandard(@NotNull LuaFactory factory)
 	{
 		factory.addLibrary(LuaLibrary.BASIC);
 		factory.addLibrary(LuaLibrary.COROUTINE);
@@ -470,7 +491,8 @@ public class Lua
 	 * @param o a {@link java.lang.Object} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public static LuaObject newLuaObject(Object o)
+	@NotNull
+	public static LuaObject newLuaObject(@Nullable Object o)
 	{
 		if(o == null)
 			return LuaNil.NIL;
@@ -529,6 +551,7 @@ public class Lua
 	 * @deprecated use {@link #newBool} or {@link #TRUE} or {@link #FALSE}
 	 */
 	@Deprecated
+	@NotNull
 	public static LuaObject newBoolean(boolean value)
 	{
 		return newBool(value);
@@ -542,6 +565,7 @@ public class Lua
 	 * @param value a boolean
 	 * @return a {@link com.hk.lua.LuaObject} boolean object
 	 */
+	@NotNull
 	public static LuaObject newBool(boolean value)
 	{
 		return LuaBoolean.valueOf(value);
@@ -556,7 +580,8 @@ public class Lua
 	 * @param cs a {@link java.lang.CharSequence} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public static LuaObject newString(CharSequence cs)
+	@NotNull
+	public static LuaObject newString(@Nullable CharSequence cs)
 	{
 		return cs == null ? LuaNil.NIL : newString(cs.toString());
 	}
@@ -569,6 +594,7 @@ public class Lua
 	 * @param c a char
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
+	@NotNull
 	public static LuaObject newString(char c)
 	{
 		return newString(String.valueOf(c));
@@ -583,7 +609,8 @@ public class Lua
 	 * @param cs an array of {@link char} objects
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public static LuaObject newString(char[] cs)
+	@NotNull
+	public static LuaObject newString(@Nullable char[] cs)
 	{
 		return cs == null ? LuaNil.NIL : new LuaString(new String(cs));
 	}
@@ -597,7 +624,8 @@ public class Lua
 	 * @param str a {@link java.lang.String} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public static LuaObject newString(String str)
+	@NotNull
+	public static LuaObject newString(@Nullable String str)
 	{
 		return str == null ? LuaNil.NIL : new LuaString(str);
 	}
@@ -611,6 +639,7 @@ public class Lua
 	 * @param value a double
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
+	@NotNull
 	public static LuaObject newNumber(double value)
 	{
 		return new LuaFloat(value);
@@ -624,6 +653,7 @@ public class Lua
 	 * @param value a long
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
+	@NotNull
 	public static LuaObject newNumber(long value)
 	{
 		return LuaInteger.valueOf(value);
@@ -640,6 +670,7 @@ public class Lua
 	 * @param args a {@link com.hk.lua.LuaObject} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
+	@NotNull
 	public static LuaObject newVarargs(LuaObject... args)
 	{
 		return new LuaArgs(args);
@@ -655,6 +686,7 @@ public class Lua
 	 * @param o a {@link com.hk.lua.LuaObject} object
 	 * @return an array of {@link com.hk.lua.LuaObject} objects
 	 */
+	@NotNull
 	public static LuaObject[] getVarargs(LuaObject o)
 	{
 		if(o instanceof LuaArgs)
@@ -676,6 +708,7 @@ public class Lua
 	 *
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
+	@NotNull
 	public static LuaObject newTable()
 	{
 		return new LuaTable();
@@ -690,7 +723,8 @@ public class Lua
 	 * @param map a {@link java.util.Map} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public static LuaObject newTable(Map<LuaObject, LuaObject> map)
+	@NotNull
+	public static LuaObject newTable(@NotNull Map<LuaObject, LuaObject> map)
 	{
 		return new LuaTable(new LinkedHashMap<>(map));
 	}
@@ -704,7 +738,8 @@ public class Lua
 	 * @param iterable a {@link java.lang.Iterable} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public static LuaObject newTable(Iterable<LuaObject> iterable)
+	@NotNull
+	public static LuaObject newTable(@NotNull Iterable<LuaObject> iterable)
 	{
 		LuaObject tbl = new LuaTable();
 		LuaObject o;
@@ -740,7 +775,8 @@ public class Lua
 	 * @param methodName to wrap in a Lua function
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public static LuaObject newJavaFunc(Class<?> cls, String methodName)
+	@NotNull
+	public static LuaObject newJavaFunc(@NotNull Class<?> cls, @NotNull String methodName)
 	{
 		return newJavaFunc(null, cls, methodName);
 	}
@@ -754,12 +790,13 @@ public class Lua
 	 * @param methodName a {@link java.lang.String} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public static LuaObject newJavaFunc(Object o, String methodName)
+	@NotNull
+	public static LuaObject newJavaFunc(@NotNull Object o, @NotNull String methodName)
 	{
 		return newJavaFunc(o, o.getClass(), methodName);
 	}
 
-	private static LuaObject newJavaFunc(Object o, Class<?> cls, String methodName)
+	private static LuaObject newJavaFunc(@Nullable Object o, @NotNull Class<?> cls, @NotNull String methodName)
 	{
 		Method[] ms = cls.getDeclaredMethods();
 		for (Method m : ms)
@@ -784,12 +821,13 @@ public class Lua
 	 * @param method a {@link com.hk.lua.Lua.LuaMethod} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public static LuaObject newFunc(final LuaMethod method)
+	@NotNull
+	public static LuaObject newFunc(@NotNull final LuaMethod method)
 	{
 		return new LuaFunction()
 		{
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				LuaObject o = method.call(interp, args);
 				return o == null ? LuaNil.NIL : o;
@@ -806,6 +844,7 @@ public class Lua
 	 * @deprecated see #NIL
 	 */
 	@Deprecated
+	@NotNull
 	public static LuaObject nil()
 	{
 		return LuaNil.NIL;
@@ -820,7 +859,7 @@ public class Lua
 	 * @param args an array of {@link com.hk.lua.LuaObject} objects
 	 * @param types a {@link com.hk.lua.LuaType} object
 	 */
-	public static void checkArgs(String method, LuaObject[] args, LuaType... types)
+	public static void checkArgs(@NotNull String method, @NotNull LuaObject[] args, LuaType... types)
 	{
 		for(int i = 0; i < types.length; i++)
 		{
@@ -848,7 +887,8 @@ public class Lua
 	 * @param message the issue message, ex: 'expected table or nil'
 	 * @return an exception to be thrown with the appropriate message
 	 */
-	public static LuaException badArgument(int param, String method, String message)
+	@NotNull
+	public static LuaException badArgument(int param, @NotNull String method, @NotNull String message)
 	{
 		throw badArgument(param, method, message, null);
 	}
@@ -873,17 +913,20 @@ public class Lua
 	 *                 message
 	 * @return an exception to be thrown with the appropriate message
 	 */
-	public static LuaException badArgument(int param, String method, String message, String extra)
+	@NotNull
+	public static LuaException badArgument(int param, @NotNull String method, @NotNull String message, @Nullable String extra)
 	{
 		return new LuaException("bad argument #" + (param + 1) + " to '" + method + "' (" + message + (extra == null ? "" : ", " + extra) + ")");
 	}
 
-	public static LuaObject wrapErr(Exception ex)
+	@NotNull
+	public static LuaObject wrapErr(@NotNull Exception ex)
 	{
 		return wrapErr(ex.getLocalizedMessage());
 	}
 
-	public static LuaObject wrapErr(String message)
+	@NotNull
+	public static LuaObject wrapErr(@NotNull String message)
 	{
 		return new LuaArgs(NIL, new LuaString(message));
 	}
@@ -892,11 +935,10 @@ public class Lua
 	 * @deprecated see {@link #checkArgs(String, LuaObject[], LuaType...)}
 	 */
 	@Deprecated
-	public static void checkArgs(String method, LuaType[] types, LuaObject... args)
+	public static void checkArgs(@NotNull String method, @NotNull LuaType[] types, LuaObject... args)
 	{
 		checkArgs(method, args, types);
 	}
-
 
 	/**
 	 * <p>Annotate a Java method with this class to automatically

@@ -14,6 +14,8 @@ import java.util.zip.ZipOutputStream;
 import com.hk.func.BiConsumer;
 import com.hk.io.IOUtil;
 import com.hk.lua.Lua.LuaMethod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>LuaLibraryHash class.</p>
@@ -36,7 +38,7 @@ public enum LuaLibraryHash implements BiConsumer<Environment, LuaObject>, LuaMet
 
 				LuaObject func = new LuaFunction() {
 					@Override
-					LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+					LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 					{
 						Lua.checkArgs(alg, args, LuaType.STRING);
 						return hash(algorithm, args[0].getString());

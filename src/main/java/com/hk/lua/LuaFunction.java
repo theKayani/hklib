@@ -1,35 +1,43 @@
 package com.hk.lua;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 abstract class LuaFunction extends LuaObject
 {
 	LuaFunction()
 	{
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param o*/
 	@Override
-	public boolean rawEqual(LuaObject o)
+	public boolean rawEqual(@NotNull LuaObject o)
 	{
 		return o == this;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @return*/
 	@Override
-	public LuaObject rawLen()
+	public @NotNull LuaObject rawLen()
 	{
 		throw LuaErrors.INVALID_LENGTH.create(name());
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @return*/
 	@Override
-	public LuaObject rawGet(LuaObject key)
+	public @NotNull LuaObject rawGet(@NotNull LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param key
+	 * @param value*/
 	@Override
-	public void rawSet(LuaObject key, LuaObject value)
+	public void rawSet(@NotNull LuaObject key, @NotNull LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
@@ -41,9 +49,11 @@ abstract class LuaFunction extends LuaObject
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param interp
+	 * @return*/
 	@Override
-	public String getString(LuaInterpreter interp)
+	public @NotNull String getString(@Nullable LuaInterpreter interp)
 	{
 		return "function: 0x" + Long.toHexString((long) Math.pow(hashCode(), 2));
 	}
@@ -132,7 +142,7 @@ abstract class LuaFunction extends LuaObject
 	}
 
 	@Override
-	LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
+	LuaBoolean doLE(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		if (o.code() == T_FUNCTION)
 			throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
@@ -141,7 +151,7 @@ abstract class LuaFunction extends LuaObject
 	}
 
 	@Override
-	LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
+	LuaBoolean doLT(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		if (o.code() == T_FUNCTION)
 			throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
@@ -150,121 +160,121 @@ abstract class LuaFunction extends LuaObject
 	}
 
 	@Override
-	LuaBoolean doEQ(LuaInterpreter interp, LuaObject o)
+	LuaBoolean doEQ(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return LuaBoolean.valueOf(o == this);
 	}
 
 	@Override
-	LuaObject doConcat(LuaInterpreter interp, LuaObject o)
+	LuaObject doConcat(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_CONCATENATE.create(name());
 	}
 
 	@Override
-	LuaObject doAdd(LuaInterpreter interp, LuaObject o)
+	LuaObject doAdd(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doSub(LuaInterpreter interp, LuaObject o)
+	LuaObject doSub(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doMul(LuaInterpreter interp, LuaObject o)
+	LuaObject doMul(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doDiv(LuaInterpreter interp, LuaObject o)
+	LuaObject doDiv(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doIDiv(LuaInterpreter interp, LuaObject o)
+	LuaObject doIDiv(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doMod(LuaInterpreter interp, LuaObject o)
+	LuaObject doMod(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doPow(LuaInterpreter interp, LuaObject o)
+	LuaObject doPow(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doBAND(LuaInterpreter interp, LuaObject o)
+	LuaObject doBAND(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doBOR(LuaInterpreter interp, LuaObject o)
+	LuaObject doBOR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doBXOR(LuaInterpreter interp, LuaObject o)
+	LuaObject doBXOR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doSHL(LuaInterpreter interp, LuaObject o)
+	LuaObject doSHL(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doSHR(LuaInterpreter interp, LuaObject o)
+	LuaObject doSHR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doBNOT(LuaInterpreter interp)
+	LuaObject doBNOT(@Nullable LuaInterpreter interp)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doUnm(LuaInterpreter interp)
+	LuaObject doUnm(@Nullable LuaInterpreter interp)
 	{
 		throw LuaErrors.INVALID_ARITHMETIC.create(name());
 	}
 
 	@Override
-	LuaObject doLen(LuaInterpreter interp)
+	LuaObject doLen(@Nullable LuaInterpreter interp)
 	{
 		throw LuaErrors.INVALID_LENGTH.create(name());
 	}
 
 	@Override
-	LuaObject doIndex(LuaInterpreter interp, LuaObject key)
+	LuaObject doIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
 	@Override
-	void doNewIndex(LuaInterpreter interp, LuaObject key, LuaObject value)
+	void doNewIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key, @NotNull LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
 	@Override
-	abstract LuaObject doCall(LuaInterpreter interp, LuaObject[] args);
+	abstract LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args);
 
 	@Override
 	int code()
@@ -277,7 +287,7 @@ abstract class LuaFunction extends LuaObject
 	 *
 	 * @return a {@link com.hk.lua.LuaType} object
 	 */
-	public LuaType type()
+	public @NotNull LuaType type()
 	{
 		return LuaType.FUNCTION;
 	}

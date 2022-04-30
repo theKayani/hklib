@@ -10,6 +10,8 @@ import java.util.TimeZone;
 
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>LuaLibraryDate class.</p>
@@ -118,7 +120,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 
 		dateMetatable.rawSet("year", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
 					throw Lua.badArgument(0, "year", "DATE* expected");
@@ -145,7 +147,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		});
 		dateMetatable.rawSet("month", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
 					throw Lua.badArgument(0, "month", "DATE* expected");
@@ -172,7 +174,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		});
 		dateMetatable.rawSet("day", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
 					throw Lua.badArgument(0, "day", "DATE* expected");
@@ -199,7 +201,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		});
 		dateMetatable.rawSet("hour", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
 					throw Lua.badArgument(0, "hour", "DATE* expected");
@@ -226,7 +228,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		});
 		dateMetatable.rawSet("minute", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
 					throw Lua.badArgument(0, "minute", "DATE* expected");
@@ -253,7 +255,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		});
 		dateMetatable.rawSet("second", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
 					throw Lua.badArgument(0, "second", "DATE* expected");
@@ -280,7 +282,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		});
 		dateMetatable.rawSet("millis", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
 					throw Lua.badArgument(0, "millis", "DATE* expected");
@@ -307,7 +309,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		});
 		dateMetatable.rawSet("time", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
 					throw Lua.badArgument(0, "time", "DATE* expected");
@@ -317,7 +319,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		});
 		dateMetatable.rawSet("format", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				Lua.checkArgs(toString(), args, LuaType.USERDATA, LuaType.STRING);
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
@@ -338,7 +340,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		});
 		dateMetatable.rawSet("clone", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				Lua.checkArgs(toString(), args, LuaType.USERDATA);
 				if(args.length < 1 || !(args[0] instanceof LuaDateUserdata))
@@ -362,7 +364,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		}
 
 		@Override
-		public boolean rawEqual(LuaObject o)
+		public boolean rawEqual(@NotNull LuaObject o)
 		{
 			if(o == this)
 				return true;
@@ -375,13 +377,13 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		}
 
 		@Override
-		public LuaBoolean doEQ(LuaInterpreter interp, LuaObject o)
+		public LuaBoolean doEQ(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 		{
 			return LuaBoolean.valueOf(rawEqual(o));
 		}
 
 		@Override
-		public LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
+		public LuaBoolean doLE(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 		{
 			if(o instanceof LuaDateUserdata)
 			{
@@ -393,7 +395,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		}
 
 		@Override
-		public LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
+		public LuaBoolean doLT(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 		{
 			if(o instanceof LuaDateUserdata)
 				return LuaBoolean.valueOf(calendar.before(((LuaDateUserdata) o).calendar));
@@ -402,7 +404,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		}
 
 		@Override
-		public String name()
+		public @NotNull String name()
 		{
 			return "DATE*";
 		}
@@ -414,7 +416,7 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		}
 
 		@Override
-		public String getString(LuaInterpreter interp)
+		public @NotNull String getString(@Nullable LuaInterpreter interp)
 		{
 			DateFormat df;
 //			if(interp == null)

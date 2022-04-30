@@ -1,5 +1,8 @@
 package com.hk.lua;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 abstract class LuaMetatable extends LuaObject
 {
 	protected LuaObject metatable;
@@ -9,7 +12,7 @@ abstract class LuaMetatable extends LuaObject
 		metatable = LuaNil.NIL;
 	}
 
-	LuaBoolean doEQ(LuaInterpreter interp, LuaObject o)
+	LuaBoolean doEQ(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		if(rawEqual(o))
 			return LuaBoolean.TRUE;
@@ -30,8 +33,9 @@ abstract class LuaMetatable extends LuaObject
 		return LuaBoolean.FALSE;
 	}
 
-	/** {@inheritDoc} */
-	public void setMetatable(LuaObject metatable)
+	/** {@inheritDoc}
+	 * @param metatable*/
+	public void setMetatable(@NotNull LuaObject metatable)
 	{
 		this.metatable = metatable == null ? LuaNil.NIL : metatable;
 	}
@@ -41,7 +45,7 @@ abstract class LuaMetatable extends LuaObject
 	 *
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
-	public LuaObject getMetatable()
+	public @NotNull LuaObject getMetatable()
 	{
 		return metatable == null ? LuaNil.NIL : metatable;
 	}

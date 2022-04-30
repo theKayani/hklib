@@ -1,5 +1,7 @@
 package com.hk.lua;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,7 +53,7 @@ public class Environment
 	 * @param name name of the variable
 	 * @param value value of the variable
 	 */
-	public void setVar(String name, LuaObject value)
+	public void setVar(@NotNull String name, @NotNull LuaObject value)
 	{
 		setVar(new LuaString(name), value);
 	}
@@ -65,7 +67,7 @@ public class Environment
 	 * @param key the key of the variable
 	 * @param value value of the variable
 	 */
-	public void setVar(LuaObject key, LuaObject value)
+	public void setVar(@NotNull LuaObject key, @NotNull LuaObject value)
 	{
 		boolean isStr = key.isString();
 		if(isStr && locals.containsKey(key.getString()))
@@ -104,7 +106,7 @@ public class Environment
 	 * @param name name of the variable to assign
 	 * @param value value of the variable to assign
 	 */
-	public void setLocal(String name, LuaObject value)
+	public void setLocal(@NotNull String name, @NotNull LuaObject value)
 	{
 		if(name.equals("_ENV"))
 		{
@@ -128,7 +130,8 @@ public class Environment
 	 * @param name name of the variable to retrieve
 	 * @return value of the variable specified
 	 */
-	public LuaObject getVar(String name)
+	@NotNull
+	public LuaObject getVar(@NotNull String name)
 	{
 		return getVar(new LuaString(name));
 	}
@@ -143,7 +146,8 @@ public class Environment
 	 * @param key the key of the variable to retrieve
 	 * @return value of the variable specified
 	 */
-	public LuaObject getVar(LuaObject key)
+	@NotNull
+	public LuaObject getVar(@NotNull LuaObject key)
 	{
 		LuaObject[] obj = key.isString() ? locals.get(key.getString()) : null;
 		if(obj == null)
@@ -158,7 +162,7 @@ public class Environment
 	 * @param name name of the variable to check
 	 * @return whether the specific variable exists in the local space
 	 */
-	public boolean isLocal(String name)
+	public boolean isLocal(@NotNull String name)
 	{
 		return locals.containsKey(name);
 	}

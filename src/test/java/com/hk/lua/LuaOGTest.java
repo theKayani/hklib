@@ -129,6 +129,97 @@ public class LuaOGTest extends TestCase
 		assertEquals(Collections.<LuaObject, LuaObject>emptyMap(), ((LuaTable) interp.require(base)).map);
 
 		assertEquals(((LuaTable) interp.require(base)).map, ((LuaTable) interp.require(base)).map);
+
+		LuaTable tbl;
+
+		tbl = new LuaTable();
+
+		assertEquals(0, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(0, "1");
+
+		assertEquals(0, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(1, "1");
+
+		assertEquals(1, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(1, "1");
+		tbl.rawSet(2, LuaNil.NIL);
+
+		assertEquals(1, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(1, "1");
+		tbl.rawSet(2, LuaNil.NIL);
+		tbl.rawSet(3, LuaNil.NIL);
+
+		assertEquals(1, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(1, "1");
+		tbl.rawSet(2, LuaNil.NIL);
+		tbl.rawSet(3, LuaNil.NIL);
+		tbl.rawSet(4, LuaNil.NIL);
+
+		assertEquals(1, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(1, "1");
+		tbl.rawSet(2, LuaNil.NIL);
+		tbl.rawSet(3, LuaNil.NIL);
+		tbl.rawSet(4, LuaNil.NIL);
+		tbl.rawSet(5, "5");
+
+		assertEquals(1, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(1, "1");
+		tbl.rawSet(2, "2");
+
+		assertEquals(2, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(1, "1");
+		tbl.rawSet(2, "2");
+		tbl.rawSet(3, LuaNil.NIL);
+
+		assertEquals(2, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(1, "1");
+		tbl.rawSet(2, "2");
+		tbl.rawSet(3, LuaNil.NIL);
+		tbl.rawSet(4, LuaNil.NIL);
+
+		assertEquals(2, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(2, "2");
+
+		assertEquals(2, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(1, "1");
+		tbl.rawSet(2, "2");
+		tbl.rawSet(4, "4");
+		tbl.rawSet(5, "5");
+		tbl.rawSet(6, "6");
+
+		assertEquals(6, tbl.getLength());
+
+		tbl = new LuaTable();
+		tbl.rawSet(1, "1");
+		tbl.rawSet(2, "2");
+		tbl.rawSet(3, LuaNil.NIL);
+		tbl.rawSet(4, "4");
+		tbl.rawSet(5, "5");
+		tbl.rawSet(6, "6");
+
+		assertEquals(6, tbl.getLength());
 	}
 
 	public void testFunction()

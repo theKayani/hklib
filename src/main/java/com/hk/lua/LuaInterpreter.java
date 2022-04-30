@@ -2,6 +2,8 @@ package com.hk.lua;
 
 import com.hk.ex.UncheckedIOException;
 import com.hk.func.BiConsumer;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -35,7 +37,7 @@ public class LuaInterpreter implements Tokens
 	Environment global, env;
 	String currSource;
 
-	LuaInterpreter(LuaStatement[] sts, String source)
+	LuaInterpreter(@NotNull LuaStatement[] sts, @NotNull String source)
 	{
 		this.reader = null;
 		this.mainSrc = source;
@@ -47,7 +49,7 @@ public class LuaInterpreter implements Tokens
 		mainChunk = new LuaChunk(sts, source, global, true);
 	}
 
-	LuaInterpreter(Reader reader, String source)
+	LuaInterpreter(@NotNull Reader reader, @NotNull String source)
 	{
 		this.reader = reader;
 		this.mainSrc = source;
@@ -70,7 +72,7 @@ public class LuaInterpreter implements Tokens
 	 * @param key a {@link java.lang.String} to match to a key
 	 * @return if this certain key has data under it
 	 */
-	public boolean hasExtra(String key)
+	public boolean hasExtra(@NotNull String key)
 	{
 		return extraData.containsKey(key);
 	}
@@ -85,7 +87,8 @@ public class LuaInterpreter implements Tokens
 	 * @param key a {@link java.lang.String} to match to a key
 	 * @return a {@link java.lang.Object} or null if there is no match.
 	 */
-	public Object getExtra(String key)
+	@Nullable
+	public Object getExtra(@NotNull String key)
 	{
 		return extraData.get(key);
 	}
@@ -105,7 +108,8 @@ public class LuaInterpreter implements Tokens
 	 * @param <T> a T class
 	 * @return a T object, or null if none was found.
 	 */
-	public <T> T getExtra(String key, Class<T> cls)
+	@Nullable
+	public <T> T getExtra(@NotNull String key, @NotNull Class<T> cls)
 	{
 		return getExtra(key, cls, null);
 	}
@@ -127,7 +131,8 @@ public class LuaInterpreter implements Tokens
 	 * @return a T object, or the def value if the data was null or
 	 * there was no found data.
 	 */
-	public <T> T getExtra(String key, Class<T> cls, T def)
+	@Nullable
+	public <T> T getExtra(@NotNull String key, @NotNull Class<T> cls, @Nullable T def)
 	{
 		try
 		{
@@ -153,7 +158,8 @@ public class LuaInterpreter implements Tokens
 	 * @return a {@link com.hk.lua.LuaObject} object, or {@link Lua#NIL}
 	 * if there was no valid data found under the specified key.
 	 */
-	public LuaObject getExtraLua(String key)
+	@NotNull
+	public LuaObject getExtraLua(@NotNull String key)
 	{
 		return getExtra(key, LuaObject.class, LuaNil.NIL);
 	}
@@ -170,7 +176,8 @@ public class LuaInterpreter implements Tokens
 	 * @return a {@link java.lang.String} object, or null
 	 * if there was no valid data found under the specified key.
 	 */
-	public String getExtraProp(String key)
+	@Nullable
+	public String getExtraProp(@NotNull String key)
 	{
 		return getExtra(key, String.class);
 	}
@@ -189,7 +196,8 @@ public class LuaInterpreter implements Tokens
 	 * @param value a {@link java.lang.Object} object, or null if desired
 	 * @return this
 	 */
-	public LuaInterpreter setExtra(String key, Object value)
+	@NotNull
+	public LuaInterpreter setExtra(@NotNull String key, @Nullable Object value)
 	{
 		extraData.put(key, value);
 		return this;
@@ -207,7 +215,8 @@ public class LuaInterpreter implements Tokens
 	 * @param key a {@link java.lang.String} to match to a key
 	 * @return this
 	 */
-	public LuaInterpreter removeExtra(String key)
+	@NotNull
+	public LuaInterpreter removeExtra(@NotNull String key)
 	{
 		extraData.remove(key);
 		return this;
@@ -227,6 +236,7 @@ public class LuaInterpreter implements Tokens
 	 *
 	 * @return the global Lua {@link com.hk.lua.Environment}
 	 */
+	@NotNull
 	public Environment getGlobals()
 	{
 		return global;
@@ -240,7 +250,8 @@ public class LuaInterpreter implements Tokens
 	 * @return the result from this execution. If this code had a
 	 * return statement.
 	 */
-	public LuaObject require(CharSequence cs)
+	@NotNull
+	public LuaObject require(@NotNull CharSequence cs)
 	{
 		return require(null, new StringReader(cs.toString()));
 	}
@@ -254,7 +265,8 @@ public class LuaInterpreter implements Tokens
 	 * @return the result from this execution. If this code had a
 	 * return statement.
 	 */
-	public LuaObject require(Reader reader)
+	@NotNull
+	public LuaObject require(@NotNull Reader reader)
 	{
 		return require(null, reader);
 	}
@@ -273,7 +285,8 @@ public class LuaInterpreter implements Tokens
 	 * @return the result from this execution. If this code had a
 	 * return statement.
 	 */
-	public LuaObject require(String module, Reader reader)
+	@NotNull
+	public LuaObject require(@Nullable String module, @NotNull Reader reader)
 	{
 		LuaObject result = module == null ? null : required.get(new LuaString(module));
 		if(result == null)
@@ -295,7 +308,7 @@ public class LuaInterpreter implements Tokens
 		return result;
 	}
 
-	public boolean hasModule(String module)
+	public boolean hasModule(@NotNull String module)
 	{
 		return required.containsKey(new LuaString(module));
 	}
@@ -315,7 +328,7 @@ public class LuaInterpreter implements Tokens
 	 * @param lib a {@link com.hk.lua.LuaLibrary} object
 	 * @param <T> a T class
 	 */
-	public <T extends Enum<T> & BiConsumer<Environment, LuaObject>> void importLib(LuaLibrary<T> lib)
+	public <T extends Enum<T> & BiConsumer<Environment, LuaObject>> void importLib(@NotNull LuaLibrary<T> lib)
 	{
 		LuaObject tbl;
 		if(lib.table == null || lib.table.trim().isEmpty())
@@ -345,6 +358,7 @@ public class LuaInterpreter implements Tokens
 	 * @throws com.hk.ex.UncheckedIOException if any.
 	 */
 	@SuppressWarnings("ThrowableNotThrown")
+	@Nullable
 	public Object execute(Object... args) throws UncheckedIOException
 	{
 		try

@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>LuaLibraryCoroutine class.</p>
@@ -61,7 +63,7 @@ public enum LuaLibraryCoroutine implements BiConsumer<Environment, LuaObject>, L
 			final LuaThread thread = new LuaThread(interp, (LuaFunction) args[0]);
 			return new LuaFunction() {
 				@Override
-				LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+				LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 				{
 					return thread.resume(args);
 				}

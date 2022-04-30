@@ -1,5 +1,8 @@
 package com.hk.lua;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 /**
  * <p>Abstract LuaUserdata class.</p>
  *
@@ -14,30 +17,35 @@ public abstract class LuaUserdata extends LuaMetatable
 	{
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param o*/
 	@Override
-	public boolean rawEqual(LuaObject o)
+	public boolean rawEqual(@NotNull LuaObject o)
 	{
 		return o == this;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @return*/
 	@Override
-	public LuaObject rawLen()
+	public @NotNull LuaObject rawLen()
 	{
 		throw LuaErrors.INVALID_LENGTH.create(name());
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @return*/
 	@Override
-	public LuaObject rawGet(LuaObject key)
+	public @NotNull LuaObject rawGet(@NotNull LuaObject key)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param key
+	 * @param value*/
 	@Override
-	public void rawSet(LuaObject key, LuaObject value)
+	public void rawSet(@NotNull LuaObject key, @NotNull LuaObject value)
 	{
 		throw LuaErrors.INVALID_INDEX.create(name());
 	}
@@ -49,9 +57,11 @@ public abstract class LuaUserdata extends LuaMetatable
 		return true;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param interp
+	 * @return*/
 	@Override
-	public String getString(LuaInterpreter interp)
+	public @NotNull String getString(@Nullable LuaInterpreter interp)
 	{
 		LuaObject res = event(interp, "tostring", LuaNil.NIL);
 		if(res != null)
@@ -79,7 +89,7 @@ public abstract class LuaUserdata extends LuaMetatable
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
-	public abstract String name();
+	public abstract @NotNull String name();
 
 	/**
 	 * <p>getUserdata.</p>
@@ -151,23 +161,24 @@ public abstract class LuaUserdata extends LuaMetatable
 		return false;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @return*/
 	@Override
-	public final LuaType type()
+	public final @NotNull LuaType type()
 	{
 		return LuaType.USERDATA;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaBoolean doEQ(LuaInterpreter interp, LuaObject o)
+	public LuaBoolean doEQ(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		return super.doEQ(interp, o);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaBoolean doLE(LuaInterpreter interp, LuaObject o)
+	public LuaBoolean doLE(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		if(name().equals(o.name()))
 			throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
@@ -177,7 +188,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaBoolean doLT(LuaInterpreter interp, LuaObject o)
+	public LuaBoolean doLT(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		if(name().equals(o.name()))
 			throw LuaErrors.INVALID_DUAL_COMPARISON.create(name());
@@ -187,7 +198,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doConcat(LuaInterpreter interp, LuaObject o)
+	public LuaObject doConcat(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "concat", o);
 		if(res != null)
@@ -198,7 +209,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doAdd(LuaInterpreter interp, LuaObject o)
+	public LuaObject doAdd(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "add", o);
 		if(res != null)
@@ -209,7 +220,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doSub(LuaInterpreter interp, LuaObject o)
+	public LuaObject doSub(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "sub", o);
 		if(res != null)
@@ -220,7 +231,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doMul(LuaInterpreter interp, LuaObject o)
+	public LuaObject doMul(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "mul", o);
 		if(res != null)
@@ -231,7 +242,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doDiv(LuaInterpreter interp, LuaObject o)
+	public LuaObject doDiv(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "div", o);
 		if(res != null)
@@ -242,7 +253,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doIDiv(LuaInterpreter interp, LuaObject o)
+	public LuaObject doIDiv(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "idiv", o);
 		if(res != null)
@@ -253,7 +264,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doMod(LuaInterpreter interp, LuaObject o)
+	public LuaObject doMod(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "mod", o);
 		if(res != null)
@@ -264,7 +275,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doPow(LuaInterpreter interp, LuaObject o)
+	public LuaObject doPow(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "pow", o);
 		if(res != null)
@@ -275,7 +286,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doBAND(LuaInterpreter interp, LuaObject o)
+	public LuaObject doBAND(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "band", o);
 		if(res != null)
@@ -286,7 +297,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doBOR(LuaInterpreter interp, LuaObject o)
+	public LuaObject doBOR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "bor", o);
 		if(res != null)
@@ -297,7 +308,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doBXOR(LuaInterpreter interp, LuaObject o)
+	public LuaObject doBXOR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "bxor", o);
 		if(res != null)
@@ -308,7 +319,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doSHL(LuaInterpreter interp, LuaObject o)
+	public LuaObject doSHL(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "shl", o);
 		if(res != null)
@@ -319,7 +330,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doSHR(LuaInterpreter interp, LuaObject o)
+	public LuaObject doSHR(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{
 		LuaObject res = event(interp, "shr", o);
 		if(res != null)
@@ -330,7 +341,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doBNOT(LuaInterpreter interp)
+	public LuaObject doBNOT(@Nullable LuaInterpreter interp)
 	{
 		LuaObject res = event(interp, "bnot", LuaNil.NIL);
 		if(res != null)
@@ -341,7 +352,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doUnm(LuaInterpreter interp)
+	public LuaObject doUnm(@Nullable LuaInterpreter interp)
 	{
 		LuaObject res = event(interp, "unm", LuaNil.NIL);
 		if(res != null)
@@ -352,7 +363,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doLen(LuaInterpreter interp)
+	public LuaObject doLen(@Nullable LuaInterpreter interp)
 	{
 		LuaObject res = event(interp, "len", LuaNil.NIL);
 		if(res != null)
@@ -363,7 +374,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doIndex(LuaInterpreter interp, LuaObject key)
+	public LuaObject doIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key)
 	{
 		LuaObject func = getHandler("index", LuaNil.NIL);
 		if(func != null)
@@ -379,7 +390,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public void doNewIndex(LuaInterpreter interp, LuaObject key, LuaObject value)
+	public void doNewIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key, @NotNull LuaObject value)
 	{
 		LuaObject func = getHandler("newindex", LuaNil.NIL);
 		if(func != null)
@@ -395,7 +406,7 @@ public abstract class LuaUserdata extends LuaMetatable
 
 	/** {@inheritDoc} */
 	@Override
-	public LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+	public LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 	{
 		LuaObject func = getHandler("call", LuaNil.NIL);
 		if(func != null)

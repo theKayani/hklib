@@ -4,6 +4,8 @@ import com.hk.file.FileUtil;
 import com.hk.func.BiConsumer;
 import com.hk.io.IOUtil;
 import com.hk.lua.Lua.LuaMethod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -149,7 +151,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 			final int[] formats = fmts;
 			return new LuaFunction() {
 				@Override
-				LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+				LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 				{
 					try
 					{
@@ -404,7 +406,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 
 		ioMetatable.rawSet("read", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				if(args.length < 1)
 					throw Lua.badArgument(0, "read", "expected FILE*");
@@ -424,7 +426,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		});
 		ioMetatable.rawSet("lines", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args) {
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args) {
 				if(args.length < 1)
 					throw Lua.badArgument(0, "lines", "expected FILE*");
 
@@ -436,7 +438,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 
 				return new LuaFunction() {
 					@Override
-					LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+					LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 					{
 						try
 						{
@@ -452,7 +454,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		});
 		ioMetatable.rawSet("close", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				try
 				{
@@ -476,7 +478,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		});
 		ioMetatable.rawSet("flush", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				try
 				{
@@ -496,7 +498,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		});
 		ioMetatable.rawSet("setvbuf", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				try
 				{
@@ -539,7 +541,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		});
 		ioMetatable.rawSet("write", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				if (args.length < 1 || !(args[0] instanceof LuaIOUserdata))
 					throw Lua.badArgument(0, "write", "expected FILE*");
@@ -558,7 +560,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		});
 		ioMetatable.rawSet("seek", new LuaFunction() {
 			@Override
-			LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
 				if (args.length < 1 || !(args[0] instanceof LuaIOUserdata))
 					throw Lua.badArgument(0, "seek", "expected FILE*");
@@ -678,13 +680,13 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 		public abstract LuaObject write(LuaObject[] values) throws IOException;
 
 		@Override
-		public String name()
+		public @NotNull String name()
 		{
 			return "FILE*";
 		}
 
 		@Override
-		public String getString(LuaInterpreter interp)
+		public @NotNull String getString(@Nullable LuaInterpreter interp)
 		{
 			return "file (0x" + Integer.toHexString(hashCode()) + ")";
 		}

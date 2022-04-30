@@ -11,6 +11,8 @@ import java.util.Set;
 
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>LuaLibraryBasic class.</p>
@@ -90,7 +92,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 				long count = 1;
 
 				@Override
-				LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+				LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 				{
 					LuaInteger i = LuaInteger.valueOf(count++);
 					LuaObject next = tbl.getIndex(interp, i);
@@ -123,7 +125,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 				return new LuaFunction()
 				{
 					@Override
-					LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+					LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 					{
 						Object res = chunk.execute(interp, (Object[]) args);
 						if(res instanceof LuaObject[])
@@ -152,7 +154,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 				return new LuaFunction()
 				{
 					@Override
-					LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+					LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 					{
 						Object res = chunk.execute(interp, (Object[]) args);
 						if(res instanceof LuaObject[])
@@ -235,7 +237,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			{
 				met = new LuaFunction() {
 					@Override
-					LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+					LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 					{
 						return LuaNil.NIL;
 					}
@@ -246,7 +248,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 				final Iterator<Map.Entry<LuaObject, LuaObject>> itr = tbl.map.entrySet().iterator();
 				met = new LuaFunction() {
 					@Override
-					LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+					LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 					{
 						if(itr.hasNext())
 						{

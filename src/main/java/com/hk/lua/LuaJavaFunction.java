@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import com.hk.lua.Lua.LuaParameters;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 class LuaJavaFunction extends LuaFunction
 {
@@ -16,15 +18,17 @@ class LuaJavaFunction extends LuaFunction
 		this.obj = obj;
 	}
 
-	/** {@inheritDoc} */
+	/** {@inheritDoc}
+	 * @param interp
+	 * @return*/
 	@Override
-	public String getString(LuaInterpreter interp)
+	public @NotNull String getString(@Nullable LuaInterpreter interp)
 	{
 		return "function:" + method.getName() + ": 0x" + Integer.toHexString(System.identityHashCode(method));
 	}
 
 	@Override
-	LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+	LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 	{
 		try
 		{
@@ -47,7 +51,7 @@ class LuaJavaFunction extends LuaFunction
 		}
 
 		@Override
-		LuaObject doCall(LuaInterpreter interp, LuaObject[] args)
+		LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 		{
 			Object[] newArgs = new Object[argTypes.length];
 			for(int i = 0; i < argTypes.length; i++)

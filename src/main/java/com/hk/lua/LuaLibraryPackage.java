@@ -2,6 +2,8 @@ package com.hk.lua;
 
 import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -103,10 +105,10 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 		{
 			table.rawSet(new LuaString(name()), new LuaTable(env.interp.required) {
 				@Override
-				public void rawSet(LuaObject key, LuaObject value) {}
+				public void rawSet(@NotNull LuaObject key, @NotNull LuaObject value) {}
 
 				@Override
-				void doNewIndex(LuaInterpreter interp, LuaObject key, LuaObject value) {}
+				void doNewIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key, @NotNull LuaObject value) {}
 			});
 		}
 	},
@@ -165,13 +167,13 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 		{
 			table.rawSet(new LuaString(name()), new LuaTable(null) {
 				@Override
-				public LuaObject rawGet(LuaObject key)
+				public @NotNull LuaObject rawGet(@NotNull LuaObject key)
 				{
 					return LuaNil.NIL;
 				}
 
 				@Override
-				LuaObject doIndex(LuaInterpreter interp, LuaObject key)
+				LuaObject doIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key)
 				{
 					if(key.isString())
 						return interp.getExtraLua(EXKEY_PRELOAD_PREFIX + key.getString());
@@ -180,10 +182,10 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 				}
 
 				@Override
-				public void rawSet(LuaObject key, LuaObject value) {}
+				public void rawSet(@NotNull LuaObject key, @NotNull LuaObject value) {}
 
 				@Override
-				void doNewIndex(LuaInterpreter interp, LuaObject key, LuaObject value) {}
+				void doNewIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key, @NotNull LuaObject value) {}
 			});
 		}
 	},
