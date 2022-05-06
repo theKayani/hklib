@@ -1,5 +1,8 @@
 package com.hk.array;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Array;
 import java.util.Iterator;
 
@@ -115,7 +118,7 @@ public final class ImmutableArray<T> implements Iterable<T>
 	 *
 	 * @param array an array of {@link java.lang.Object} objects
 	 */
-	public ImmutableArray(Object[] array)
+	public ImmutableArray(@NotNull Object[] array)
 	{
 		this.array = array;
 		this.length = array.length;
@@ -129,6 +132,7 @@ public final class ImmutableArray<T> implements Iterable<T>
 	 * @return a T object
 	 */
 	@SuppressWarnings("unchecked")
+	@Nullable
 	public T get(int index)
 	{
 		return (T) Array.get(array, index);
@@ -140,18 +144,19 @@ public final class ImmutableArray<T> implements Iterable<T>
 	 * @return an array of T[] objects
 	 */
 	@SuppressWarnings("unchecked")
+	@NotNull
 	public T[] toArray()
 	{
 		T[] arr = (T[]) Array.newInstance(type, length);
 		for (int i = 0; i < length; i++)
-		{
 			arr[i] = get(i);
-		}
+
 		return arr;
 	}
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public Iterator<T> iterator()
 	{
 		return new Itr();

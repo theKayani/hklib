@@ -1,5 +1,7 @@
 package com.hk.json;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * <p>JsonBoolean class.</p>
  *
@@ -19,6 +21,7 @@ public class JsonBoolean extends JsonValue
 	 *
 	 * @return a {@link com.hk.json.JsonType} object
 	 */
+	@NotNull
 	public JsonType getType()
 	{
 		return JsonType.BOOLEAN;
@@ -63,7 +66,7 @@ public class JsonBoolean extends JsonValue
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
-	public String toString()
+	public @NotNull String toString()
 	{
 		return Boolean.toString(value);
 	}

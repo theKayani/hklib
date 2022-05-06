@@ -6,8 +6,8 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.function.BiConsumer;
 
-import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 import com.hk.math.Rand;
 import org.jetbrains.annotations.NotNull;
@@ -168,6 +168,7 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 		}
 	},
 	time() {
+		@SuppressWarnings("MagicConstant")
 		@Override
 		public LuaObject call(LuaInterpreter interp, LuaObject[] args)
 		{
@@ -229,6 +230,6 @@ public enum LuaLibraryOS implements BiConsumer<Environment, LuaObject>, LuaMetho
 	{
 		String name = toString();
 		if(name != null && !name.trim().isEmpty())
-			table.rawSet(new LuaString(name), Lua.newFunc(this));
+			table.rawSet(new LuaString(name), Lua.newMethod(this));
 	}
 }

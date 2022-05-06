@@ -1,5 +1,7 @@
 package com.hk.abs;
 
+import org.jetbrains.annotations.Contract;
+
 /**
  * This interface represents an object that has a mutable name. Which
  * means, it can be renamed given some type of parameters or object

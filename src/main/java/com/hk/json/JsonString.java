@@ -1,6 +1,7 @@
 package com.hk.json;
 
 import com.hk.util.Requirements;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>JsonString class.</p>
@@ -16,7 +17,7 @@ public class JsonString extends JsonValue
 	 *
 	 * @param value a {@link java.lang.String} object
 	 */
-	public JsonString(String value)
+	public JsonString(@NotNull String value)
 	{
 		this.value = Requirements.requireNotNull(value);
 	}
@@ -26,7 +27,7 @@ public class JsonString extends JsonValue
 	 *
 	 * @return a {@link com.hk.json.JsonType} object
 	 */
-	public JsonType getType()
+	public @NotNull JsonType getType()
 	{
 		return JsonType.STRING;
 	}
@@ -46,7 +47,7 @@ public class JsonString extends JsonValue
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
-	public String getString()
+	public @NotNull String getString()
 	{
 		return value;
 	}
@@ -67,7 +68,7 @@ public class JsonString extends JsonValue
 
 	/** {@inheritDoc} */
 	@Override
-	public String toString()
+	public @NotNull String toString()
 	{
 		return Json.write(this);
 	}

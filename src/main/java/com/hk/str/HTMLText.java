@@ -261,12 +261,7 @@ public class HTMLText
         if(!hasVar(name))
         {
             int index = sb.length();
-            Set<String> vars = varPositions.get(index);
-            if(vars == null)
-            {
-                vars = new LinkedHashSet<>();
-                varPositions.put(index, vars);
-            }
+            Set<String> vars = varPositions.computeIfAbsent(index, k -> new LinkedHashSet<>());
             vars.add(name);
             variables.put(name, value);
         }

@@ -1,5 +1,7 @@
 package com.hk.jinja;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.CharArrayReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,7 +28,8 @@ public class Jinja
 	 * @param rdr a {@link java.io.Reader} object
 	 * @return a {@link com.hk.jinja.TemplateReader} object
 	 */
-	public static TemplateReader reader(Reader rdr)
+	@NotNull
+	public static TemplateReader reader(@NotNull Reader rdr)
 	{
 		return new TemplateReader(rdr);
 	}
@@ -37,7 +40,8 @@ public class Jinja
 	 * @param str a {@link java.lang.String} object
 	 * @return a {@link com.hk.jinja.TemplateReader} object
 	 */
-	public static TemplateReader reader(String str)
+	@NotNull
+	public static TemplateReader reader(@NotNull String str)
 	{
 		return new TemplateReader(new StringReader(str));
 	}
@@ -48,6 +52,7 @@ public class Jinja
 	 * @param array an array of {@link char} objects
 	 * @return a {@link com.hk.jinja.TemplateReader} object
 	 */
+	@NotNull
 	public static TemplateReader reader(char[] array)
 	{
 		return new TemplateReader(new CharArrayReader(array));
@@ -60,7 +65,8 @@ public class Jinja
 	 * @return a {@link com.hk.jinja.TemplateReader} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static TemplateReader reader(File file) throws FileNotFoundException
+	@NotNull
+	public static TemplateReader reader(@NotNull File file) throws FileNotFoundException
 	{
 		return new TemplateReader(new FileReader(file));
 	}
@@ -73,7 +79,8 @@ public class Jinja
 	 * @return a {@link com.hk.jinja.TemplateReader} object
 	 * @throws java.io.FileNotFoundException if any.
 	 */
-	public static TemplateReader reader(File file, Charset charset) throws FileNotFoundException
+	@NotNull
+	public static TemplateReader reader(@NotNull File file, @NotNull Charset charset) throws FileNotFoundException
 	{
 		return new TemplateReader(new InputStreamReader(new FileInputStream(file), charset));
 	}
@@ -84,7 +91,8 @@ public class Jinja
 	 * @param input a {@link java.io.InputStream} object
 	 * @return a {@link com.hk.jinja.TemplateReader} object
 	 */
-	public static TemplateReader reader(InputStream input)
+	@NotNull
+	public static TemplateReader reader(@NotNull InputStream input)
 	{
 		return new TemplateReader(new InputStreamReader(input));
 	}
@@ -96,7 +104,8 @@ public class Jinja
 	 * @param charset a {@link java.nio.charset.Charset} object
 	 * @return a {@link com.hk.jinja.TemplateReader} object
 	 */
-	public static TemplateReader reader(InputStream input, Charset charset)
+	@NotNull
+	public static TemplateReader reader(@NotNull InputStream input, @NotNull Charset charset)
 	{
 		return new TemplateReader(new InputStreamReader(input, charset));
 	}
@@ -108,7 +117,8 @@ public class Jinja
 	 * @return a {@link com.hk.jinja.TemplateReader} object
 	 * @throws java.io.IOException if any.
 	 */
-	public static TemplateReader reader(URL url) throws IOException
+	@NotNull
+	public static TemplateReader reader(@NotNull URL url) throws IOException
 	{
 		return new TemplateReader(new InputStreamReader(url.openStream()));
 	}

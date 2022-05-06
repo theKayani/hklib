@@ -10,6 +10,7 @@ import com.hk.io.stream.Stream;
 import com.hk.io.stream.StreamException;
 import com.hk.math.Rand;
 import com.hk.neuralnetwork.Mat.MatFunc;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>NeuralNetwork class.</p>
@@ -95,7 +96,7 @@ public class NeuralNetwork implements Cloneable
 	 *
 	 * @param copy a {@link com.hk.neuralnetwork.NeuralNetwork} object
 	 */
-	public NeuralNetwork(NeuralNetwork copy)
+	public NeuralNetwork(@NotNull NeuralNetwork copy)
 	{
 		this.inputNodes = copy.inputNodes;
 		this.hiddenLayers = copy.hiddenLayers;
@@ -199,6 +200,7 @@ public class NeuralNetwork implements Cloneable
 	 * @param learningRate a double
 	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork} object
 	 */
+	@NotNull
 	public NeuralNetwork setLearningRate(double learningRate)
 	{
 		this.learningRate = learningRate;
@@ -210,6 +212,7 @@ public class NeuralNetwork implements Cloneable
 	 *
 	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork.ActivationFunction} object
 	 */
+	@NotNull
 	public ActivationFunction getActivationFunction()
 	{
 		return activationFunction;
@@ -221,7 +224,8 @@ public class NeuralNetwork implements Cloneable
 	 * @param activationFunction a {@link com.hk.neuralnetwork.NeuralNetwork.ActivationFunction} object
 	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork} object
 	 */
-	public NeuralNetwork setActivationFunction(ActivationFunction activationFunction)
+	@NotNull
+	public NeuralNetwork setActivationFunction(@NotNull ActivationFunction activationFunction)
 	{
 		this.activationFunction = activationFunction;
 		return this;
@@ -235,7 +239,8 @@ public class NeuralNetwork implements Cloneable
 	 * @param biases a boolean
 	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork} object
 	 */
-	public NeuralNetwork mix(final NeuralNetwork other, boolean weights, boolean biases)
+	@NotNull
+	public NeuralNetwork mix(@NotNull final NeuralNetwork other, boolean weights, boolean biases)
 	{
 		if(inputNodes != other.inputNodes || hiddenLayers != other.hiddenLayers || hiddenNodes != other.hiddenNodes || outputNodes != other.outputNodes)
 		{
@@ -250,14 +255,7 @@ public class NeuralNetwork implements Cloneable
 				Mat weight = nn.weights[i];
 
 				final int indx = i;
-				weight.map(new MatFunc()
-				{
-					@Override
-					public double perform(double val, int r, int c)
-					{
-						return Rand.nextBoolean() ? val : other.weights[indx].data[r][c];
-					}
-				});
+				weight.map((val, r, c) -> Rand.nextBoolean() ? val : other.weights[indx].data[r][c]);
 			}
 		}
 		if(biases)
@@ -267,14 +265,7 @@ public class NeuralNetwork implements Cloneable
 				Mat bias = nn.biases[i];
 
 				final int indx = i;
-				bias.map(new MatFunc()
-				{
-					@Override
-					public double perform(double val, int r, int c)
-					{
-						return Rand.nextBoolean() ? val : other.biases[indx].data[r][c];
-					}
-				});
+				bias.map((val, r, c) -> Rand.nextBoolean() ? val : other.biases[indx].data[r][c]);
 			}
 		}
 		return nn;
@@ -286,16 +277,11 @@ public class NeuralNetwork implements Cloneable
 	 * @param chance a double
 	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork} object
 	 */
+	@NotNull
 	public NeuralNetwork mutateThis(final double chance)
 	{
-		for (Mat weight : weights) {
-			weight.map(new MatFunc() {
-				@Override
-				public double perform(double val, int r, int c) {
-					return Rand.nextDouble() < chance ? val + (Rand.nextDouble(2) - 1) / 10 : val;
-				}
-			});
-		}
+		for (Mat weight : weights)
+			weight.map((val, r, c) -> Rand.nextDouble() < chance ? val + (Rand.nextDouble(2) - 1) / 10 : val);
 		return this;
 	}
 
@@ -304,6 +290,7 @@ public class NeuralNetwork implements Cloneable
 	 *
 	 * @return a {@link com.hk.neuralnetwork.NeuralNetwork} object
 	 */
+	@NotNull
 	public NeuralNetwork clone()
 	{
 		return new NeuralNetwork(this);
@@ -315,7 +302,7 @@ public class NeuralNetwork implements Cloneable
 	 * @param file a {@link java.io.File} object
 	 * @throws java.lang.Exception if any.
 	 */
-	public void writeTo(File file) throws Exception
+	public void writeTo(@NotNull File file) throws Exception
 	{
 		writeTo(file, true);
 	}
@@ -327,7 +314,7 @@ public class NeuralNetwork implements Cloneable
 	 * @param safe a boolean
 	 * @throws java.lang.Exception if any.
 	 */
-	public void writeTo(File file, boolean safe) throws Exception
+	public void writeTo(@NotNull File file, boolean safe) throws Exception
 	{
 		FileOutputStream fout = new FileOutputStream(file);
 		Stream out = new OutStream(fout, safe);
@@ -342,7 +329,7 @@ public class NeuralNetwork implements Cloneable
 	 * @param out a {@link com.hk.io.stream.Stream} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void writeTo(Stream out) throws StreamException
+	public void writeTo(@NotNull Stream out) throws StreamException
 	{
 		for (Mat weight : weights) {
 			for (int x = 0; x < weight.rows; x++) {
@@ -366,7 +353,7 @@ public class NeuralNetwork implements Cloneable
 	 * @param file a {@link java.io.File} object
 	 * @throws java.lang.Exception if any.
 	 */
-	public void readFrom(File file) throws Exception
+	public void readFrom(@NotNull File file) throws Exception
 	{
 		readFrom(file, true);
 	}
@@ -378,7 +365,7 @@ public class NeuralNetwork implements Cloneable
 	 * @param safe a boolean
 	 * @throws java.lang.Exception if any.
 	 */
-	public void readFrom(File file, boolean safe) throws Exception
+	public void readFrom(@NotNull File file, boolean safe) throws Exception
 	{
 		FileInputStream fin = new FileInputStream(file);
 		Stream in = new InStream(fin, safe);
@@ -393,7 +380,7 @@ public class NeuralNetwork implements Cloneable
 	 * @param in a {@link com.hk.io.stream.Stream} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	public void readFrom(Stream in) throws StreamException
+	public void readFrom(@NotNull Stream in) throws StreamException
 	{
 		for (Mat weight : weights) {
 			for (int x = 0; x < weight.rows; x++) {
@@ -415,7 +402,7 @@ public class NeuralNetwork implements Cloneable
 	{
 		public final MatFunc function, derivative;
 
-		public ActivationFunction(MatFunc function, MatFunc derivative)
+		public ActivationFunction(@NotNull MatFunc function, @NotNull MatFunc derivative)
 		{
 			this.function = function;
 			this.derivative = derivative;

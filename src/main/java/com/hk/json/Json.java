@@ -151,7 +151,7 @@ public class Json
 	 * @throws com.hk.json.JsonFormatException if any.
 	 */
 	@NotNull
-	public static JsonValue read(@NotNull char[] array) throws JsonFormatException
+	public static JsonValue read(char[] array) throws JsonFormatException
 	{
 		JsonReader jr = reader(array);
 		JsonValue val = jr.get();
@@ -166,7 +166,7 @@ public class Json
 	 * @return a {@link com.hk.json.JsonReader} object
 	 */
 	@NotNull
-	public static JsonReader reader(@NotNull char[] array)
+	public static JsonReader reader(char[] array)
 	{
 		return new JsonReader(new CharArrayReader(array));
 	}

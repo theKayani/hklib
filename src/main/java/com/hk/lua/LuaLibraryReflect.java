@@ -1,6 +1,5 @@
 package com.hk.lua;
 
-import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 import com.hk.util.Node;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
 /**
  * <p>LuaLibraryReflect class.</p>
@@ -62,7 +62,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 	{
 		String name = toString();
 		if(name != null && !name.trim().isEmpty())
-			table.rawSet(new LuaString(name), Lua.newFunc(this));
+			table.rawSet(new LuaString(name), Lua.newMethod(this));
 	}
 
 	private static LuaJavaClass getJavaClass(LuaInterpreter interp, Class<?> cls)

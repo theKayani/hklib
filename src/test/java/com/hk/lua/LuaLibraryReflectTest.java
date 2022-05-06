@@ -9,12 +9,6 @@ import java.util.Objects;
 
 public class LuaLibraryReflectTest extends TestCase
 {
-	@Override
-	public void setUp()
-	{
-		// TODO: create or delete
-	}
-
 	public void test() throws FileNotFoundException
 	{
 		LuaInterpreter interp = Lua.reader(Assets.get("lua/library_reflect.lua"));
@@ -26,12 +20,6 @@ public class LuaLibraryReflectTest extends TestCase
 
 		assertTrue(obj instanceof LuaObject);
 		assertTrue(((LuaObject) obj).getBoolean());
-	}
-
-	@Override
-	public void tearDown()
-	{
-		// TODO: create or delete
 	}
 
 	public static class Point

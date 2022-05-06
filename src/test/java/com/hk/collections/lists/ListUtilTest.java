@@ -8,12 +8,6 @@ import java.util.*;
 
 public class ListUtilTest extends TestCase
 {
-	@Override
-	public void setUp()
-	{
-		// TODO: create or delete
-	}
-
 	public void testNewArrayList()
 	{
 		ArrayList<Object> expectedObj, actualObj;
@@ -173,11 +167,5 @@ public class ListUtilTest extends TestCase
 		assertSame(expectedDbl, ListUtil.swap(expectedDbl, 2, 1));
 		actualDbl = Arrays.asList(1D, 10D, 100D);
 		assertEquals(expectedDbl, actualDbl);
-	}
-
-	@Override
-	public void tearDown()
-	{
-		// TODO: create or delete
 	}
 }

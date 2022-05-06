@@ -1,10 +1,13 @@
 package com.hk.json;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * <p>JsonObject class.</p>
@@ -38,7 +41,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 *
 	 * @param map a {@link java.util.Map} object
 	 */
-	public JsonObject(Map<String, JsonValue> map)
+	public JsonObject(@NotNull Map<String, JsonValue> map)
 	{
 		this.map = new LinkedHashMap<>(map);
 	}
@@ -48,7 +51,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 *
 	 * @param copy a {@link com.hk.json.JsonObject} object
 	 */
-	public JsonObject(JsonObject copy)
+	public JsonObject(@NotNull JsonObject copy)
 	{
 		map = new LinkedHashMap<>(copy.map);
 	}
@@ -58,7 +61,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 *
 	 * @return a {@link com.hk.json.JsonType} object
 	 */
-	public JsonType getType()
+	public @NotNull JsonType getType()
 	{
 		return JsonType.OBJECT;
 	}
@@ -69,7 +72,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a boolean
 	 */
-	public boolean contains(String name)
+	public boolean contains(@NotNull String name)
 	{
 		return map.containsKey(name);
 	}
@@ -80,9 +83,10 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a {@link com.hk.json.JsonValue} object
 	 */
-	public JsonValue get(String name)
+	@NotNull
+	public JsonValue get(@NotNull String name)
 	{
-		return map.get(name);
+		return map.getOrDefault(name, JsonNull.NULL);
 	}
 
 	/**
@@ -91,9 +95,9 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a boolean
 	 */
-	public boolean isObject(String name)
+	public boolean isObject(@NotNull String name)
 	{
-		return map.containsKey(name) && map.get(name).isObject();
+		return get(name).isObject();
 	}
 
 	/**
@@ -102,7 +106,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a {@link com.hk.json.JsonObject} object
 	 */
-	public JsonObject getObject(String name)
+	public JsonObject getObject(@NotNull String name)
 	{
 		return get(name).getObject();
 	}
@@ -113,9 +117,9 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a boolean
 	 */
-	public boolean isArray(String name)
+	public boolean isArray(@NotNull String name)
 	{
-		return map.containsKey(name) && get(name).isArray();
+		return get(name).isArray();
 	}
 
 	/**
@@ -124,7 +128,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
-	public JsonArray getArray(String name)
+	public JsonArray getArray(@NotNull String name)
 	{
 		return get(name).getArray();
 	}
@@ -135,9 +139,9 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a boolean
 	 */
-	public boolean isString(String name)
+	public boolean isString(@NotNull String name)
 	{
-		return map.containsKey(name) && get(name).isString();
+		return get(name).isString();
 	}
 
 	/**
@@ -146,7 +150,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a {@link java.lang.String} object
 	 */
-	public String getString(String name)
+	public String getString(@NotNull String name)
 	{
 		return get(name).getString();
 	}
@@ -157,9 +161,9 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a boolean
 	 */
-	public boolean isNumber(String name)
+	public boolean isNumber(@NotNull String name)
 	{
-		return map.containsKey(name) && get(name).isNumber();
+		return get(name).isNumber();
 	}
 
 	/**
@@ -168,7 +172,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a {@link java.lang.Number} object
 	 */
-	public Number getNumber(String name)
+	public Number getNumber(@NotNull String name)
 	{
 		return get(name).getNumber();
 	}
@@ -179,7 +183,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a byte
 	 */
-	public byte getByte(String name)
+	public byte getByte(@NotNull String name)
 	{
 		return get(name).getNumber().byteValue();
 	}
@@ -190,7 +194,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a short
 	 */
-	public short getShort(String name)
+	public short getShort(@NotNull String name)
 	{
 		return get(name).getNumber().shortValue();
 	}
@@ -201,7 +205,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a int
 	 */
-	public int getInt(String name)
+	public int getInt(@NotNull String name)
 	{
 		return get(name).getNumber().intValue();
 	}
@@ -212,7 +216,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a long
 	 */
-	public long getLong(String name)
+	public long getLong(@NotNull String name)
 	{
 		return get(name).getNumber().longValue();
 	}
@@ -223,7 +227,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a float
 	 */
-	public float getFloat(String name)
+	public float getFloat(@NotNull String name)
 	{
 		return get(name).getNumber().floatValue();
 	}
@@ -234,7 +238,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a double
 	 */
-	public double getDouble(String name)
+	public double getDouble(@NotNull String name)
 	{
 		return get(name).getNumber().doubleValue();
 	}
@@ -245,9 +249,9 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a boolean
 	 */
-	public boolean isBoolean(String name)
+	public boolean isBoolean(@NotNull String name)
 	{
-		return map.containsKey(name) && get(name).isBoolean();
+		return get(name).isBoolean();
 	}
 
 	/**
@@ -256,7 +260,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a boolean
 	 */
-	public boolean getBoolean(String name)
+	public boolean getBoolean(@NotNull String name)
 	{
 		return get(name).getBoolean();
 	}
@@ -267,9 +271,9 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a boolean
 	 */
-	public boolean isNull(String name)
+	public boolean isNull(@NotNull String name)
 	{
-		return map.containsKey(name) && get(name).isNull();
+		return get(name).isNull();
 	}
 
 	/**
@@ -279,7 +283,8 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param obj a {@link java.lang.Object} object
 	 * @return a {@link com.hk.json.JsonObject} object
 	 */
-	public JsonObject put(String name, Object obj)
+	@NotNull
+	public JsonObject put(@NotNull String name, Object obj)
 	{
 		return put(name, Json.toJson(obj));
 	}
@@ -291,7 +296,8 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param value a {@link com.hk.json.JsonValue} object
 	 * @return a {@link com.hk.json.JsonObject} object
 	 */
-	public JsonObject put(String name, JsonValue value)
+	@NotNull
+	public JsonObject put(@NotNull String name, @NotNull JsonValue value)
 	{
 		if (this == value)
 			throw new IllegalArgumentException("Can't add this to this");
@@ -309,7 +315,8 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param value a {@link java.lang.String} object
 	 * @return a {@link com.hk.json.JsonObject} object
 	 */
-	public JsonObject put(String name, String value)
+	@NotNull
+	public JsonObject put(@NotNull String name, String value)
 	{
 		if(value == null)
 			return put(name, JsonNull.NULL);
@@ -324,7 +331,8 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param value a long
 	 * @return a {@link com.hk.json.JsonObject} object
 	 */
-	public JsonObject put(String name, long value)
+	@NotNull
+	public JsonObject put(@NotNull String name, long value)
 	{
 		return put(name, new JsonNumber(value));
 	}
@@ -336,7 +344,8 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param value a double
 	 * @return a {@link com.hk.json.JsonObject} object
 	 */
-	public JsonObject put(String name, double value)
+	@NotNull
+	public JsonObject put(@NotNull String name, double value)
 	{
 		return put(name, new JsonNumber(value));
 	}
@@ -348,7 +357,8 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param value a boolean
 	 * @return a {@link com.hk.json.JsonObject} object
 	 */
-	public JsonObject put(String name, boolean value)
+	@NotNull
+	public JsonObject put(@NotNull String name, boolean value)
 	{
 		return put(name, JsonBoolean.valueOf(value));
 	}
@@ -359,7 +369,8 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param name a {@link java.lang.String} object
 	 * @return a {@link com.hk.json.JsonValue} object
 	 */
-	public JsonValue remove(String name)
+	@NotNull
+	public JsonValue remove(@NotNull String name)
 	{
 		return map.remove(name);
 	}
@@ -369,6 +380,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 *
 	 * @return a {@link com.hk.json.JsonObject} object
 	 */
+	@NotNull
 	public JsonObject removeAll()
 	{
 		map.clear();
@@ -402,7 +414,8 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @param <T> a T class
 	 * @return a {@link java.util.Map} object
 	 */
-	public <T> Map<String, T> toMap(JsonAdapter<T> adapter)
+	@NotNull
+	public <T> Map<String, T> toMap(@NotNull JsonAdapter<T> adapter)
 	{
 		Map<String, T> map = new HashMap<>();
 
@@ -420,7 +433,8 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 * @return a {@link java.util.Map} object
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> Map<String, T> toMap(Class<T> cls)
+	@NotNull
+	public <T> Map<String, T> toMap(@NotNull Class<T> cls)
 	{
 		for(JsonAdapter<?> adapter : Json.globalAdapters)
 		{
@@ -453,7 +467,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 *
 	 * @return a {@link com.hk.json.JsonObject} object
 	 */
-	public JsonObject getObject()
+	public @NotNull JsonObject getObject()
 	{
 		return this;
 	}
@@ -463,6 +477,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 *
 	 * @return a {@link java.util.Iterator} object
 	 */
+	@NotNull
 	public Iterator<String> keys()
 	{
 		return map.keySet().iterator();
@@ -473,9 +488,21 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 *
 	 * @return a {@link java.util.Iterator} object
 	 */
+	@NotNull
 	public Iterator<Map.Entry<String, JsonValue>> iterator()
 	{
 		return map.entrySet().iterator();
+	}
+
+	/**
+	 * <p>Retrieve a stream of the entries within this JSON array.</p>
+	 *
+	 * @return a {@link java.util.stream.Stream} object
+	 */
+	@NotNull
+	public Stream<Map.Entry<String, JsonValue>> stream()
+	{
+		return map.entrySet().stream();
 	}
 
 	/**
@@ -483,6 +510,7 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	 *
 	 * @return a {@link java.util.Iterator} object
 	 */
+	@NotNull
 	public Iterator<JsonValue> values()
 	{
 		return map.values().iterator();

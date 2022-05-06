@@ -1,6 +1,8 @@
 package com.hk.json;
 
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * <p>JsonNull class.</p>
  *
@@ -19,7 +21,7 @@ public class JsonNull extends JsonValue
 	 *
 	 * @return a {@link com.hk.json.JsonType} object
 	 */
-	public JsonType getType()
+	public @NotNull JsonType getType()
 	{
 		return JsonType.NULL;
 	}
@@ -53,7 +55,7 @@ public class JsonNull extends JsonValue
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
-	public String toString()
+	public @NotNull String toString()
 	{
 		return "null";
 	}

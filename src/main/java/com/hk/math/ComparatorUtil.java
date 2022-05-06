@@ -38,14 +38,7 @@ public class ComparatorUtil
 	 */
 	public static <T> Comparator<T> reversed(final Comparator<T> original)
 	{
-		return new Comparator<T>()
-		{
-			@Override
-			public int compare(T o1, T o2)
-			{
-				return original.compare(o2, o1);
-			}
-		};
+		return (o1, o2) -> original.compare(o2, o1);
 	}
 
 	/**
@@ -56,25 +49,21 @@ public class ComparatorUtil
 	 */
 	public static <T extends Comparable<T>> Comparator<T> getComparator()
 	{
-		return new Comparator<T>()
+		return (o1, o2) ->
 		{
-			@Override
-			public int compare(T o1, T o2)
+			if (Objects.equals(o1, o2))
 			{
-				if (Objects.equals(o1, o2))
-				{
-					return 0;
-				}
-				if (o1 == null)
-				{
-					return -1;
-				}
-				if (o2 == null)
-				{
-					return 1;
-				}
-				return o1.compareTo(o2);
+				return 0;
 			}
+			if (o1 == null)
+			{
+				return -1;
+			}
+			if (o2 == null)
+			{
+				return 1;
+			}
+			return o1.compareTo(o2);
 		};
 	}
 
@@ -86,25 +75,21 @@ public class ComparatorUtil
 	 */
 	public static <T> Comparator<T> toStringComparator()
 	{
-		return new Comparator<T>()
+		return (o1, o2) ->
 		{
-			@Override
-			public int compare(T o1, T o2)
+			if (Objects.equals(o1, o2))
 			{
-				if (Objects.equals(o1, o2))
-				{
-					return 0;
-				}
-				if (o1 == null)
-				{
-					return -1;
-				}
-				if (o2 == null)
-				{
-					return 1;
-				}
-				return o1.toString().compareTo(o2.toString());
+				return 0;
 			}
+			if (o1 == null)
+			{
+				return -1;
+			}
+			if (o2 == null)
+			{
+				return 1;
+			}
+			return o1.toString().compareTo(o2.toString());
 		};
 	}
 
@@ -116,25 +101,21 @@ public class ComparatorUtil
 	 */
 	public static <T> Comparator<T> hashCodeComparator()
 	{
-		return new Comparator<T>()
+		return (o1, o2) ->
 		{
-			@Override
-			public int compare(T o1, T o2)
+			if (Objects.equals(o1, o2))
 			{
-				if (Objects.equals(o1, o2))
-				{
-					return 0;
-				}
-				if (o1 == null)
-				{
-					return -1;
-				}
-				if (o2 == null)
-				{
-					return 1;
-				}
-				return Integer.compare(o1.hashCode(), o2.hashCode());
+				return 0;
 			}
+			if (o1 == null)
+			{
+				return -1;
+			}
+			if (o2 == null)
+			{
+				return 1;
+			}
+			return Integer.compare(o1.hashCode(), o2.hashCode());
 		};
 	}
 

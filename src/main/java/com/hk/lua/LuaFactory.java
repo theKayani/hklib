@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.hk.func.Consumer;
+import java.util.function.Consumer;
 
 /**
  * <p>Lua factories can be used to create various
@@ -55,7 +54,7 @@ public class LuaFactory
 	 * <p>Handlers are called on each interpreter built before they
 	 * are returned. This happens after libraries are injected.</p>
 	 *
-	 * @param handler a {@link com.hk.func.Consumer} object
+	 * @param handler a {@link java.util.function.Consumer} object
 	 */
 	public void addHandler(Consumer<LuaInterpreter> handler)
 	{
@@ -80,7 +79,7 @@ public class LuaFactory
 	 * be removed if it was previously added using the {@link #addHandler(Consumer)}
 	 * method.</p>
 	 *
-	 * @param handler a {@link com.hk.func.Consumer} object
+	 * @param handler a {@link java.util.function.Consumer} object
 	 */
 	public void removeHandler(Consumer<LuaInterpreter> handler)
 	{

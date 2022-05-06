@@ -7,11 +7,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import com.hk.func.BiConsumer;
 import com.hk.io.IOUtil;
 import com.hk.lua.Lua.LuaMethod;
 import org.jetbrains.annotations.NotNull;
@@ -199,7 +199,7 @@ public enum LuaLibraryHash implements BiConsumer<Environment, LuaObject>, LuaMet
 	{
 		String name = toString();
 		if(name != null && !name.trim().isEmpty())
-			table.rawSet(new LuaString(name), Lua.newFunc(this));
+			table.rawSet(new LuaString(name), Lua.newMethod(this));
 	}
 
 	/**

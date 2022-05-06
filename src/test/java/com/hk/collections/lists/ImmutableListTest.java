@@ -11,7 +11,7 @@ public class ImmutableListTest extends TestCase
 {
 	public void testImmutableList()
 	{
-		ImmutableList<String> strLst = new ImmutableList<>(Collections.<String>emptyList());
+		ImmutableList<String> strLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(strLst.size(), 0);
 		assertEquals(strLst, Collections.<String>emptyList());
 
@@ -39,7 +39,7 @@ public class ImmutableListTest extends TestCase
 		assertEquals(objLst.size(), 3);
 		assertEquals(objLst, Arrays.asList(o1, o2, o3));
 
-		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.<Double>emptyList());
+		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(dblLst.size(), 0);
 		assertEquals(dblLst, Collections.<Double>emptyList());
 
@@ -54,7 +54,7 @@ public class ImmutableListTest extends TestCase
 
 	public void testIterator()
 	{
-		ImmutableList<String> strLst = new ImmutableList<>(Collections.<String>emptyList());
+		ImmutableList<String> strLst = new ImmutableList<>(Collections.emptyList());
 		Iterator<String> strItr = strLst.iterator();
 		assertFalse(strItr.hasNext());
 
@@ -98,7 +98,7 @@ public class ImmutableListTest extends TestCase
 		assertEquals(objItr.next(), o3);
 		assertFalse(objItr.hasNext());
 
-		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.<Double>emptyList());
+		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.emptyList());
 		Iterator<Double> dblItr = dblLst.iterator();
 		assertFalse(dblItr.hasNext());
 
@@ -121,7 +121,7 @@ public class ImmutableListTest extends TestCase
 
 	public void testSubList()
 	{
-		ImmutableList<String> strLst = new ImmutableList<>(Collections.<String>emptyList());
+		ImmutableList<String> strLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(strLst.subList(0, 0).size(), 0);
 		assertEquals(strLst.subList(0, 0), Collections.<String>emptyList());
 
@@ -159,7 +159,7 @@ public class ImmutableListTest extends TestCase
 		assertEquals(objLst.subList(1, 3), Arrays.asList(o2, o3));
 		assertEquals(objLst.subList(0, 2), Arrays.asList(o1, o2));
 
-		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.<Double>emptyList());
+		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(dblLst.subList(0, 0).size(), 0);
 		assertEquals(dblLst.subList(0, 0), Collections.<Double>emptyList());
 
@@ -179,7 +179,7 @@ public class ImmutableListTest extends TestCase
 
 	public void testClone()
 	{
-		ImmutableList<String> strLst = new ImmutableList<>(Collections.<String>emptyList());
+		ImmutableList<String> strLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(strLst.clone(), strLst);
 
 		strLst = new ImmutableList<>(Collections.singletonList("abc"));
@@ -201,7 +201,7 @@ public class ImmutableListTest extends TestCase
 		objLst = new ImmutableList<>(Arrays.asList(o1, o2, o3));
 		assertEquals(objLst.clone(), objLst);
 
-		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.<Double>emptyList());
+		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(dblLst.clone(), dblLst);
 
 		dblLst = new ImmutableList<>(Collections.singletonList(2.0));
@@ -213,7 +213,7 @@ public class ImmutableListTest extends TestCase
 
 	public void testListIterator()
 	{
-		ImmutableList<String> strLst = new ImmutableList<>(Collections.<String>emptyList());
+		ImmutableList<String> strLst = new ImmutableList<>(Collections.emptyList());
 		ListIterator<String> strItr = strLst.listIterator();
 		assertFalse(strItr.hasNext());
 		assertEquals(strItr.nextIndex(), strLst.size());
@@ -310,7 +310,7 @@ public class ImmutableListTest extends TestCase
 		assertEquals(objItr.previousIndex(), 2);
 		assertFalse(objItr.hasNext());
 
-		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.<Double>emptyList());
+		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.emptyList());
 		ListIterator<Double> dblItr = dblLst.listIterator();
 		assertFalse(dblItr.hasNext());
 
@@ -359,7 +359,7 @@ public class ImmutableListTest extends TestCase
 
 	public void testFails()
 	{
-		ImmutableList<String> strLst = new ImmutableList<>(Collections.<String>emptyList());
+		ImmutableList<String> strLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(strLst.size(), 0);
 		failAdd(strLst, "ERROR");
 		assertEquals(strLst.size(), 0);
@@ -369,7 +369,7 @@ public class ImmutableListTest extends TestCase
 		failAdd(objLst, new Object());
 		assertEquals(objLst.size(), 0);
 
-		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.<Double>emptyList());
+		ImmutableList<Double> dblLst = new ImmutableList<>(Collections.emptyList());
 		assertEquals(dblLst.size(), 0);
 		failAdd(dblLst, 0D);
 		assertEquals(dblLst.size(), 0);

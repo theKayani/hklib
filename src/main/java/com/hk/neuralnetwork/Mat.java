@@ -1,5 +1,7 @@
 package com.hk.neuralnetwork;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
@@ -49,6 +51,7 @@ public class Mat implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
+	@NotNull
 	public Mat randomize()
 	{
 		return randomize(ThreadLocalRandom.current());
@@ -60,16 +63,10 @@ public class Mat implements Serializable, Cloneable
 	 * @param rand a {@link java.util.Random} object
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
-	public Mat randomize(final Random rand)
+	@NotNull
+	public Mat randomize(@NotNull final Random rand)
 	{
-		return map(new MatFunc()
-		{
-			@Override
-			public double perform(double val, int r, int c)
-			{
-				return rand.nextDouble() * 2 - 1;
-			}
-		});
+		return map((val, r, c) -> rand.nextDouble() * 2 - 1);
 	}
 
 	/**
@@ -78,16 +75,10 @@ public class Mat implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.neuralnetwork.Mat} object
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
-	public Mat add(final Mat mat)
+	@NotNull
+	public Mat add(@NotNull final Mat mat)
 	{
-		return new Mat(data).map(new MatFunc()
-		{
-			@Override
-			public double perform(double val, int r, int c)
-			{
-				return val + mat.data[r][c];
-			}
-		});
+		return new Mat(data).map((val, r, c) -> val + mat.data[r][c]);
 	}
 
 	/**
@@ -96,16 +87,10 @@ public class Mat implements Serializable, Cloneable
 	 * @param scl a double
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
+	@NotNull
 	public Mat add(final double scl)
 	{
-		return new Mat(data).map(new MatFunc()
-		{
-			@Override
-			public double perform(double val, int r, int c)
-			{
-				return val + scl;
-			}
-		});
+		return new Mat(data).map((val, r, c) -> val + scl);
 	}
 
 	/**
@@ -114,16 +99,10 @@ public class Mat implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.neuralnetwork.Mat} object
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
-	public Mat subtract(final Mat mat)
+	@NotNull
+	public Mat subtract(@NotNull final Mat mat)
 	{
-		return new Mat(data).map(new MatFunc()
-		{
-			@Override
-			public double perform(double val, int r, int c)
-			{
-				return val - mat.data[r][c];
-			}
-		});
+		return new Mat(data).map((val, r, c) -> val - mat.data[r][c]);
 	}
 
 	/**
@@ -132,16 +111,10 @@ public class Mat implements Serializable, Cloneable
 	 * @param scl a double
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
+	@NotNull
 	public Mat subtract(final double scl)
 	{
-		return new Mat(data).map(new MatFunc()
-		{
-			@Override
-			public double perform(double val, int r, int c)
-			{
-				return val - scl;
-			}
-		});
+		return new Mat(data).map((val, r, c) -> val - scl);
 	}
 
 	/**
@@ -149,16 +122,10 @@ public class Mat implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
+	@NotNull
 	public Mat transpose()
 	{
-		return new Mat(cols, rows).map(new MatFunc()
-		{
-			@Override
-			public double perform(double val, int r, int c)
-			{
-				return data[c][r];
-			}
-		});
+		return new Mat(cols, rows).map((val, r, c) -> data[c][r]);
 	}
 
 	/**
@@ -167,16 +134,10 @@ public class Mat implements Serializable, Cloneable
 	 * @param scl a double
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
+	@NotNull
 	public Mat mult(final double scl)
 	{
-		return new Mat(data).map(new MatFunc()
-		{
-			@Override
-			public double perform(double val, int r, int c)
-			{
-				return val * scl;
-			}
-		});
+		return new Mat(data).map((val, r, c) -> val * scl);
 	}
 
 	/**
@@ -185,16 +146,10 @@ public class Mat implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.neuralnetwork.Mat} object
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
-	public Mat elementMult(final Mat mat)
+	@NotNull
+	public Mat elementMult(@NotNull final Mat mat)
 	{
-		return new Mat(data).map(new MatFunc()
-		{
-			@Override
-			public double perform(double val, int r, int c)
-			{
-				return val * mat.data[r][c];
-			}
-		});
+		return new Mat(data).map((val, r, c) -> val * mat.data[r][c]);
 	}
 
 	/**
@@ -203,22 +158,19 @@ public class Mat implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.neuralnetwork.Mat} object
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
-	public Mat mult(final Mat mat)
+	@NotNull
+	public Mat mult(@NotNull final Mat mat)
 	{
 		if(cols != mat.rows) throw new RuntimeException("Rows don't match columns");
 
-		return new Mat(rows, mat.cols).map(new MatFunc()
+		return new Mat(rows, mat.cols).map((val, r, c) ->
 		{
-			@Override
-			public double perform(double val, int r, int c)
+			double sum = 0;
+			for(int i = 0; i < cols; i++)
 			{
-				double sum = 0;
-				for(int i = 0; i < cols; i++)
-				{
-					sum += data[r][i] * mat.data[i][c];
-				}
-				return sum;
+				sum += data[r][i] * mat.data[i][c];
 			}
+			return sum;
 		});
 	}
 
@@ -228,7 +180,8 @@ public class Mat implements Serializable, Cloneable
 	 * @param func a {@link com.hk.neuralnetwork.Mat.MatFunc} object
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
-	public Mat map(MatFunc func)
+	@NotNull
+	public Mat map(@NotNull MatFunc func)
 	{
 		for(int r = 0; r < rows; r++)
 		{
@@ -276,6 +229,7 @@ public class Mat implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
+	@NotNull
 	public Mat clone()
 	{
 		return new Mat(data);
@@ -286,6 +240,7 @@ public class Mat implements Serializable, Cloneable
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String toArrayString()
 	{
 		return Arrays.deepToString(data);
@@ -296,6 +251,7 @@ public class Mat implements Serializable, Cloneable
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String toString()
 	{		
 		StringBuilder sb = new StringBuilder();
@@ -321,6 +277,7 @@ public class Mat implements Serializable, Cloneable
 	 * @param arr an array of {@link double} objects
 	 * @return a {@link com.hk.neuralnetwork.Mat} object
 	 */
+	@NotNull
 	public static Mat fromArray(double[] arr)
 	{
 		Mat mat = new Mat(arr.length, 1);
@@ -337,44 +294,16 @@ public class Mat implements Serializable, Cloneable
 	}
 
 	/** Constant <code>SIGMOID</code> */
-	public static final MatFunc SIGMOID = new MatFunc()
-	{
-		@Override
-		public double perform(double val, int r, int c)
-		{
-			return 1 / (1 + Math.exp(-val));
-		}
-	};
+	public static final MatFunc SIGMOID = (val, r, c) -> 1 / (1 + Math.exp(-val));
 
 	/** Constant <code>SIGMOID_DERIVATIVE</code> */
-	public static final MatFunc SIGMOID_DERIVATIVE = new MatFunc()
-	{
-		@Override
-		public double perform(double val, int r, int c)
-		{
-			return val * (1 - val);
-		}
-	};
+	public static final MatFunc SIGMOID_DERIVATIVE = (val, r, c) -> val * (1 - val);
 
 	/** Constant <code>TANH</code> */
-	public static final MatFunc TANH = new MatFunc()
-	{
-		@Override
-		public double perform(double val, int r, int c)
-		{
-			return Math.tanh(val);
-		}
-	};
+	public static final MatFunc TANH = (val, r, c) -> Math.tanh(val);
 
 	/** Constant <code>TANH_DERIVATIVE</code> */
-	public static final MatFunc TANH_DERIVATIVE = new MatFunc()
-	{
-		@Override
-		public double perform(double val, int r, int c)
-		{
-			return 1 - val * val;
-		}
-	};
+	public static final MatFunc TANH_DERIVATIVE = (val, r, c) -> 1 - val * val;
 
 	private static final long serialVersionUID = 3107367440033528127L;
 }

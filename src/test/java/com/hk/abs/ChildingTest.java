@@ -1,9 +1,9 @@
 package com.hk.abs;
 
-import com.hk.func.Consumer;
 import junit.framework.TestCase;
 
 import java.util.Stack;
+import java.util.function.Consumer;
 
 public class ChildingTest extends TestCase
 {
@@ -14,14 +14,7 @@ public class ChildingTest extends TestCase
 		final HTMLTag html = new HTMLTag("html", head, body);
 
 		final Stack<String> expectedTags = new Stack<>();
-		Consumer<HTMLTag> csm = new Consumer<HTMLTag>()
-		{
-			@Override
-			public void accept(HTMLTag htmlTag)
-			{
-				assertEquals(expectedTags.pop(), htmlTag.tag);
-			}
-		};
+		Consumer<HTMLTag> csm = htmlTag -> assertEquals(expectedTags.pop(), htmlTag.tag);
 
 		expectedTags.push("div");
 		expectedTags.push("title");

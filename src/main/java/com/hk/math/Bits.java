@@ -1,5 +1,7 @@
 package com.hk.math;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -50,6 +52,7 @@ public class Bits implements Cloneable, Serializable
 	 * @param b a boolean
 	 * @return a {@link com.hk.math.Bits} object
 	 */
+	@NotNull
 	public Bits setBit(int index, boolean b)
 	{
 		if (index < 0 || index >= size)
@@ -82,6 +85,7 @@ public class Bits implements Cloneable, Serializable
 	 * @param index a int
 	 * @return a {@link com.hk.math.Bits} object
 	 */
+	@NotNull
 	public Bits toggleBit(int index)
 	{
 		return setBit(index, !getBit(index));
@@ -93,6 +97,7 @@ public class Bits implements Cloneable, Serializable
 	 * @param b a boolean
 	 * @return a {@link com.hk.math.Bits} object
 	 */
+	@NotNull
 	public Bits setAll(boolean b)
 	{
 		return setVal(b ? -1 : 0);
@@ -117,6 +122,7 @@ public class Bits implements Cloneable, Serializable
 	 * @param val a long
 	 * @return a {@link com.hk.math.Bits} object
 	 */
+	@NotNull
 	public Bits setVal(long val)
 	{
 		this.val = val;
@@ -125,6 +131,7 @@ public class Bits implements Cloneable, Serializable
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public Bits clone()
 	{
 		return new Bits(val, size);

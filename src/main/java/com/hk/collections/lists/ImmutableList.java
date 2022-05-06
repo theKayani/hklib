@@ -1,5 +1,7 @@
 package com.hk.collections.lists;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +22,7 @@ public final class ImmutableList<E> extends ArrayList<E> implements Serializable
 	 *
 	 * @param c a {@link java.util.List} object
 	 */
-	public ImmutableList(List<? extends E> c)
+	public ImmutableList(@NotNull List<? extends E> c)
 	{
 		super(new ArrayList<>(c));
 	}
@@ -96,6 +98,7 @@ public final class ImmutableList<E> extends ArrayList<E> implements Serializable
 	}
 
 	/** {@inheritDoc} */
+	@NotNull
 	@Override
 	public Iterator<E> iterator()
 	{
@@ -103,6 +106,7 @@ public final class ImmutableList<E> extends ArrayList<E> implements Serializable
 	}
 
 	/** {@inheritDoc} */
+	@NotNull
 	@Override
 	public List<E> subList(int fromIndex, int toIndex)
 	{
@@ -121,6 +125,7 @@ public final class ImmutableList<E> extends ArrayList<E> implements Serializable
 			"rawtypes", "unchecked"
 	})
 	@Override
+	@NotNull
 	public ListIterator<E> listIterator(int index)
 	{
 		return new ImmutableList.ListItr(super.listIterator(index));
@@ -131,6 +136,7 @@ public final class ImmutableList<E> extends ArrayList<E> implements Serializable
 			"rawtypes", "unchecked"
 	})
 	@Override
+	@NotNull
 	public ListIterator<E> listIterator()
 	{
 		return new ImmutableList.ListItr(super.listIterator());
@@ -251,11 +257,12 @@ public final class ImmutableList<E> extends ArrayList<E> implements Serializable
 			return list.addAll(Arrays.asList(obj));
 		}
 
-		public boolean addAll(Collection<? extends E> obj)
+		public boolean addAll(@NotNull Collection<? extends E> obj)
 		{
 			return list.addAll(obj);
 		}
 
+		@NotNull
 		public ImmutableList<E> build()
 		{
 			return new ImmutableList<>(list);

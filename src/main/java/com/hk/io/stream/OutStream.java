@@ -1,5 +1,7 @@
 package com.hk.io.stream;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -23,7 +25,7 @@ public class OutStream implements Stream
 	 *
 	 * @param out a {@link java.io.OutputStream} object
 	 */
-	public OutStream(OutputStream out)
+	public OutStream(@NotNull OutputStream out)
 	{
 		this(out, true);
 	}
@@ -34,7 +36,7 @@ public class OutStream implements Stream
 	 * @param out a {@link java.io.OutputStream} object
 	 * @param errorCheck a boolean
 	 */
-	public OutStream(OutputStream out, boolean errorCheck)
+	public OutStream(@NotNull OutputStream out, boolean errorCheck)
 	{
 		this.out = out;
 		this.errorCheck = errorCheck;
@@ -132,7 +134,7 @@ public class OutStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
-	public void writeUTFString(String o) throws StreamException
+	public void writeUTFString(@NotNull String o) throws StreamException
 	{
 		if(errorCheck) write(TYPE_UTF_STRING);
 		byte[] bs = o.getBytes(StandardCharsets.UTF_8);
@@ -147,7 +149,7 @@ public class OutStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
-	public void writeRawString(String o) throws StreamException
+	public void writeRawString(@NotNull String o) throws StreamException
 	{
 		if(errorCheck) write(TYPE_RAW_STRING);
 		int len = o.length();
@@ -165,7 +167,7 @@ public class OutStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
-	public void writeSerializable(Serializable o) throws StreamException
+	public void writeSerializable(@NotNull Serializable o) throws StreamException
 	{
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		try
@@ -261,6 +263,7 @@ public class OutStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public String readUTFString() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
@@ -268,6 +271,7 @@ public class OutStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public String readRawString() throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
@@ -275,7 +279,8 @@ public class OutStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
-	public <T> T readSerializable(Class<T> cls) throws StreamException
+	@NotNull
+	public <T> T readSerializable(@NotNull Class<T> cls) throws StreamException
 	{
 		throw new StreamException("Can't read from this stream");
 	}

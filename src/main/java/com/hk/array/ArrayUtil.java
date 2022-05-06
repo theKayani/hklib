@@ -1,5 +1,8 @@
 package com.hk.array;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +24,8 @@ public class ArrayUtil
 	 * @return The {@link com.hk.array.ImmutableArray} instance.
 	 * @param <T> a T class
 	 */
-	public static <T> ImmutableArray<T> immutableArrayOf(Object array)
+	@NotNull
+	public static <T> ImmutableArray<T> immutableArrayOf(@NotNull Object array)
 	{
 		if(array instanceof boolean[])
 			return new ImmutableArray<>((boolean[]) array);
@@ -53,7 +57,8 @@ public class ArrayUtil
 	 * @return The array back.
 	 * @param <T> a T class
 	 */
-	public static <T> Object swap(Object arr, int index1, int index2)
+	@NotNull
+	public static <T> Object swap(@NotNull Object arr, int index1, int index2)
 	{
 		Object t = Array.get(arr, index1);
 		Array.set(arr, index1, Array.get(arr, index2));
@@ -62,32 +67,34 @@ public class ArrayUtil
 	}
 
 	/**
-	 * <p>shuffleArray.</p>
+	 * <p>Shuffle an object, which should be an array, randomly.</p>
 	 *
 	 * @param arr a T object
 	 * @param <T> a T class
 	 * @return a T object
 	 */
-	public static <T> T shuffleArray(T arr)
+	@NotNull
+	public static <T> T shuffleArray(@NotNull T arr)
 	{
 		return shuffleArray(arr, ThreadLocalRandom.current());
 	}
 
 	/**
-	 * <p>shuffleArray.</p>
+	 * <p>Shuffle an object, which should be an array, randomly. The
+	 * random numbers are chosen using the given random object.</p>
 	 *
-	 * @param arr a T object
+	 * @param arr the array to shuffle
 	 * @param rand a {@link java.util.Random} object
-	 * @param <T> a T class
-	 * @return a T object
+	 * @param <T> return type
+	 * @return the same array
 	 */
-	public static <T> T shuffleArray(T arr, Random rand)
+	@NotNull
+	public static <T> T shuffleArray(@NotNull T arr, @NotNull Random rand)
 	{
 		int l = Array.getLength(arr);
 		for (int i = l - 1; i >= 0; i--)
-		{
 			swap(arr, i, rand.nextInt(i + 1));
-		}
+
 		return arr;
 	}
 
@@ -99,7 +106,7 @@ public class ArrayUtil
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
-	public static int[] toIntArray(List<Integer> list)
+	public static int[] toIntArray(@NotNull List<Integer> list)
 	{
 		int[] array = new int[list.size()];
 		for (int i = 0; i < list.size(); i++)
@@ -117,7 +124,7 @@ public class ArrayUtil
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
-	public static float[] toFloatArray(List<Float> list)
+	public static float[] toFloatArray(@NotNull List<Float> list)
 	{
 		float[] array = new float[list.size()];
 		for (int i = 0; i < list.size(); i++)
@@ -135,7 +142,7 @@ public class ArrayUtil
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
-	public static double[] toDoubleArray(List<Double> list)
+	public static double[] toDoubleArray(@NotNull List<Double> list)
 	{
 		double[] array = new double[list.size()];
 		for (int i = 0; i < list.size(); i++)
@@ -153,7 +160,7 @@ public class ArrayUtil
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
-	public static char[] toCharArray(List<Character> list)
+	public static char[] toCharArray(@NotNull List<Character> list)
 	{
 		char[] array = new char[list.size()];
 		for (int i = 0; i < list.size(); i++)
@@ -171,7 +178,7 @@ public class ArrayUtil
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
-	public static long[] toLongArray(List<Long> list)
+	public static long[] toLongArray(@NotNull List<Long> list)
 	{
 		long[] array = new long[list.size()];
 		for (int i = 0; i < list.size(); i++)
@@ -189,7 +196,7 @@ public class ArrayUtil
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
-	public static short[] toShortArray(List<Short> list)
+	public static short[] toShortArray(@NotNull List<Short> list)
 	{
 		short[] array = new short[list.size()];
 		for (int i = 0; i < list.size(); i++)
@@ -207,7 +214,7 @@ public class ArrayUtil
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
-	public static byte[] toByteArray(List<Byte> list)
+	public static byte[] toByteArray(@NotNull List<Byte> list)
 	{
 		byte[] array = new byte[list.size()];
 		for (int i = 0; i < list.size(); i++)
@@ -225,7 +232,7 @@ public class ArrayUtil
 	 * @param list The list to convert
 	 * @return The primitive array instance of the list's contents.
 	 */
-	public static boolean[] toBooleanArray(List<Boolean> list)
+	public static boolean[] toBooleanArray(@NotNull List<Boolean> list)
 	{
 		boolean[] array = new boolean[list.size()];
 		for (int i = 0; i < list.size(); i++)
@@ -243,7 +250,8 @@ public class ArrayUtil
 	 * @return A new array with the same contents but a size higher.
 	 * @param <T> a T class
 	 */
-	public static <T> T[] growArray(T[] array)
+	@NotNull
+	public static <T> T[] growArray(@NotNull T[] array)
 	{
 		return Arrays.copyOf(array, array.length + 1);
 	}
@@ -353,7 +361,8 @@ public class ArrayUtil
 	 * @param amtToGrow a int
 	 * @param <T> a T class
 	 */
-	public static <T> T[] growArrayBy(T[] array, int amtToGrow)
+	@NotNull
+	public static <T> T[] growArrayBy(@NotNull T[] array, int amtToGrow)
 	{
 		return Arrays.copyOf(array, array.length + amtToGrow);
 	}
@@ -488,7 +497,8 @@ public class ArrayUtil
 	 * @param <T> a T class
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T[] growArrayAt(T[] array, int indexToGrow)
+	@NotNull
+	public static <T> T[] growArrayAt(@NotNull T[] array, int indexToGrow)
 	{
 		T[] arr1 = Arrays.copyOfRange(array, 0, indexToGrow);
 		T[] arr2 = (T[]) Array.newInstance(array.getClass().getComponentType(), 1);
@@ -592,6 +602,7 @@ public class ArrayUtil
 	 * @return an array of T[] objects
 	 */
 	@SafeVarargs
+	@NotNull
 	public static <T> T[] toArray(T... arr)
 	{
 		return arr;
@@ -603,6 +614,7 @@ public class ArrayUtil
 	 * @param arr an array of {@link int} objects
 	 * @return an array of {@link java.lang.Integer} objects
 	 */
+	@NotNull
 	public static Integer[] toObjIntegerArray(int[] arr)
 	{
 		Integer[] arr1 = new Integer[arr.length];
@@ -619,6 +631,7 @@ public class ArrayUtil
 	 * @param arr an array of {@link float} objects
 	 * @return an array of {@link java.lang.Float} objects
 	 */
+	@NotNull
 	public static Float[] toObjFloatArray(float[] arr)
 	{
 		Float[] arr1 = new Float[arr.length];
@@ -635,6 +648,7 @@ public class ArrayUtil
 	 * @param arr an array of {@link double} objects
 	 * @return an array of {@link java.lang.Double} objects
 	 */
+	@NotNull
 	public static Double[] toObjDoubleArray(double[] arr)
 	{
 		Double[] arr1 = new Double[arr.length];
@@ -651,6 +665,7 @@ public class ArrayUtil
 	 * @param arr an array of {@link long} objects
 	 * @return an array of {@link java.lang.Long} objects
 	 */
+	@NotNull
 	public static Long[] toObjLongArray(long[] arr)
 	{
 		Long[] arr1 = new Long[arr.length];
@@ -667,6 +682,7 @@ public class ArrayUtil
 	 * @param arr an array of {@link short} objects
 	 * @return an array of {@link java.lang.Short} objects
 	 */
+	@NotNull
 	public static Short[] toObjShortArray(short[] arr)
 	{
 		Short[] arr1 = new Short[arr.length];
@@ -683,6 +699,7 @@ public class ArrayUtil
 	 * @param arr an array of {@link byte} objects
 	 * @return an array of {@link java.lang.Byte} objects
 	 */
+	@NotNull
 	public static Byte[] toObjByteArray(byte[] arr)
 	{
 		Byte[] arr1 = new Byte[arr.length];
@@ -699,6 +716,7 @@ public class ArrayUtil
 	 * @param arr an array of {@link char} objects
 	 * @return an array of {@link java.lang.Character} objects
 	 */
+	@NotNull
 	public static Character[] toObjCharacterArray(char[] arr)
 	{
 		Character[] arr1 = new Character[arr.length];
@@ -715,6 +733,7 @@ public class ArrayUtil
 	 * @param arr an array of {@link boolean} objects
 	 * @return an array of {@link java.lang.Boolean} objects
 	 */
+	@NotNull
 	public static Boolean[] toObjBooleanArray(boolean[] arr)
 	{
 		Boolean[] arr1 = new Boolean[arr.length];

@@ -3,6 +3,7 @@ package com.hk.io;
 import java.util.Random;
 
 import com.hk.array.ArrayUtil;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>Transmuxer class.</p>
@@ -100,6 +101,7 @@ public class Transmuxer
 	 * @param length a int
 	 * @return a {@link com.hk.io.Transmuxer} object
 	 */
+	@NotNull
 	public static Transmuxer make(byte key, byte[] data, int offset, int length)
 	{
 		if(data == null)
@@ -119,6 +121,7 @@ public class Transmuxer
 	 * @param data an array of {@link byte} objects
 	 * @return a {@link com.hk.io.Transmuxer} object
 	 */
+	@NotNull
 	public static Transmuxer make(byte key, byte[] data)
 	{
 		return make(key, data, 0, data.length);
@@ -132,6 +135,7 @@ public class Transmuxer
 	 * @param length a int
 	 * @return a {@link com.hk.io.Transmuxer} object
 	 */
+	@NotNull
 	public static Transmuxer make(byte[] data, int offset, int length)
 	{
 		return make(data[offset], data, offset + 1, length - 1);
@@ -143,6 +147,7 @@ public class Transmuxer
 	 * @param data an array of {@link byte} objects
 	 * @return a {@link com.hk.io.Transmuxer} object
 	 */
+	@NotNull
 	public static Transmuxer make(byte[] data)
 	{
 		return make(data, 0, data.length);

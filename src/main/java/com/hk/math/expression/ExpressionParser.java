@@ -1,10 +1,9 @@
 package com.hk.math.expression;
 
-import com.hk.ex.UncheckedIOException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UncheckedIOException;
 
 class ExpressionParser
 {

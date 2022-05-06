@@ -1,5 +1,7 @@
 package com.hk.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 /**
@@ -99,7 +101,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 
 	/** {@inheritDoc} */
 	@Override
-	public int compareTo(KeyValue<T> o)
+	public int compareTo(@NotNull KeyValue<T> o)
 	{
 		if(o == null)
 			return 1;

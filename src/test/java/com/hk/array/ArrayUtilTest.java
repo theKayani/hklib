@@ -14,7 +14,7 @@ public class ArrayUtilTest extends TestCase
 	{
 		boolean[] bs;
 
-		bs = ArrayUtil.toBooleanArray(Collections.<Boolean>emptyList());
+		bs = ArrayUtil.toBooleanArray(Collections.emptyList());
 
 		assertEquals(0, bs.length);
 
@@ -95,7 +95,7 @@ public class ArrayUtilTest extends TestCase
 	{
 		char[] cs;
 
-		cs = ArrayUtil.toCharArray(Collections.<Character>emptyList());
+		cs = ArrayUtil.toCharArray(Collections.emptyList());
 
 		assertEquals(0, cs.length);
 
@@ -219,7 +219,7 @@ public class ArrayUtilTest extends TestCase
 	{
 		long[] ls;
 
-		ls = ArrayUtil.toLongArray(Collections.<Long>emptyList());
+		ls = ArrayUtil.toLongArray(Collections.emptyList());
 
 		assertEquals(0, ls.length);
 
@@ -1161,7 +1161,7 @@ public class ArrayUtilTest extends TestCase
 	{
 		float[] fs;
 
-		fs = ArrayUtil.toFloatArray(Collections.<Float>emptyList());
+		fs = ArrayUtil.toFloatArray(Collections.emptyList());
 
 		assertEquals(0, fs.length);
 
@@ -1242,7 +1242,7 @@ public class ArrayUtilTest extends TestCase
 	{
 		short[] ss;
 
-		ss = ArrayUtil.toShortArray(Collections.<Short>emptyList());
+		ss = ArrayUtil.toShortArray(Collections.emptyList());
 
 		assertEquals(0, ss.length);
 
@@ -1448,43 +1448,43 @@ public class ArrayUtilTest extends TestCase
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'X' });
 
 		assertEquals(1, cs.length);
-		assertEquals(new Character('X'), cs[0]);
+		assertEquals(Character.valueOf('X'), cs[0]);
 
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'Y' });
 
 		assertEquals(1, cs.length);
-		assertEquals(new Character('Y'), cs[0]);
+		assertEquals(Character.valueOf('Y'), cs[0]);
 
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'X', 'X' });
 
 		assertEquals(2, cs.length);
-		assertEquals(new Character('X'), cs[0]);
-		assertEquals(new Character('X'), cs[1]);
+		assertEquals(Character.valueOf('X'), cs[0]);
+		assertEquals(Character.valueOf('X'), cs[1]);
 
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'Y', 'X' });
 
 		assertEquals(2, cs.length);
-		assertEquals(new Character('Y'), cs[0]);
-		assertEquals(new Character('X'), cs[1]);
+		assertEquals(Character.valueOf('Y'), cs[0]);
+		assertEquals(Character.valueOf('X'), cs[1]);
 
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'X', 'Y' });
 
 		assertEquals(2, cs.length);
-		assertEquals(new Character('X'), cs[0]);
-		assertEquals(new Character('Y'), cs[1]);
+		assertEquals(Character.valueOf('X'), cs[0]);
+		assertEquals(Character.valueOf('Y'), cs[1]);
 
 		cs = ArrayUtil.toObjCharacterArray(new char[] { 'Y', 'Y' });
 
 		assertEquals(2, cs.length);
-		assertEquals(new Character('Y'), cs[0]);
-		assertEquals(new Character('Y'), cs[1]);
+		assertEquals(Character.valueOf('Y'), cs[0]);
+		assertEquals(Character.valueOf('Y'), cs[1]);
 	}
 
 	public void testToDoubleArray()
 	{
 		double[] ds;
 
-		ds = ArrayUtil.toDoubleArray(Collections.<Double>emptyList());
+		ds = ArrayUtil.toDoubleArray(Collections.emptyList());
 
 		assertEquals(0, ds.length);
 
@@ -1565,7 +1565,7 @@ public class ArrayUtilTest extends TestCase
 	{
 		byte[] bs;
 
-		bs = ArrayUtil.toByteArray(Collections.<Byte>emptyList());
+		bs = ArrayUtil.toByteArray(Collections.emptyList());
 
 		assertEquals(0, bs.length);
 
@@ -1646,7 +1646,7 @@ public class ArrayUtilTest extends TestCase
 	{
 		int[] is;
 
-		is = ArrayUtil.toIntArray(Collections.<Integer>emptyList());
+		is = ArrayUtil.toIntArray(Collections.emptyList());
 
 		assertEquals(0, is.length);
 

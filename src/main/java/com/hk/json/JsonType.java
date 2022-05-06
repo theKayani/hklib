@@ -1,5 +1,7 @@
 package com.hk.json;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * <p>JsonType class.</p>
  *
@@ -27,6 +29,7 @@ public enum JsonType
 	 * @param index a int
 	 * @return a {@link com.hk.json.JsonType} object
 	 */
+	@NotNull
 	public static JsonType get(int index)
 	{
 		switch(index)
@@ -54,7 +57,7 @@ public enum JsonType
 	 * @param cls a {@link java.lang.Class} object
 	 * @return a {@link com.hk.json.JsonType} object
 	 */
-	public static JsonType by(Class<?> cls)
+	public static JsonType by(@NotNull Class<?> cls)
 	{
 		for(JsonType type : values())
 		{

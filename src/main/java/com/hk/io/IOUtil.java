@@ -1,5 +1,7 @@
 package com.hk.io;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 import java.nio.charset.Charset;
 
@@ -17,7 +19,7 @@ public final class IOUtil
 	 * @param in a {@link java.io.InputStream} object
 	 * @param out a {@link java.io.OutputStream} object
 	 */
-	public static void copyTo(InputStream in, OutputStream out)
+	public static void copyTo(@NotNull InputStream in, @NotNull OutputStream out)
 	{
 		copyTo(in, out, 1024);
 	}
@@ -30,7 +32,7 @@ public final class IOUtil
 	 * @param out a {@link java.io.OutputStream} object
 	 * @param buffer a int
 	 */
-	public static void copyTo(InputStream in, OutputStream out, int buffer)
+	public static void copyTo(@NotNull InputStream in, @NotNull OutputStream out, int buffer)
 	{
 		try
 		{
@@ -55,7 +57,7 @@ public final class IOUtil
 	 * @param in a {@link java.io.InputStream} object
 	 * @param out a {@link java.io.OutputStream} object
 	 */
-	public static void copyTo(Reader in, Writer out)
+	public static void copyTo(@NotNull Reader in, @NotNull Writer out)
 	{
 		copyTo(in, out, 512);
 	}
@@ -68,7 +70,7 @@ public final class IOUtil
 	 * @param out a {@link java.io.Writer} object
 	 * @param buffer a int
 	 */
-	public static void copyTo(Reader in, Writer out, int buffer)
+	public static void copyTo(@NotNull Reader in, @NotNull Writer out, int buffer)
 	{
 		try
 		{
@@ -90,7 +92,7 @@ public final class IOUtil
 	 * @param in a {@link java.io.InputStream} object
 	 * @return an array of {@link byte} objects
 	 */
-	public static byte[] readAll(InputStream in)
+	public static byte[] readAll(@NotNull InputStream in)
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		copyTo(in, baos);
@@ -103,7 +105,7 @@ public final class IOUtil
 	 * @param in a {@link java.io.Reader} object
 	 * @return an array of {@link char} objects
 	 */
-	public static char[] readAll(Reader in)
+	public static char[] readAll(@NotNull Reader in)
 	{
 		CharArrayWriter caw = new CharArrayWriter();
 		copyTo(in, caw);
@@ -117,7 +119,8 @@ public final class IOUtil
 	 * @param in a {@link java.io.InputStream} object
 	 * @return a {@link java.lang.String} object
 	 */
-	public static String readString(InputStream in)
+	@NotNull
+	public static String readString(@NotNull InputStream in)
 	{
 		return new String(readAll(in));
 	}
@@ -130,7 +133,8 @@ public final class IOUtil
 	 * @param charset a {@link java.lang.String} object
 	 * @return a {@link java.lang.String} object
 	 */
-	public static String readString(InputStream in, String charset)
+	@NotNull
+	public static String readString(@NotNull InputStream in, @NotNull String charset)
 	{
 		try
 		{
@@ -150,7 +154,8 @@ public final class IOUtil
 	 * @param charset a {@link java.nio.charset.Charset} object
 	 * @return a {@link java.lang.String} object
 	 */
-	public static String readString(InputStream in, Charset charset)
+	@NotNull
+	public static String readString(@NotNull InputStream in, @NotNull Charset charset)
 	{
 		return new String(readAll(in), charset);
 	}
@@ -161,7 +166,8 @@ public final class IOUtil
 	 * @param in a {@link java.io.Reader} object
 	 * @return a {@link java.lang.String} object
 	 */
-	public static String readString(Reader in)
+	@NotNull
+	public static String readString(@NotNull Reader in)
 	{
 		return new String(readAll(in));
 	}
@@ -171,7 +177,7 @@ public final class IOUtil
 	 *
 	 * @param c a {@link java.io.Closeable} object
 	 */
-	public static void closeQuietly(Closeable c)
+	public static void closeQuietly(@NotNull Closeable c)
 	{
 		try
 		{
@@ -185,7 +191,7 @@ public final class IOUtil
 	/*
 	  renamed to closeWithRE
 	 */
-	public static void closeWithRuntimeException(Closeable c)
+	public static void closeWithRuntimeException(@NotNull Closeable c)
 	{
 		closeWithRE(c);
 	}
@@ -195,7 +201,7 @@ public final class IOUtil
 	 *
 	 * @param c a {@link java.io.Closeable} object
 	 */
-	public static void closeWithRE(Closeable c)
+	public static void closeWithRE(@NotNull Closeable c)
 	{
 		try
 		{
@@ -213,6 +219,7 @@ public final class IOUtil
 	 *
 	 * @return an empty reader
 	 */
+	@NotNull
 	public static Reader emptyReader()
 	{
 		return emptyReader;
@@ -224,6 +231,7 @@ public final class IOUtil
 	 *
 	 * @return an empty stream
 	 */
+	@NotNull
 	public static InputStream emptyStream()
 	{
 		return emptyStream;
@@ -234,6 +242,7 @@ public final class IOUtil
 	 *
 	 * @return a writer that goes nowhere
 	 */
+	@NotNull
 	public static Writer nowhereWriter()
 	{
 		return nowhereWriter;
@@ -244,13 +253,13 @@ public final class IOUtil
 	 *
 	 * @return an output stream that goes nowhere
 	 */
+	@NotNull
 	public static OutputStream nowhereStream()
 	{
 		return nowhereStream;
 	}
 
-	private static final Reader emptyReader = new Reader()
-	{
+	private static final Reader emptyReader = new Reader() {
 		@Override
 		public int read()
 		{
@@ -258,7 +267,7 @@ public final class IOUtil
 		}
 
 		@Override
-		public int read(char[] cbuf, int off, int len)
+		public int read(char @NotNull [] cbuf, int off, int len)
 		{
 			return -1;
 		}
@@ -278,10 +287,10 @@ public final class IOUtil
 		public void write(int c) {}
 
 		@Override
-		public void write(String str, int off, int len) {}
+		public void write(@NotNull String str, int off, int len) {}
 
 		@Override
-		public void write(char[] cbuf, int off, int len) {}
+		public void write(char @NotNull [] cbuf, int off, int len) {}
 
 		@Override
 		public void flush() {}
@@ -298,7 +307,7 @@ public final class IOUtil
 		}
 
 		@Override
-		public int read(byte[] b, int off, int len)
+		public int read(byte @NotNull [] b, int off, int len)
 		{
 			return -1;
 		}
@@ -310,13 +319,12 @@ public final class IOUtil
 		}
 	};
 
-	private static final OutputStream nowhereStream = new OutputStream()
-	{
+	private static final OutputStream nowhereStream = new OutputStream() {
 		@Override
 		public void write(int b) {}
 
 		@Override
-		public void write(byte[] b, int off, int len) {}
+		public void write(byte @NotNull [] b, int off, int len) {}
 	};
 
 	private IOUtil()

@@ -3,8 +3,8 @@ package com.hk.lua;
 import java.io.*;
 import java.net.URL;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
-import com.hk.func.BiConsumer;
 import com.hk.json.*;
 import com.hk.lua.Lua.LuaMethod;
 
@@ -156,7 +156,7 @@ public enum LuaLibraryJson implements BiConsumer<Environment, LuaObject>, LuaMet
 	{
 		String name = toString();
 		if(name != null && !name.trim().isEmpty())
-			table.rawSet(new LuaString(name), Lua.newFunc(this));
+			table.rawSet(new LuaString(name), Lua.newMethod(this));
 	}
 
 	/**

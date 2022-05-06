@@ -1,10 +1,10 @@
 package com.hk.json;
 
-import com.hk.func.Function;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * This is just a compatibility/convenience method for 1.8 so that

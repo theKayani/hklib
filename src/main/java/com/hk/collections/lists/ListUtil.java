@@ -1,5 +1,8 @@
 package com.hk.collections.lists;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 
 /**
@@ -22,6 +25,7 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a new {@link java.util.ArrayList} object
 	 */
+	@NotNull
 	public static <T> ArrayList<T> newArrayList()
 	{
 		return new ArrayList<>();
@@ -35,6 +39,7 @@ public class ListUtil
 	 * @return a new {@link java.util.ArrayList} object
 	 */
 	@SuppressWarnings("unchecked")
+	@NotNull
 	public static <T> ArrayList<T> newArrayList(T... elements)
 	{
 		ArrayList<T> list = newArrayList();
@@ -49,7 +54,8 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a new {@link java.util.ArrayList} object
 	 */
-	public static <T> ArrayList<T> newArrayListWith(T[] elements)
+	@NotNull
+	public static <T> ArrayList<T> newArrayListWith(@NotNull T[] elements)
 	{
 		ArrayList<T> list = newArrayList();
 		addAll(list, elements);
@@ -63,6 +69,7 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a new {@link java.util.ArrayList} object
 	 */
+	@NotNull
 	public static <T> ArrayList<T> newArrayList(int initialCapacity)
 	{
 		return new ArrayList<>(initialCapacity);
@@ -75,7 +82,8 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a new {@link java.util.ArrayList} object
 	 */
-	public static <T> ArrayList<T> newArrayList(Collection<? extends T> c)
+	@NotNull
+	public static <T> ArrayList<T> newArrayList(@NotNull Collection<? extends T> c)
 	{
 		return new ArrayList<>(c);
 	}
@@ -86,6 +94,7 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a {@link java.util.LinkedList} object
 	 */
+	@NotNull
 	public static <T> LinkedList<T> newLinkedList()
 	{
 		return new LinkedList<>();
@@ -98,7 +107,8 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a {@link java.util.LinkedList} object
 	 */
-	public static <T> LinkedList<T> newLinkedList(Collection<? extends T> c)
+	@NotNull
+	public static <T> LinkedList<T> newLinkedList(@NotNull Collection<? extends T> c)
 	{
 		return new LinkedList<>(c);
 	}
@@ -110,7 +120,8 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a {@link com.hk.collections.lists.ImmutableList} object
 	 */
-	public static <T> ImmutableList<T> newImmutableList(List<? extends T> c)
+	@NotNull
+	public static <T> ImmutableList<T> newImmutableList(@NotNull List<? extends T> c)
 	{
 		return new ImmutableList<>(c);
 	}
@@ -121,6 +132,7 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a {@link com.hk.collections.lists.ImmutableList.Builder} object
 	 */
+	@NotNull
 	public static <T> ImmutableList.Builder<T> newImmutableListBuilder()
 	{
 		return new ImmutableList.Builder<>();
@@ -132,6 +144,7 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a {@link com.hk.collections.lists.SortedList} object
 	 */
+	@NotNull
 	public static <T> SortedList<T> newSortedList()
 	{
 		return new SortedList<>();
@@ -144,7 +157,8 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a {@link com.hk.collections.lists.SortedList} object
 	 */
-	public static <T> SortedList<T> newSortedList(Comparator<T> comparator)
+	@NotNull
+	public static <T> SortedList<T> newSortedList(@NotNull Comparator<T> comparator)
 	{
 		return new SortedList<>(comparator);
 	}
@@ -156,6 +170,7 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a {@link com.hk.collections.lists.SortedList} object
 	 */
+	@NotNull
 	public static <T> SortedList<T> newSortedList(boolean reverseSorting)
 	{
 		return new SortedList<>(reverseSorting);
@@ -169,7 +184,8 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return a {@link com.hk.collections.lists.SortedList} object
 	 */
-	public static <T> SortedList<T> newSortedList(Comparator<T> comparator, boolean reverseSorting)
+	@NotNull
+	public static <T> SortedList<T> newSortedList(@NotNull Comparator<T> comparator, boolean reverseSorting)
 	{
 		return new SortedList<>(comparator, reverseSorting);
 	}
@@ -183,14 +199,15 @@ public class ListUtil
 	 * @param <T> a T class
 	 * @return the same list
 	 */
-	public static <T> List<T> swap(List<T> list, int index1, int index2)
+	@NotNull
+	public static <T> List<T> swap(@NotNull List<T> list, int index1, int index2)
 	{
 		list.set(index1, list.set(index2, list.get(index1)));
 		return list;
 	}
 
 	@Deprecated
-	public static <T> void addElements(List<T> list, T[] array)
+	public static <T> void addElements(@NotNull List<T> list, @NotNull T[] array)
 	{
 		Collections.addAll(list, array);
 	}
@@ -203,7 +220,7 @@ public class ListUtil
 	 * @param <T> a T class
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> void addAll(List<T> list, T... array)
+	public static <T> void addAll(@NotNull List<T> list, T... array)
 	{
 		Collections.addAll(list, array);
 	}

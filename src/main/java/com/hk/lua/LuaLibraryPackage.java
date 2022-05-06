@@ -1,6 +1,5 @@
 package com.hk.lua;
 
-import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 /**
  * <p>LuaLibraryPackage class.</p>
@@ -69,7 +69,7 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 			Environment globals = env.interp.getGlobals();
 
 			if(!globals.getVar(name()).getBoolean())
-				globals.setVar(name(), Lua.newFunc(this));
+				globals.setVar(name(), Lua.newMethod(this));
 		}
 	},
 	config() {
@@ -262,7 +262,7 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 	{
 		String name = toString();
 		if(name != null && !name.trim().isEmpty())
-			table.rawSet(new LuaString(name), Lua.newFunc(this));
+			table.rawSet(new LuaString(name), Lua.newMethod(this));
 	}
 
 	/** Constant <code>EXKEY_TEMPLATE_SEP="package.template.sep"</code> */

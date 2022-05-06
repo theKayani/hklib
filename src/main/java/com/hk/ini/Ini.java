@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.hk.collections.lists.ListUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>Ini class.</p>
@@ -32,7 +34,8 @@ public class Ini
 	 * @param key a {@link java.lang.String} object
 	 * @return a {@link com.hk.ini.Ini} object
 	 */
-	public Ini remove(String section, String key)
+	@NotNull
+	public Ini remove(@Nullable String section, @Nullable String key)
 	{
 		section = section == null ? "" : section;
 		key = key == null ? "" : key;
@@ -48,7 +51,8 @@ public class Ini
 	 * @param section a {@link java.lang.String} object
 	 * @return a {@link com.hk.ini.Ini} object
 	 */
-	public Ini removeSection(String section)
+	@NotNull
+	public Ini removeSection(@Nullable String section)
 	{
 		data.remove(section == null ? "" : section);
 		return this;
@@ -62,13 +66,12 @@ public class Ini
 	 * @param value a {@link java.lang.Object} object
 	 * @return a {@link com.hk.ini.Ini} object
 	 */
-	public Ini set(String section, String key, Object value)
+	@NotNull
+	public Ini set(@Nullable String section, @Nullable String key, @Nullable Object value)
 	{
 		section = section == null ? "" : section;
 		key = key == null ? "" : key;
-		Map<String, Object> map = data.get(section);
-		if(map == null)
-			data.put(section, map = new LinkedHashMap<>());
+		Map<String, Object> map = data.computeIfAbsent(section, k -> new LinkedHashMap<>());
 
 		if(value instanceof Collection)
 		{
@@ -96,7 +99,8 @@ public class Ini
 	 * @return a {@link com.hk.ini.Ini} object
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Ini add(String section, String key, Object value)
+	@NotNull
+	public Ini add(@Nullable String section, @Nullable String key, @Nullable Object value)
 	{
 		section = section == null ? "" : section;
 		key = key == null ? "" : key;
@@ -148,7 +152,8 @@ public class Ini
 	 * @param key a {@link java.lang.String} object
 	 * @return a {@link java.lang.Object} object
 	 */
-	public Object get(String section, String key)
+	@Nullable
+	public Object get(@Nullable String section, @Nullable String key)
 	{
 		return get(section, key, null);
 	}
@@ -161,7 +166,8 @@ public class Ini
 	 * @param def a {@link java.lang.String} object
 	 * @return a {@link java.lang.String} object
 	 */
-	public String getString(String section, String key, String def)
+	@Nullable
+	public String getString(@Nullable String section, @Nullable String key, @Nullable String def)
 	{
 		section = section == null ? "" : section;
 		key = key == null ? "" : key;
@@ -181,7 +187,7 @@ public class Ini
 	 * @param key a {@link java.lang.String} object
 	 * @return a int
 	 */
-	public int getInt(String section, String key)
+	public int getInt(@Nullable String section, @Nullable String key)
 	{
 		return getInt(section, key, 0);
 	}
@@ -194,7 +200,7 @@ public class Ini
 	 * @param def a int
 	 * @return a int
 	 */
-	public int getInt(String section, String key, int def)
+	public int getInt(@Nullable String section, @Nullable String key, int def)
 	{
 		return (int) getLong(section, key, def);
 	}
@@ -206,7 +212,7 @@ public class Ini
 	 * @param key a {@link java.lang.String} object
 	 * @return a long
 	 */
-	public long getLong(String section, String key)
+	public long getLong(@Nullable String section, @Nullable String key)
 	{
 		return getLong(section, key, 0);
 	}
@@ -219,7 +225,7 @@ public class Ini
 	 * @param def a long
 	 * @return a long
 	 */
-	public long getLong(String section, String key, long def)
+	public long getLong(@Nullable String section, @Nullable String key, long def)
 	{
 		section = section == null ? "" : section;
 		key = key == null ? "" : key;
@@ -247,7 +253,7 @@ public class Ini
 	 * @param key a {@link java.lang.String} object
 	 * @return a float
 	 */
-	public float getFloat(String section, String key)
+	public float getFloat(@Nullable String section, @Nullable String key)
 	{
 		return getFloat(section, key, 0);
 	}
@@ -260,7 +266,7 @@ public class Ini
 	 * @param def a float
 	 * @return a float
 	 */
-	public float getFloat(String section, String key, float def)
+	public float getFloat(@Nullable String section, @Nullable String key, float def)
 	{
 		return (float) getDouble(section, key, def);
 	}
@@ -272,7 +278,7 @@ public class Ini
 	 * @param key a {@link java.lang.String} object
 	 * @return a double
 	 */
-	public double getDouble(String section, String key)
+	public double getDouble(@Nullable String section, @Nullable String key)
 	{
 		return getDouble(section, key, 0);
 	}
@@ -285,7 +291,7 @@ public class Ini
 	 * @param def a double
 	 * @return a double
 	 */
-	public double getDouble(String section, String key, double def)
+	public double getDouble(@Nullable String section, @Nullable String key, double def)
 	{
 		section = section == null ? "" : section;
 		key = key == null ? "" : key;
@@ -315,7 +321,8 @@ public class Ini
 	 * @return a {@link java.lang.Object} object
 	 */
 	@SuppressWarnings("rawtypes")
-	public Object get(String section, String key, Object def)
+	@Nullable
+	public Object get(@Nullable String section, @Nullable String key, @Nullable Object def)
 	{
 		section = section == null ? "" : section;
 		key = key == null ? "" : key;
@@ -335,7 +342,8 @@ public class Ini
 	 * @param key a {@link java.lang.String} object
 	 * @return an array of {@link java.lang.Object} objects
 	 */
-	public Object[] getArray(String section, String key)
+	@Nullable
+	public Object[] getArray(@Nullable String section, @Nullable String key)
 	{
 		return getArray(section, key, null);
 	}
@@ -348,7 +356,8 @@ public class Ini
 	 * @param def an array of {@link java.lang.Object} objects
 	 * @return an array of {@link java.lang.Object} objects
 	 */
-	public Object[] getArray(String section, String key, Object[] def)
+	@Nullable
+	public Object[] getArray(@Nullable String section, @Nullable String key, @Nullable Object[] def)
 	{
 		Object o = get(section, key, def);
 		return o instanceof Object[] ? (Object[]) o : def;
@@ -359,6 +368,7 @@ public class Ini
 	 *
 	 * @return an array of {@link java.lang.String} objects
 	 */
+	@NotNull
 	public String[] getSections()
 	{
 		return data.keySet().toArray(new String[0]);
@@ -370,7 +380,8 @@ public class Ini
 	 * @param section a {@link java.lang.String} object
 	 * @return an array of {@link java.lang.String} objects
 	 */
-	public String[] getKeys(String section)
+	@Nullable
+	public String[] getKeys(@Nullable String section)
 	{
 		Map<String, Object> map = data.get(section == null ? "" : section);
 		if(map == null)
@@ -391,7 +402,8 @@ public class Ini
 	 * @param section a {@link java.lang.String} object
 	 * @return a {@link java.lang.String} object
 	 */
-	public String getComment(String section)
+	@Nullable
+	public String getComment(@Nullable String section)
 	{
 		Map<String, Object> map = data.get(section == null ? "" : section);
 		return map == null ? null : (String) map.get(null);
@@ -404,12 +416,11 @@ public class Ini
 	 * @param comment a {@link java.lang.String} object
 	 * @return a {@link com.hk.ini.Ini} object
 	 */
-	public Ini setComment(String section, String comment)
+	@NotNull
+	public Ini setComment(@Nullable String section, @Nullable String comment)
 	{
 		section = section == null ? "" : section;
-		Map<String, Object> map = data.get(section);
-		if(map == null)
-			data.put(section, map = new LinkedHashMap<>());
+		Map<String, Object> map = data.computeIfAbsent(section, k -> new LinkedHashMap<>());
 
 		if(comment == null)
 			map.remove(null);

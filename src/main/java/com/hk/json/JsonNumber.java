@@ -1,5 +1,7 @@
 package com.hk.json;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * <p>JsonNumber class.</p>
  *
@@ -34,7 +36,7 @@ public class JsonNumber extends JsonValue
 	 *
 	 * @return a {@link com.hk.json.JsonType} object
 	 */
-	public JsonType getType()
+	public @NotNull JsonType getType()
 	{
 		return JsonType.NUMBER;
 	}
@@ -54,7 +56,7 @@ public class JsonNumber extends JsonValue
 	 *
 	 * @return a {@link java.lang.Number} object
 	 */
-	public Number getNumber()
+	public @NotNull Number getNumber()
 	{
 		return value;
 	}
@@ -75,7 +77,7 @@ public class JsonNumber extends JsonValue
 
 	/** {@inheritDoc} */
 	@Override
-	public String toString()
+	public @NotNull String toString()
 	{
 		return value.toString();
 	}

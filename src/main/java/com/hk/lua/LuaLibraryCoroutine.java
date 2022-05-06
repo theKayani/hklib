@@ -1,8 +1,8 @@
 package com.hk.lua;
 
 import java.util.Arrays;
+import java.util.function.BiConsumer;
 
-import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -87,6 +87,6 @@ public enum LuaLibraryCoroutine implements BiConsumer<Environment, LuaObject>, L
 	{
 		String name = toString();
 		if(name != null && !name.trim().isEmpty())
-			table.rawSet(new LuaString(name), Lua.newFunc(this));
+			table.rawSet(new LuaString(name), Lua.newMethod(this));
 	}
 }

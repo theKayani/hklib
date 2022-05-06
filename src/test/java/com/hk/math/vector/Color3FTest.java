@@ -4,12 +4,6 @@ import junit.framework.TestCase;
 
 public class Color3FTest extends TestCase
 {
-	@Override
-	public void setUp()
-	{
-		// TODO: create or delete
-	}
-
 	public void testToHexString()
 	{
 		assertEquals("FFFFFFFF", Color3F.WHITE.toHexString());
@@ -20,11 +14,5 @@ public class Color3FTest extends TestCase
 		assertEquals("FFFFFF00", Color3F.YELLOW.toHexString());
 		assertEquals("FF00FFFF", Color3F.CYAN.toHexString());
 		assertEquals("FFFF00FF", Color3F.PURPLE.toHexString());
-	}
-
-	@Override
-	public void tearDown()
-	{
-		// TODO: create or delete
 	}
 }

@@ -1,11 +1,11 @@
 package com.hk.lua;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -441,7 +441,7 @@ public enum LuaLibraryString implements BiConsumer<Environment, LuaObject>, LuaM
 
 	LuaLibraryString()
 	{
-		func = Lua.newFunc(this);
+		func = Lua.newMethod(this);
 	}
 
 	/** {@inheritDoc} */

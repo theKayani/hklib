@@ -8,8 +8,8 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
-import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -177,13 +177,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 			String name = toString();
 			if(name != null && !name.trim().isEmpty())
 			{
-				table.rawSet(new LuaString(name), Lua.newFunc(new LuaMethod() {
-					@Override
-					public LuaObject call(LuaInterpreter interp, LuaObject[] args)
-					{
-						return apply(env.interp, args);
-					}			
-				}));
+				table.rawSet(new LuaString(name), Lua.newMethod((interp, args) -> apply(env.interp, args)));
 			}
 		}
 	},
@@ -496,7 +490,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 	{
 		String name = toString();
 		if(name != null && !name.trim().isEmpty())
-			table.rawSet(new LuaString(name), Lua.newFunc(this));
+			table.rawSet(new LuaString(name), Lua.newMethod(this));
 	}
 
 	/** Constant <code>EXKEY_OUTPUT="system.out"</code> */

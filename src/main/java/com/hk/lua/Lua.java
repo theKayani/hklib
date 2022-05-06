@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.*;
 
 /**
  * <p>This class contains various utility methods for handling
@@ -509,7 +510,7 @@ public class Lua
 		else if(o instanceof LuaObject[])
 			return ((LuaObject[]) o).length == 0 ? LuaNil.NIL : new LuaArgs((LuaObject[]) o);
 		else if(o instanceof LuaMethod)
-			return Lua.newFunc((LuaMethod) o);
+			return Lua.newMethod((LuaMethod) o);
 		else if(o.getClass().isArray())
 		{
 			int len = Array.getLength(o);
@@ -610,7 +611,7 @@ public class Lua
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
 	@NotNull
-	public static LuaObject newString(@Nullable char[] cs)
+	public static LuaObject newString(char[] cs)
 	{
 		return cs == null ? LuaNil.NIL : new LuaString(new String(cs));
 	}
@@ -813,6 +814,18 @@ public class Lua
 	}
 
 	/**
+	 * @see #newMethod(LuaMethod)
+	 *
+	 * @deprecated
+	 */
+	@Deprecated
+	@NotNull
+	public static LuaObject newFunc(@NotNull final LuaMethod method)
+	{
+		return newMethod(method);
+	}
+
+	/**
 	 * <p>Convert a {@link LuaMethod} into a Lua function.</p>
 	 * <p>This returns a Lua object that can be executed.</p>
 	 * <p>Calling {@link LuaObject#isFunction()} on the result will
@@ -822,10 +835,9 @@ public class Lua
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
 	@NotNull
-	public static LuaObject newFunc(@NotNull final LuaMethod method)
+	public static LuaObject newMethod(@NotNull final LuaMethod method)
 	{
-		return new LuaFunction()
-		{
+		return new LuaFunction() {
 			@Override
 			LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 			{
@@ -833,6 +845,832 @@ public class Lua
 				return o == null ? LuaNil.NIL : o;
 			}
 		};
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.DoublePredicate} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.BiPredicate} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final DoublePredicate method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.NUMBER);
+			return Lua.newBool(method.test(args[0].getDouble()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.IntPredicate} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.IntPredicate} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final IntPredicate method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			return Lua.newBool(method.test(args[0].getInt()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.LongPredicate} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.LongPredicate} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final LongPredicate method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			return Lua.newBool(method.test(args[0].getLong()));
+		});
+	}
+
+	/**
+	 * <p>Convert a String {@link java.util.function.Predicate} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a String {@link java.util.function.Predicate} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final Predicate<String> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.STRING);
+			return Lua.newBool(method.test(args[0].getString()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.DoubleConsumer} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.DoubleConsumer} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final DoubleConsumer method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.NUMBER);
+			method.accept(args[0].getDouble());
+			return null;
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.IntConsumer} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.IntConsumer} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final IntConsumer method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			method.accept(args[0].getInt());
+			return null;
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.LongConsumer} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.LongConsumer} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final LongConsumer method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			method.accept(args[0].getLong());
+			return null;
+		});
+	}
+
+	/**
+	 * <p>Convert a String {@link java.util.function.Consumer} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a String {@link java.util.function.Consumer} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final Consumer<String> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.STRING);
+			method.accept(args[0].getString());
+			return null;
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.ObjDoubleConsumer} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.ObjDoubleConsumer} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final ObjDoubleConsumer<LuaInterpreter> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.NUMBER);
+			method.accept(interp, args[0].getDouble());
+			return null;
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.ObjIntConsumer} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.ObjIntConsumer} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final ObjIntConsumer<LuaInterpreter> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			method.accept(interp, args[0].getInt());
+			return null;
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.ObjLongConsumer} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.ObjLongConsumer} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final ObjLongConsumer<LuaInterpreter> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			method.accept(interp, args[0].getLong());
+			return null;
+		});
+	}
+
+	/**
+	 * <p>Convert a String {@link java.util.function.BiConsumer} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a String {@link java.util.function.BiConsumer} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final BiConsumer<LuaInterpreter, String> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.STRING);
+			method.accept(interp, args[0].getString());
+			return null;
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.BooleanSupplier} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.BooleanSupplier} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final BooleanSupplier method)
+	{
+		return newMethod((interp, args) -> Lua.newBool(method.getAsBoolean()));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.DoubleSupplier} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.DoubleSupplier} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final DoubleSupplier method)
+	{
+		return newMethod((interp, args) -> Lua.newNumber(method.getAsDouble()));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.IntSupplier} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.IntSupplier} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final IntSupplier method)
+	{
+		return newMethod((interp, args) -> Lua.newNumber(method.getAsInt()));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.LongSupplier} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.LongSupplier} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final LongSupplier method)
+	{
+		return newMethod((interp, args) -> Lua.newNumber(method.getAsLong()));
+	}
+
+	/**
+	 * <p>Convert a String {@link java.util.function.Supplier} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a String {@link java.util.function.Supplier} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final Supplier<String> method)
+	{
+		return newMethod((interp, args) -> Lua.newString(method.get()));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.DoubleFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.DoubleFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final DoubleFunction<LuaObject> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.NUMBER);
+			return method.apply(args[0].getDouble());
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.DoubleToIntFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.DoubleToIntFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final DoubleToIntFunction method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.NUMBER);
+			return Lua.newNumber(method.applyAsInt(args[0].getDouble()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.DoubleToLongFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.DoubleToLongFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final DoubleToLongFunction method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.NUMBER);
+			return Lua.newNumber(method.applyAsLong(args[0].getDouble()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.ToDoubleFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.ToDoubleFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final ToDoubleFunction<LuaObject[]> method)
+	{
+		return newMethod((interp, args) -> Lua.newNumber(method.applyAsDouble(args)));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.ToDoubleBiFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.ToDoubleBiFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final ToDoubleBiFunction<LuaInterpreter, LuaObject[]> method)
+	{
+		return newMethod((interp, args) -> Lua.newNumber(method.applyAsDouble(interp, args)));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.IntFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.IntFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final IntFunction<LuaObject> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			return method.apply(args[0].getInt());
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.IntToDoubleFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.IntToDoubleFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final IntToDoubleFunction method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			return Lua.newNumber(method.applyAsDouble(args[0].getInt()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.IntToLongFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.IntToLongFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final IntToLongFunction method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			return Lua.newNumber(method.applyAsLong(args[0].getInt()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.ToIntFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.ToIntFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final ToIntFunction<LuaObject[]> method)
+	{
+		return newMethod((interp, args) -> Lua.newNumber(method.applyAsInt(args)));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.ToIntBiFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.ToIntBiFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final ToIntBiFunction<LuaInterpreter, LuaObject[]> method)
+	{
+		return newMethod((interp, args) -> Lua.newNumber(method.applyAsInt(interp, args)));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.LongFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.LongFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final LongFunction<LuaObject> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			return method.apply(args[0].getLong());
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.LongToDoubleFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.LongToDoubleFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final LongToDoubleFunction method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			return Lua.newNumber(method.applyAsDouble(args[0].getInt()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.LongToIntFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a {@link java.util.function.LongToIntFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final LongToIntFunction method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			return Lua.newNumber(method.applyAsInt(args[0].getInt()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.ToLongFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.ToLongFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final ToLongFunction<LuaObject[]> method)
+	{
+		return newMethod((interp, args) -> Lua.newNumber(method.applyAsLong(args)));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.ToLongBiFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.ToLongBiFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final ToLongBiFunction<LuaInterpreter, LuaObject[]> method)
+	{
+		return newMethod((interp, args) -> Lua.newNumber(method.applyAsLong(interp, args)));
+	}
+
+	/**
+	 * <p>Convert a String {@link java.util.function.Function} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param name name of the method for errors
+	 * @param method a String {@link java.util.function.Function} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final String name, @NotNull final Function<String, LuaObject> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.STRING);
+			return method.apply(args[0].getString());
+		});
+	}
+
+	/**
+	 * <p>Convert a String {@link java.util.function.Function} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a String {@link java.util.function.Function} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final Function<LuaObject[], String> method)
+	{
+		return newMethod((interp, args) -> Lua.newString(method.apply(args)));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.BiFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.BiFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFuncFrom(@NotNull final BiFunction<LuaInterpreter, LuaObject[], String> method)
+	{
+		return newMethod((interp, args) -> Lua.newString(method.apply(interp, args)));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.Supplier} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.Supplier} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final Supplier<LuaObject> method)
+	{
+		return newMethod((interp, args) -> method.get());
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.UnaryOperator} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.UnaryOperator} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final String name, @NotNull final UnaryOperator<LuaObject> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.ANY);
+			return method.apply(args[0]);
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.BinaryOperator} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.BinaryOperator} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final String name, @NotNull final BinaryOperator<LuaObject> method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.ANY, LuaType.ANY);
+			return method.apply(args[0], args[1]);
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.DoubleBinaryOperator} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.DoubleBinaryOperator} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final String name, @NotNull final DoubleBinaryOperator method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.NUMBER, LuaType.NUMBER);
+			return Lua.newNumber(method.applyAsDouble(args[0].getDouble(), args[1].getDouble()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.DoubleUnaryOperator} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.DoubleUnaryOperator} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final String name, @NotNull final DoubleUnaryOperator method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.NUMBER);
+			return Lua.newNumber(method.applyAsDouble(args[0].getDouble()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.IntBinaryOperator} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.IntBinaryOperator} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final String name, @NotNull final IntBinaryOperator method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER, LuaType.INTEGER);
+			return Lua.newNumber(method.applyAsInt(args[0].getInt(), args[1].getInt()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.IntUnaryOperator} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.IntUnaryOperator} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final String name, @NotNull final IntUnaryOperator method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			return Lua.newNumber(method.applyAsInt(args[0].getInt()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.LongBinaryOperator} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.LongBinaryOperator} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final String name, @NotNull final LongBinaryOperator method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER, LuaType.INTEGER);
+			return Lua.newNumber(method.applyAsLong(args[0].getInt(), args[1].getInt()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.LongUnaryOperator} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.LongUnaryOperator} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final String name, @NotNull final LongUnaryOperator method)
+	{
+		return newMethod((interp, args) -> {
+			Lua.checkArgs(name, args, LuaType.INTEGER);
+			return Lua.newNumber(method.applyAsLong(args[0].getLong()));
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.Consumer} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.Consumer} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final Consumer<LuaObject[]> method)
+	{
+		return newMethod((interp, args) -> {
+			method.accept(args);
+			return null;
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.BiConsumer} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.BiConsumer} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final BiConsumer<LuaInterpreter, LuaObject[]> method)
+	{
+		return newMethod((interp, args) -> {
+			method.accept(interp, args);
+			return null;
+		});
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.Predicate} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.Predicate} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final Predicate<LuaObject[]> method)
+	{
+		return newMethod((interp, args) -> Lua.newBool(method.test(args)));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.BiPredicate} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.BiPredicate} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final BiPredicate<LuaInterpreter, LuaObject[]> method)
+	{
+		return newMethod((interp, args) -> Lua.newBool(method.test(interp, args)));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.Function} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.Function} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final Function<LuaObject[], LuaObject> method)
+	{
+		return newMethod((interp, args) -> method.apply(args));
+	}
+
+	/**
+	 * <p>Convert a {@link java.util.function.BiFunction} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.util.function.BiFunction} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final BiFunction<LuaInterpreter, LuaObject[], LuaObject> method)
+	{
+		return newMethod(method::apply);
 	}
 
 	/**
@@ -970,9 +1808,10 @@ public class Lua
 	}
 
 	/**
-	 * This interface can be passes into {@link #newFunc} to return
+	 * This interface can be passes into {@link #newMethod} to return
 	 * a {@link LuaObject} as an executable Lua function.
 	 */
+	@FunctionalInterface
 	public interface LuaMethod
 	{
 		/**

@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.hk.abs.Unlockable;
 import com.hk.util.Requirements;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>LockableList class.</p>
@@ -34,13 +35,13 @@ public class LockableList<E> implements List<E>, Unlockable
 	 *
 	 * @param parent a {@link java.util.List} object
 	 */
-	public LockableList(List<E> parent)
+	public LockableList(@NotNull List<E> parent)
 	{
 		this.parent = Requirements.requireNotNull(parent);
 		isLocked = new AtomicBoolean(false);
 	}
 
-	private LockableList(List<E> parent, AtomicBoolean locket)
+	private LockableList(@NotNull List<E> parent, @NotNull AtomicBoolean locket)
 	{
 		this.parent = Requirements.requireNotNull(parent);
 		isLocked = locket;
@@ -98,7 +99,7 @@ public class LockableList<E> implements List<E>, Unlockable
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean addAll(Collection<? extends E> c)
+	public boolean addAll(@NotNull Collection<? extends E> c)
 	{
 		checkLocked();
 		return parent.addAll(c);
@@ -106,7 +107,7 @@ public class LockableList<E> implements List<E>, Unlockable
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean addAll(int pos, Collection<? extends E> c)
+	public boolean addAll(int pos, @NotNull Collection<? extends E> c)
 	{
 		checkLocked();
 		return parent.addAll(pos, c);
@@ -129,7 +130,7 @@ public class LockableList<E> implements List<E>, Unlockable
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean containsAll(Collection<?> c)
+	public boolean containsAll(@NotNull Collection<?> c)
 	{
 		return parent.containsAll(c);
 	}
@@ -202,7 +203,7 @@ public class LockableList<E> implements List<E>, Unlockable
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean removeAll(Collection<?> c)
+	public boolean removeAll(@NotNull Collection<?> c)
 	{
 		checkLocked();
 		return parent.removeAll(c);
@@ -210,7 +211,7 @@ public class LockableList<E> implements List<E>, Unlockable
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean retainAll(Collection<?> c)
+	public boolean retainAll(@NotNull Collection<?> c)
 	{
 		checkLocked();
 		return parent.retainAll(c);
@@ -246,12 +247,14 @@ public class LockableList<E> implements List<E>, Unlockable
 	}
 
 	/** {@inheritDoc} */
+	@SuppressWarnings("SuspiciousToArrayCall")
 	@Override
-	public <T> T[] toArray(T[] arr)
+	public <T> T[] toArray(T @NotNull [] arr)
 	{
 		return parent.toArray(arr);
 	}
 
+	@SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 	@Override
 	public boolean equals(Object o)
 	{

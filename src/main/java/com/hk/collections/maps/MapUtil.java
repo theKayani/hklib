@@ -1,5 +1,7 @@
 package com.hk.collections.maps;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 /**
@@ -16,6 +18,7 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.HashMap} object
 	 */
+	@NotNull
 	public static <T, E> HashMap<T, E> newHashMap()
 	{
 		return new HashMap<>();
@@ -29,6 +32,7 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.HashMap} object
 	 */
+	@NotNull
 	public static <T, E> HashMap<T, E> newHashMap(int initialCapacity)
 	{
 		return new HashMap<>(initialCapacity);
@@ -43,6 +47,7 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.HashMap} object
 	 */
+	@NotNull
 	public static <T, E> HashMap<T, E> newHashMap(int initialCapacity, float loadFactor)
 	{
 		return new HashMap<>(initialCapacity, loadFactor);
@@ -56,7 +61,8 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.HashMap} object
 	 */
-	public static <T, E> HashMap<T, E> newHashMap(Map<? extends T, ? extends E> map)
+	@NotNull
+	public static <T, E> HashMap<T, E> newHashMap(@NotNull Map<? extends T, ? extends E> map)
 	{
 		return new HashMap<>(map);
 	}
@@ -68,6 +74,7 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.Hashtable} object
 	 */
+	@NotNull
 	public static <T, E> Hashtable<T, E> newHashTable()
 	{
 		return new Hashtable<>();
@@ -81,6 +88,7 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.Hashtable} object
 	 */
+	@NotNull
 	public static <T, E> Hashtable<T, E> newHashTable(int initialCapacity)
 	{
 		return new Hashtable<>(initialCapacity);
@@ -95,6 +103,7 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.Hashtable} object
 	 */
+	@NotNull
 	public static <T, E> Hashtable<T, E> newHashTable(int initialCapacity, float loadFactor)
 	{
 		return new Hashtable<>(initialCapacity, loadFactor);
@@ -108,7 +117,8 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.Hashtable} object
 	 */
-	public static <T, E> Hashtable<T, E> newHashTable(Map<? extends T, ? extends E> map)
+	@NotNull
+	public static <T, E> Hashtable<T, E> newHashTable(@NotNull Map<? extends T, ? extends E> map)
 	{
 		return new Hashtable<>(map);
 	}
@@ -120,6 +130,7 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.TreeMap} object
 	 */
+	@NotNull
 	public static <T extends Comparable<T>, E> TreeMap<T, E> newTreeMap()
 	{
 		return new TreeMap<>();
@@ -133,7 +144,8 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.TreeMap} object
 	 */
-	public static <T, E> TreeMap<T, E> newTreeMap(SortedMap<T, ? extends E> map)
+	@NotNull
+	public static <T, E> TreeMap<T, E> newTreeMap(@NotNull SortedMap<T, ? extends E> map)
 	{
 		return new TreeMap<>(map);
 	}
@@ -146,7 +158,8 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.TreeMap} object
 	 */
-	public static <T, E> TreeMap<T, E> newTreeMap(Map<? extends T, ? extends E> map)
+	@NotNull
+	public static <T, E> TreeMap<T, E> newTreeMap(@NotNull Map<? extends T, ? extends E> map)
 	{
 		return new TreeMap<>(map);
 	}
@@ -159,7 +172,8 @@ public class MapUtil
 	 * @param <E> a E class
 	 * @return a {@link java.util.TreeMap} object
 	 */
-	public static <T, E> TreeMap<T, E> newTreeMap(Comparator<? super T> comp)
+	@NotNull
+	public static <T, E> TreeMap<T, E> newTreeMap(@NotNull Comparator<? super T> comp)
 	{
 		return new TreeMap<>(comp);
 	}

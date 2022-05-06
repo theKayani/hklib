@@ -1,5 +1,7 @@
 package com.hk.file;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -55,7 +57,7 @@ public class DataTag implements Serializable
 	@SuppressWarnings("unchecked")
 	public <T> T getDefault(String name, T defValue)
 	{
-		return (T) (objs.containsKey(name) ? objs.get(name) : defValue);
+		return (T) objs.getOrDefault(name, (Serializable) defValue);
 	}
 
 	/**
@@ -74,18 +76,20 @@ public class DataTag implements Serializable
 	 *
 	 * @param objs a {@link java.util.Map} object
 	 */
-	public void setAll(Map<? extends String, ? extends Serializable> objs)
+	public void setAll(@NotNull Map<? extends String, ? extends Serializable> objs)
 	{
 		this.objs.putAll(objs);
 	}
 
-	DataTag load(File f) throws Exception
+	@NotNull
+	DataTag load(@NotNull File f) throws Exception
 	{
 		return load(new FileInputStream(f));
 	}
 
 	@SuppressWarnings("unchecked")
-	DataTag load(InputStream in) throws Exception
+	@NotNull
+	DataTag load(@NotNull InputStream in) throws Exception
 	{
 		GZIPInputStream gin = new GZIPInputStream(in);
 		ObjectInputStream oin = new ObjectInputStream(gin);
@@ -95,12 +99,12 @@ public class DataTag implements Serializable
 		return this;
 	}
 
-	void save(File f) throws Exception
+	void save(@NotNull File f) throws Exception
 	{
 		save(new FileOutputStream(f));
 	}
 
-	void save(OutputStream out) throws Exception
+	void save(@NotNull OutputStream out) throws Exception
 	{
 		GZIPOutputStream gout = new GZIPOutputStream(out);
 		ObjectOutputStream oout = new ObjectOutputStream(gout);

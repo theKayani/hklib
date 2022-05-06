@@ -1,6 +1,6 @@
 package com.hk.lua;
 
-import com.hk.func.BiConsumer;
+import java.util.function.BiConsumer;
 
 /**
  * <p>LuaLibrary objects wrap a set of library methods to be imported

@@ -3,12 +3,9 @@ package com.hk.lua;
 import com.hk.Assets;
 import junit.framework.TestCase;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;

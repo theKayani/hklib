@@ -1,10 +1,9 @@
 package com.hk.math.expression;
 
-import com.hk.func.Supplier;
-
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.*;
+import java.util.function.Supplier;
 
 import static com.hk.math.expression.ExpressionParser.*;
 
@@ -157,7 +156,7 @@ public final class AlgebraicExpression implements Supplier<Double>
 	 */
 	public double getResult()
 	{
-		return getResult(variables == null ? Collections.<String, Object>emptyMap() : variables);
+		return getResult(variables == null ? Collections.emptyMap() : variables);
 	}
 
 	/**

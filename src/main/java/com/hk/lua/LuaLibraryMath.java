@@ -2,8 +2,8 @@ package com.hk.lua;
 
 import java.security.SecureRandom;
 import java.util.Random;
+import java.util.function.BiConsumer;
 
-import com.hk.func.BiConsumer;
 import com.hk.lua.Lua.LuaMethod;
 import com.hk.math.PrimitiveUtil;
 import com.hk.math.Rand;
@@ -342,7 +342,7 @@ public enum LuaLibraryMath implements BiConsumer<Environment, LuaObject>, LuaMet
 	{
 		String name = toString();
 		if(name != null && !name.trim().isEmpty())
-			table.rawSet(new LuaString(name), Lua.newFunc(this));
+			table.rawSet(new LuaString(name), Lua.newMethod(this));
 	}
 
 	/** Constant <code>EXKEY_MATH_RNG="math.rng"</code> */

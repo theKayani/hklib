@@ -1,5 +1,7 @@
 package com.hk.abs;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * This interface is a utility to represent an object which has a name.
  * Mostly to be used with the Nameable interface in the case that it
@@ -16,5 +18,6 @@ public interface Named
 	 *
 	 * @return a {@link java.lang.String} object, or null.
 	 */
+	@Nullable
 	String getName();
 }

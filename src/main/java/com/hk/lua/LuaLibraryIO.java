@@ -1,7 +1,6 @@
 package com.hk.lua;
 
 import com.hk.file.FileUtil;
-import com.hk.func.BiConsumer;
 import com.hk.io.IOUtil;
 import com.hk.lua.Lua.LuaMethod;
 import org.jetbrains.annotations.NotNull;
@@ -9,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.util.function.BiConsumer;
 
 /**
  * <p>This class is to replicate the <em>io</em> library from Lua.</p>
@@ -394,7 +394,7 @@ public enum LuaLibraryIO implements BiConsumer<Environment, LuaObject>, LuaMetho
 	{
 		String name = toString();
 		if(name != null && !name.trim().isEmpty())
-			table.rawSet(new LuaString(name), Lua.newFunc(this));
+			table.rawSet(new LuaString(name), Lua.newMethod(this));
 	}
 
 	static final LuaObject ioMetatable = new LuaTable();

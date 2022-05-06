@@ -1,11 +1,11 @@
 package com.hk.math.expression;
 
-import com.hk.func.Supplier;
 import com.hk.math.Rand;
 import junit.framework.TestCase;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class AlgebraicExpressionTest extends TestCase
 {
@@ -135,8 +135,7 @@ public class AlgebraicExpressionTest extends TestCase
 		String text = "a + a * a";
 		AlgebraicExpression expression = new AlgebraicExpression(text);
 
-		Supplier<Double> supp = new Supplier<Double>()
-		{
+		Supplier<Double> supp = new Supplier<Double>() {
 			int i = 1;
 			@Override
 			public Double get()

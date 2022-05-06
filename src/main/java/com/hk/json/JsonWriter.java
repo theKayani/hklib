@@ -2,7 +2,7 @@ package com.hk.json;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import com.hk.ex.UncheckedIOException;
+import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.util.Map;
 

@@ -1,7 +1,6 @@
 package com.hk.json;
 
 import com.hk.Assets;
-import com.hk.func.Function;
 import junit.framework.TestCase;
 
 import java.io.FileNotFoundException;
@@ -114,23 +113,8 @@ public class UUIDsAdapterTest extends TestCase
 				UUID.fromString("371210c6-198e-4be7-aa02-49e6b3d730e7"));
 
 		FunctionAdapter<UUID> adapter = new FunctionAdapter<>(UUID.class)
-				.setFromJson(new Function<JsonValue, UUID>()
-				{
-					@Override
-					public UUID apply(JsonValue value)
-					{
-						assertTrue(value.isString());
-						return UUID.fromString(value.getString());
-					}
-				})
-				.setToJson(new Function<UUID, JsonValue>()
-				{
-					@Override
-					public JsonValue apply(UUID uuid)
-					{
-						return new JsonString(uuid.toString());
-					}
-				});
+				.setFromJson(value -> UUID.fromString(value.getString()))
+				.setToJson(uuid -> new JsonString(uuid.toString()));
 
 		JsonValue value = Json.read(Assets.get("json/uuids.json"));
 

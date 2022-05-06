@@ -1,5 +1,7 @@
 package com.hk.abs;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * <p>This interface is used to refer to a class which can contain a
  * number of children objects similar to it. Let's use HTML tags as
@@ -112,6 +114,7 @@ public interface Childing<T extends Childing<T>>
 	 *
 	 * @return the parent object of this object of the <code>T</code> type.
 	 */
+	@Nullable
 	T getParent();
 
 	/**
@@ -124,5 +127,6 @@ public interface Childing<T extends Childing<T>>
 	 * @return an array of child T[] objects, or null if there are no
 	 * children objects to this one.
 	 */
+	@Nullable
 	T[] getChildren();
 }

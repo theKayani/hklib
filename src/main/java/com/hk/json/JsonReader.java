@@ -1,9 +1,11 @@
 package com.hk.json;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
-import com.hk.ex.UncheckedIOException;
+import java.io.UncheckedIOException;
 
 /**
  * <p>JsonReader class.</p>
@@ -16,7 +18,7 @@ public class JsonReader
 	private char c;
 	private boolean readFully;
 
-	JsonReader(Reader rdr)
+	JsonReader(@NotNull Reader rdr)
 	{
 		this.rdr = new LineNumberReader(rdr);
 
@@ -28,6 +30,7 @@ public class JsonReader
 	 *
 	 * @return a {@link com.hk.json.JsonReader} object
 	 */
+	@NotNull
 	public JsonReader unsetReadFully()
 	{
 		this.readFully = false;
@@ -39,6 +42,7 @@ public class JsonReader
 	 *
 	 * @return a {@link com.hk.json.JsonReader} object
 	 */
+	@NotNull
 	public JsonReader setReadFully()
 	{
 		this.readFully = true;
@@ -51,6 +55,7 @@ public class JsonReader
 	 * @return a {@link com.hk.json.JsonValue} object
 	 * @throws com.hk.json.JsonFormatException if any.
 	 */
+	@NotNull
 	public JsonValue get() throws JsonFormatException
 	{
 		try

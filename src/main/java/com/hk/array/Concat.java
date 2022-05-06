@@ -1,5 +1,8 @@
 package com.hk.array;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.reflect.Array;
 
 /**
@@ -17,6 +20,7 @@ public class Concat
 	 * @return an array of T[] objects
 	 */
 	@SuppressWarnings("unchecked")
+	@Nullable
 	public static <T> T[] concat(T[]... arrs)
 	{
 		if (arrs.length == 0) return null;
@@ -225,6 +229,7 @@ public class Concat
 	 * @param arrs an array of {@link java.lang.String} objects
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public static String concatStrings(String[]... arrs)
 	{
 		int len = 0;

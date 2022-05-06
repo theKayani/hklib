@@ -8,12 +8,6 @@ import java.io.FileNotFoundException;
 
 public class LuaLibraryPackageTest extends TestCase
 {
-	@Override
-	public void setUp()
-	{
-		// TODO: create or delete
-	}
-
 	public void test() throws FileNotFoundException
 	{
 		LuaInterpreter interp = Lua.reader(Assets.get("lua/library_package.lua"));
@@ -27,11 +21,5 @@ public class LuaLibraryPackageTest extends TestCase
 
 		assertTrue(obj instanceof LuaObject);
 		assertTrue(((LuaObject) obj).getBoolean());
-	}
-
-	@Override
-	public void tearDown()
-	{
-		// TODO: create or delete
 	}
 }

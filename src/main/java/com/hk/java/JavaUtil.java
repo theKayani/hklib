@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.hk.array.ArrayUtil;
 import com.hk.file.FileUtil;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>JavaUtil class.</p>
@@ -24,7 +25,8 @@ public class JavaUtil
 	 * @return a {@link java.lang.Class} object
 	 */
 	@SuppressWarnings("resource")
-	public static Class<?> getClass(File parent, File file)
+	@NotNull
+	public static Class<?> getClass(@NotNull File parent, @NotNull File file)
 	{
 		if (file.getName().endsWith(".class"))
 		{
@@ -54,7 +56,8 @@ public class JavaUtil
 	 * @return an array of {@link java.lang.Class} objects
 	 */
 	@SuppressWarnings("resource")
-	public static Class<?>[] getAllClasses(File dir)
+	@NotNull
+	public static Class<?>[] getAllClasses(@NotNull File dir)
 	{
 		try
 		{
@@ -86,7 +89,7 @@ public class JavaUtil
 	 * @param fieldName a {@link java.lang.String} object
 	 * @return a {@link java.lang.Object} object
 	 */
-	public static Object getFieldValue(Object obj, String fieldName)
+	public static Object getFieldValue(@NotNull Object obj, @NotNull String fieldName)
 	{
 		try
 		{
@@ -107,7 +110,7 @@ public class JavaUtil
 	 * @param fieldName a {@link java.lang.String} object
 	 * @return a {@link java.lang.Object} object
 	 */
-	public static Object getStaticFieldValue(Class<?> clz, String fieldName)
+	public static Object getStaticFieldValue(@NotNull Class<?> clz, @NotNull String fieldName)
 	{
 		try
 		{

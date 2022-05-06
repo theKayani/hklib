@@ -10,12 +10,6 @@ import java.io.Reader;
 
 public class LuaLibraryIOTest extends TestCase
 {
-	@Override
-	public void setUp()
-	{
-		// TODO: create or delete
-	}
-
 	public void testCWD() throws FileNotFoundException
 	{
 		LuaInterpreter interp = Lua.reader(Assets.get("lua/test_cwd.lua"));
@@ -37,11 +31,5 @@ public class LuaLibraryIOTest extends TestCase
 		interp.setExtra(LuaLibraryIO.EXKEY_CWD, dir + "/src/test/resources/assets/lua");
 		obj = interp.getGlobals().getVar("andTheySayItIsACapitalOffense").call(interp);
 		assertTrue(obj.getBoolean());
-	}
-
-	@Override
-	public void tearDown()
-	{
-		// TODO: create or delete
 	}
 }

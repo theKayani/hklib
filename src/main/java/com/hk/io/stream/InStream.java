@@ -1,5 +1,7 @@
 package com.hk.io.stream;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +25,7 @@ public class InStream implements Stream
 	 *
 	 * @param in a {@link java.io.InputStream} object
 	 */
-	public InStream(InputStream in)
+	public InStream(@NotNull InputStream in)
 	{
 		this(in, true);
 	}
@@ -34,7 +36,7 @@ public class InStream implements Stream
 	 * @param in a {@link java.io.InputStream} object
 	 * @param errorCheck a boolean
 	 */
-	public InStream(InputStream in, boolean errorCheck)
+	public InStream(@NotNull InputStream in, boolean errorCheck)
 	{
 		this.in = in;
 		this.errorCheck = errorCheck;
@@ -98,21 +100,21 @@ public class InStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
-	public void writeUTFString(String o) throws StreamException
+	public void writeUTFString(@NotNull String o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void writeRawString(String o) throws StreamException
+	public void writeRawString(@NotNull String o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void writeSerializable(Serializable o) throws StreamException
+	public void writeSerializable(@NotNull Serializable o) throws StreamException
 	{
 		throw new StreamException("Can't write to this stream");
 	}
@@ -229,6 +231,7 @@ public class InStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public String readUTFString() throws StreamException
 	{
 		checkType(TYPE_UTF_STRING, "UTF String");
@@ -247,6 +250,7 @@ public class InStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public String readRawString() throws StreamException
 	{
 		checkType(TYPE_RAW_STRING, "Raw String");
@@ -268,7 +272,8 @@ public class InStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
-	public <T> T readSerializable(Class<T> cls) throws StreamException
+	@NotNull
+	public <T> T readSerializable(@NotNull Class<T> cls) throws StreamException
 	{
 		int len = 0;
 		len |= (read() & 0xFF) << 24;
@@ -314,7 +319,7 @@ public class InStream implements Stream
 		return arr;
 	}
 
-	private void checkType(byte type, String name) throws StreamException
+	private void checkType(byte type, @NotNull String name) throws StreamException
 	{
 		byte t = errorCheck ? read() : type;
 		if(t != type)

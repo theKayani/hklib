@@ -2,7 +2,7 @@ package com.hk.jinja;
 
 import java.io.IOException;
 import java.io.Reader;
-import com.hk.ex.UncheckedIOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class TemplateReader
 	 * <p>get.</p>
 	 *
 	 * @return a {@link com.hk.jinja.Template} object
-	 * @throws com.hk.ex.UncheckedIOException if any.
+	 * @throws java.io.UncheckedIOException if any.
 	 */
 	public Template get() throws UncheckedIOException
 	{

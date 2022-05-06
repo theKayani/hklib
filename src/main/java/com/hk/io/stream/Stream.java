@@ -1,5 +1,7 @@
 package com.hk.io.stream;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Closeable;
 import java.io.Serializable;
 
@@ -80,7 +82,7 @@ public interface Stream extends Closeable
 	 * @param o a {@link java.lang.String} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	void writeUTFString(String o) throws StreamException;
+	void writeUTFString(@NotNull String o) throws StreamException;
 
 	/**
 	 * <p>writeRawString.</p>
@@ -88,7 +90,7 @@ public interface Stream extends Closeable
 	 * @param o a {@link java.lang.String} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	void writeRawString(String o) throws StreamException;
+	void writeRawString(@NotNull String o) throws StreamException;
 
 	/**
 	 * <p>writeSerializable.</p>
@@ -96,7 +98,7 @@ public interface Stream extends Closeable
 	 * @param o a {@link java.io.Serializable} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	void writeSerializable(Serializable o) throws StreamException;
+	void writeSerializable(@NotNull Serializable o) throws StreamException;
 
 	/**
 	 * <p>writeBytes.</p>
@@ -176,6 +178,7 @@ public interface Stream extends Closeable
 	 * @return a {@link java.lang.String} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
+	@NotNull
 	String readUTFString() throws StreamException;
 
 	/**
@@ -184,6 +187,7 @@ public interface Stream extends Closeable
 	 * @return a {@link java.lang.String} object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
+	@NotNull
 	String readRawString() throws StreamException;
 
 	/**
@@ -194,7 +198,8 @@ public interface Stream extends Closeable
 	 * @return a T object
 	 * @throws com.hk.io.stream.StreamException if any.
 	 */
-	<T> T readSerializable(Class<T> cls) throws StreamException;
+	@NotNull
+	<T> T readSerializable(@NotNull Class<T> cls) throws StreamException;
 
 	/**
 	 * <p>readBytes.</p>

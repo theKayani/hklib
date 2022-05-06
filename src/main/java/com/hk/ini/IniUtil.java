@@ -1,5 +1,8 @@
 package com.hk.ini;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +20,8 @@ import java.nio.charset.Charset;
  */
 public class IniUtil
 {
-	private static String escape(String str)
+	@NotNull
+	private static String escape(@NotNull String str)
 	{
 		StringBuilder sb = new StringBuilder(str.length());
 		char c;
@@ -78,7 +82,8 @@ public class IniUtil
 		return sb.toString();
 	}
 
-	private static String unescape(String str)
+	@NotNull
+	private static String unescape(@NotNull String str)
 	{
 		if(str.length() > 1 &&
 		  (str.charAt(0) == '"' && str.charAt(str.length() - 1) == '"' ||
@@ -154,7 +159,7 @@ public class IniUtil
 		return sb.toString();
 	}
 
-	private static void load(Ini ini, BufferedReader rd) throws IOException
+	private static void load(@NotNull Ini ini, @NotNull BufferedReader rd) throws IOException
 	{
 		String line;
 
@@ -215,7 +220,8 @@ public class IniUtil
 	 * @param data a {@link java.lang.CharSequence} object
 	 * @return a {@link com.hk.ini.Ini} object
 	 */
-	public static Ini loadFrom(CharSequence data)
+	@NotNull
+	public static Ini loadFrom(@Nullable CharSequence data)
 	{
 		Ini ini = new Ini();
 
@@ -242,7 +248,8 @@ public class IniUtil
 	 * @param file a {@link java.io.File} object
 	 * @return a {@link com.hk.ini.Ini} object
 	 */
-	public static Ini loadFrom(File file)
+	@NotNull
+	public static Ini loadFrom(@NotNull File file)
 	{
 		return loadFrom(file, Charset.defaultCharset());
 	}
@@ -254,7 +261,8 @@ public class IniUtil
 	 * @param charset a {@link java.nio.charset.Charset} object
 	 * @return a {@link com.hk.ini.Ini} object
 	 */
-	public static Ini loadFrom(File file, Charset charset)
+	@NotNull
+	public static Ini loadFrom(@NotNull File file, @NotNull Charset charset)
 	{
 		if(!file.exists())
 			return null;
@@ -279,7 +287,7 @@ public class IniUtil
 	 * @param ini a {@link com.hk.ini.Ini} object
 	 * @param file a {@link java.io.File} object
 	 */
-	public static void save(Ini ini, File file)
+	public static void save(@NotNull Ini ini, @NotNull File file)
 	{
 		save(ini, file, Charset.defaultCharset());
 	}
@@ -291,7 +299,7 @@ public class IniUtil
 	 * @param file a {@link java.io.File} object
 	 * @param charset a {@link java.nio.charset.Charset} object
 	 */
-	public static void save(Ini ini, File file, Charset charset)
+	public static void save(@NotNull Ini ini, @NotNull File file, @NotNull Charset charset)
 	{
 		String s = save(ini, new StringBuilder()).toString();
 
@@ -313,7 +321,8 @@ public class IniUtil
 	 * @param ini a {@link com.hk.ini.Ini} object
 	 * @return a {@link java.lang.String} object
 	 */
-	public static String save(Ini ini)
+	@NotNull
+	public static String save(@NotNull Ini ini)
 	{
 		return save(ini, new StringBuilder()).toString();
 	}
@@ -325,7 +334,8 @@ public class IniUtil
 	 * @param sb a {@link java.lang.StringBuilder} object
 	 * @return a {@link java.lang.StringBuilder} object
 	 */
-	public static StringBuilder save(Ini ini, StringBuilder sb)
+	@NotNull
+	public static StringBuilder save(@NotNull Ini ini, @NotNull StringBuilder sb)
 	{
 		String[] secs = ini.getSections();
 		for(int i = 0; i < secs.length; i++)

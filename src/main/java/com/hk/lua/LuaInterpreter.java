@@ -1,14 +1,14 @@
 package com.hk.lua;
 
-import com.hk.ex.UncheckedIOException;
-import com.hk.func.BiConsumer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.UncheckedIOException;
 import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * This utility class encapsulates an entire Lua environment within
@@ -355,7 +355,7 @@ public class LuaInterpreter implements Tokens
 	 * @param args any vararg parameters to pass to the Lua code.
 	 * @return a result of the execution.
 	 * @throws com.hk.lua.LuaException if any.
-	 * @throws com.hk.ex.UncheckedIOException if any.
+	 * @throws java.io.UncheckedIOException if any.
 	 */
 	@SuppressWarnings("ThrowableNotThrown")
 	@Nullable
@@ -383,7 +383,7 @@ public class LuaInterpreter implements Tokens
 	 * it is called by default by the <code>execute</code> function.</p>
 	 *
 	 * @throws com.hk.lua.LuaException if any Lua syntax errors.
-	 * @throws com.hk.ex.UncheckedIOException if any.
+	 * @throws java.io.UncheckedIOException if any.
 	 */
 	public void compile() throws UncheckedIOException
 	{

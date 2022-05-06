@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import com.hk.ex.OutOfBoundsException;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>BufferStream class.</p>
@@ -136,19 +137,19 @@ public class BufferStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
-	public void writeUTFString(String o)
+	public void writeUTFString(@NotNull String o)
 	{
 		wr(o, StandardCharsets.UTF_8);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void writeRawString(String o)
+	public void writeRawString(@NotNull String o)
 	{
 		wr(o, StandardCharsets.UTF_16);
 	}
 
-	private void wr(String s, Charset cs)
+	private void wr(@NotNull String s, @NotNull Charset cs)
 	{
 		writeInt(s.length());
 		byte[] bs = s.getBytes(cs);
@@ -159,7 +160,7 @@ public class BufferStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
-	public void writeSerializable(Serializable o)
+	public void writeSerializable(@NotNull Serializable o)
 	{
 		try
 		{
@@ -171,14 +172,13 @@ public class BufferStream implements Stream
 			int len = bout.size();
 			writeInt(len);
 			ensure(len);
-			bout.writeTo(new OutputStream()
-			{
+			bout.writeTo(new OutputStream() {
 				@Override
 				public void write(int b)
 				{}
 
 				@Override
-				public void write(byte[] b, int off, int len)
+				public void write(byte @NotNull [] b, int off, int len)
 				{
 					System.arraycopy(b, off, buf, pos, len);
 				}
@@ -283,6 +283,7 @@ public class BufferStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public String readUTFString()
 	{
 		return rd(StandardCharsets.UTF_8);
@@ -290,12 +291,14 @@ public class BufferStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public String readRawString()
 	{
 		return rd(StandardCharsets.UTF_16);
 	}
 
-	private String rd(Charset cs)
+	@NotNull
+	private String rd(@NotNull Charset cs)
 	{
 		int len = readInt();
 		ensure(len);
@@ -305,7 +308,8 @@ public class BufferStream implements Stream
 
 	/** {@inheritDoc} */
 	@Override
-	public <T> T readSerializable(Class<T> cls) throws StreamException
+	@NotNull
+	public <T> T readSerializable(@NotNull Class<T> cls) throws StreamException
 	{
 		try
 		{

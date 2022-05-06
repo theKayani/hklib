@@ -1,13 +1,9 @@
 package com.hk;
 
 import java.io.*;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hk.ex.UncheckedIOException;
-import com.hk.file.FileUtil;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;

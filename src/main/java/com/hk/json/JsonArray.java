@@ -1,10 +1,11 @@
 package com.hk.json;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * <p>JsonArray class.</p>
@@ -38,7 +39,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 *
 	 * @param values a {@link java.util.List} object
 	 */
-	public JsonArray(List<JsonValue> values)
+	public JsonArray(@NotNull List<JsonValue> values)
 	{
 		this.list = new ArrayList<>(values);
 	}
@@ -48,7 +49,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 *
 	 * @param copy a {@link com.hk.json.JsonArray} object
 	 */
-	public JsonArray(JsonArray copy)
+	public JsonArray(@NotNull JsonArray copy)
 	{
 		list = new ArrayList<>(copy.list);
 	}
@@ -58,6 +59,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 *
 	 * @return a {@link com.hk.json.JsonType} object
 	 */
+	@NotNull
 	public JsonType getType()
 	{
 		return JsonType.ARRAY;
@@ -71,7 +73,8 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param <T> a T class
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
-	public <T> JsonArray add(T obj, JsonAdapter<T> adapter)
+	@NotNull
+	public <T> JsonArray add(T obj, @NotNull JsonAdapter<T> adapter)
 	{
 		return add(adapter.toJson(obj));
 	}
@@ -82,6 +85,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param obj a {@link java.lang.Object} object
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(Object obj)
 	{
 		return add(Json.toJson(obj));
@@ -93,6 +97,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param value a {@link com.hk.json.JsonValue} object
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(JsonValue value)
 	{
 		if (this == value)
@@ -108,6 +113,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param value a {@link java.lang.String} object
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(String value)
 	{
 		return add(value == null ? null : new JsonString(value));
@@ -119,6 +125,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param value a double
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(double value)
 	{
 		return add(new JsonNumber(value));
@@ -130,6 +137,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param value a long
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(long value)
 	{
 		return add(new JsonNumber(value));
@@ -141,6 +149,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param value a boolean
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(boolean value)
 	{
 		return add(JsonBoolean.valueOf(value));
@@ -152,7 +161,8 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param vals a {@link java.lang.Iterable} object
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
-	public JsonArray addAll(Iterable<JsonValue> vals)
+	@NotNull
+	public JsonArray addAll(@NotNull Iterable<JsonValue> vals)
 	{
 		for(JsonValue val : vals)
 			add(val);
@@ -167,10 +177,26 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param <T> a T class
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
-	public <T> JsonArray addAll(Iterable<T> vals, JsonAdapter<T> adapter)
+	@NotNull
+	public <T> JsonArray addAll(@NotNull Iterable<T> vals, @NotNull JsonAdapter<T> adapter)
 	{
 		for(T val : vals)
 			add(adapter.toJson(val));
+		return this;
+	}
+
+	/**
+	 *
+	 * @param vals a {@link java.lang.Iterable} object
+	 * @param mapper a {@link java.util.function.Function} object
+	 * @param <T> a T class
+	 * @return a {@link com.hk.json.JsonArray} object
+	 */
+	@NotNull
+	public <T> JsonArray addAll(@NotNull Iterable<T> vals, @NotNull Function<T, JsonValue> mapper)
+	{
+		for(T val : vals)
+			add(mapper.apply(val));
 		return this;
 	}
 
@@ -182,7 +208,8 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param <T> a T class
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
-	public <T> JsonArray addAll(Iterable<T> vals, Class<T> cls)
+	@NotNull
+	public <T> JsonArray addAll(@NotNull Iterable<T> vals, @NotNull Class<T> cls)
 	{		
 		for(JsonAdapter<?> adapter : Json.globalAdapters)
 		{
@@ -203,6 +230,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param vals a {@link com.hk.json.JsonValue} object
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray addAll(JsonValue... vals)
 	{
 		for(JsonValue val : vals)
@@ -216,6 +244,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param vals a {@link java.lang.Object} object
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray addAll(Object... vals)
 	{
 		for(Object val : vals)
@@ -240,6 +269,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param i a int
 	 * @return a {@link com.hk.json.JsonValue} object
 	 */
+	@NotNull
 	public JsonValue get(int i)
 	{
 		return list.get(i);
@@ -252,6 +282,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param value a {@link com.hk.json.JsonValue} object
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(int i, JsonValue value)
 	{
 		list.add(i, value == null ? JsonNull.NULL : value);
@@ -267,7 +298,8 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param <T> a T class
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
-	public <T> JsonArray add(int i, T value, JsonAdapter<T> adapter)
+	@NotNull
+	public <T> JsonArray add(int i, T value, @NotNull JsonAdapter<T> adapter)
 	{
 		return add(i, adapter.toJson(value));
 	}
@@ -279,6 +311,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param value a {@link java.lang.Object} object
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(int i, Object value)
 	{
 		return add(i, Json.toJson(value));
@@ -291,6 +324,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param value a {@link java.lang.String} object
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(int i, String value)
 	{
 		return add(i, new JsonString(value));
@@ -303,6 +337,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param value a double
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(int i, double value)
 	{
 		return add(i, new JsonNumber(value));
@@ -315,6 +350,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param value a long
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(int i, long value)
 	{
 		return add(i, new JsonNumber(value));
@@ -327,6 +363,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param value a boolean
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray add(int i, boolean value)
 	{
 		return add(i, JsonBoolean.valueOf(value));
@@ -434,6 +471,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 *
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray removeAll()
 	{
 		list.clear();
@@ -468,7 +506,8 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @param <T> a T class
 	 * @return a {@link java.util.List} object
 	 */
-	public <T> List<T> toList(JsonAdapter<T> adapter)
+	@NotNull
+	public <T> List<T> toList(@NotNull JsonAdapter<T> adapter)
 	{
 		List<T> list = new ArrayList<>(size());
 
@@ -486,7 +525,8 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 * @return a {@link java.util.List} object
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> List<T> toList(Class<T> cls)
+	@NotNull
+	public <T> List<T> toList(@NotNull Class<T> cls)
 	{
 		for(JsonAdapter<?> adapter : Json.globalAdapters)
 		{
@@ -519,6 +559,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 *
 	 * @return a {@link com.hk.json.JsonArray} object
 	 */
+	@NotNull
 	public JsonArray getArray()
 	{
 		return this;
@@ -529,6 +570,7 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 	 *
 	 * @return a {@link java.util.ListIterator} object
 	 */
+	@NotNull
 	public ListIterator<JsonValue> listIterator()
 	{
 		return list.listIterator();
@@ -536,9 +578,34 @@ public class JsonArray extends JsonValue implements Iterable<JsonValue>
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public Iterator<JsonValue> iterator()
 	{
 		return list.iterator();
+	}
+
+	/**
+	 * <p>Retrieve a stream of the values within this JSON array.</p>
+	 *
+	 * @return a {@link java.util.stream.Stream} object
+	 */
+	@NotNull
+	public Stream<JsonValue> stream()
+	{
+		return list.stream();
+	}
+
+	/**
+	 * <p>Map the values in this array to a list using a mapping function.</p>
+	 *
+	 * @param mapper function to convert JSON values to Java objects
+	 * @param <T> type to convert to
+	 * @return a {@link java.util.List} object
+	 */
+	@NotNull
+	public <T> List<T> map(Function<JsonValue, T> mapper)
+	{
+		return stream().map(mapper).collect(Collectors.toList());
 	}
 
 	/** {@inheritDoc} */
