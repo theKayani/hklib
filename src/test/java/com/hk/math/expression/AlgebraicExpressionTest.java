@@ -54,7 +54,7 @@ public class AlgebraicExpressionTest extends TestCase
 		for(Object[] arr : arrs)
 		{
 			str = (String) arr[0];
-			result = new AlgebraicExpression(str).get();
+			result = new AlgebraicExpression(str).getAsDouble();
 
 			assertEquals(str, arr[1], result);
 		}

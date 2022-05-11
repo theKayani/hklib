@@ -16,10 +16,10 @@ public class LuaLibraryReflectTest extends TestCase
 		Lua.importStandard(interp);
 		interp.importLib(LuaLibrary.REFLECT);
 
-		Object obj = interp.execute();
+		LuaObject obj = interp.execute();
 
-		assertTrue(obj instanceof LuaObject);
-		assertTrue(((LuaObject) obj).getBoolean());
+		assertNotNull(obj);
+		assertTrue(obj.getBoolean());
 	}
 
 	public static class Point

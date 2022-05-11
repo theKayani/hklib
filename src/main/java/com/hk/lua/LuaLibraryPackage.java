@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 
 /**
@@ -35,8 +36,11 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 				return extra;
 
 			String split = interp.getExtraProp(EXKEY_TEMPLATE_SEP);
+			Objects.requireNonNull(split);
 			String mark = interp.getExtraProp(EXKEY_TEMPLATE_MARK);
+			Objects.requireNonNull(mark);
 			String path = interp.getExtraProp(EXKEY_PATH);
+			Objects.requireNonNull(path);
 
 			List<String> missed = new ArrayList<>();
 			path = findPath(path.split(split), mark, name, missed);
@@ -158,7 +162,7 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 			else
 				str = env.interp.getExtraProp(EXKEY_PATH);
 
-			table.rawSet(new LuaString(name()), new LuaString(str));
+			table.rawSet(new LuaString(name()), new LuaString(Objects.requireNonNull(str)));
 		}
 	},
 	preload() {
@@ -176,7 +180,7 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 				LuaObject doIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key)
 				{
 					if(key.isString())
-						return interp.getExtraLua(EXKEY_PRELOAD_PREFIX + key.getString());
+						return interp != null ? interp.getExtraLua(EXKEY_PRELOAD_PREFIX + key.getString()) : LuaNil.NIL;
 
 					return LuaNil.NIL;
 				}
@@ -196,6 +200,7 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 			Lua.checkArgs(toString(), args, LuaType.STRING, LuaType.STRING);
 
 			String split = interp.getExtraProp(EXKEY_TEMPLATE_SEP);
+			Objects.requireNonNull(split);
 			String mark = interp.getExtraProp(EXKEY_TEMPLATE_MARK);
 			String name = args[0].getString();
 			String path = args[1].getString();

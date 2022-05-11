@@ -7,6 +7,9 @@ import com.hk.array.ArrayUtil;
 import com.hk.math.MathUtil;
 import com.hk.math.Rand;
 import com.hk.str.StringUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 /**
  * <p>Color3F class.</p>
@@ -15,6 +18,7 @@ import com.hk.str.StringUtil;
  */
 public final class Color3F implements Serializable, Cloneable
 {
+	@Range(from=0, to=1)
 	public float r, g, b, a;
 
 	/**
@@ -111,7 +115,7 @@ public final class Color3F implements Serializable, Cloneable
 	 *
 	 * @param array an array of {@link float} objects
 	 */
-	public Color3F(float[] array)
+	public Color3F(float @NotNull [] array)
 	{
 		fromArray(array);
 	}
@@ -121,7 +125,7 @@ public final class Color3F implements Serializable, Cloneable
 	 *
 	 * @param copy a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F(Color3F copy)
+	public Color3F(@NotNull Color3F copy)
 	{
 		set(copy);
 	}
@@ -212,6 +216,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param r a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F setR(float r)
 	{
 		this.r = r;
@@ -224,6 +229,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param g a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F setG(float g)
 	{
 		this.g = g;
@@ -236,6 +242,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param b a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F setB(float b)
 	{
 		this.b = b;
@@ -248,6 +255,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param a a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F setA(float a)
 	{
 		this.a = a;
@@ -260,6 +268,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param rgb a int
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F set(int rgb)
 	{
 		return set(rgb, false);
@@ -272,6 +281,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param alpha a boolean
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F set(int argb, boolean alpha)
 	{
 		r = ((argb >> 16) & 0xFF) / 255F;
@@ -289,6 +299,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param b a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F set(float r, float g, float b)
 	{
 		this.r = r;
@@ -306,6 +317,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param a a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F set(float r, float g, float b, float a)
 	{
 		this.r = r;
@@ -321,6 +333,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F set(float value)
 	{
 		r = g = b = a = value;
@@ -333,7 +346,8 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Color3F} object
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F set(Color3F vec)
+	@NotNull
+	public Color3F set(@NotNull Color3F vec)
 	{
 		r = vec.r;
 		g = vec.g;
@@ -348,7 +362,8 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Color3F} object
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F addLocal(Color3F vec)
+	@NotNull
+	public Color3F addLocal(@NotNull Color3F vec)
 	{
 		r += vec.r;
 		g += vec.g;
@@ -363,6 +378,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F addLocal(float value)
 	{
 		r += value;
@@ -380,6 +396,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param b a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F addLocal(float r, float g, float b)
 	{
 		this.r += r;
@@ -397,6 +414,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param a a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F addLocal(float r, float g, float b, float a)
 	{
 		this.r += r;
@@ -412,7 +430,8 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Color3F} object
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F subtractLocal(Color3F vec)
+	@NotNull
+	public Color3F subtractLocal(@NotNull Color3F vec)
 	{
 		r -= vec.r;
 		g -= vec.g;
@@ -427,6 +446,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F subtractLocal(float value)
 	{
 		r -= value;
@@ -444,6 +464,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param b a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F subtractLocal(float r, float g, float b)
 	{
 		this.r -= r;
@@ -461,6 +482,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param a a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F subtractLocal(float r, float g, float b, float a)
 	{
 		this.r -= r;
@@ -476,7 +498,8 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Color3F} object
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F multLocal(Color3F vec)
+	@NotNull
+	public Color3F multLocal(@NotNull Color3F vec)
 	{
 		r *= vec.r;
 		g *= vec.g;
@@ -491,6 +514,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F multLocal(float value)
 	{
 		r *= value;
@@ -508,6 +532,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param b a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F multLocal(float r, float g, float b)
 	{
 		this.r *= r;
@@ -525,6 +550,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param a a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F multLocal(float r, float g, float b, float a)
 	{
 		this.r *= r;
@@ -540,7 +566,8 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Color3F} object
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F divideLocal(Color3F vec)
+	@NotNull
+	public Color3F divideLocal(@NotNull Color3F vec)
 	{
 		r /= vec.r;
 		g /= vec.g;
@@ -555,6 +582,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F divideLocal(float value)
 	{
 		r /= value;
@@ -572,6 +600,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param b a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F divideLocal(float r, float g, float b)
 	{
 		this.r /= r;
@@ -589,6 +618,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param a a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F divideLocal(float r, float g, float b, float a)
 	{
 		this.r /= r;
@@ -604,7 +634,8 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Color3F} object
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F add(Color3F vec)
+	@NotNull
+	public Color3F add(@NotNull Color3F vec)
 	{
 		return clone().addLocal(vec);
 	}
@@ -615,6 +646,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F add(float value)
 	{
 		return clone().addLocal(value);
@@ -628,6 +660,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param b a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F add(float r, float g, float b)
 	{
 		return clone().addLocal(r, g, b);
@@ -642,6 +675,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param a a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F add(float r, float g, float b, float a)
 	{
 		return clone().addLocal(r, g, b, a);
@@ -653,6 +687,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Color3F} object
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F subtract(Color3F vec)
 	{
 		return clone().subtractLocal(vec);
@@ -664,6 +699,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F subtract(float value)
 	{
 		return clone().subtractLocal(value);
@@ -677,6 +713,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param b a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F subtract(float r, float g, float b)
 	{
 		return clone().subtractLocal(r, g, b);
@@ -691,6 +728,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param a a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F subtract(float r, float g, float b, float a)
 	{
 		return clone().subtractLocal(r, g, b, a);
@@ -702,7 +740,8 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Color3F} object
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F mult(Color3F vec)
+	@NotNull
+	public Color3F mult(@NotNull Color3F vec)
 	{
 		return clone().multLocal(vec);
 	}
@@ -713,6 +752,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F mult(float value)
 	{
 		return clone().multLocal(value);
@@ -726,6 +766,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param b a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F mult(float r, float g, float b)
 	{
 		return clone().multLocal(r, g, b);
@@ -740,6 +781,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param a a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F mult(float r, float g, float b, float a)
 	{
 		return clone().multLocal(r, g, b, a);
@@ -751,6 +793,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Color3F} object
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F divide(Color3F vec)
 	{
 		return clone().divideLocal(vec);
@@ -762,6 +805,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F divide(float value)
 	{
 		return clone().divideLocal(value);
@@ -775,6 +819,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param b a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F divide(float r, float g, float b)
 	{
 		return clone().divideLocal(r, g, b);
@@ -789,6 +834,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param a a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F divide(float r, float g, float b, float a)
 	{
 		return clone().divideLocal(r, g, b, a);
@@ -800,7 +846,7 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param arr an array of {@link float} objects
 	 * @return an array of {@link float} objects
 	 */
-	public float[] toArray(float[] arr)
+	public float @NotNull [] toArray(float @NotNull [] arr)
 	{
 		arr[0] = r;
 		arr[1] = g;
@@ -814,7 +860,7 @@ public final class Color3F implements Serializable, Cloneable
 	 *
 	 * @return an array of {@link float} objects
 	 */
-	public float[] toArray()
+	public float @NotNull [] toArray()
 	{
 		return ArrayUtil.toFloatArray(r, g, b, a);
 	}
@@ -825,7 +871,8 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param arr an array of {@link float} objects
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F fromArray(float[] arr)
+	@NotNull
+	public Color3F fromArray(float @NotNull [] arr)
 	{
 		return fromArray(arr, 0);
 	}
@@ -837,7 +884,8 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param off a int
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F fromArray(float[] arr, int off)
+	@NotNull
+	public Color3F fromArray(float @NotNull [] arr, int off)
 	{
 		r = arr[off    ];
 		g = arr[off + 1];
@@ -853,7 +901,8 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param changeAmnt a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F interpolate(Color3F finalVec, float changeAmnt)
+	@NotNull
+	public Color3F interpolate(@NotNull Color3F finalVec, float changeAmnt)
 	{
 		return clone().interpolateLocal(finalVec, changeAmnt);
 	}
@@ -865,7 +914,8 @@ public final class Color3F implements Serializable, Cloneable
 	 * @param changeAmnt a float
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
-	public Color3F interpolateLocal(Color3F finalVec, float changeAmnt)
+	@NotNull
+	public Color3F interpolateLocal(@NotNull Color3F finalVec, float changeAmnt)
 	{
 		r = (1 - changeAmnt) * r + changeAmnt * finalVec.r;
 		g = (1 - changeAmnt) * g + changeAmnt * finalVec.g;
@@ -923,6 +973,7 @@ public final class Color3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String toHexString()
 	{
 		String s = Integer.toHexString(toARGB()).toUpperCase(Locale.ROOT);
@@ -934,6 +985,7 @@ public final class Color3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public Color3F clamp()
 	{
 		r = MathUtil.between(0F, r, 1F);
@@ -947,7 +999,14 @@ public final class Color3F implements Serializable, Cloneable
 	@Override
 	public Color3F clone()
 	{
-		return new Color3F(this);
+		try
+		{
+			return (Color3F) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -964,13 +1023,14 @@ public final class Color3F implements Serializable, Cloneable
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(@Nullable Object obj)
 	{
 		return obj instanceof Color3F && Float.floatToIntBits(r) == Float.floatToIntBits(((Color3F) obj).r) && Float.floatToIntBits(g) == Float.floatToIntBits(((Color3F) obj).g) && Float.floatToIntBits(b) == Float.floatToIntBits(((Color3F) obj).b) && Float.floatToIntBits(a) == Float.floatToIntBits(((Color3F) obj).a);
 	}
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public String toString()
 	{
 		return "(" + r + ", " + g + ", " + b + ", " + a + ")";
@@ -981,6 +1041,7 @@ public final class Color3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Color3F} object
 	 */
+	@NotNull
 	public static Color3F randColor()
 	{
 		return new Color3F(Rand.nextFloat(), Rand.nextFloat(), Rand.nextFloat());

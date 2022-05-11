@@ -293,7 +293,14 @@ public class NeuralNetwork implements Cloneable
 	@NotNull
 	public NeuralNetwork clone()
 	{
-		return new NeuralNetwork(this);
+		try
+		{
+			return (NeuralNetwork) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**

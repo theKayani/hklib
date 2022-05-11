@@ -3,6 +3,8 @@ package com.hk.lua;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 /**
  * <p>Abstract LuaUserdata class.</p>
  *
@@ -379,6 +381,7 @@ public abstract class LuaUserdata extends LuaMetatable
 		LuaObject func = getHandler("index", LuaNil.NIL);
 		if(func != null)
 		{
+			Objects.requireNonNull(interp);
 			if(func.isFunction())
 				return func.doCall(interp, new LuaObject[] { this, key }).evaluate(interp);
 			else
@@ -395,6 +398,7 @@ public abstract class LuaUserdata extends LuaMetatable
 		LuaObject func = getHandler("newindex", LuaNil.NIL);
 		if(func != null)
 		{
+			Objects.requireNonNull(interp);
 			if(func.isFunction())
 				func.doCall(interp, new LuaObject[] { this, key, value }).evaluate(interp);
 			else
@@ -411,6 +415,7 @@ public abstract class LuaUserdata extends LuaMetatable
 		LuaObject func = getHandler("call", LuaNil.NIL);
 		if(func != null)
 		{
+			Objects.requireNonNull(interp);
 			LuaObject[] tmp = new LuaObject[args.length + 1];
 			tmp[0] = this;
 			System.arraycopy(args, 0, tmp, 1, args.length);

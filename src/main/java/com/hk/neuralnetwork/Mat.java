@@ -232,7 +232,14 @@ public class Mat implements Serializable, Cloneable
 	@NotNull
 	public Mat clone()
 	{
-		return new Mat(data);
+		try
+		{
+			return (Mat) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**

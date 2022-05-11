@@ -334,11 +334,11 @@ public class LuaOGTest extends TestCase
 
 		Lua.importStandard(interp);
 
-		Object res = interp.execute();
+		LuaObject res = interp.execute();
 
-		assertTrue(res instanceof LuaObject);
-		assertTrue(((LuaObject) res).isBoolean());
-		assertTrue(((LuaObject) res).getBoolean());
+		assertNotNull(res);
+		assertTrue(res.isBoolean());
+		assertTrue(res.getBoolean());
 		assertTrue(wtr.isClosed());
 		assertTrue(expected.isEmpty());
 	}

@@ -3,6 +3,8 @@ package com.hk.math.vector;
 import java.io.Serializable;
 import com.hk.array.ArrayUtil;
 import com.hk.math.FloatMath;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>Vector3F class.</p>
@@ -26,7 +28,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 *
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 */
-	public Vector3F(Vector3F vec)
+	public Vector3F(@NotNull Vector3F vec)
 	{
 		set(vec);
 	}
@@ -61,6 +63,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param z a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F add(float x, float y, float z)
 	{
 		this.x += x;
@@ -75,6 +78,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F add(float val)
 	{
 		x += val;
@@ -89,7 +93,8 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
-	public Vector3F add(Vector3F vec)
+	@NotNull
+	public Vector3F add(@NotNull Vector3F vec)
 	{
 		x += vec.x;
 		y += vec.y;
@@ -105,6 +110,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param z a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F subtract(float x, float y, float z)
 	{
 		this.x -= x;
@@ -119,6 +125,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F subtract(float val)
 	{
 		x -= val;
@@ -133,7 +140,8 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
-	public Vector3F subtract(Vector3F vec)
+	@NotNull
+	public Vector3F subtract(@NotNull Vector3F vec)
 	{
 		x -= vec.x;
 		y -= vec.y;
@@ -149,6 +157,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param z a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F multiply(float x, float y, float z)
 	{
 		this.x *= x;
@@ -163,6 +172,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F multiply(float val)
 	{
 		x *= val;
@@ -177,7 +187,8 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
-	public Vector3F multiply(Vector3F vec)
+	@NotNull
+	public Vector3F multiply(@NotNull Vector3F vec)
 	{
 		x *= vec.x;
 		y *= vec.y;
@@ -193,6 +204,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param z a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F divide(float x, float y, float z)
 	{
 		this.x /= x;
@@ -207,6 +219,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F divide(float val)
 	{
 		x /= val;
@@ -221,7 +234,8 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
-	public Vector3F divide(Vector3F vec)
+	@NotNull
+	public Vector3F divide(@NotNull Vector3F vec)
 	{
 		x /= vec.x;
 		y /= vec.y;
@@ -238,6 +252,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param amt a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F interpolate(float x, float y, float z, float amt)
 	{
 		this.x = (1F - amt) * this.x + amt * x;
@@ -253,6 +268,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param amt a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F interpolate(float val, float amt)
 	{
 		x = (1F - amt) * x + amt * val;
@@ -268,7 +284,8 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param amt a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
-	public Vector3F interpolate(Vector3F vec, float amt)
+	@NotNull
+	public Vector3F interpolate(@NotNull Vector3F vec, float amt)
 	{
 		x = (1F - amt) * x + amt * vec.x;
 		y = (1F - amt) * y + amt * vec.y;
@@ -281,6 +298,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F zero()
 	{
 		x = y = z = 0F;
@@ -295,6 +313,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param z a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F set(float x, float y, float z)
 	{
 		this.x = x;
@@ -309,6 +328,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F set(float val)
 	{
 		x = val;
@@ -323,7 +343,8 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
-	public Vector3F set(Vector3F vec)
+	@NotNull
+	public Vector3F set(@NotNull Vector3F vec)
 	{
 		x = vec.x;
 		y = vec.y;
@@ -337,6 +358,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param x a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F setX(float x)
 	{
 		this.x = x;
@@ -349,6 +371,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F setY(float y)
 	{
 		this.y = y;
@@ -361,6 +384,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param z a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F setZ(float z)
 	{
 		this.z = z;
@@ -373,7 +397,8 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param arr an array of {@link float} objects
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
-	public Vector3F set(float[] arr)
+	@NotNull
+	public Vector3F set(float @NotNull [] arr)
 	{
 		return set(arr, 0);
 	}
@@ -385,7 +410,8 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param off a int
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
-	public Vector3F set(float[] arr, int off)
+	@NotNull
+	public Vector3F set(float @NotNull [] arr, int off)
 	{
 		x = arr[off];
 		y = arr[off + 1];
@@ -445,7 +471,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 *
 	 * @return an array of {@link float} objects
 	 */
-	public float[] get()
+	public float @NotNull [] get()
 	{
 		return ArrayUtil.toFloatArray(x, y, z);
 	}
@@ -456,7 +482,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param arr an array of {@link float} objects
 	 * @return an array of {@link float} objects
 	 */
-	public float[] get(float[] arr)
+	public float @NotNull [] get(float @NotNull [] arr)
 	{
 		return get(arr, 0);
 	}
@@ -468,7 +494,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param off a int
 	 * @return an array of {@link float} objects
 	 */
-	public float[] get(float[] arr, int off)
+	public float @NotNull [] get(float @NotNull [] arr, int off)
 	{
 		arr[off] = x;
 		arr[off + 1] = y;
@@ -498,6 +524,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F normalize()
 	{
 		float l = length();
@@ -513,6 +540,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F abs()
 	{
 		set(Math.abs(x), Math.abs(y), Math.abs(z));
@@ -524,6 +552,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F negate()
 	{
 		set(-x, -y, -z);
@@ -535,6 +564,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F negative()
 	{
 		set(-Math.abs(x), -Math.abs(y), -Math.abs(z));
@@ -591,7 +621,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 * @return a float
 	 */
-	public float distance(Vector3F vec)
+	public float distance(@NotNull Vector3F vec)
 	{
 		return FloatMath.sqrt(distanceSquared(vec));
 	}
@@ -626,7 +656,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 * @return a float
 	 */
-	public float dot(Vector3F vec)
+	public float dot(@NotNull Vector3F vec)
 	{
 		return x * vec.x + y * vec.y + z * vec.z;
 	}
@@ -639,6 +669,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param z a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F cross(float x, float y, float z)
 	{
 		float x1 = this.y * z - this.z * y;
@@ -654,6 +685,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
+	@NotNull
 	public Vector3F cross(float val)
 	{
 		float x1 = y * val - z * val;
@@ -669,7 +701,8 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 * @return a {@link com.hk.math.vector.Vector3F} object
 	 */
-	public Vector3F cross(Vector3F vec)
+	@NotNull
+	public Vector3F cross(@NotNull Vector3F vec)
 	{
 		float x1 = y * vec.z - z * vec.y;
 		float y1 = z * vec.x - x * vec.z;
@@ -684,7 +717,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 * @return a float
 	 */
-	public float distanceSquared(Vector3F vec)
+	public float distanceSquared(@NotNull Vector3F vec)
 	{
 		float x1 = x - vec.x;
 		float y1 = y - vec.y;
@@ -781,7 +814,7 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 * @return a boolean
 	 */
-	public static boolean isValidVector(Vector3F vec)
+	public static boolean isValidVector(@Nullable Vector3F vec)
 	{
 		return vec != null && !(Float.isNaN(vec.x) || Float.isNaN(vec.y) || Float.isNaN(vec.z) || Float.isInfinite(vec.x) || Float.isInfinite(vec.y) || Float.isInfinite(vec.z));
 	}
@@ -792,16 +825,24 @@ public final class Vector3F implements Cloneable, Serializable
 	 * @param vec a {@link com.hk.math.vector.Vector3F} object
 	 * @return a boolean
 	 */
-	public static boolean isUnitVector(Vector3F vec)
+	public static boolean isUnitVector(@NotNull Vector3F vec)
 	{
-		return vec != null && vec.x > 0.99F && vec.y > 0.99F && vec.z > 0.99F && vec.x < 1.01F && vec.y < 1.01F && vec.z < 1.01F;
+		return vec.x > 0.99F && vec.y > 0.99F && vec.z > 0.99F && vec.x < 1.01F && vec.y < 1.01F && vec.z < 1.01F;
 	}
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public Vector3F clone()
 	{
-		return new Vector3F(this);
+		try
+		{
+			return (Vector3F) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -829,6 +870,7 @@ public final class Vector3F implements Cloneable, Serializable
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public String toString()
 	{
 		return "(" + x + ", " + y + ", " + z + ")";

@@ -1702,7 +1702,7 @@ public class Lua
 		for(int i = 0; i < types.length; i++)
 		{
 			if(i == args.length || !types[i].applies(args[i].type()))
-				throw badArgument(i, method, types[i].luaName + " expected", i < args.length ? "not " + args[i].name() : null);
+				throw badArgument(i, method, types[i].luaName + " expected", i < args.length ? "got " + args[i].name() : null);
 		}
 	}
 

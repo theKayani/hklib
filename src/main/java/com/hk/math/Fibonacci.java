@@ -3,6 +3,8 @@ package com.hk.math;
 import com.hk.array.ArrayUtil;
 import com.hk.array.ImmutableArray;
 
+import java.util.Objects;
+
 /**
  * <p>Fibonacci class.</p>
  *
@@ -59,7 +61,7 @@ public class Fibonacci
 	 */
 	public static int getFibonacciInt(int index)
 	{
-		return fibonacciLong.get(index).intValue();
+		return Objects.requireNonNull(fibonacciLong.get(index)).intValue();
 	}
 
 	/**
@@ -70,7 +72,7 @@ public class Fibonacci
 	 */
 	public static long getFibonacciLong(int index)
 	{
-		return fibonacciLong.get(index);
+		return Objects.requireNonNull(fibonacciLong.get(index));
 	}
 
 	private Fibonacci()

@@ -1,5 +1,7 @@
 package com.hk.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -30,7 +32,7 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 	 *
 	 * @param versionString a {@link java.lang.String} object
 	 */
-	public Version(String versionString)
+	public Version(@NotNull String versionString)
 	{
 		String[] sp = versionString.split("\\.");
 		if(sp.length != 3)
@@ -56,14 +58,20 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 	 */
 	public Version clone()
 	{
-		return new Version(major, minor, revision);
+		try
+		{
+			return (Version) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public int compareTo(Version e)
+	public int compareTo(@NotNull Version e)
 	{
-		if(e == null) return 1;
 		int mjc = Integer.compare(major, e.major);
 		if(mjc == 0)
 		{
@@ -81,6 +89,7 @@ public final class Version implements Comparable<Version>, Serializable, Cloneab
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String toString()
 	{
 		return major + "." + minor + "." + revision;

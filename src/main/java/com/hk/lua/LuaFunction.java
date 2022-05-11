@@ -141,6 +141,13 @@ abstract class LuaFunction extends LuaObject
 		return false;
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public boolean isVarargs()
+	{
+		return false;
+	}
+
 	@Override
 	LuaBoolean doLE(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{

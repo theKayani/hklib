@@ -419,10 +419,11 @@ public enum LuaLibraryDate implements BiConsumer<Environment, LuaObject>, LuaMet
 		public @NotNull String getString(@Nullable LuaInterpreter interp)
 		{
 			DateFormat df;
-//			if(interp == null)
-//				df = defaultFormat;
-//			else
+			if(interp == null)
+				df = defaultFormat;
+			else
 				df = interp.getExtra(EXKEY_DATE_FORMAT, DateFormat.class, defaultFormat);
+
 			return df.format(calendar.getTime());
 		}
 	}

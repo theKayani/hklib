@@ -3,7 +3,6 @@ package com.hk.lua;
 import com.hk.Assets;
 import junit.framework.TestCase;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 public class LuaLibraryPackageTest extends TestCase
@@ -17,9 +16,9 @@ public class LuaLibraryPackageTest extends TestCase
 		Lua.importStandard(interp);
 		interp.importLib(LuaLibrary.PACKAGE);
 
-		Object obj = interp.execute();
+		LuaObject obj = interp.execute();
 
-		assertTrue(obj instanceof LuaObject);
-		assertTrue(((LuaObject) obj).getBoolean());
+		assertNotNull(obj);
+		assertTrue(obj.getBoolean());
 	}
 }

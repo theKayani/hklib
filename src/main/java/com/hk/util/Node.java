@@ -1,5 +1,7 @@
 package com.hk.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -28,7 +30,7 @@ public class Node<T> implements Iterator<Node<T>>
 	 * @param parent a {@link com.hk.util.Node} object
 	 */
 	@SuppressWarnings("CopyConstructorMissesField")
-	public Node(Node<T> parent)
+	public Node(@NotNull Node<T> parent)
 	{
 		parent.next = this;
 	}
@@ -49,7 +51,7 @@ public class Node<T> implements Iterator<Node<T>>
 	 * @param parent a {@link com.hk.util.Node} object
 	 * @param value a T object
 	 */
-	public Node(Node<T> parent, T value)
+	public Node(@NotNull Node<T> parent, T value)
 	{
 		parent.next = this;
 		this.value = value;

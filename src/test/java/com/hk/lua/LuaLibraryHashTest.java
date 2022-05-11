@@ -4,7 +4,6 @@ import com.hk.Assets;
 import com.hk.file.FileUtil;
 import junit.framework.TestCase;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,10 +23,10 @@ public class LuaLibraryHashTest extends TestCase
 
 		Lua.importStandard(interp);
 
-		Object obj = interp.execute();
+		LuaObject obj = interp.execute();
 
-		assertTrue(obj instanceof LuaObject);
-		assertTrue(((LuaObject) obj).getBoolean());
+		assertNotNull(obj);
+		assertTrue(obj.getBoolean());
 	}
 
 	@Override

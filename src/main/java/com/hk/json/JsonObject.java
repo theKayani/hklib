@@ -301,10 +301,8 @@ public class JsonObject extends JsonValue implements Iterable<Map.Entry<String, 
 	{
 		if (this == value)
 			throw new IllegalArgumentException("Can't add this to this");
-		if(name == null)
-			throw new IllegalArgumentException("Cannot put null keys");
 
-		map.put(name, value == null ? JsonNull.NULL : value);
+		map.put(name, value);
 		return this;
 	}
 

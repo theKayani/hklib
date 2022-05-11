@@ -1,6 +1,9 @@
 package com.hk.str;
 
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * <p>StringUtil class.</p>
  *
@@ -14,6 +17,7 @@ public class StringUtil
 	 * @param s a {@link java.lang.String} object
 	 * @return a {@link java.lang.String} object
 	 */
+	@Contract("null -> null; !null -> !null")
 	public static String properCapitalize(String s)
 	{
 		if(s == null || s.trim().isEmpty()) return s;
@@ -36,6 +40,7 @@ public class StringUtil
 	 * @param num a long
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public static String commaFormat(long num)
 	{
 		if(num == 0) return "0";
@@ -79,13 +84,18 @@ public class StringUtil
 	 * @param leftSide a boolean
 	 * @return a {@link java.lang.String} object
 	 */
-	public static String atLeast(int length, String s, String padding, boolean leftSide)
+	@NotNull
+	public static String atLeast(int length, @NotNull String s, String padding, boolean leftSide)
 	{
-		while(s.length() < length)
+		StringBuilder sb = new StringBuilder(s);
+		while(sb.length() < length)
 		{
-			s = leftSide ? padding + s : s + padding;
+			if(leftSide)
+				sb.insert(0, s);
+			else
+				sb.append(s);
 		}
-		return s;
+		return sb.toString();
 	}
 
 	/**
@@ -95,13 +105,13 @@ public class StringUtil
 	 * @param amount a int
 	 * @return a {@link java.lang.String} object
 	 */
-	public static String repeat(String string, int amount)
+	@NotNull
+	public static String repeat(@NotNull String string, int amount)
 	{
 		StringBuilder sb = new StringBuilder();
 		for(; amount > 0; amount--)
-		{
 			sb.append(string);
-		}
+
 		return sb.toString();
 	}
 
@@ -111,7 +121,7 @@ public class StringUtil
 	 * @param cs a {@link java.lang.CharSequence} object
 	 * @return a boolean
 	 */
-	public static boolean isNumeric(CharSequence cs)
+	public static boolean isNumeric(@NotNull CharSequence cs)
 	{
 		return isNumeric(cs, 10);
 	}
@@ -123,7 +133,7 @@ public class StringUtil
 	 * @param base a int
 	 * @return a boolean
 	 */
-	public static boolean isNumeric(CharSequence cs, int base)
+	public static boolean isNumeric(@NotNull CharSequence cs, int base)
 	{
 		String bss = "0123456789ABCDEF";
 		for(int i = 0; i < cs.length(); i++)
@@ -143,7 +153,7 @@ public class StringUtil
 	 * @param s a {@link java.lang.String} object
 	 * @return a boolean
 	 */
-	public static boolean isDecimal(String s)
+	public static boolean isDecimal(@NotNull String s)
 	{
 		int i = s.indexOf('.');
 		if(i >= 0)

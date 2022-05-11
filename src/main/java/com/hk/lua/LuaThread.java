@@ -217,6 +217,13 @@ public class LuaThread extends LuaObject
 		return true;
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public boolean isVarargs()
+	{
+		return false;
+	}
+
 	/** {@inheritDoc}
 	 * @return*/
 	@Override

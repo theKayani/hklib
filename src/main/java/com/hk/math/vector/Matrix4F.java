@@ -1,9 +1,12 @@
 package com.hk.math.vector;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
  * <p>Matrix4F class.</p>
+ * TODO: finish
  *
  * @author theKayani
  */
@@ -16,6 +19,7 @@ public class Matrix4F implements Serializable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix4F} object
 	 */
+	@NotNull
 	public Matrix4F identity()
 	{
 		m00 = m11 = m22 = m33 = 1F;
@@ -29,7 +33,8 @@ public class Matrix4F implements Serializable
 	 * @param mat a {@link com.hk.math.vector.Matrix4F} object
 	 * @return a {@link com.hk.math.vector.Matrix4F} object
 	 */
-	public Matrix4F set(Matrix4F mat)
+	@NotNull
+	public Matrix4F set(@NotNull Matrix4F mat)
 	{
 		m00 = mat.m00;
 		m01 = mat.m01;
@@ -71,6 +76,7 @@ public class Matrix4F implements Serializable
 	 * @param m33 a float
 	 * @return a {@link com.hk.math.vector.Matrix4F} object
 	 */
+	@NotNull
 	public Matrix4F set(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33)
 	{
 		this.m00 = m00;
@@ -98,6 +104,7 @@ public class Matrix4F implements Serializable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Matrix4F} object
 	 */
+	@NotNull
 	public Matrix4F set(float val)
 	{
 		this.m00 = val;

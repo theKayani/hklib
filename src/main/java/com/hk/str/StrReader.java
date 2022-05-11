@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import com.hk.util.Requirements;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>StrReader class.</p>
@@ -12,6 +13,7 @@ import com.hk.util.Requirements;
  */
 public class StrReader implements CharSequence, Serializable, Cloneable
 {
+	@NotNull
 	public final String str;
 	private int position;
 
@@ -20,7 +22,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	 *
 	 * @param str a {@link java.lang.String} object
 	 */
-	public StrReader(String str)
+	public StrReader(@NotNull String str)
 	{
 		this(str, 0);
 	}
@@ -31,7 +33,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	 * @param str a {@link java.lang.String} object
 	 * @param position a int
 	 */
-	public StrReader(String str, int position)
+	public StrReader(@NotNull String str, int position)
 	{
 		this.str = Requirements.requireNotNull(str);
 		this.position = position;
@@ -145,6 +147,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	 * @param amt a int
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String nextString(int amt)
 	{
 		String s = peekString(amt);
@@ -158,6 +161,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	 * @param amt a int
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String peekString(int amt)
 	{
 		amt = Math.max(0, amt);
@@ -176,6 +180,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	 * @param amt a int
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String prevString(int amt)
 	{
 		String s = pollString(amt);
@@ -189,6 +194,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	 * @param amt a int
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String pollString(int amt)
 	{
 		amt = Math.max(0, amt);
@@ -265,6 +271,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public StrReader subSequence(int indx1, int indx2)
 	{
 		return new StrReader(str.substring(indx1, indx2));
@@ -275,9 +282,18 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.str.StrReader} object
 	 */
+	@Override
+	@NotNull
 	public StrReader clone()
 	{
-		return new StrReader(str, position);
+		try
+		{
+			return (StrReader) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -285,6 +301,7 @@ public class StrReader implements CharSequence, Serializable, Cloneable
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String toString()
 	{
 		return str;

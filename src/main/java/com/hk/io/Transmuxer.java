@@ -77,18 +77,12 @@ public class Transmuxer
 		if(flip)
 		{
 			for(int i = muxers.length - 1; i >= 0; i--)
-			{
-				if(!muxers[i].ignore)
-					muxers[i].demux(key, data, offset, length);
-			}
+				muxers[i].demux(key, data, offset, length);
 		}
 		else
 		{
 			for (Muxer muxer : muxers)
-			{
-				if (!muxer.ignore)
-					muxer.mux(key, data, offset, length);
-			}
+				muxer.mux(key, data, offset, length);
 		}
 	}
 
@@ -214,17 +208,7 @@ public class Transmuxer
 			}
 		};
 
-		private final boolean ignore;
-
-		Muxer()
-		{
-			this(false);
-		}
-
-		Muxer(boolean ignore)
-		{
-			this.ignore = ignore;
-		}
+		Muxer() {}
 
 		void process(byte key, byte[] data, int offset, int length)
 		{}

@@ -3,6 +3,8 @@ package com.hk.lua;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 abstract class LuaMetatable extends LuaObject
 {
 	protected LuaObject metatable;
@@ -10,6 +12,13 @@ abstract class LuaMetatable extends LuaObject
 	LuaMetatable()
 	{
 		metatable = LuaNil.NIL;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public boolean isVarargs()
+	{
+		return false;
 	}
 
 	LuaBoolean doEQ(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
@@ -25,6 +34,7 @@ abstract class LuaMetatable extends LuaObject
 
 			if(mm != null && !mm.isNil())
 			{
+				Objects.requireNonNull(interp);
 				LuaObject res = mm.doCall(interp, new LuaObject[] { this, o });
 				res = res.evaluate(interp);
 				return LuaBoolean.valueOf(res.getBoolean());
@@ -37,7 +47,7 @@ abstract class LuaMetatable extends LuaObject
 	 * @param metatable*/
 	public void setMetatable(@NotNull LuaObject metatable)
 	{
-		this.metatable = metatable == null ? LuaNil.NIL : metatable;
+		this.metatable = metatable;
 	}
 
 	/**

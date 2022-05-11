@@ -1,6 +1,7 @@
 package com.hk.collections.lists;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +52,7 @@ public class SortedList<E> extends ArrayList<E>
 	 * @param comparator a {@link java.util.Comparator} object
 	 * @param reverseSorting a boolean
 	 */
-	public SortedList(@NotNull Comparator<E> comparator, boolean reverseSorting)
+	public SortedList(@Nullable Comparator<E> comparator, boolean reverseSorting)
 	{
 		this.comparator = comparator;
 		this.reverseSorting = reverseSorting;

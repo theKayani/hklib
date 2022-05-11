@@ -1,18 +1,14 @@
 package com.hk.lua;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.StringReader;
+import com.hk.lua.Lua.LuaMethod;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.*;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
-
-import com.hk.lua.Lua.LuaMethod;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>LuaLibraryBasic class.</p>
@@ -96,7 +92,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 				{
 					LuaInteger i = LuaInteger.valueOf(count++);
 					LuaObject next = tbl.getIndex(interp, i);
-					if(next != null && next.getBoolean())
+					if(next.getBoolean())
 						return new LuaArgs(i, next);
 					else
 						return LuaNil.NIL;
@@ -122,8 +118,7 @@ public enum LuaLibraryBasic implements BiConsumer<Environment, LuaObject>, LuaMe
 					return Lua.wrapErr(ex);
 				}
 
-				return new LuaFunction()
-				{
+				return new LuaFunction() {
 					@Override
 					LuaObject doCall(@Nullable LuaInterpreter interp, @NotNull LuaObject[] args)
 					{

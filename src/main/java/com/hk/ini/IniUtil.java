@@ -3,14 +3,7 @@ package com.hk.ini;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
+import java.io.*;
 import java.nio.charset.Charset;
 
 /**
@@ -265,7 +258,7 @@ public class IniUtil
 	public static Ini loadFrom(@NotNull File file, @NotNull Charset charset)
 	{
 		if(!file.exists())
-			return null;
+			throw new RuntimeException(new FileNotFoundException("file not found: " + file));
 
 		try
 		{

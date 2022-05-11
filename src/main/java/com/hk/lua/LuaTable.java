@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 class LuaTable extends LuaMetatable
@@ -12,9 +13,9 @@ class LuaTable extends LuaMetatable
 
 	LuaTable()
 	{
-//		this(new java.util.TreeMap<LuaObject, LuaObject>());
-//		this(new java.util.HashMap<LuaObject, LuaObject>());
-		this(new java.util.LinkedHashMap<LuaObject, LuaObject>());
+//		this(new java.util.TreeMap<>());
+//		this(new java.util.HashMap<>());
+		this(new java.util.LinkedHashMap<>());
 	}
 
 	LuaTable(Map<LuaObject, LuaObject> map)
@@ -366,14 +367,15 @@ class LuaTable extends LuaMetatable
 	{
 		if(map.containsKey(key))
 		{
-			key = map.get(key);
-			if(key != null && !key.isNil())
-				return key;
+			LuaObject ky = map.get(key);
+			if(ky != null && !ky.isNil())
+				return ky;
 		}
 
 		LuaObject func = getHandler("index", LuaNil.NIL);
 		if(func != null)
 		{
+			Objects.requireNonNull(interp);
 			if(func.isFunction())
 				return func.doCall(interp, new LuaObject[] { this, key }).evaluate(interp);
 			else

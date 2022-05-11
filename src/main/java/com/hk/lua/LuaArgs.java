@@ -140,6 +140,13 @@ class LuaArgs extends LuaObject
 		return obj.isThread();
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public boolean isVarargs()
+	{
+		return true;
+	}
+
 	@Override
 	LuaBoolean doLE(@Nullable LuaInterpreter interp, @NotNull LuaObject o)
 	{

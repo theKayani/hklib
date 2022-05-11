@@ -1,5 +1,7 @@
 package com.hk.math.vector;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 // https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/CocoaDrawingGuide/Transforms/Transforms.html
@@ -25,7 +27,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @param copy a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F(Matrix3F copy)
+	public Matrix3F(@NotNull Matrix3F copy)
 	{
 		set(copy);
 	}
@@ -35,7 +37,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @param arr an array of {@link float} objects
 	 */
-	public Matrix3F(float[] arr)
+	public Matrix3F(float @NotNull [] arr)
 	{
 		set(arr);
 	}
@@ -45,7 +47,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @param arr an array of {@link float} objects
 	 */
-	public Matrix3F(float[][] arr)
+	public Matrix3F(float @NotNull [][] arr)
 	{
 		set(arr);
 	}
@@ -74,7 +76,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param copy a {@link com.hk.math.vector.Matrix3F} object
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F set(Matrix3F copy)
+	@NotNull
+	public Matrix3F set(@NotNull Matrix3F copy)
 	{
 		m00 = copy.m00;
 		m01 = copy.m01;
@@ -102,6 +105,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m22 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F set(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
 	{
 		this.m00 = m00;
@@ -122,7 +126,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param arr an array of {@link float} objects
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F set(float[] arr)
+	@NotNull
+	public Matrix3F set(float @NotNull [] arr)
 	{
 		m00 = arr[0];
 		m01 = arr[1];
@@ -142,7 +147,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param arr an array of {@link float} objects
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F set(float[][] arr)
+	@NotNull
+	public Matrix3F set(float @NotNull [][] arr)
 	{
 		m00 = arr[0][0];
 		m01 = arr[0][1];
@@ -165,6 +171,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param c a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F setRow(int row, float a, float b, float c)
 	{
 		switch (row)
@@ -197,7 +204,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param arr an array of {@link float} objects
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F setRow(int row, float[] arr)
+	@NotNull
+	public Matrix3F setRow(int row, float @NotNull [] arr)
 	{
 		setRow(row, arr[0], arr[1], arr[2]);
 		return this;
@@ -212,6 +220,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param c a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F setColumn(int column, float a, float b, float c)
 	{
 		switch (column)
@@ -224,7 +233,7 @@ public final class Matrix3F implements Serializable, Cloneable
 			case 1:
 				m01 = a;
 				m11 = b;
-				m11 = c;
+				m21 = c;
 				break;
 			case 2:
 				m02 = a;
@@ -244,7 +253,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param arr an array of {@link float} objects
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F setColumn(int column, float[] arr)
+	@NotNull
+	public Matrix3F setColumn(int column, float @NotNull [] arr)
 	{
 		setColumn(column, arr[0], arr[1], arr[2]);
 		return this;
@@ -258,6 +268,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F set(int row, int column, float val)
 	{
 		switch (row)
@@ -369,7 +380,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param column a int
 	 * @return an array of {@link float} objects
 	 */
-	public float[] getColumn(int column)
+	public float @NotNull [] getColumn(int column)
 	{
 		switch (column)
 		{
@@ -396,7 +407,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param row a int
 	 * @return an array of {@link float} objects
 	 */
-	public float[] getRow(int row)
+	public float @NotNull [] getRow(int row)
 	{
 		switch (row)
 		{
@@ -422,7 +433,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return an array of {@link float} objects
 	 */
-	public float[][] getArrays()
+	public float @NotNull [][] getArrays()
 	{
 		return new float[][] {
 				{
@@ -441,7 +452,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return an array of {@link float} objects
 	 */
-	public float[] getArray()
+	public float @NotNull [] getArray()
 	{
 		return new float[] {
 				m00, m01, m02, m10, m11, m12, m20, m21, m22
@@ -464,6 +475,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m00 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F setM00(float m00)
 	{
 		this.m00 = m00;
@@ -486,6 +498,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m01 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F setM01(float m01)
 	{
 		this.m01 = m01;
@@ -508,6 +521,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m02 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F setM02(float m02)
 	{
 		this.m02 = m02;
@@ -530,6 +544,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m10 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F setM10(float m10)
 	{
 		this.m10 = m10;
@@ -552,6 +567,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m11 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F setM11(float m11)
 	{
 		this.m11 = m11;
@@ -574,6 +590,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m12 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F setM12(float m12)
 	{
 		this.m12 = m12;
@@ -596,6 +613,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m20 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F setM20(float m20)
 	{
 		this.m20 = m20;
@@ -618,6 +636,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m21 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F setM21(float m21)
 	{
 		this.m21 = m21;
@@ -640,6 +659,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m22 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F setM22(float m22)
 	{
 		this.m22 = m22;
@@ -651,6 +671,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F identity()
 	{
 		m00 = m11 = m22 = 1F;
@@ -664,7 +685,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.math.vector.Matrix3F} object
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F add(Matrix3F mat)
+	@NotNull
+	public Matrix3F add(@NotNull Matrix3F mat)
 	{
 		return new Matrix3F(m00 + mat.m00, m01 + mat.m01, m02 + mat.m02, m10 + mat.m10, m11 + mat.m11, m12 + mat.m12, m20 + mat.m20, m21 + mat.m21, m22 + mat.m22);
 	}
@@ -683,6 +705,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m22 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F add(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
 	{
 		return new Matrix3F(this.m00 + m00, this.m01 + m01, this.m02 + m02, this.m10 + m10, this.m11 + m11, this.m12 + m12, this.m20 + m20, this.m21 + m21, this.m22 + m22);
@@ -694,6 +717,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F add(float val)
 	{
 		return add(val, val, val, val, val, val, val, val, val);
@@ -705,7 +729,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.math.vector.Matrix3F} object
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F addLocal(Matrix3F mat)
+	@NotNull
+	public Matrix3F addLocal(@NotNull Matrix3F mat)
 	{
 		m00 += mat.m00;
 		m01 += mat.m01;
@@ -733,6 +758,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m22 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F addLocal(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
 	{
 		this.m00 += m00;
@@ -753,6 +779,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F addLocal(float val)
 	{
 		return addLocal(val, val, val, val, val, val, val, val, val);
@@ -764,7 +791,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.math.vector.Matrix3F} object
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F subtract(Matrix3F mat)
+	@NotNull
+	public Matrix3F subtract(@NotNull Matrix3F mat)
 	{
 		return new Matrix3F(m00 - mat.m00, m01 - mat.m01, m02 - mat.m02, m10 - mat.m10, m11 - mat.m11, m12 - mat.m12, m20 - mat.m20, m21 - mat.m21, m22 - mat.m22);
 	}
@@ -783,6 +811,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m22 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F subtract(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
 	{
 		return new Matrix3F(this.m00 - m00, this.m01 - m01, this.m02 - m02, this.m10 - m10, this.m11 - m11, this.m12 - m12, this.m20 - m20, this.m21 - m21, this.m22 - m22);
@@ -794,6 +823,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F subtract(float val)
 	{
 		return subtract(val, val, val, val, val, val, val, val, val);
@@ -805,7 +835,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.math.vector.Matrix3F} object
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F subtractLocal(Matrix3F mat)
+	@NotNull
+	public Matrix3F subtractLocal(@NotNull Matrix3F mat)
 	{
 		m00 -= mat.m00;
 		m01 -= mat.m01;
@@ -833,6 +864,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m22 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F subtractLocal(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
 	{
 		this.m00 -= m00;
@@ -853,6 +885,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F subtractLocal(float val)
 	{
 		return subtractLocal(val, val, val, val, val, val, val, val, val);
@@ -864,7 +897,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.math.vector.Matrix3F} object
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F scale(Matrix3F mat)
+	@NotNull
+	public Matrix3F scale(@NotNull Matrix3F mat)
 	{
 		return new Matrix3F(m00 * mat.m00, m01 * mat.m01, m02 * mat.m02, m10 * mat.m10, m11 * mat.m11, m12 * mat.m12, m20 * mat.m20, m21 * mat.m21, m22 * mat.m22);
 	}
@@ -875,6 +909,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F scale(float val)
 	{
 		return scale(val, val, val, val, val, val, val, val, val);
@@ -894,6 +929,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m22 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F scale(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
 	{
 		return new Matrix3F(this.m00 * m00, this.m01 * m01, this.m02 * m02, this.m10 * m10, this.m11 * m11, this.m12 * m12, this.m20 * m20, this.m21 * m21, this.m22 * m22);
@@ -905,7 +941,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.math.vector.Matrix3F} object
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F scaleLocal(Matrix3F mat)
+	@NotNull
+	public Matrix3F scaleLocal(@NotNull Matrix3F mat)
 	{
 		m00 *= mat.m00;
 		m01 *= mat.m01;
@@ -925,6 +962,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F scaleLocal(float val)
 	{
 		m00 *= val;
@@ -953,6 +991,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param m22 a float
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F scaleLocal(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
 	{
 		this.m00 *= m00;
@@ -973,7 +1012,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.math.vector.Matrix3F} object
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F mult(Matrix3F mat)
+	@NotNull
+	public Matrix3F mult(@NotNull Matrix3F mat)
 	{
 		return new Matrix3F(this).multLocal(mat);
 	}
@@ -984,7 +1024,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.math.vector.Matrix3F} object
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F multLocal(Matrix3F mat)
+	@NotNull
+	public Matrix3F multLocal(@NotNull Matrix3F mat)
 	{
 		float temp00 = m00 * mat.m00 + m01 * mat.m10 + m02 * mat.m20;
 		float temp01 = m00 * mat.m01 + m01 * mat.m11 + m02 * mat.m21;
@@ -1015,7 +1056,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.math.vector.Matrix3F} object
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F divide(Matrix3F mat)
+	@NotNull
+	public Matrix3F divide(@NotNull Matrix3F mat)
 	{
 		return mult(mat.flip());
 	}
@@ -1026,7 +1068,8 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param mat a {@link com.hk.math.vector.Matrix3F} object
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
-	public Matrix3F divideLocal(Matrix3F mat)
+	@NotNull
+	public Matrix3F divideLocal(@NotNull Matrix3F mat)
 	{
 		return multLocal(mat.flip());
 	}
@@ -1036,6 +1079,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F negate()
 	{
 		return scale(-1);
@@ -1046,6 +1090,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F negateLocal()
 	{
 		return scaleLocal(-1);
@@ -1056,6 +1101,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F abs()
 	{
 		return new Matrix3F(Math.abs(m00), Math.abs(m01), Math.abs(m02), Math.abs(m10), Math.abs(m11), Math.abs(m12), Math.abs(m20), Math.abs(m21), Math.abs(m22));
@@ -1066,6 +1112,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F absLocal()
 	{
 		m00 = Math.abs(m00);
@@ -1085,6 +1132,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F negative()
 	{
 		return abs().negateLocal();
@@ -1095,6 +1143,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F negativeLocal()
 	{
 		return absLocal().negateLocal();
@@ -1105,6 +1154,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F transpose()
 	{
 		return new Matrix3F(m00, m10, m20, m01, m11, m21, m02, m12, m22);
@@ -1115,6 +1165,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F transposeLocal()
 	{
 		float h01 = m01;
@@ -1138,6 +1189,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F flip()
 	{
 		return new Matrix3F(1F / m00, 1F / m01, 1F / m02, 1F / m10, 1F / m11, 1F / m12, 1F / m20, 1F / m21, 1F / m22);
@@ -1148,6 +1200,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F flipLocal()
 	{
 		m00 = 1F / m00;
@@ -1190,6 +1243,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F inverseLocal()
 	{
 		float indet = 1F / determinant();
@@ -1219,6 +1273,7 @@ public final class Matrix3F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Matrix3F} object
 	 */
+	@NotNull
 	public Matrix3F inverse()
 	{
 		Matrix3F m = new Matrix3F();
@@ -1250,15 +1305,16 @@ public final class Matrix3F implements Serializable, Cloneable
 	 * @param def a {@link com.hk.math.vector.Vector2F} object
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F apply(Vector2F def)
+	@NotNull
+	public Vector2F apply(@NotNull Vector2F def)
 	{
-		if(def == null) def = new Vector2F(0, 1);
-
+		// TODO: do it
 		return def;
 	}
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public String toString()
 	{
 		// (m00, m01, m02)
@@ -1273,6 +1329,7 @@ public final class Matrix3F implements Serializable, Cloneable
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public Matrix3F clone()
 	{
 		try

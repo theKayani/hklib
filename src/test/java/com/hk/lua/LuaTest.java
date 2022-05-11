@@ -26,19 +26,19 @@ public class LuaTest extends TestCase
 
 		Lua.importStandard(factory);
 
-		Object res;
+		LuaObject res;
 
 		interp = factory.build();
 		interp.getGlobals().setVar("arr", Lua.newTable(Collections.singletonList(Lua.newNumber(0))));
 		res = interp.execute(Lua.newNumber(1L), Lua.newNumber(0L));
-		assertTrue(res instanceof LuaObject);
-		assertTrue(((LuaObject) res).getBoolean());
+		assertNotNull(res);
+		assertTrue(res.getBoolean());
 
 		interp = factory.build();
 		interp.getGlobals().setVar("arr", Lua.newTable(Arrays.asList(Lua.newNumber(3), Lua.newNumber(2), Lua.newNumber(1))));
 		res = interp.execute(Lua.newNumber(3L), Lua.newNumber(6L));
-		assertTrue(res instanceof LuaObject);
-		assertTrue(((LuaObject) res).getBoolean());
+		assertNotNull(res);
+		assertTrue(res.getBoolean());
 
 		Random rng = new Random(8593640562223858172L);
 		for (int i = 0; i < 10; i++)
@@ -56,16 +56,16 @@ public class LuaTest extends TestCase
 
 			interp.getGlobals().setVar("arr", tbl);
 			res = interp.execute(Lua.newNumber(len), Lua.newNumber(total));
-			assertTrue(res instanceof LuaObject);
-			assertTrue(((LuaObject) res).getBoolean());
+			assertNotNull(res);
+			assertTrue(res.getBoolean());
 		}
 
 		for (int i = 5; i <= 25; i++)
 		{
 			interp = factory.build();
 			res = interp.execute(Lua.newNumber(i));
-			assertTrue(res instanceof LuaObject);
-			assertTrue(((LuaObject) res).getBoolean());
+			assertNotNull(res);
+			assertTrue(res.getBoolean());
 		}
 	}
 
@@ -112,10 +112,10 @@ public class LuaTest extends TestCase
 
 		Lua.importStandard(interp);
 
-		Object obj = interp.execute();
+		LuaObject obj = interp.execute();
 
-		assertTrue(obj instanceof LuaObject);
-		assertTrue(((LuaObject) obj).getBoolean());
+		assertNotNull(obj);
+		assertTrue(obj.getBoolean());
 	}
 
 	public void testCode() throws FileNotFoundException
@@ -125,10 +125,10 @@ public class LuaTest extends TestCase
 
 		Lua.importStandard(interp);
 
-		Object obj = interp.execute();
+		LuaObject obj = interp.execute();
 
-		assertTrue(obj instanceof LuaObject);
-		assertTrue(((LuaObject) obj).getBoolean());
+		assertNotNull(obj);
+		assertTrue(obj.getBoolean());
 	}
 
 	public void testCalls() throws FileNotFoundException
@@ -138,10 +138,10 @@ public class LuaTest extends TestCase
 
 		Lua.importStandard(interp);
 
-		Object obj = interp.execute();
+		LuaObject obj = interp.execute();
 
-		assertTrue(obj instanceof LuaObject);
-		assertTrue(((LuaObject) obj).getBoolean());
+		assertNotNull(obj);
+		assertTrue(obj.getBoolean());
 	}
 
 	public void testClosures() throws FileNotFoundException
@@ -151,10 +151,10 @@ public class LuaTest extends TestCase
 
 		Lua.importStandard(interp);
 
-		Object obj = interp.execute();
+		LuaObject obj = interp.execute();
 
-		assertTrue(obj instanceof LuaObject);
-		assertTrue(((LuaObject) obj).getBoolean());
+		assertNotNull(obj);
+		assertTrue(obj.getBoolean());
 	}
 
 	public void testEnvironments() throws FileNotFoundException
@@ -163,10 +163,10 @@ public class LuaTest extends TestCase
 
 		Lua.importStandard(interp);
 
-		Object obj = interp.execute();
+		LuaObject obj = interp.execute();
 
-		assertTrue(obj instanceof LuaObject);
-		assertTrue(((LuaObject) obj).getBoolean());
+		assertNotNull(obj);
+		assertTrue(obj.getBoolean());
 	}
 
 	public void testLargeRecords() throws FileNotFoundException
@@ -189,10 +189,10 @@ public class LuaTest extends TestCase
 		Lua.importStandard(interp);
 		interp.importLib(LuaLibrary.PACKAGE);
 
-		Object obj = interp.execute();
+		LuaObject obj = interp.execute();
 
-		assertTrue(obj instanceof LuaObject);
-		assertTrue(((LuaObject) obj).getBoolean());
+		assertNotNull(obj);
+		assertTrue(obj.getBoolean());
 	}
 
 	@Override

@@ -46,7 +46,7 @@ public class JavaUtil
 				throw new RuntimeException(e);
 			}
 		}
-		return null;
+		throw new RuntimeException(file + " is not a java class file");
 	}
 
 	/**

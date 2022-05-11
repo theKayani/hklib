@@ -1,11 +1,14 @@
 package com.hk.file;
 
+import com.hk.io.IOUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import com.hk.io.IOUtil;
+import java.util.Objects;
 
 /**
  * <p>FileUtil class.</p>
@@ -23,9 +26,12 @@ public class FileUtil
 	 */
 	public static boolean contentEquals(File file1, File file2)
 	{
-		if(file1 == null && file2 == null || file1.equals(file2) || !file1.exists() && !file2.exists())
+		if(Objects.equals(file1, file2))
 			return true;
-
+		if(file1 == null)
+			return false;
+		if(!file1.exists() && !file2.exists())
+			return true;
 		if(!file1.exists() || !file2.exists() || file1.length() != file2.length())
 			return false;
 
@@ -185,8 +191,10 @@ public class FileUtil
 	{
 		try
 		{
-			file.delete();
-			file.createNewFile();
+			if(!file.delete())
+				throw new IOException("cannot delete file: " + file);
+			if(!file.createNewFile())
+				throw new IOException("cannot recreate file: " + file);
 		}
 		catch (IOException ex)
 		{
@@ -260,7 +268,8 @@ public class FileUtil
 	 * @param file a {@link java.io.File} object
 	 * @return a {@link java.lang.String} object
 	 */
-	public static String getFileContents(File file)
+	@Nullable
+	public static String getFileContents(@NotNull File file)
 	{
 		if(!file.exists()) return null;
 		try
@@ -295,7 +304,7 @@ public class FileUtil
 	 */
 	public static String[] getFileLines(File file)
 	{
-		return getFileContents(file).split("\n");
+		return Objects.requireNonNull(getFileContents(file)).split("\n");
 	}
 
 	/**
@@ -407,7 +416,7 @@ public class FileUtil
 		}
 		List<File> files = new ArrayList<>();
 
-		for (File f : dir.listFiles())
+		for (File f : Objects.requireNonNull(dir.listFiles()))
 		{
 			if (f.isDirectory())
 			{

@@ -1,5 +1,7 @@
 package com.hk.math.expression;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -14,7 +16,7 @@ class ExpressionParser
 	byte type;
 	boolean hasSpace;
 
-	ExpressionParser(Reader rdr)
+	ExpressionParser(@NotNull Reader rdr)
 	{
 		this.rdr = new BufferedReader(rdr, 64);
 	}

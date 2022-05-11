@@ -186,7 +186,7 @@ public class InterfaceAdapter<T> extends JsonAdapter<T>
 	@Override
 	public JsonValue toJson(T val) throws JsonAdaptationException
 	{
-		if(proxyCls == val.getClass())
+		if(val != null && val.getClass().equals(proxyCls))
 		{
 			InterfaceHandler handler = (InterfaceHandler) Proxy.getInvocationHandler(val);
 			JsonObject obj = new JsonObject();

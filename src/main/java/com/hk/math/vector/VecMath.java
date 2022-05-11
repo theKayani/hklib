@@ -1,5 +1,7 @@
 package com.hk.math.vector;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * <p>VecMath class.</p>
  *
@@ -15,7 +17,7 @@ public class VecMath
 	 * @param point a {@link com.hk.math.vector.Vector2F} object
 	 * @return a float
 	 */
-	public static float distanceToSegment(Vector2F v1, Vector2F v2, Vector2F point)
+	public static float distanceToSegment(@NotNull Vector2F v1, @NotNull Vector2F v2, @NotNull Vector2F point)
 	{
 		return closestToSegment(v1, v2, point).distance(point);
 	}
@@ -28,7 +30,8 @@ public class VecMath
 	 * @param point a {@link com.hk.math.vector.Vector2F} object
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public static Vector2F closestToSegment(Vector2F v1, Vector2F v2, Vector2F point)
+	@NotNull
+	public static Vector2F closestToSegment(@NotNull Vector2F v1, @NotNull Vector2F v2, @NotNull Vector2F point)
 	{
 		float xDelta = v2.getX() - v1.getX();
 		float yDelta = v2.getY() - v1.getY();

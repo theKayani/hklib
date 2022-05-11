@@ -211,6 +211,12 @@ public abstract class LuaObject extends Lua.LuaValue
 	 * @return a boolean
 	 */
 	public abstract boolean isThread();
+	/**
+	 * <p>isVarargs.</p>
+	 *
+	 * @return a boolean
+	 */
+	public abstract boolean isVarargs();
 
 	/**
 	 * <p>type.</p>

@@ -1,12 +1,10 @@
 package com.hk.str;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 import com.hk.math.ComparatorUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>HTMLText class.</p>
@@ -38,6 +36,7 @@ public class HTMLText
      *
      * @return a {@link com.hk.str.HTMLText} object
      */
+    @NotNull
     public HTMLText tabUp()
     {
         tabs++;
@@ -49,6 +48,7 @@ public class HTMLText
      *
      * @return a {@link com.hk.str.HTMLText} object
      */
+    @NotNull
     public HTMLText tabDown()
     {
         tabs--;
@@ -61,7 +61,8 @@ public class HTMLText
      * @param s a {@link java.lang.String} object
      * @return a {@link com.hk.str.HTMLText} object
      */
-    public HTMLText wr(String s)
+    @NotNull
+    public HTMLText wr(@NotNull String s)
     {
         sb.append(s);
         return this;
@@ -73,7 +74,8 @@ public class HTMLText
      * @param s a {@link java.lang.String} object
      * @return a {@link com.hk.str.HTMLText} object
      */
-    public HTMLText wrln(String s)
+    @NotNull
+    public HTMLText wrln(@NotNull String s)
     {
         return wr(s).ln();
     }
@@ -83,6 +85,7 @@ public class HTMLText
      *
      * @return a {@link com.hk.str.HTMLText} object
      */
+    @NotNull
     public HTMLText tabs()
     {
         if(!blockWS)
@@ -99,6 +102,7 @@ public class HTMLText
      *
      * @return a {@link com.hk.str.HTMLText} object
      */
+    @NotNull
     public HTMLText ln()
     {
         sb.append(blockWS ? ' ' : '\n');
@@ -110,6 +114,7 @@ public class HTMLText
      *
      * @return a {@link com.hk.str.HTMLText} object
      */
+    @NotNull
     public HTMLText br()
     {
         int i = sb.length() - 1;
@@ -130,6 +135,7 @@ public class HTMLText
      *
      * @return a {@link com.hk.str.HTMLText} object
      */
+    @NotNull
     public HTMLText openBrace()
     {
         return tabs().wrln("{").tabUp();
@@ -140,6 +146,7 @@ public class HTMLText
      *
      * @return a {@link com.hk.str.HTMLText} object
      */
+    @NotNull
     public HTMLText closeBrace()
     {
         return tabDown().tabs().wrln("}");
@@ -151,7 +158,8 @@ public class HTMLText
      * @param s a {@link java.lang.String} object
      * @return a {@link com.hk.str.HTMLText} object
      */
-    public HTMLText pr(String s)
+    @NotNull
+    public HTMLText pr(@NotNull String s)
     {
         return tabs().wr(s);
     }
@@ -162,7 +170,8 @@ public class HTMLText
      * @param s a {@link java.lang.String} object
      * @return a {@link com.hk.str.HTMLText} object
      */
-    public HTMLText prln(String s)
+    @NotNull
+    public HTMLText prln(@NotNull String s)
     {
         return tabs().wrln(s);
     }
@@ -174,7 +183,8 @@ public class HTMLText
      * @param attrs a {@link java.lang.String} object
      * @return a {@link com.hk.str.HTMLText} object
      */
-    public HTMLText open(String tag, String... attrs)
+    @NotNull
+    public HTMLText open(@NotNull String tag, String... attrs)
     {
         return pr("<" + tag).appendAttrs(attrs).wrln(">").tabUp();
     }
@@ -185,7 +195,8 @@ public class HTMLText
      * @param tag a {@link java.lang.String} object
      * @return a {@link com.hk.str.HTMLText} object
      */
-    public HTMLText close(String tag)
+    @NotNull
+    public HTMLText close(@NotNull String tag)
     {
         return tabDown().pr("</").wr(tag).wr(">").ln();
     }
@@ -198,14 +209,16 @@ public class HTMLText
      * @param attrs a {@link java.lang.String} object
      * @return a {@link com.hk.str.HTMLText} object
      */
-    public HTMLText el(String tag, String html, String... attrs)
+    @NotNull
+    public HTMLText el(@NotNull String tag, @Nullable String html, String... attrs)
     {
         pr("<" + tag);
         appendAttrs(attrs);
         return html == null ? wrln("/>") : wr(">").wr(html).wr("</").wr(tag).wrln(">");
     }
 
-    private HTMLText appendAttrs(String[] attrs)
+    @NotNull
+    private HTMLText appendAttrs(@NotNull String[] attrs)
     {
     	int len = attrs.length;
         if(len > 0)
@@ -217,7 +230,7 @@ public class HTMLText
                 key = attrs[i];
                 val = i < len - 1 ? attrs[i + 1] : null;
                 if("nid".equals(key))
-                	wr("name=\"").wr(val).wr("\" id=\"").wr(val).wr("\"");
+                	wr("name=\"").wr(Objects.requireNonNull(val)).wr("\" id=\"").wr(val).wr("\"");
                 else if(key != null)
                 {
                 	if(key.startsWith("x-ng-") && key.length() > 5)
@@ -244,7 +257,8 @@ public class HTMLText
      * @param name a {@link java.lang.String} object
      * @return a {@link com.hk.str.HTMLText} object
      */
-    public HTMLText makeVar(String name)
+    @NotNull
+    public HTMLText makeVar(@NotNull String name)
     {
         return makeVar(name, null);
     }
@@ -256,7 +270,8 @@ public class HTMLText
      * @param value a {@link java.lang.String} object
      * @return a {@link com.hk.str.HTMLText} object
      */
-    public HTMLText makeVar(String name, String value)
+    @NotNull
+    public HTMLText makeVar(@NotNull String name, @Nullable String value)
     {
         if(!hasVar(name))
         {
@@ -275,12 +290,12 @@ public class HTMLText
      * @param value a {@link java.lang.String} object
      * @return a {@link com.hk.str.HTMLText} object
      */
-    public HTMLText setVar(String name, String value)
+    @NotNull
+    public HTMLText setVar(@NotNull String name, @NotNull String value)
     {
         if(hasVar(name))
-        {
             variables.put(name, value);
-        }
+
         return this;
     }
 
@@ -289,6 +304,7 @@ public class HTMLText
      *
      * @return an array of {@link java.lang.String} objects
      */
+    @NotNull
     public String[] getVars()
     {
         return variables.keySet().toArray(new String[0]);
@@ -300,7 +316,8 @@ public class HTMLText
      * @param name a {@link java.lang.String} object
      * @return a {@link java.lang.String} object
      */
-    public String getVar(String name)
+    @Nullable
+    public String getVar(@NotNull String name)
     {
         return variables.get(name);
     }
@@ -311,7 +328,7 @@ public class HTMLText
      * @param name a {@link java.lang.String} object
      * @return a boolean
      */
-    public boolean hasVar(String name)
+    public boolean hasVar(@NotNull String name)
     {
         return variables.containsKey(name);
     }
@@ -322,6 +339,7 @@ public class HTMLText
      * @param def a boolean
      * @return a {@link com.hk.str.HTMLText} object
      */
+    @NotNull
     public HTMLText blockWS(boolean def)
     {
         blockWS = def;
@@ -343,8 +361,10 @@ public class HTMLText
      *
      * @return a {@link java.lang.String} object
      */
+    @NotNull
     public String create()
     {
+        StringBuilder sb = new StringBuilder(this.sb);
         Set<Map.Entry<Integer, Set<String>>> set = varPositions.entrySet();
         int index;
         String value;
@@ -366,4 +386,11 @@ public class HTMLText
         return sb.toString().trim();
     }
 
+    /** {@inheritDoc} */
+    @Override
+    @NotNull
+    public String toString()
+    {
+        return create();
+    }
 }

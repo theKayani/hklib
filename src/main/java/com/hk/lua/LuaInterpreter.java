@@ -1,5 +1,6 @@
 package com.hk.lua;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,10 +47,10 @@ public class LuaInterpreter implements Tokens
 		threads = new Stack<>();
 		required = new HashMap<>();
 
-		mainChunk = new LuaChunk(sts, source, global, true);
+		mainChunk = new LuaChunk(sts, source, global, false);
 	}
 
-	LuaInterpreter(@NotNull Reader reader, @NotNull String source)
+	LuaInterpreter(@Nullable Reader reader, @NotNull String source)
 	{
 		this.reader = reader;
 		this.mainSrc = source;
@@ -132,6 +133,7 @@ public class LuaInterpreter implements Tokens
 	 * there was no found data.
 	 */
 	@Nullable
+	@Contract("_,_,!null -> !null")
 	public <T> T getExtra(@NotNull String key, @NotNull Class<T> cls, @Nullable T def)
 	{
 		try
@@ -359,12 +361,13 @@ public class LuaInterpreter implements Tokens
 	 */
 	@SuppressWarnings("ThrowableNotThrown")
 	@Nullable
-	public Object execute(Object... args) throws UncheckedIOException
+	public LuaObject execute(Object... args) throws UncheckedIOException
 	{
 		try
 		{
 			compile();
-			return mainChunk.execute(this, args);
+			Object res = mainChunk.execute(this, args);
+			return res == null ? null : (LuaObject) res;
 		}
 		catch(LuaException ex)
 		{
@@ -387,6 +390,8 @@ public class LuaInterpreter implements Tokens
 	 */
 	public void compile() throws UncheckedIOException
 	{
+		if(reader == null)
+			return;
 		if(mainChunk != null)
 			return;
 

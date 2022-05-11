@@ -1,6 +1,7 @@
 package com.hk.util;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -11,7 +12,9 @@ import java.util.Objects;
  */
 public class KeyValue<T> implements Comparable<KeyValue<T>>
 {
+	@Nullable
 	public final String key;
+	@Nullable
 	public T value;
 
 	/**
@@ -19,7 +22,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	 *
 	 * @param key a {@link java.lang.String} object
 	 */
-	public KeyValue(String key)
+	public KeyValue(@Nullable String key)
 	{
 		this(key, null);
 	}
@@ -30,7 +33,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	 * @param key a {@link java.lang.String} object
 	 * @param value a T object
 	 */
-	public KeyValue(String key, T value)
+	public KeyValue(@Nullable String key, @Nullable T value)
 	{
 		this.key = key;
 		this.value = value;
@@ -51,6 +54,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
+	@Nullable
 	public String getKey()
 	{
 		return key;
@@ -61,6 +65,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	 *
 	 * @return a {@link com.hk.util.KeyValue} object
 	 */
+	@NotNull
 	public KeyValue<T> setNull()
 	{
 		value = null;
@@ -73,7 +78,8 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	 * @param value a T object
 	 * @return a {@link com.hk.util.KeyValue} object
 	 */
-	public KeyValue<T> setValue(T value)
+	@NotNull
+	public KeyValue<T> setValue(@Nullable T value)
 	{
 		this.value = value;
 		return this;
@@ -94,6 +100,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	 *
 	 * @return a T object
 	 */
+	@Nullable
 	public T getValue()
 	{
 		return value;
@@ -103,10 +110,10 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 	@Override
 	public int compareTo(@NotNull KeyValue<T> o)
 	{
-		if(o == null)
-			return 1;
-		else if(Objects.equals(key, o.key))
+		if(Objects.equals(key, o.key))
 			return 0;
+		else if(o.key == null)
+			return 1;
 		else
 			return key == null ? -1 : key.compareTo(o.key);
 	}
@@ -135,6 +142,7 @@ public class KeyValue<T> implements Comparable<KeyValue<T>>
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public String toString()
 	{
 		return key + "=" + value;

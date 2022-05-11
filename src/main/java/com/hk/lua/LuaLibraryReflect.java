@@ -248,7 +248,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 		@Override
 		public boolean rawEqual(@NotNull LuaObject o)
 		{
-			return o != null && o.getClass() == getClass() && ((LuaJava) o).cls.equals(cls) && Objects.equals(((LuaJava) o).obj, obj);
+			return o.getClass() == getClass() && ((LuaJava) o).cls.equals(cls) && Objects.equals(((LuaJava) o).obj, obj);
 		}
 
 		@Override
@@ -342,6 +342,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 								catch (UnsupportedOperationException e)
 								{
 									Objects.requireNonNull(res);
+									Objects.requireNonNull(interp);
 									if(res instanceof Class<?>)
 										return getJavaClass(interp, (Class<?>) res);
 									else
@@ -377,6 +378,7 @@ public enum LuaLibraryReflect implements BiConsumer<Environment, LuaObject>, Lua
 						catch (UnsupportedOperationException e)
 						{
 							Objects.requireNonNull(res);
+							Objects.requireNonNull(interp);
 							if(res instanceof Class<?>)
 								return getJavaClass(interp, (Class<?>) res);
 							else

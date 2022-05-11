@@ -5,6 +5,8 @@ import com.hk.array.ArrayUtil;
 import com.hk.math.FloatMath;
 import com.hk.math.MathUtil;
 import com.hk.math.Rand;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>Vector2F class.</p>
@@ -47,7 +49,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @param array an array of {@link float} objects
 	 */
-	public Vector2F(float[] array)
+	public Vector2F(float @NotNull [] array)
 	{
 		fromArray(array);
 	}
@@ -57,7 +59,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @param copy a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F(Vector2F copy)
+	public Vector2F(@NotNull Vector2F copy)
 	{
 		set(copy);
 	}
@@ -105,6 +107,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F setIndx(int indx, float val)
 	{
 		switch(indx)
@@ -122,6 +125,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param x a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F setX(float x)
 	{
 		this.x = x;
@@ -134,6 +138,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F setY(float y)
 	{
 		this.y = y;
@@ -147,6 +152,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F set(float x, float y)
 	{
 		this.x = x;
@@ -160,6 +166,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F set(float value)
 	{
 		x = y = value;
@@ -172,7 +179,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F set(Vector2F vec)
+	@NotNull
+	public Vector2F set(@NotNull Vector2F vec)
 	{
 		x = vec.x;
 		y = vec.y;
@@ -185,7 +193,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F addLocal(Vector2F vec)
+	@NotNull
+	public Vector2F addLocal(@NotNull Vector2F vec)
 	{
 		x += vec.x;
 		y += vec.y;
@@ -198,6 +207,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F addLocal(float value)
 	{
 		x += value;
@@ -212,6 +222,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F addLocal(float x, float y)
 	{
 		this.x += x;
@@ -225,7 +236,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F subtractLocal(Vector2F vec)
+	@NotNull
+	public Vector2F subtractLocal(@NotNull Vector2F vec)
 	{
 		x -= vec.x;
 		y -= vec.y;
@@ -238,6 +250,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F subtractLocal(float value)
 	{
 		x -= value;
@@ -252,6 +265,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F subtractLocal(float x, float y)
 	{
 		this.x -= x;
@@ -265,7 +279,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F multLocal(Vector2F vec)
+	@NotNull
+	public Vector2F multLocal(@NotNull Vector2F vec)
 	{
 		x *= vec.x;
 		y *= vec.y;
@@ -278,6 +293,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F multLocal(float value)
 	{
 		x *= value;
@@ -292,6 +308,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F multLocal(float x, float y)
 	{
 		this.x *= x;
@@ -305,7 +322,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F divideLocal(Vector2F vec)
+	@NotNull
+	public Vector2F divideLocal(@NotNull Vector2F vec)
 	{
 		x /= vec.x;
 		y /= vec.y;
@@ -318,6 +336,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F divideLocal(float value)
 	{
 		x /= value;
@@ -332,6 +351,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F divideLocal(float x, float y)
 	{
 		this.x /= x;
@@ -345,7 +365,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F add(Vector2F vec)
+	@NotNull
+	public Vector2F add(@NotNull Vector2F vec)
 	{
 		return new Vector2F(x + vec.x, y + vec.y);
 	}
@@ -356,6 +377,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F add(float value)
 	{
 		return new Vector2F(x + value, y + value);
@@ -368,6 +390,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F add(float x, float y)
 	{
 		return new Vector2F(this.x + x, this.y + y);
@@ -379,7 +402,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F subtract(Vector2F vec)
+	@NotNull
+	public Vector2F subtract(@NotNull Vector2F vec)
 	{
 		return new Vector2F(x - vec.x, y - vec.y);
 	}
@@ -390,6 +414,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F subtract(float value)
 	{
 		return new Vector2F(x - value, y - value);
@@ -402,6 +427,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F subtract(float x, float y)
 	{
 		return new Vector2F(this.x - x, this.y - y);
@@ -413,7 +439,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F mult(Vector2F vec)
+	@NotNull
+	public Vector2F mult(@NotNull Vector2F vec)
 	{
 		return new Vector2F(x * vec.x, y * vec.y);
 	}
@@ -424,6 +451,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F mult(float value)
 	{
 		return new Vector2F(x * value, y * value);
@@ -436,6 +464,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F mult(float x, float y)
 	{
 		return new Vector2F(this.x * x, this.y * y);
@@ -447,7 +476,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F divide(Vector2F vec)
+	@NotNull
+	public Vector2F divide(@NotNull Vector2F vec)
 	{
 		return new Vector2F(x / vec.x, y / vec.y);
 	}
@@ -458,6 +488,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param value a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F divide(float value)
 	{
 		return new Vector2F(x / value, y / value);
@@ -470,6 +501,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F divide(float x, float y)
 	{
 		return new Vector2F(this.x / x, this.y / y);
@@ -480,6 +512,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F normalize()
 	{
 		return new Vector2F(this).normalizeLocal();
@@ -490,6 +523,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F normalizeLocal()
 	{
 		float l = length();
@@ -532,7 +566,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param arr an array of {@link float} objects
 	 * @return an array of {@link float} objects
 	 */
-	public float[] toArray(float[] arr)
+	public float @NotNull [] toArray(float @NotNull [] arr)
 	{
 		arr[0] = x;
 		arr[1] = y;
@@ -544,7 +578,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @return an array of {@link float} objects
 	 */
-	public float[] toArray()
+	public float @NotNull [] toArray()
 	{
 		return ArrayUtil.toFloatArray(x, y);
 	}
@@ -555,7 +589,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param arr an array of {@link float} objects
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F fromArray(float[] arr)
+	@NotNull
+	public Vector2F fromArray(float @NotNull [] arr)
 	{
 		x = arr[0];
 		y = arr[1];
@@ -567,6 +602,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F negate()
 	{
 		return new Vector2F(-x, -y);
@@ -577,6 +613,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F negateLocal()
 	{
 		set(-x, -y);
@@ -588,6 +625,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F abs()
 	{
 		return new Vector2F(Math.abs(x), Math.abs(y));
@@ -598,6 +636,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F absLocal()
 	{
 		set(Math.abs(x), Math.abs(y));
@@ -609,6 +648,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F negative()
 	{
 		return new Vector2F(-Math.abs(x), -Math.abs(y));
@@ -619,6 +659,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F negativeLocal()
 	{
 		set(-Math.abs(x), -Math.abs(y));
@@ -631,7 +672,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a float
 	 */
-	public float distanceSquared(Vector2F vec)
+	public float distanceSquared(@NotNull Vector2F vec)
 	{
 		return MathUtil.square(x - vec.x) + MathUtil.square(y - vec.y);
 	}
@@ -654,7 +695,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a float
 	 */
-	public float distance(Vector2F vec)
+	public float distance(@NotNull Vector2F vec)
 	{
 		return MathUtil.hypot(x - vec.x, y - vec.y);
 	}
@@ -677,7 +718,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a float
 	 */
-	public float angleBetween(Vector2F vec)
+	public float angleBetween(@NotNull Vector2F vec)
 	{
 		return vec.getAngle() - getAngle();
 	}
@@ -688,7 +729,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a float
 	 */
-	public float smallestAngleBetween(Vector2F vec)
+	public float smallestAngleBetween(@NotNull Vector2F vec)
 	{
 		return FloatMath.acos(dot(vec) / (length() * vec.length()));
 	}
@@ -700,7 +741,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param changeAmnt a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F interpolate(Vector2F finalVec, float changeAmnt)
+	@NotNull
+	public Vector2F interpolate(@NotNull Vector2F finalVec, float changeAmnt)
 	{
 		return new Vector2F((1 - changeAmnt) * x + changeAmnt * finalVec.x, (1 - changeAmnt) * y + changeAmnt * finalVec.y);
 	}
@@ -712,7 +754,8 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param changeAmnt a float
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
-	public Vector2F interpolateLocal(Vector2F finalVec, float changeAmnt)
+	@NotNull
+	public Vector2F interpolateLocal(@NotNull Vector2F finalVec, float changeAmnt)
 	{
 		x = (1 - changeAmnt) * x + changeAmnt * finalVec.x;
 		y = (1 - changeAmnt) * y + changeAmnt * finalVec.y;
@@ -725,7 +768,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a float
 	 */
-	public float dot(Vector2F vec)
+	public float dot(@NotNull Vector2F vec)
 	{
 		return x * vec.x + y * vec.y;
 	}
@@ -736,7 +779,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param v a {@link com.hk.math.vector.Vector2F} object
 	 * @return a float
 	 */
-	public float determinant(Vector2F v)
+	public float determinant(@NotNull Vector2F v)
 	{
 		return x * v.y - y * v.x;
 	}
@@ -746,6 +789,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F zero()
 	{
 		set(0);
@@ -779,6 +823,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param cw a boolean
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public Vector2F rotateAround(float angle, boolean cw)
 	{
 		angle = cw ? angle : -angle;
@@ -793,7 +838,14 @@ public final class Vector2F implements Serializable, Cloneable
 	@Override
 	public Vector2F clone()
 	{
-		return new Vector2F(this);
+		try
+		{
+			return (Vector2F) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -815,6 +867,7 @@ public final class Vector2F implements Serializable, Cloneable
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public String toString()
 	{
 		return "(" + x + ", " + y + ")";
@@ -826,7 +879,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a boolean
 	 */
-	public static boolean isValidVector(Vector2F vec)
+	public static boolean isValidVector(@Nullable Vector2F vec)
 	{
 		return vec != null && !(Float.isNaN(vec.x) || Float.isNaN(vec.y) || Float.isInfinite(vec.x) || Float.isInfinite(vec.y));
 	}
@@ -837,9 +890,9 @@ public final class Vector2F implements Serializable, Cloneable
 	 * @param vec a {@link com.hk.math.vector.Vector2F} object
 	 * @return a boolean
 	 */
-	public static boolean isUnitVector(Vector2F vec)
+	public static boolean isUnitVector(@NotNull Vector2F vec)
 	{
-		return vec != null && vec.x > 0.99F && vec.y > 0.99F && vec.x < 1.01F && vec.y < 1.01F;
+		return vec.x > 0.99F && vec.y > 0.99F && vec.x < 1.01F && vec.y < 1.01F;
 	}
 
 	/**
@@ -847,6 +900,7 @@ public final class Vector2F implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Vector2F} object
 	 */
+	@NotNull
 	public static Vector2F randUnitVector()
 	{
 		float ang = Rand.nextFloat(2F * FloatMath.PI);

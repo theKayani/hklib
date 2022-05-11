@@ -1,5 +1,7 @@
 package com.hk.math.expression;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 
@@ -18,7 +20,7 @@ public class Expression
 	 * @param str a {@link java.lang.String} object
 	 * @throws com.hk.math.expression.ExpressionFormatException if any.
 	 */
-	public Expression(String str) throws ExpressionFormatException
+	public Expression(@NotNull String str) throws ExpressionFormatException
 	{
 		str = str.replaceAll("\\s", "");
 
@@ -190,65 +192,76 @@ public class Expression
 	{
 		private String s = "";
 
+		@NotNull
 		public Builder pf()
 		{
 			s += "0";
 			return this;
 		}
 
+		@NotNull
 		public Builder pt()
 		{
 			s += "1";
 			return this;
 		}
 
+		@NotNull
 		public Builder p(boolean value)
 		{
 			s += value ? "1" : "0";
 			return this;
 		}
 
+		@NotNull
 		public Builder or()
 		{
 			s += " | ";
 			return this;
 		}
 
+		@NotNull
 		public Builder and()
 		{
 			s += " & ";
 			return this;
 		}
 
+		@NotNull
 		public Builder not()
 		{
 			s += "!";
 			return this;
 		}
 
+		@NotNull
 		public Builder xor()
 		{
 			s += " ^ ";
 			return this;
 		}
 
+		@NotNull
 		public Builder op()
 		{
 			s += "(";
 			return this;
 		}
 
+		@NotNull
 		public Builder cp()
 		{
 			s += ")";
 			return this;
 		}
 
+		@NotNull
 		public String get()
 		{
 			return s;
 		}
 
+		@NotNull
 		public String build()
 		{
 			String str = s;

@@ -1,5 +1,7 @@
 package com.hk.math.vector;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -46,7 +48,7 @@ public final class Point implements Serializable, Cloneable
 	 *
 	 * @param p a {@link com.hk.math.vector.Point} object
 	 */
-	public Point(Point p)
+	public Point(@NotNull Point p)
 	{
 		x = p.x;
 		y = p.y;
@@ -79,7 +81,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param off a int
 	 * @return an array of {@link int} objects
 	 */
-	public int[] get(int[] arr, int off)
+	public int @NotNull [] get(int @NotNull [] arr, int off)
 	{
 		arr[off++] = x;
 		arr[off] = y;
@@ -92,7 +94,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param arr an array of {@link int} objects
 	 * @return an array of {@link int} objects
 	 */
-	public int[] get(int[] arr)
+	public int @NotNull [] get(int @NotNull [] arr)
 	{
 		return get(arr, 0);
 	}
@@ -102,7 +104,7 @@ public final class Point implements Serializable, Cloneable
 	 *
 	 * @return an array of {@link int} objects
 	 */
-	public int[] get()
+	public int @NotNull [] get()
 	{
 		return get(new int[2]);
 	}
@@ -113,6 +115,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param x a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point setX(int x)
 	{
 		this.x = x;
@@ -125,6 +128,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param y a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point setY(int y)
 	{
 		this.y = y;
@@ -137,6 +141,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param val a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point set(int val)
 	{
 		x = y = val;
@@ -150,6 +155,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param y a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point set(int x, int y)
 	{
 		this.x = x;
@@ -163,7 +169,8 @@ public final class Point implements Serializable, Cloneable
 	 * @param p a {@link com.hk.math.vector.Point} object
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
-	public Point set(Point p)
+	@NotNull
+	public Point set(@NotNull Point p)
 	{
 		x = p.x;
 		y = p.y;
@@ -177,7 +184,8 @@ public final class Point implements Serializable, Cloneable
 	 * @param off a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
-	public Point set(int[] arr, int off)
+	@NotNull
+	public Point set(int @NotNull [] arr, int off)
 	{
 		x = arr[off++];
 		y = arr[off];
@@ -190,7 +198,8 @@ public final class Point implements Serializable, Cloneable
 	 * @param arr an array of {@link int} objects
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
-	public Point set(int[] arr)
+	@NotNull
+	public Point set(int @NotNull [] arr)
 	{
 		return set(arr, 0);
 	}
@@ -202,6 +211,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param y a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point add(int x, int y)
 	{
 		this.x += x;
@@ -215,6 +225,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param val a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point add(int val)
 	{
 		x += val;
@@ -228,7 +239,8 @@ public final class Point implements Serializable, Cloneable
 	 * @param p a {@link com.hk.math.vector.Point} object
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
-	public Point add(Point p)
+	@NotNull
+	public Point add(@NotNull Point p)
 	{
 		x += p.x;
 		y += p.y;
@@ -242,6 +254,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param y a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point sub(int x, int y)
 	{
 		this.x -= x;
@@ -255,6 +268,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param val a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point sub(int val)
 	{
 		x -= val;
@@ -268,7 +282,8 @@ public final class Point implements Serializable, Cloneable
 	 * @param p a {@link com.hk.math.vector.Point} object
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
-	public Point sub(Point p)
+	@NotNull
+	public Point sub(@NotNull Point p)
 	{
 		x -= p.x;
 		y -= p.y;
@@ -282,6 +297,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param y a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point mult(int x, int y)
 	{
 		this.x *= x;
@@ -295,6 +311,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param val a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point mult(int val)
 	{
 		x *= val;
@@ -308,7 +325,8 @@ public final class Point implements Serializable, Cloneable
 	 * @param p a {@link com.hk.math.vector.Point} object
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
-	public Point mult(Point p)
+	@NotNull
+	public Point mult(@NotNull Point p)
 	{
 		x *= p.x;
 		y *= p.y;
@@ -322,6 +340,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param y a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point div(int x, int y)
 	{
 		this.x /= x;
@@ -335,6 +354,7 @@ public final class Point implements Serializable, Cloneable
 	 * @param val a int
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point div(int val)
 	{
 		x /= val;
@@ -348,7 +368,8 @@ public final class Point implements Serializable, Cloneable
 	 * @param p a {@link com.hk.math.vector.Point} object
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
-	public Point div(Point p)
+	@NotNull
+	public Point div(@NotNull Point p)
 	{
 		x /= p.x;
 		y /= p.y;
@@ -360,6 +381,7 @@ public final class Point implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point negate()
 	{
 		x = -x;
@@ -372,6 +394,7 @@ public final class Point implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point negative()
 	{
 		return abs().negate();
@@ -382,6 +405,7 @@ public final class Point implements Serializable, Cloneable
 	 *
 	 * @return a {@link com.hk.math.vector.Point} object
 	 */
+	@NotNull
 	public Point abs()
 	{
 		x = Math.abs(x);
@@ -394,6 +418,7 @@ public final class Point implements Serializable, Cloneable
 	 *
 	 * @return a {@link java.lang.String} object
 	 */
+	@NotNull
 	public String toString()
 	{
 		return "(" + x + ", " + y + ")";
@@ -420,9 +445,17 @@ public final class Point implements Serializable, Cloneable
 
 	/** {@inheritDoc} */
 	@Override
+	@NotNull
 	public Point clone()
 	{
-		return new Point(this);
+		try
+		{
+			return (Point) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	private static final long serialVersionUID = -2476514875223896181L;

@@ -3,10 +3,7 @@ package com.hk.lua;
 import com.hk.Assets;
 import junit.framework.TestCase;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
 
 public class LuaLibraryIOTest extends TestCase
 {

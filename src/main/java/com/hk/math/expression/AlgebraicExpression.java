@@ -1,8 +1,11 @@
 package com.hk.math.expression;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.*;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import static com.hk.math.expression.ExpressionParser.*;
@@ -32,7 +35,7 @@ import static com.hk.math.expression.ExpressionParser.*;
  *
  * @author theKayani
  */
-public final class AlgebraicExpression implements Supplier<Double>
+public final class AlgebraicExpression implements DoubleSupplier
 {
 	/**
 	 * This variable holds whether this parsed algebraic expression
@@ -43,7 +46,7 @@ public final class AlgebraicExpression implements Supplier<Double>
 	private final Double result;
 	private Map<String, Object> variables;
 
-	public AlgebraicExpression(String text) throws ExpressionFormatException
+	public AlgebraicExpression(@NotNull String text) throws ExpressionFormatException
 	{
 		this(new StringReader(text));
 	}
@@ -56,7 +59,7 @@ public final class AlgebraicExpression implements Supplier<Double>
 	 * @param reader a {@link java.io.Reader} object
 	 * @throws com.hk.math.expression.ExpressionFormatException if any.
 	 */
-	public AlgebraicExpression(Reader reader) throws ExpressionFormatException
+	public AlgebraicExpression(@NotNull Reader reader) throws ExpressionFormatException
 	{
 		this.resultList = parse(reader);
 //		System.out.println("resultList = " + resultList);
@@ -89,7 +92,8 @@ public final class AlgebraicExpression implements Supplier<Double>
 	 * @param value the numerical value to assign to the variable
 	 * @return this
 	 */
-	public AlgebraicExpression set(String variable, double value)
+	@NotNull
+	public AlgebraicExpression set(@NotNull String variable, double value)
 	{
 		if(variables == null)
 			variables = new HashMap<>();
@@ -126,7 +130,8 @@ public final class AlgebraicExpression implements Supplier<Double>
 	 * @param supplier the supplier to provide a value to use
 	 * @return this
 	 */
-	public AlgebraicExpression set(String variable, Supplier<? extends Number> supplier)
+	@NotNull
+	public AlgebraicExpression set(@NotNull String variable, @NotNull Supplier<? extends Number> supplier)
 	{
 		if(variables == null)
 			variables = new HashMap<>();
@@ -139,7 +144,7 @@ public final class AlgebraicExpression implements Supplier<Double>
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Double get()
+	public double getAsDouble()
 	{
 		return getResult();
 	}
@@ -169,7 +174,7 @@ public final class AlgebraicExpression implements Supplier<Double>
 	 *                     equivalents to be used in the calculation
 	 * @return the calculated result of this algebraic expression
 	 */
-	public double getResult(Map<String, ?> variables)
+	public double getResult(@NotNull Map<String, ?> variables)
 	{
 		if(result != null)
 			return result;

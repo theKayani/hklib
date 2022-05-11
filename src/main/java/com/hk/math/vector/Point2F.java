@@ -1,7 +1,10 @@
 package com.hk.math.vector;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * <p>Point2F class.</p>
+ * TODO: finish
  *
  * @author theKayani
  */
@@ -44,7 +47,7 @@ public class Point2F
 	 *
 	 * @param p a {@link com.hk.math.vector.Point2F} object
 	 */
-	public Point2F(Point2F p)
+	public Point2F(@NotNull Point2F p)
 	{
 		x = p.x;
 		y = p.y;
@@ -77,7 +80,7 @@ public class Point2F
 	 * @param off a int
 	 * @return an array of {@link float} objects
 	 */
-	public float[] get(float[] arr, int off)
+	public float @NotNull [] get(float @NotNull [] arr, int off)
 	{
 		arr[off++] = x;
 		arr[off] = y;
@@ -90,7 +93,7 @@ public class Point2F
 	 * @param arr an array of {@link float} objects
 	 * @return an array of {@link float} objects
 	 */
-	public float[] get(float[] arr)
+	public float @NotNull [] get(float @NotNull [] arr)
 	{
 		return get(arr, 0);
 	}
@@ -100,7 +103,7 @@ public class Point2F
 	 *
 	 * @return an array of {@link float} objects
 	 */
-	public float[] get()
+	public float @NotNull [] get()
 	{
 		return get(new float[2]);
 	}
@@ -111,6 +114,7 @@ public class Point2F
 	 * @param x a float
 	 * @return a {@link com.hk.math.vector.Point2F} object
 	 */
+	@NotNull
 	public Point2F setX(float x)
 	{
 		this.x = x;
@@ -123,6 +127,7 @@ public class Point2F
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Point2F} object
 	 */
+	@NotNull
 	public Point2F setY(float y)
 	{
 		this.y = y;
@@ -135,6 +140,7 @@ public class Point2F
 	 * @param val a float
 	 * @return a {@link com.hk.math.vector.Point2F} object
 	 */
+	@NotNull
 	public Point2F set(float val)
 	{
 		x = y = val;
@@ -148,6 +154,7 @@ public class Point2F
 	 * @param y a float
 	 * @return a {@link com.hk.math.vector.Point2F} object
 	 */
+	@NotNull
 	public Point2F set(float x, float y)
 	{
 		this.x = x;
@@ -161,7 +168,8 @@ public class Point2F
 	 * @param p a {@link com.hk.math.vector.Point2F} object
 	 * @return a {@link com.hk.math.vector.Point2F} object
 	 */
-	public Point2F set(Point2F p)
+	@NotNull
+	public Point2F set(@NotNull Point2F p)
 	{
 		x = p.x;
 		y = p.y;
@@ -175,7 +183,8 @@ public class Point2F
 	 * @param off a int
 	 * @return a {@link com.hk.math.vector.Point2F} object
 	 */
-	public Point2F set(float[] arr, int off)
+	@NotNull
+	public Point2F set(float @NotNull [] arr, int off)
 	{
 		x = arr[off++];
 		y = arr[off];
@@ -188,7 +197,8 @@ public class Point2F
 	 * @param arr an array of {@link float} objects
 	 * @return a {@link com.hk.math.vector.Point2F} object
 	 */
-	public Point2F set(float[] arr)
+	@NotNull
+	public Point2F set(float @NotNull [] arr)
 	{
 		return set(arr, 0);
 	}

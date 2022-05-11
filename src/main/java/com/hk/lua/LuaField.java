@@ -6,7 +6,7 @@ class LuaField extends LuaLocation
 {
 	private final Lua.LuaValue value;
 	private final String source;
-	String name;
+	final String name;
 
 	LuaField(String source, int line, Lua.LuaValue value)
 	{

@@ -59,12 +59,13 @@ public class Ellipse extends Shape
 
 	/**
 	 * <p>getCircumference.</p>
+	 * TODO: finish
 	 *
 	 * @return a float
 	 */
 	public float getCircumference()
 	{
-		return Float.NaN; // TODO: Shouldn't return NaN...
+		return Float.NaN;
 	}
 
 	/**

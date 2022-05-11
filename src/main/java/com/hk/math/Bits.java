@@ -134,7 +134,14 @@ public class Bits implements Cloneable, Serializable
 	@NotNull
 	public Bits clone()
 	{
-		return new Bits(val, size);
+		try
+		{
+			return (Bits) super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 
 	/** {@inheritDoc} */

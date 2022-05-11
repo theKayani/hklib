@@ -61,6 +61,9 @@ public class SchoolScoreAdapter extends JsonAdapter<SchoolScore>
 	@Override
 	public JsonValue toJson(SchoolScore val) throws JsonAdaptationException
 	{
+		if(val == null)
+			return JsonNull.NULL;
+
 		JsonObject obj = new JsonObject();
 
 		obj.put("dbn", val.dbn);

@@ -17,9 +17,9 @@ public class LuaLibraryDateTest extends TestCase
 
 		Lua.importStandard(interp);
 
-		Object obj = interp.execute();
+		LuaObject obj = interp.execute();
 
-		assertTrue(obj instanceof LuaObject);
-		assertTrue(((LuaObject) obj).getBoolean());
+		assertNotNull(obj);
+		assertTrue(obj.getBoolean());
 	}
 }
