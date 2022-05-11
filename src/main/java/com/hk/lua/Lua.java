@@ -1660,6 +1660,23 @@ public class Lua
 	}
 
 	/**
+	 * <p>Convert a {@link java.lang.Runnable} into a Lua function.</p>
+	 * <p>This returns a Lua object that can be executed.</p>
+	 * <p>Calling {@link LuaObject#isFunction()} on the result will
+	 * return true.</p>
+	 *
+	 * @param method a {@link java.lang.Runnable} object
+	 * @return a {@link com.hk.lua.LuaObject} object
+	 */
+	public static LuaObject newFunc(@NotNull final Runnable method)
+	{
+		return newMethod((interp, args) -> {
+			method.run();
+			return LuaNil.NIL;
+		});
+	}
+
+	/**
 	 * <p>Convert a {@link java.util.function.BiFunction} into a Lua function.</p>
 	 * <p>This returns a Lua object that can be executed.</p>
 	 * <p>Calling {@link LuaObject#isFunction()} on the result will

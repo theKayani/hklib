@@ -6,9 +6,7 @@ import junit.framework.TestCase;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
 public class LuaTest extends TestCase
 {
@@ -188,6 +186,52 @@ public class LuaTest extends TestCase
 
 		Lua.importStandard(interp);
 		interp.importLib(LuaLibrary.PACKAGE);
+
+		LuaObject obj = interp.execute();
+
+		assertNotNull(obj);
+		assertTrue(obj.getBoolean());
+	}
+
+	public void testFunctions() throws FileNotFoundException
+	{
+		final LuaInterpreter interp = Lua.reader(Assets.get("lua/test_functions.lua"));
+
+		Environment globals = interp.getGlobals();
+		Set<String> calls = new HashSet<>();
+		String name = "my function";
+
+		// Predicates
+		globals.setVar("doublePredicate", Lua.newFuncFrom(name, (double d) -> {
+			calls.add("doublePredicate");
+			return false;
+		}));
+		globals.setVar("intPredicate", Lua.newFuncFrom(name, (int i) -> {
+			calls.add("intPredicate");
+			return true;
+		}));
+		globals.setVar("longPredicate", Lua.newFuncFrom(name, (long l) -> {
+			calls.add("longPredicate");
+			return false;
+		}));
+		globals.setVar("stringPredicate", Lua.newFuncFrom(name, (String s) -> {
+			calls.add("stringPredicate");
+			return true;
+		}));
+
+		// Consumers
+		globals.setVar("doubleConsumer", Lua.newFuncFrom("doubleConsumer", (double d) -> { calls.add("doubleConsumer"); }));
+		globals.setVar("intConsumer", Lua.newFuncFrom("intConsumer", (int i) -> { calls.add("intConsumer"); }));
+		globals.setVar("longConsumer", Lua.newFuncFrom("longConsumer", (long l) -> { calls.add("longConsumer"); }));
+		globals.setVar("stringConsumer", Lua.newFuncFrom("stringConsumer", (String s) -> { calls.add("stringConsumer"); }));
+
+		// Suppliers
+
+		// Operators
+
+		// Functions
+
+		Lua.importStandard(interp);
 
 		LuaObject obj = interp.execute();
 
