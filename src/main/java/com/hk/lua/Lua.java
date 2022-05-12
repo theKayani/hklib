@@ -1453,6 +1453,7 @@ public class Lua
 	 * <p>Calling {@link LuaObject#isFunction()} on the result will
 	 * return true.</p>
 	 *
+	 * @param name name of the method for errors
 	 * @param method a {@link java.util.function.UnaryOperator} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
@@ -1470,6 +1471,7 @@ public class Lua
 	 * <p>Calling {@link LuaObject#isFunction()} on the result will
 	 * return true.</p>
 	 *
+	 * @param name name of the method for errors
 	 * @param method a {@link java.util.function.BinaryOperator} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
@@ -1487,6 +1489,7 @@ public class Lua
 	 * <p>Calling {@link LuaObject#isFunction()} on the result will
 	 * return true.</p>
 	 *
+	 * @param name name of the method for errors
 	 * @param method a {@link java.util.function.DoubleBinaryOperator} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
@@ -1504,6 +1507,7 @@ public class Lua
 	 * <p>Calling {@link LuaObject#isFunction()} on the result will
 	 * return true.</p>
 	 *
+	 * @param name name of the method for errors
 	 * @param method a {@link java.util.function.DoubleUnaryOperator} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
@@ -1521,6 +1525,7 @@ public class Lua
 	 * <p>Calling {@link LuaObject#isFunction()} on the result will
 	 * return true.</p>
 	 *
+	 * @param name name of the method for errors
 	 * @param method a {@link java.util.function.IntBinaryOperator} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
@@ -1538,6 +1543,7 @@ public class Lua
 	 * <p>Calling {@link LuaObject#isFunction()} on the result will
 	 * return true.</p>
 	 *
+	 * @param name name of the method for errors
 	 * @param method a {@link java.util.function.IntUnaryOperator} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
@@ -1555,6 +1561,7 @@ public class Lua
 	 * <p>Calling {@link LuaObject#isFunction()} on the result will
 	 * return true.</p>
 	 *
+	 * @param name name of the method for errors
 	 * @param method a {@link java.util.function.LongBinaryOperator} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */
@@ -1572,6 +1579,7 @@ public class Lua
 	 * <p>Calling {@link LuaObject#isFunction()} on the result will
 	 * return true.</p>
 	 *
+	 * @param name name of the method for errors
 	 * @param method a {@link java.util.function.LongUnaryOperator} object
 	 * @return a {@link com.hk.lua.LuaObject} object
 	 */

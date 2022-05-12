@@ -15,7 +15,7 @@ public class LuaLibrary<T extends Enum<T> & BiConsumer<Environment, LuaObject>>
 	public static final LuaLibrary<LuaLibraryBasic> BASIC = new LuaLibrary<>(null, LuaLibraryBasic.class);
 	/** Constant <code>COROUTINE</code> */
 	public static final LuaLibrary<LuaLibraryCoroutine> COROUTINE = new LuaLibrary<>("coroutine", LuaLibraryCoroutine.class);
-	//** Constant <code>PACKAGE</code> */
+	/** Constant <code>PACKAGE</code> */
 	public static final LuaLibrary<LuaLibraryPackage> PACKAGE = new LuaLibrary<>("package", LuaLibraryPackage.class);
 	/** Constant <code>STRING</code> */
 	public static final LuaLibrary<LuaLibraryString> STRING = new LuaLibrary<>("string", LuaLibraryString.class);
