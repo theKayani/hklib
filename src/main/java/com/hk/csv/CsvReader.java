@@ -5,20 +5,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.ObjIntConsumer;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * <p>This class can be used to read comma-separated values from a Java
  * reader. This class also contains some methods/flags that can change
  * the behavior of the parser.</p>
  *
+ * @see CsvWriter
  * @see <a href="https://en.wikipedia.org/wiki/Comma-separated_values">https://en.wikipedia.org/wiki/Comma-separated_values</a>
  */
-public class CsvReader implements Closeable
+public class CsvReader implements Closeable, Supplier<String[]>, Iterable<String[]>
 {
 	private final LineNumberReader rdr;
 	private boolean ignoreHeader, ignoredHeader, whitespaceTrim,
@@ -29,6 +29,7 @@ public class CsvReader implements Closeable
 	 * anything until the methods are called.</p>
 	 *
 	 * @param f a {@link java.io.File} object
+	 * @throws FileNotFoundException if the file does not exist
 	 */
 	public CsvReader(@NotNull File f) throws FileNotFoundException
 	{
@@ -41,6 +42,7 @@ public class CsvReader implements Closeable
 	 *
 	 * @param f a {@link java.io.File} object
 	 * @param charset charset to use
+	 * @throws IOException if the underlying stream throws an exception
 	 */
 	public CsvReader(@NotNull File f, @NotNull Charset charset) throws IOException
 	{
@@ -175,6 +177,20 @@ public class CsvReader implements Closeable
 		return rdr.getLineNumber();
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public String[] get()
+	{
+		try
+		{
+			return readLine();
+		}
+		catch (IOException e)
+		{
+			throw new UncheckedIOException(e);
+		}
+	}
+
 	/**
 	 * <p>Reads the next comma-separated values that are retrieved from
 	 * the reader. If there are no more characters to read from the
@@ -204,13 +220,32 @@ public class CsvReader implements Closeable
 
 	/**
 	 * <p>Collects the comma-separated values and individually stream
+	 * them to this predicate <b>as long as it returns true</b>. The
+	 * collected string arrays will never be null.</p>
+	 *
+	 * @param consumer a {@link java.util.function.Predicate} object.
+	 * @throws IOException if the underlying reader throws an exception
+	 * @return this
+	 */
+	public CsvReader test(@NotNull Predicate<? super String[]> consumer) throws IOException
+	{
+		List<String> lst = new ArrayList<>();
+
+		while(readLineInto(lst) && consumer.test(lst.toArray(new String[0])))
+			lst.clear();
+		return this;
+	}
+
+	/**
+	 * <p>Collects the comma-separated values and individually stream
 	 * them to this consumer. The collected string arrays will never
 	 * be null.</p>
 	 *
 	 * @param consumer a {@link java.util.function.Consumer} object.
 	 * @throws IOException if the underlying reader throws an exception
+	 * @return this
 	 */
-	public void process(@NotNull Consumer<String[]> consumer) throws IOException
+	public CsvReader process(@NotNull Consumer<? super String[]> consumer) throws IOException
 	{
 		List<String> lst = new ArrayList<>();
 
@@ -219,6 +254,7 @@ public class CsvReader implements Closeable
 			consumer.accept(lst.toArray(new String[0]));
 			lst.clear();
 		}
+		return this;
 	}
 
 	/**
@@ -231,8 +267,9 @@ public class CsvReader implements Closeable
 	 * @see #process(Consumer)
 	 * @param consumer a {@link java.util.function.ObjIntConsumer} object.
 	 * @throws IOException if the underlying reader throws an exception
+	 * @return this
 	 */
-	public void process(@NotNull ObjIntConsumer<String[]> consumer) throws IOException
+	public CsvReader process(@NotNull ObjIntConsumer<? super String[]> consumer) throws IOException
 	{
 		int row = 0;
 		List<String> lst = new ArrayList<>();
@@ -243,6 +280,37 @@ public class CsvReader implements Closeable
 			lst.clear();
 			row++;
 		}
+		return this;
+	}
+
+	/**
+	 * Collect as a stream of string arrays. Upon closing the stream,
+	 * this reader will also be closed.
+	 *
+	 * @return a stream of comma separated values
+	 */
+	@NotNull
+	public Stream<String[]> stream()
+	{
+		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(new Itr(), Spliterator.NONNULL), false)
+				.onClose(() -> {
+					try
+					{
+						close();
+					}
+					catch (IOException e)
+					{
+						throw new UncheckedIOException(e);
+					}
+				});
+	}
+
+	/** {@inheritDoc} */
+	@NotNull
+	@Override
+	public Iterator<String[]> iterator()
+	{
+		return new Itr();
 	}
 
 	private boolean readLineInto(@NotNull List<String> lst) throws IOException
@@ -289,8 +357,20 @@ public class CsvReader implements Closeable
 
 					c = (char) i;
 
-					if (c == '"' || c == '\n')
+					if (c == '\n')
 						break;
+					else if(c == '"')
+					{
+						rdr.mark(1);
+						i = rdr.read();
+						c = (char) i;
+
+						if(c != '"')
+						{
+							rdr.reset();
+							break;
+						}
+					}
 					else if (c == '\\')
 					{
 						i = rdr.read();
@@ -301,6 +381,9 @@ public class CsvReader implements Closeable
 
 						switch (c)
 						{
+							case 'n':
+								c = '\n';
+								break;
 							case '\\':
 							case '"':
 								break;
@@ -374,5 +457,28 @@ public class CsvReader implements Closeable
 	public void close() throws IOException
 	{
 		rdr.close();
+	}
+
+	private class Itr implements Iterator<String[]>
+	{
+		private String[] next;
+
+		@Override
+		public boolean hasNext()
+		{
+			return next != null || (next = get()) != null;
+		}
+
+		@Override
+		public String[] next()
+		{
+			if(next != null)
+			{
+				String[] tmp = next;
+				next = null;
+				return tmp;
+			}
+			return get();
+		}
 	}
 }

@@ -6,7 +6,8 @@ import com.hk.util.Requirements;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * <p>StringBuilderWriter class.</p>
+ * <p>Utility class for convenience of writing to a
+ * {@link StringBuilder} object.</p>
  *
  * @author theKayani
  */
@@ -64,7 +65,7 @@ public class StringBuilderWriter extends Writer
 	}
 
 	/**
-	 * <p>getBuilder.</p>
+	 * <p>Get the underlying string builder.</p>
 	 *
 	 * @return a {@link java.lang.StringBuilder} object
 	 */
@@ -75,8 +76,9 @@ public class StringBuilderWriter extends Writer
 	}
 
 	/**
-	 * <p>toString.</p>
+	 * <p>Return the string builder as a string</p>
 	 *
+	 * @see StringBuilder#toString()
 	 * @return a {@link java.lang.String} object
 	 */
 	@NotNull

@@ -118,6 +118,7 @@ public class CsvReaderTest extends TestCase
 		rdr.close();
 
 		Consumer<String[]> counter = (vals) -> {
+			assertNotNull(vals);
 			assertEquals(1, vals.length);
 			assertEquals(row.incrementAndGet(), Integer.parseInt(vals[0]));
 		};
@@ -169,6 +170,13 @@ public class CsvReaderTest extends TestCase
 		rdr = new CsvReader(new StringReader(sb.toString()));
 		assertSame(rdr, rdr.setIgnoreHeader());
 		rdr.process(counter);
+		rdr.close();
+		row.set(0);
+
+		rdr = new CsvReader(new StringReader(sb.toString()));
+		assertSame(rdr, rdr.setIgnoreHeader());
+		for(String[] strings : rdr)
+			counter.accept(strings);
 		rdr.close();
 		row.set(0);
 
@@ -371,5 +379,22 @@ public class CsvReaderTest extends TestCase
 
 		rdr.close();
 		assertEquals(16, row);
+	}
+
+	public void testStreamCSV() throws IOException
+	{
+		AtomicInteger row = new AtomicInteger(0);
+
+		Consumer<String[]> counter = (vals) -> {
+			assertNotNull(vals);
+			assertEquals(2, vals.length);
+			assertEquals(row.incrementAndGet(), Integer.parseInt(vals[0]));
+			assertEquals("", vals[1]);
+		};
+
+		new CsvReader(new StringReader("1,\n2,\n3,\n4,\n5,\n6,\n7,\n8,\n9,"))
+			.stream()
+			.forEach(counter);
+		assertEquals(9, row.get());
 	}
 }

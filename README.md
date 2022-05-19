@@ -18,6 +18,7 @@ This is a collection of useful classes and functionalities that I found myself i
    - `ZipUtil` - contains functions to pack/extract ZIP or JAR files
    - `DataTag` - useful class for de/serializing Java objects to be written-to or read-from a file
    - `IniUtil` - read and write INI files
+   - `CsvReader`/`CsvWriter` - read and write CSV files with `Object` serialization
  - `java.util.Collection` helper classes as well as custom subclasses for collection classes
    - Lists: `LockableList`, `SortedList`, `ImmutableList`, `ListUtil`
    - Maps: `MapUtil`
