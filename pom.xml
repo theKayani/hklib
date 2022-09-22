@@ -10,7 +10,7 @@
 
 	<groupId>com.thekayani</groupId>
 	<artifactId>hklib</artifactId>
-	<version>1.3.0</version>
+	<version>1.3.1</version>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>
 		This library contains various helper methods, classes, and features to enable rapid application development.

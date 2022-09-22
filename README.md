@@ -7,7 +7,7 @@
 
 This is a collection of useful classes and functionalities that I found myself in need of over my years as a developer.
 
-##### Version: 1.3.0
+##### Version: 1.3.1
 
 ### Current Features
  - Extensive and customizable `LuaInterpreter` with strong Java integration
@@ -24,6 +24,7 @@ This is a collection of useful classes and functionalities that I found myself i
    - Maps: `MapUtil`
    - Collections: `ComparatorUtil`, `CollectionUtil`
  - Math and Number utility classes to easily manipulate all types of primitive data
+ - A command-line argument parser _within package_ `com.hk.args`
  - The `AlgebraicExpression` class which can read linear and quadratic expressions
    - Such as `x^2 + 5x - 3` and allow the user to plug in values
  - Super Light and Simple Neural Network implementation with full saving and loading capabilities
@@ -45,14 +46,14 @@ Add `hklib` dependency
     <dependency>
         <groupId>com.thekayani</groupId>
         <artifactId>hklib</artifactId>
-        <version>1.3.0</version>
+        <version>1.3.1</version>
     </dependency>
 
 ### Gradle
 Add `hklib` dependency
 
     dependencies {
-	        implementation 'com.thekayani:hklib:1.3.0'
+	        implementation 'com.thekayani:hklib:1.3.1'
 	}
 
 ### Flat `jar` File

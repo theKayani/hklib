@@ -1,0 +1,3 @@
+- easy HTTP request stuff (w headers maybe)
+    to string, to stream (closing stream disconnects connection), to file, to json...
+    auto un-gzip

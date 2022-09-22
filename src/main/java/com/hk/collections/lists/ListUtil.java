@@ -205,6 +205,9 @@ public class ListUtil
 		return list;
 	}
 
+	/**
+	 * @deprecated use {@link Collections#addAll}
+	 */
 	@Deprecated
 	public static <T> void addElements(@NotNull List<T> list, @NotNull T[] array)
 	{
@@ -212,16 +215,49 @@ public class ListUtil
 	}
 
 	/**
-	 * Add a variable amount of T objects to the given list.
-	 *
-	 * @param list the {@link java.util.List} to add the elements to
-	 * @param array a list of T objects
-	 * @param <T> a T class
+	 * @deprecated use {@link Collections#addAll}
 	 */
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	public static <T> void addAll(@NotNull List<T> list, T... array)
 	{
 		Collections.addAll(list, array);
+	}
+
+	/**
+	 * Adds the array of elements provided to the given collection in the
+	 * <b>reverse</b> order. Similar to
+	 * {@link Collections#addAll(Collection, Object[])} but in the
+	 * reverse order.
+	 *
+	 * @param coll the collection to add the elements to
+	 * @param arr the array of elements to add to the given collection
+	 * @param <T> the type of element
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> void reverseAddAll(@NotNull Collection<T> coll, T... arr)
+	{
+		for (int i = 0; i < arr.length; i++)
+			coll.add(arr[arr.length - i - 1]);
+	}
+
+
+	/**
+	 * Adds the collection of elements provided to the given collection
+	 * in the <b>reverse</b> order. Similar to
+	 * {@link Collections#addAll(Collection, Object[])} but in the
+	 * reverse order.
+	 *
+	 * @param coll the collection to add the elements to
+	 * @param collection the collection to add to the given collection
+	 * @param <T> the type of element
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> void reverseAddAll(@NotNull Collection<T> coll, @NotNull Collection<? extends T> collection)
+	{
+		Object[] arr = collection.toArray();
+		for (int i = 0; i < arr.length; i++)
+			coll.add((T) arr[arr.length - i - 1]);
 	}
 
 	private ListUtil()

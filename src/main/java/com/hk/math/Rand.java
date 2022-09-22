@@ -445,6 +445,162 @@ public class Rand
 		return list.get(nextInt(list.size()));
 	}
 
+	/**
+	 * Generates an array of random integers that add up to the target
+	 * value provided.
+	 *
+	 * @param target the target sum that the result integers should
+	 *                  add up to
+	 * @param amount the amount of integers to generate, the same size
+	 *                  as the array returned
+	 * @return an array of integers that add up to the target amount
+	 */
+	public static int[] nextIntsSumTo(int target, int amount)
+	{
+		return nextIntsSumTo(rand, target, amount);
+	}
+
+	/**
+	 * Generates an array of random longs that add up to the target
+	 * value provided.
+	 *
+	 * @param target the target sum that the result longs should
+	 *                  add up to
+	 * @param amount the amount of longs to generate, the same size
+	 *                  as the array returned
+	 * @return an array of longs that add up to the target amount
+	 */
+	public static long[] nextLongsSumTo(long target, int amount)
+	{
+		return nextLongsSumTo(rand, target, amount);
+	}
+
+	/**
+	 * Generates an array of random floats that add up to the target
+	 * value provided.
+	 *
+	 * @param target the target sum that the result floats should
+	 *                  add up to
+	 * @param amount the amount of floats to generate, the same size
+	 *                  as the array returned
+	 * @return an array of floats that add up to the target amount
+	 */
+	public static float[] nextFloatsSumTo(float target, int amount)
+	{
+		return nextFloatsSumTo(rand, target, amount);
+	}
+
+	/**
+	 * Generates an array of random doubles that add up to the target
+	 * value provided.
+	 *
+	 * @param target the target sum that the result doubles should
+	 *                  add up to
+	 * @param amount the amount of doubles to generate, the same size
+	 *                  as the array returned
+	 * @return an array of doubles that add up to the target amount
+	 */
+	public static double[] nextDoublesSumTo(double target, int amount)
+	{
+		return nextDoublesSumTo(rand, target, amount);
+	}
+
+	/**
+	 * Generates an array of random integers that add up to the target
+	 * value provided.
+	 *
+	 * @param rng the random object to use to generate the random
+	 *               values
+	 * @param target the target sum that the result integers should
+	 *                  add up to
+	 * @param amount the amount of integers to generate, the same size
+	 *                  as the array returned
+	 * @return an array of integers that add up to the target amount
+	 */
+	public static int[] nextIntsSumTo(Random rng, int target, int amount)
+	{
+		float[] nums = nextFloatsSumTo(rng, target, amount);
+		int[] intNums = new int[amount];
+		int intSum = 0;
+		for (int i = 0; i < amount - 1; i++)
+			intSum += intNums[i] = (i % 2 == 0 ? (int) Math.floor(nums[i]) : (int) Math.ceil(nums[i]));
+		intNums[amount - 1] = target - intSum;
+
+		return intNums;
+	}
+
+	/**
+	 * Generates an array of random longs that add up to the target
+	 * value provided.
+	 *
+	 * @param rng the random object to use to generate the random
+	 *               values
+	 * @param target the target sum that the result longs should
+	 *                  add up to
+	 * @param amount the amount of longs to generate, the same size
+	 *                  as the array returned
+	 * @return an array of longs that add up to the target amount
+	 */
+	public static long[] nextLongsSumTo(Random rng, long target, int amount)
+	{
+		double[] nums = nextDoublesSumTo(rng, target, amount);
+		long[] intNums = new long[amount];
+		long intSum = 0;
+		for (int i = 0; i < amount - 1; i++)
+			intSum += intNums[i] = (i % 2 == 0 ? (long) Math.floor(nums[i]) : (long) Math.ceil(nums[i]));
+		intNums[amount - 1] = target - intSum;
+
+		return intNums;
+	}
+
+	/**
+	 * Generates an array of random doubles that add up to the target
+	 * value provided.
+	 *
+	 * @param rng the random object to use to generate the random
+	 *               values
+	 * @param target the target sum that the result doubles should
+	 *                  add up to
+	 * @param amount the amount of doubles to generate, the same size
+	 *                  as the array returned
+	 * @return an array of doubles that add up to the target amount
+	 */
+	public static double[] nextDoublesSumTo(Random rng, double target, int amount)
+	{
+		double[] nums = new double[amount];
+		double sum = 0D;
+		for (int i = 0; i < amount; i++)
+			sum += nums[i] = rng.nextDouble();
+		for (int i = 0; i < amount - 1; i++)
+			nums[i] = nums[i] * target * (1D / sum);
+
+		return nums;
+	}
+
+	/**
+	 * Generates an array of random floats that add up to the target
+	 * value provided.
+	 *
+	 * @param rng the random object to use to generate the random
+	 *               values
+	 * @param target the target sum that the result floats should
+	 *                  add up to
+	 * @param amount the amount of floats to generate, the same size
+	 *                  as the array returned
+	 * @return an array of floats that add up to the target amount
+	 */
+	public static float[] nextFloatsSumTo(Random rng, float target, int amount)
+	{
+		float[] nums = new float[amount];
+		float sum = 0F;
+		for (int i = 0; i < amount; i++)
+			sum += nums[i] = rng.nextFloat();
+		for (int i = 0; i < amount - 1; i++)
+			nums[i] = nums[i] * target * (1F / sum);
+
+		return nums;
+	}
+
 	private Rand()
 	{}
 }
