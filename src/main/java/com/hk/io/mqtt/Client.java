@@ -1,6 +1,5 @@
 package com.hk.io.mqtt;
 
-import com.hk.io.mqtt.Common.DefaultExceptionHandler;
 import com.hk.math.MathUtil;
 import com.hk.math.Rand;
 import org.jetbrains.annotations.Contract;
@@ -23,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -204,10 +204,22 @@ public class Client
 		return this;
 	}
 
+	@Nullable
+	public Consumer<IOException> getExceptionHandler()
+	{
+		return exceptionHandler;
+	}
+
+	@Contract("_ -> this")
+	public Client setDefaultExceptionHandler(@NotNull String message)
+	{
+		return setExceptionHandler(new Common.DefaultExceptionHandler(message, logger));
+	}
+
 	@Contract("-> this")
 	public Client setDefaultExceptionHandler()
 	{
-		return setExceptionHandler(DefaultExceptionHandler.INSTANCE);
+		return setExceptionHandler(new Common.DefaultExceptionHandler("MQTT Client", logger));
 	}
 
 	@Contract("_ -> this")
@@ -221,6 +233,8 @@ public class Client
 	public Client setLogLevel(@NotNull Level level)
 	{
 		logger.setLevel(Objects.requireNonNull(level));
+		for (Handler handler : logger.getHandlers())
+			handler.setLevel(level);
 		return this;
 	}
 
@@ -277,7 +291,8 @@ public class Client
 		try
 		{
 			OutputStream out = client.getOutputStream();
-			logger.fine("Sending packet: CONNECT");
+			if(logger.isLoggable(Level.FINE))
+				logger.fine("Sending packet: CONNECT (id: " + clientID + ")");
 
 			// fixed header
 			out.write(0x10);
@@ -337,6 +352,13 @@ public class Client
 			// remaining field
 			Common.writeRemainingField(out, bout.size());
 			bout.writeTo(out);
+			out.flush();
+
+			if(logger.isLoggable(Level.FINE))
+			{
+				logger.fine("Connecting with username: " + username + ", with" + (password == null ? " no" : "")
+						+ " password, " + keepAlive + "s keep alive, and " + (lastWill == null ? "no" : "with a") + " will");
+			}
 		}
 		catch (IOException e)
 		{

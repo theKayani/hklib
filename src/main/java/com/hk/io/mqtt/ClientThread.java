@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
@@ -51,7 +52,7 @@ class ClientThread extends Thread
 				switch (type)
 				{
 					case CONNACK:
-						handleConnackPacket(in, remLen);
+						handleConnackPacket(in, new AtomicInteger(remLen));
 						break;
 					case PUBLISH:
 						throw new Error("TODO PUBLISH");
@@ -85,13 +86,13 @@ class ClientThread extends Thread
 				exceptionHandler.accept(e);
 		}
 	}
-	private void handleConnackPacket(InputStream in, int remLen) throws IOException
+	private void handleConnackPacket(InputStream in, AtomicInteger remLen) throws IOException
 	{
 		// variable header
 		byte b;
-		for (int i = 0; i < remLen; i++)
+		for (int i = 0; i < remLen.get(); i++)
 		{
-			b = Common.read(in);
+			b = Common.read(in, remLen);
 
 			System.out.println(MathUtil.byteBin(b & 0xFF));
 		}

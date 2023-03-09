@@ -2,7 +2,10 @@ package com.hk.io.mqtt;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class Common
 {
@@ -38,13 +41,13 @@ class Common
 		writeBytes(out, s.getBytes(StandardCharsets.UTF_8));
 	}
 
-	static String readUTFString(InputStream in) throws IOException
+	static String readUTFString(InputStream in, AtomicInteger remLen) throws IOException
 	{
 		// TODO: MQTT-1.5.3-1
 		// TODO: MQTT-1.5.3-2
 		// TODO: MQTT-1.5.3-3
 
-		return new String(readBytes(in), StandardCharsets.UTF_8);
+		return new String(readBytes(in, remLen), StandardCharsets.UTF_8);
 	}
 
 	static void writeBytes(OutputStream out, byte[] bs) throws IOException
@@ -56,14 +59,16 @@ class Common
 		out.write(bs);
 	}
 
-	static byte[] readBytes(InputStream in) throws IOException
+	static byte[] readBytes(InputStream in, AtomicInteger remLen) throws IOException
 	{
-		int len = readShort(in);
+		int len = readShort(in, remLen);
 		if(len == 0)
 			return new byte[0];
 
 		byte[] bs = new byte[len];
 		if(in.read(bs) != len)
+			throw new IOException(EOF);
+		if(remLen != null && remLen.addAndGet(-2) < 0)
 			throw new IOException(EOF);
 		return bs;
 	}
@@ -74,16 +79,23 @@ class Common
 		out.write(i & 0xFF);
 	}
 
-	static int readShort(InputStream in) throws IOException
+	static int readShort(InputStream in, AtomicInteger remLen) throws IOException
 	{
 		byte[] i = new byte[2];
 		if(in.read(i) != 2)
+			throw new IOException(EOF);
+		if(remLen != null && remLen.addAndGet(-2) < 0)
 			throw new IOException(EOF);
 
 		return ((i[0] << 8) | i[1]) & 0xFFFF;
 	}
 
 	static byte read(InputStream in) throws IOException
+	{
+		return read(in, null);
+	}
+
+	static byte read(InputStream in, AtomicInteger remLen) throws IOException
 	{
 		int i = in.read();
 		if(i == -1)
@@ -93,17 +105,32 @@ class Common
 
 	static final String EOF = "end of stream reached";
 
+	enum ConnectReturn
+	{
+		ACCEPTED,
+		UNACCEPTABLE_PROTOCOL_VERSION,
+		IDENTIFIER_REJECTED,
+		SERVER_UNAVAILABLE,
+		BAD_USERNAME_OR_PASSWORD,
+		UNAUTHORIZED
+	}
+
 	static final class DefaultExceptionHandler implements Consumer<IOException>
 	{
-		static final DefaultExceptionHandler INSTANCE = new DefaultExceptionHandler();
+		private final String message;
+		private final Logger logger;
 
-		private DefaultExceptionHandler()
-		{}
+		DefaultExceptionHandler(String message, Logger logger)
+		{
+			this.message = message;
+			this.logger = logger;
+		}
 
 		@Override
 		public void accept(IOException e)
 		{
-			throw new UncheckedIOException(e);
+			logger.log(Level.WARNING, message, e);
+//			throw new UncheckedIOException(e);
 		}
 	}
 }

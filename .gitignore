@@ -38,5 +38,3 @@ argfile.txt
 # test code files
 src/test/resources/assets/lua/main.lua
 src/test/java/com/hk/TestMain.java
-src/test/java/com/hk/io/mqtt/TestBroker.java
-src/test/java/com/hk/io/mqtt/TestClient.java

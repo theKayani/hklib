@@ -6,18 +6,20 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.net.ssl.SSLServerSocketFactory;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.ref.PhantomReference;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.logging.*;
 
@@ -28,16 +30,17 @@ import java.util.logging.*;
 public class Broker implements Runnable
 {
 	private final InetSocketAddress host;
-	private final List<BrokerClientThread> currentClients;
+	final List<BrokerClientThread> currentClients;
 	public final BrokerOptions options;
 	private final AtomicReference<Status> status;
 	private final Logger logger;
 	Consumer<IOException> exceptionHandler;
-	private ScheduledExecutorService executorService;
+	ScheduledExecutorService executorService;
 	private ServerSocket socket;
 	private Consumer<ServerSocket> handler;
 	private AtomicBoolean hardStop;
 	AtomicBoolean globalStop;
+	private int nextID;
 
 	public Broker(int port)
 	{
@@ -53,7 +56,7 @@ public class Broker implements Runnable
 	{
 		this.host = host;
 		this.options = new BrokerOptions();
-		currentClients = new ArrayList<>();
+		currentClients = Collections.synchronizedList(new ArrayList<>());
 		status = new AtomicReference<>(Status.NOT_BOUND);
 		logger = Logger.getLogger("MQTT-Broker");
 		logger.setLevel(Level.INFO);
@@ -68,10 +71,22 @@ public class Broker implements Runnable
 		return this;
 	}
 
+	@Nullable
+	public Consumer<IOException> getExceptionHandler()
+	{
+		return exceptionHandler;
+	}
+
+	@Contract("_ -> this")
+	public Broker setDefaultExceptionHandler(String message)
+	{
+		return setExceptionHandler(new Common.DefaultExceptionHandler(message, logger));
+	}
+
 	@Contract("-> this")
 	public Broker setDefaultExceptionHandler()
 	{
-		return setExceptionHandler(Common.DefaultExceptionHandler.INSTANCE);
+		return setExceptionHandler(new Common.DefaultExceptionHandler("MQTT Broker", logger));
 	}
 
 	@Contract("_ -> this")
@@ -87,7 +102,6 @@ public class Broker implements Runnable
 		logger.setLevel(Objects.requireNonNull(level));
 		for (Handler handler : logger.getHandlers())
 			handler.setLevel(level);
-
 		return this;
 	}
 
@@ -160,13 +174,12 @@ public class Broker implements Runnable
 
 				if(currentClients.size() < options.maxClients)
 				{
-					logger.info("Client connected: " + currentClients.size() + "/" + options.maxClients);
-
-					BrokerClientThread clientThread = new BrokerClientThread(this, client);
+					BrokerClientThread clientThread = new BrokerClientThread(this, client, ++nextID);
 					clientThread.setDaemon(true);
 					currentClients.add(clientThread);
 					clientThread.start();
-					logger.fine("Starting thread for new client " + client);
+					logger.fine("Client connected: #" + nextID + " " + currentClients.size() + "/" + options.maxClients);
+					logger.finer("Starting thread for new client " + client);
 				}
 				else
 				{
