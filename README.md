@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.com/theKayani/hklib.svg?branch=main)](https://travis-ci.com/github/theKayani/hklib)
-[![Maven Central](https://img.shields.io/maven-central/v/com.thekayani/hklib.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.thekayani%22%20AND%20a:%22hklib%22)
+[![Maven Central](https://img.shields.io/maven-central/v/com.thekayani/hklib.svg?label=Maven%20Central)](https://mvnrepository.com/artifact/com.thekayani/hklib)
 [![javadoc](https://javadoc.io/badge2/com.thekayani/hklib/javadoc.svg)](https://javadoc.io/doc/com.thekayani/hklib)
 
 
@@ -13,6 +13,7 @@ This is a collection of useful classes and functionalities that I found myself i
  - Extensive and customizable `LuaInterpreter` with strong Java integration
  - Fully featured JSON reader and writer (_w_ Object-Oriented serialization)
  - Various 2D/3D Matrix, Vector, Point, and Quaternion classes
+ - Configurable [MQTT](https://mqtt.org/) broker and client implementation following the `3.1.1` Specification
  - A myriad of file helpers such as:
    - `FileUtil` - contains multiple methods to read/write and handle general files and folders
    - `ZipUtil` - contains functions to pack/extract ZIP or JAR files

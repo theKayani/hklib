@@ -1,10 +1,14 @@
 package com.hk.io.mqtt;
 
+import com.hk.io.mqtt.Common.DefaultExceptionHandler;
 import com.hk.math.MathUtil;
 import com.hk.math.Rand;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
+import javax.net.ssl.SSLSocketFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,12 +22,17 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client
 {
 	private final InetSocketAddress host;
+	public final ClientOptions options;
 	private final ScheduledExecutorService executorService;
 	private final AtomicReference<Status> status;
+	private final Logger logger;
 	Consumer<IOException> exceptionHandler;
 	@NotNull
 	private String clientID;
@@ -47,6 +56,7 @@ public class Client
 	public Client(InetSocketAddress host)
 	{
 		this.host = host;
+		this.options = new ClientOptions();
 		executorService = Executors.newSingleThreadScheduledExecutor();
 
 		clientID = randomClientID();
@@ -54,6 +64,10 @@ public class Client
 		keepAlive = 60;
 		status = new AtomicReference<>(Status.NOT_CONNECTED);
 		globalStop = new AtomicBoolean(false);
+		logger = Logger.getLogger("MQTT-Client");
+		logger.setLevel(Level.INFO);
+		logger.setUseParentHandlers(false);
+		logger.addHandler(new ConsoleHandler());
 	}
 
 	public String getID()
@@ -61,11 +75,13 @@ public class Client
 		return clientID;
 	}
 
+	@Contract("-> this")
 	public Client setDefaultID()
 	{
 		return setID(randomClientID());
 	}
 
+	@Contract("_ -> this")
 	public Client setID(@NotNull String clientID)
 	{
 		if(status.get() != Status.NOT_CONNECTED)
@@ -81,11 +97,13 @@ public class Client
 		return username;
 	}
 
+	@Contract("-> this")
 	public Client setNoUsername()
 	{
 		return setUsername(null);
 	}
 
+	@Contract("_ -> this")
 	public Client setUsername(@Nullable String username)
 	{
 		if(status.get() != Status.NOT_CONNECTED)
@@ -95,12 +113,14 @@ public class Client
 		return this;
 	}
 
+	@Contract("-> this")
 	public Client setNoPassword()
 	{
 		this.password = null;
 		return this;
 	}
 
+	@Contract("_ -> this")
 	public Client setPassword(@Nullable String password)
 	{
 		if(status.get() != Status.NOT_CONNECTED)
@@ -113,6 +133,7 @@ public class Client
 		return this;
 	}
 
+	@Contract("_ -> this")
 	public Client setRawPassword(byte @Nullable [] password)
 	{
 		if(status.get() != Status.NOT_CONNECTED)
@@ -128,9 +149,13 @@ public class Client
 	@Nullable
 	public Will getLastWill()
 	{
-		return lastWill;
+		if(status.get() == Status.NOT_CONNECTED || lastWill == null)
+			return lastWill;
+		else
+			return new Will(lastWill.topic, lastWill.message, lastWill.qos, lastWill.retain);
 	}
 
+	@Contract("_ -> this")
 	public Client setLastWill(@Nullable Will lastWill)
 	{
 		if(status.get() != Status.NOT_CONNECTED)
@@ -145,11 +170,13 @@ public class Client
 		return cleanSession;
 	}
 
+	@Contract("-> this")
 	public Client setToCleanSession()
 	{
 		return setCleanSession(true);
 	}
 
+	@Contract("_ -> this")
 	public Client setCleanSession(boolean cleanSession)
 	{
 		if(status.get() != Status.NOT_CONNECTED)
@@ -159,12 +186,14 @@ public class Client
 		return this;
 	}
 
+	@Range(from=1, to=65535)
 	public int getKeepAlive()
 	{
 		return keepAlive;
 	}
 
-	public void setKeepAlive(int keepAlive)
+	@Contract("_ -> this")
+	public Client setKeepAlive(@Range(from=1, to=65535) int keepAlive)
 	{
 		if(status.get() != Status.NOT_CONNECTED)
 			throw new IllegalStateException("cannot change keep alive timeout after attempting to connect");
@@ -172,20 +201,37 @@ public class Client
 		if(keepAlive < 1 || keepAlive > 65535)
 			throw new IllegalArgumentException("keep alive timeout should be 1 to 65535");
 		this.keepAlive = keepAlive;
+		return this;
 	}
 
+	@Contract("-> this")
 	public Client setDefaultExceptionHandler()
 	{
-		return setExceptionHandler(Common.DefaultExceptionHandler.INSTANCE);
+		return setExceptionHandler(DefaultExceptionHandler.INSTANCE);
 	}
 
+	@Contract("_ -> this")
 	public Client setExceptionHandler(@Nullable Consumer<IOException> exceptionHandler)
 	{
 		this.exceptionHandler = exceptionHandler;
 		return this;
 	}
 
-	public Client.Status getStatus()
+	@Contract("_ -> this")
+	public Client setLogLevel(@NotNull Level level)
+	{
+		logger.setLevel(Objects.requireNonNull(level));
+		return this;
+	}
+
+	@NotNull
+	public Logger getLogger()
+	{
+		return logger;
+	}
+
+	@NotNull
+	public Status getStatus()
 	{
 		return status.get();
 	}
@@ -200,16 +246,22 @@ public class Client
 			if(status.get() != Status.NOT_CONNECTED && status.get() != Status.DISCONNECTED)
 				throw new IllegalStateException("client already tried on socket");
 
-			client = new Socket();
+			logger.info("Creating" + (options.useSSL ? " SSL" : "") + " socket");
+			if(options.useSSL)
+				client = SSLSocketFactory.getDefault().createSocket();
+			else
+				client = new Socket();
 
 			status.set(Status.CONNECTING);
+			logger.warning("Attempting to connect to host: " + host);
 			client.connect(host);
-			System.out.println("\nclient.getRemoteSocketAddress() = " + client.getRemoteSocketAddress());
+			logger.fine("Socket: " + client);
 
 			status.set(Status.CONNECTED);
 			clientThread = new ClientThread(this, client);
 			clientThread.setDaemon(true);
 			clientThread.start();
+			logger.fine("Starting thread for socket");
 
 			executorService.submit(this::sendConnectPacket);
 		}
@@ -225,11 +277,11 @@ public class Client
 		try
 		{
 			OutputStream out = client.getOutputStream();
+			logger.fine("Sending packet: CONNECT");
 
 			// fixed header
 			out.write(0x10);
 			ByteArrayOutputStream bout = new ByteArrayOutputStream(256);
-			byte[] bs;
 
 			// variable header
 
@@ -278,7 +330,6 @@ public class Client
 			if(username != null)
 			{
 				Common.writeUTFString(bout, username);
-
 				if(password != null)
 					Common.writeBytes(bout, password);
 			}
@@ -353,20 +404,21 @@ public class Client
 			this(topic, message, 1, false);
 		}
 
-		public Will(@NotNull String topic, @NotNull String message, int qos, boolean retain)
+		public Will(@NotNull String topic, @NotNull String message, @Range(from=0, to=2) int qos, boolean retain)
 		{
 			this.topic = Objects.requireNonNull(topic);
 			this.message = message.getBytes(StandardCharsets.UTF_8);
 			setQos(qos).setRetain(retain);
 		}
 
-		public Will(@NotNull String topic, byte @NotNull [] message, int qos, boolean retain)
+		public Will(@NotNull String topic, byte @NotNull [] message, @Range(from=0, to=2)int qos, boolean retain)
 		{
 			this.topic = Objects.requireNonNull(topic);
 			this.message = Arrays.copyOf(message, message.length);
 			setQos(qos).setRetain(retain);
 		}
 
+		@Range(from=0, to=2)
 		public int getQos()
 		{
 			return qos;
@@ -377,7 +429,7 @@ public class Client
 			return setQos(0);
 		}
 
-		public Will setQos(int qos)
+		public Will setQos(@Range(from=0, to=2) int qos)
 		{
 			if(qos < 0 || qos > 2)
 				throw new IllegalArgumentException("qos must be between 0 and 2");

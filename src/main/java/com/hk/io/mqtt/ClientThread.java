@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 class ClientThread extends Thread
 {
@@ -33,20 +34,48 @@ class ClientThread extends Thread
 			while(!globalStop.get())
 			{
 				// fixed header
-				PacketType type = PacketType.getFromHeader(Common.read(in));
+				b = Common.read(in);
+				PacketType type = PacketType.getFromHeader(b);
 
 				System.out.println("RECEIVED PACKET: " + type);
 				if(type == null)
+				{
+					client.getLogger().warning("Unknown packet header: " + MathUtil.byteBin(b & 0xFF));
 					socket.close();
+					break;
+				}
 
 				int remLen = Common.readRemainingField(in);
+				if(client.getLogger().isLoggable(Level.FINER))
+					client.getLogger().finer("Received packet: " + type + ", remaining length: " + remLen);
 				switch (type)
 				{
 					case CONNACK:
 						handleConnackPacket(in, remLen);
 						break;
-					default:
-						throw new Error("TODO");
+					case PUBLISH:
+						throw new Error("TODO PUBLISH");
+					case PUBACK:
+						throw new Error("TODO PUBACK");
+					case PUBREC:
+						throw new Error("TODO PUBREC");
+					case PUBREL:
+						throw new Error("TODO PUBREL");
+					case PUBCOMP:
+						throw new Error("TODO PUBCOMP");
+					case SUBACK:
+						throw new Error("TODO SUBACK");
+					case UNSUBACK:
+						throw new Error("TODO UNSUBACK");
+					case PINGRESP:
+						throw new Error("TODO PINGRESP");
+					case DISCONNECT:
+						throw new Error("TODO DISCONNECT");
+					case CONNECT:
+					case SUBSCRIBE:
+					case UNSUBSCRIBE:
+					case PINGREQ:
+						throw new IOException("unexpected packet type: " + type);
 				}
 			}
 		}
