@@ -87,7 +87,6 @@ class BrokerClientThread extends Thread
 						throw new IOException("unexpected packet type: " + type);
 				}
 			}
-			localStop.set(true);
 		}
 		catch (IOException e)
 		{
@@ -97,6 +96,7 @@ class BrokerClientThread extends Thread
 		}
 		finally
 		{
+			localStop.set(true);
 			close(true);
 		}
 	}
@@ -112,15 +112,18 @@ class BrokerClientThread extends Thread
 		{
 			if(bs[i] != expected[i])
 			{
+				broker.getLogger().fine("[" + address + "] Incorrect protocol or version, disconnecting with ack");
 				sendConnackPacket(false, Common.ConnectReturn.UNACCEPTABLE_PROTOCOL_VERSION);
 				localStop.set(true);
 				return;
 			}
 		}
 		boolean breach = false;
-		int connectFlags = Common.read(in, remLen);
+		int connectFlags = Common.read(in, remLen) & 0xFF;
 		boolean hasUsername = ((connectFlags >> 7) & 1) != 0;
 		boolean hasPassword = ((connectFlags >> 6) & 1) != 0;
+		if(hasPassword && !hasUsername)
+			breach = true;
 		boolean hasWill = ((connectFlags >> 2) & 1) != 0;
 		boolean willRetain = ((connectFlags >> 5) & 1) != 0;
 		if(!hasWill && willRetain)
@@ -134,6 +137,7 @@ class BrokerClientThread extends Thread
 
 		if(breach)
 		{
+			broker.getLogger().fine("[" + address + "] Unexpected connect flags: " + MathUtil.byteBin(connectFlags));
 			localStop.set(true);
 			return;
 		}
@@ -146,13 +150,22 @@ class BrokerClientThread extends Thread
 
 		// payload
 		String clientID = Common.readUTFString(in, remLen);
-		if(!Broker.isValidClientID(clientID) && (broker.options.clientIDAgent == null || !broker.options.clientIDAgent.test(clientID)))
+		if(!Broker.isValidClientID(clientID) || !broker.engine.tryClientID(clientID))
 		{
+			broker.getLogger().fine("[" + address + "] invalid client identifier, disconnecting with ack");
 			sendConnackPacket(false, Common.ConnectReturn.IDENTIFIER_REJECTED);
 			localStop.set(true);
 			return;
 		}
 		System.out.println("clientID = " + clientID);
+
+		if(!hasUsername && broker.engine.requireUsername(clientID) || !hasPassword && broker.engine.requirePassword(clientID))
+		{
+			broker.getLogger().fine("[" + address + "] no username/password provided, disconnecting with ack");
+			sendConnackPacket(false, Common.ConnectReturn.BAD_USERNAME_OR_PASSWORD);
+			localStop.set(true);
+			return;
+		}
 
 		String willTopic;
 		byte[] willMessage;
@@ -165,20 +178,42 @@ class BrokerClientThread extends Thread
 			System.out.println("willMessage = " + Arrays.toString(willMessage));
 		}
 
-		byte b;
-		for (int i = 0; i < remLen.get(); i++)
+		String username = null;
+		byte[] password = null;
+		if(hasUsername)
 		{
-			b = Common.read(in, remLen);
-
-			System.out.println(MathUtil.byteBin(b & 0xFF));
+			username = Common.readUTFString(in, remLen);
+			System.out.println("username = " + username);
+			if(hasPassword)
+			{
+				password = Common.readBytes(in, remLen);
+				System.out.println("password = " + Arrays.toString(password));
+			}
 		}
 
 		if(remLen.get() != 0)
+		{
+			broker.getLogger().fine("[" + address + "] remaining length overflow, disconnecting");
 			localStop.set(true);
+		}
+
+		if(broker.getLogger().isLoggable(Level.FINE))
+		{
+			broker.getLogger().fine("[" + address + "] Attempting with username: " + username + ", with" + (password == null ? " no" : "")
+					+ " password, " + keepAlive + "s keep alive, and " + (!hasWill ? "no" : "with a") + " will");
+		}
+
+		if(!broker.getEngine().attemptAuthenticate(clientID, username, password))
+		{
+			broker.getLogger().fine("[" + address + "] failed authentication, disconnecting with ack");
+			sendConnackPacket(false, Common.ConnectReturn.UNAUTHORIZED);
+			localStop.set(true);
+		}
 	}
 
 	void sendConnackPacket(boolean sessionPresent, @NotNull Common.ConnectReturn result) throws IOException
 	{
+		broker.getLogger().fine("[" + address + "] Sending packet CONNACK: " + result + (result == Common.ConnectReturn.ACCEPTED ? ", SP: " + sessionPresent : ""));
 		OutputStream out = client.getOutputStream();
 
 		out.write(0x20);

@@ -175,31 +175,31 @@ public class CommonTest extends TestCase
 		s = "hello!";
 		Common.writeUTFString(bout, s);
 		assertTrue(bout.size() > 0);
-		assertEquals(s, Common.readUTFString(new ByteArrayInputStream(bout.toByteArray())));
+		assertEquals(s, Common.readUTFString(new ByteArrayInputStream(bout.toByteArray()), null));
 		bout.reset();
 
 		s = "";
 		Common.writeUTFString(bout, s);
 		assertTrue(bout.size() > 0);
-		assertEquals(s, Common.readUTFString(new ByteArrayInputStream(bout.toByteArray())));
+		assertEquals(s, Common.readUTFString(new ByteArrayInputStream(bout.toByteArray()), null));
 		bout.reset();
 
 		s = "string";
 		Common.writeUTFString(bout, s);
 		assertTrue(bout.size() > 0);
-		assertEquals(s, Common.readUTFString(new ByteArrayInputStream(bout.toByteArray())));
+		assertEquals(s, Common.readUTFString(new ByteArrayInputStream(bout.toByteArray()), null));
 		bout.reset();
 
 		s = "this is my string, there are many like it but this one is mine";
 		Common.writeUTFString(bout, s);
 		assertTrue(bout.size() > 0);
-		assertEquals(s, Common.readUTFString(new ByteArrayInputStream(bout.toByteArray())));
+		assertEquals(s, Common.readUTFString(new ByteArrayInputStream(bout.toByteArray()), null));
 		bout.reset();
 
 		s = StringUtil.repeat("0", 65535);
 		Common.writeUTFString(bout, s);
 		assertTrue(bout.size() > 0);
-		assertEquals(s, Common.readUTFString(new ByteArrayInputStream(bout.toByteArray())));
+		assertEquals(s, Common.readUTFString(new ByteArrayInputStream(bout.toByteArray()), null));
 		bout.reset();
 
 		try

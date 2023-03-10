@@ -323,9 +323,9 @@ public class Client
 			}
 			if(username != null)
 			{
-				connectFlags |= 64;
+				connectFlags |= 128;
 				if (password != null)
-					connectFlags |= 128;
+					connectFlags |= 64;
 			}
 
 			bout.write(connectFlags & 0xFF);

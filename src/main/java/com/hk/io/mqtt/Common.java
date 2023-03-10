@@ -68,7 +68,7 @@ class Common
 		byte[] bs = new byte[len];
 		if(in.read(bs) != len)
 			throw new IOException(EOF);
-		if(remLen != null && remLen.addAndGet(-2) < 0)
+		if(remLen != null && remLen.addAndGet(-len) < 0)
 			throw new IOException(EOF);
 		return bs;
 	}
@@ -99,6 +99,8 @@ class Common
 	{
 		int i = in.read();
 		if(i == -1)
+			throw new IOException(EOF);
+		if(remLen != null && remLen.decrementAndGet() < 0)
 			throw new IOException(EOF);
 		return (byte) i;
 	}

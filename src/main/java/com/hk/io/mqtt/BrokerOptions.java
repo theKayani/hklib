@@ -17,10 +17,6 @@ public class BrokerOptions
 	int threadPoolSize;
 	// maximum amount of connections to hold at once
 	int maxClients;
-	// checks incoming client IDs waiting to connect, called from various threads
-	// should return true to accept and false to reject incoming client IDs
-	@Nullable
-	Predicate<String> clientIDAgent;
 
 	public BrokerOptions()
 	{
@@ -29,7 +25,6 @@ public class BrokerOptions
 		connectWaitTimeout = 10000;
 		threadPoolSize = 4;
 		maxClients = 128;
-		clientIDAgent = null;
 	}
 
 	public BrokerOptions(BrokerOptions options)
@@ -99,7 +94,6 @@ public class BrokerOptions
 		connectWaitTimeout = options.connectWaitTimeout;
 		threadPoolSize = options.threadPoolSize;
 		maxClients = options.maxClients;
-		clientIDAgent = options.clientIDAgent;
 		return this;
 	}
 }

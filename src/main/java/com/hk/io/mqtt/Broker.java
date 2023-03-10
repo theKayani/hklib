@@ -1,13 +1,13 @@
 package com.hk.io.mqtt;
 
+import com.hk.io.mqtt.engine.BasicMQTTEngine;
+import com.hk.io.mqtt.engine.MQTTEngine;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.net.ssl.SSLServerSocketFactory;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.ref.PhantomReference;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -21,7 +21,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.logging.*;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Creates a MQTT Protocol Broker that blocks upon calling the {@link #run()}
@@ -36,6 +39,7 @@ public class Broker implements Runnable
 	private final Logger logger;
 	Consumer<IOException> exceptionHandler;
 	ScheduledExecutorService executorService;
+	MQTTEngine engine;
 	private ServerSocket socket;
 	private Consumer<ServerSocket> handler;
 	private AtomicBoolean hardStop;
@@ -62,6 +66,21 @@ public class Broker implements Runnable
 		logger.setLevel(Level.INFO);
 		logger.setUseParentHandlers(false);
 		logger.addHandler(new ConsoleHandler());
+	}
+
+	public MQTTEngine getEngine()
+	{
+		return engine;
+	}
+
+	@Contract("_ -> this")
+	public Broker setEngine(MQTTEngine engine)
+	{
+		if(status.get() != Status.NOT_BOUND)
+			throw new IllegalStateException("Broker already started!");
+
+		this.engine = engine;
+		return this;
 	}
 
 	@Contract("_ -> this")
@@ -121,6 +140,9 @@ public class Broker implements Runnable
 	{
 		if(status.get() != Status.NOT_BOUND)
 			throw new IllegalStateException("Broker already tried on socket");
+
+		if(engine == null)
+			engine = new BasicMQTTEngine();
 
 		try
 		{
