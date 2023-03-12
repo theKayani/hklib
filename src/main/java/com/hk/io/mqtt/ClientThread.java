@@ -2,11 +2,14 @@ package com.hk.io.mqtt;
 
 import com.hk.math.MathUtil;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
@@ -14,15 +17,19 @@ class ClientThread extends Thread
 {
 	private final Client client;
 	private final Socket socket;
-	private final Consumer<IOException> exceptionHandler;
-	private final AtomicBoolean globalStop;
+	private final AtomicBoolean globalStop, sentClose, gotConnAck;
+	private final AtomicLong connectTime;
+	private final int keepAlive;
 
-	ClientThread(Client client, Socket socket)
+	ClientThread(Client client, Socket socket, int keepAlive)
 	{
 		this.client = client;
 		this.socket = socket;
-		this.exceptionHandler = client.exceptionHandler;
+		this.keepAlive = keepAlive;
 		globalStop = client.globalStop;
+		sentClose = new AtomicBoolean(false);
+		gotConnAck = new AtomicBoolean(false);
+		connectTime = new AtomicLong();
 	}
 
 	@Override
@@ -71,7 +78,8 @@ class ClientThread extends Thread
 					case PINGRESP:
 						throw new Error("TODO PINGRESP");
 					case DISCONNECT:
-						throw new Error("TODO DISCONNECT");
+						globalStop.set(true);
+						break;
 					case CONNECT:
 					case SUBSCRIBE:
 					case UNSUBSCRIBE:
@@ -82,15 +90,24 @@ class ClientThread extends Thread
 		}
 		catch (IOException e)
 		{
-			if(exceptionHandler != null)
-				exceptionHandler.accept(e);
+			if(!globalStop.get())
+			{
+				if (client.exceptionHandler != null)
+					client.exceptionHandler.accept(e);
+			}
+		}
+		finally
+		{
+			globalStop.set(true);
+			close(true);
 		}
 	}
+
 	private void handleConnackPacket(InputStream in, AtomicInteger remLen) throws IOException
 	{
 		// variable header
 		byte b;
-		for (int i = 0; i < remLen.get(); i++)
+		while(remLen.get() > 0)
 		{
 			b = Common.read(in, remLen);
 
@@ -98,5 +115,140 @@ class ClientThread extends Thread
 		}
 
 		// payload
+	}
+
+	void sendConnectPacket()
+	{
+		try
+		{
+			OutputStream out = socket.getOutputStream();
+			if(client.getLogger().isLoggable(Level.FINE))
+				client.getLogger().fine("Sending packet: CONNECT (id: " + client.clientID + ")");
+
+			// fixed header
+			out.write(0x10);
+			ByteArrayOutputStream bout = new ByteArrayOutputStream(256);
+
+			// variable header
+
+			// protocol name and level
+			bout.write(0x0);
+			bout.write(0x4);
+			bout.write(0x4D); // M
+			bout.write(0x51); // Q
+			bout.write(0x55); // T
+			bout.write(0x55); // T
+			bout.write(0x4); // v3.1.1
+
+			// connect flags
+			int connectFlags = 0;
+			if(client.cleanSession)
+				connectFlags |= 2;
+
+			if(client.lastWill != null)
+			{
+				connectFlags |= 4;
+				connectFlags |= (client.lastWill.getQos() << 3);
+				if(client.lastWill.isRetain())
+					connectFlags |= 32;
+			}
+			if(client.username != null)
+			{
+				connectFlags |= 128;
+				if (client.password != null)
+					connectFlags |= 64;
+			}
+
+			bout.write(connectFlags & 0xFF);
+
+			// keep-alive
+			Common.writeShort(bout, keepAlive);
+
+			// payload
+			Common.writeUTFString(bout, client.clientID);
+
+			if(client.lastWill != null)
+			{
+				Common.writeUTFString(bout, client.lastWill.getTopic());
+				Common.writeBytes(bout, client.lastWill.getRawMessage());
+			}
+
+			if(client.username != null)
+			{
+				Common.writeUTFString(bout, client.username);
+				if(client.password != null)
+					Common.writeBytes(bout, client.password);
+			}
+
+			// remaining field
+			Common.writeRemainingField(out, bout.size());
+			bout.writeTo(out);
+			out.flush();
+
+			if(client.getLogger().isLoggable(Level.FINE))
+			{
+				client.getLogger().fine("Connecting with username: " + client.username + ", with" + (client.password == null ? " no" : "")
+						+ " password, " + keepAlive + "s keep alive, and " + (client.lastWill == null ? "no" : "with a") + " will");
+			}
+		}
+		catch (IOException e)
+		{
+			if(client.exceptionHandler != null)
+				client.exceptionHandler.accept(e);
+		}
+	}
+
+	void sendPingRequestPacket() throws IOException
+	{
+		OutputStream out = socket.getOutputStream();
+		out.write(0b11000000);
+		out.write(0x0);
+	}
+
+	void close(boolean now)
+	{
+		if(socket.isClosed() || sentClose.get())
+			return;
+
+		globalStop.set(true);
+		sentClose.set(true);
+		Runnable closer = () -> {
+			try
+			{
+				if (!socket.isClosed())
+					socket.close();
+			}
+			catch (IOException e)
+			{
+				if(client.exceptionHandler != null)
+					client.exceptionHandler.accept(e);
+			}
+			finally
+			{
+				client.status.set(Client.Status.DISCONNECTED);
+				client.getLogger().info("Client disconnected");
+			}
+		};
+
+		if (!now)
+		{
+			client.executorService.submit(() -> {
+				try
+				{
+					OutputStream out = socket.getOutputStream();
+					out.write(0xE0);
+					out.write(0x0);
+					out.flush();
+				}
+				catch (IOException e)
+				{
+					if(client.exceptionHandler != null)
+						client.exceptionHandler.accept(e);
+				}
+			});
+			client.executorService.submit(closer);
+		}
+		else
+			closer.run();
 	}
 }

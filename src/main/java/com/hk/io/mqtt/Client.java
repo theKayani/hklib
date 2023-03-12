@@ -1,5 +1,6 @@
 package com.hk.io.mqtt;
 
+import com.hk.io.mqtt.engine.Message;
 import com.hk.math.MathUtil;
 import com.hk.math.Rand;
 import org.jetbrains.annotations.Contract;
@@ -8,9 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
 import javax.net.ssl.SSLSocketFactory;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -30,20 +29,20 @@ public class Client
 {
 	private final InetSocketAddress host;
 	public final ClientOptions options;
-	private final ScheduledExecutorService executorService;
-	private final AtomicReference<Status> status;
 	private final Logger logger;
+	final ScheduledExecutorService executorService;
+	final AtomicReference<Status> status;
 	Consumer<IOException> exceptionHandler;
 	@NotNull
-	private String clientID;
+	String clientID;
 	@Nullable
-	private String username;
-	private byte @Nullable [] password;
+	String username;
+	byte @Nullable [] password;
 	@Nullable
-	private Will lastWill;
-	private boolean cleanSession;
-	private int keepAlive;
-	private Socket client;
+	Message lastWill;
+	boolean cleanSession;
+	int keepAlive;
+	private Socket socket;
 	private ClientThread clientThread;
 	private AtomicBoolean hardStop;
 	AtomicBoolean globalStop;
@@ -147,16 +146,16 @@ public class Client
 	}
 
 	@Nullable
-	public Will getLastWill()
+	public Message getLastWill()
 	{
 		if(status.get() == Status.NOT_CONNECTED || lastWill == null)
 			return lastWill;
 		else
-			return new Will(lastWill.topic, lastWill.message, lastWill.qos, lastWill.retain);
+			return lastWill.clone();
 	}
 
 	@Contract("_ -> this")
-	public Client setLastWill(@Nullable Will lastWill)
+	public Client setLastWill(@Nullable Message lastWill)
 	{
 		if(status.get() != Status.NOT_CONNECTED)
 			throw new IllegalStateException("cannot change last will after attempting to connect");
@@ -262,22 +261,22 @@ public class Client
 
 			logger.info("Creating" + (options.useSSL ? " SSL" : "") + " socket");
 			if(options.useSSL)
-				client = SSLSocketFactory.getDefault().createSocket();
+				socket = SSLSocketFactory.getDefault().createSocket();
 			else
-				client = new Socket();
+				socket = new Socket();
 
 			status.set(Status.CONNECTING);
 			logger.warning("Attempting to connect to host: " + host);
-			client.connect(host);
-			logger.fine("Socket: " + client);
+			socket.connect(host);
+			logger.fine("Socket: " + socket);
 
 			status.set(Status.CONNECTED);
-			clientThread = new ClientThread(this, client);
+			clientThread = new ClientThread(this, socket, keepAlive);
 			clientThread.setDaemon(true);
 			clientThread.start();
 			logger.fine("Starting thread for socket");
 
-			executorService.submit(this::sendConnectPacket);
+			executorService.submit(clientThread::sendConnectPacket);
 		}
 		catch (IOException e)
 		{
@@ -286,216 +285,21 @@ public class Client
 		}
 	}
 
-	private void sendConnectPacket()
+	public void disconnect(boolean hard)
 	{
-		try
-		{
-			OutputStream out = client.getOutputStream();
-			if(logger.isLoggable(Level.FINE))
-				logger.fine("Sending packet: CONNECT (id: " + clientID + ")");
-
-			// fixed header
-			out.write(0x10);
-			ByteArrayOutputStream bout = new ByteArrayOutputStream(256);
-
-			// variable header
-
-			// protocol name and level
-			bout.write(0x0);
-			bout.write(0x4);
-			bout.write(0x4D); // M
-			bout.write(0x51); // Q
-			bout.write(0x55); // T
-			bout.write(0x55); // T
-			bout.write(0x4); // v3.1.1
-
-			// connect flags
-			int connectFlags = 0;
-			if(cleanSession)
-				connectFlags |= 2;
-
-			if(lastWill != null)
-			{
-				connectFlags |= 4;
-				connectFlags |= (lastWill.qos << 3);
-				if(lastWill.retain)
-					connectFlags |= 32;
-			}
-			if(username != null)
-			{
-				connectFlags |= 128;
-				if (password != null)
-					connectFlags |= 64;
-			}
-
-			bout.write(connectFlags & 0xFF);
-
-			// keep-alive
-			Common.writeShort(bout, keepAlive);
-
-			// payload
-			Common.writeUTFString(bout, clientID);
-
-			if(lastWill != null)
-			{
-				Common.writeUTFString(bout, lastWill.topic);
-				Common.writeBytes(bout, lastWill.message);
-			}
-
-			if(username != null)
-			{
-				Common.writeUTFString(bout, username);
-				if(password != null)
-					Common.writeBytes(bout, password);
-			}
-
-			// remaining field
-			Common.writeRemainingField(out, bout.size());
-			bout.writeTo(out);
-			out.flush();
-
-			if(logger.isLoggable(Level.FINE))
-			{
-				logger.fine("Connecting with username: " + username + ", with" + (password == null ? " no" : "")
-						+ " password, " + keepAlive + "s keep alive, and " + (lastWill == null ? "no" : "with a") + " will");
-			}
-		}
-		catch (IOException e)
-		{
-			if(exceptionHandler != null)
-				exceptionHandler.accept(e);
-		}
-	}
-
-	public void disconnect(boolean soft)
-	{
-		globalStop.set(true);
-		hardStop = new AtomicBoolean(!soft);
-		if(!soft)
-		{
-			try
-			{
-				client.close();
-			}
-			catch (IOException e)
-			{
-				if(exceptionHandler != null)
-					exceptionHandler.accept(e);
-			}
-		}
+		if(clientThread != null)
+			clientThread.close(hard);
 	}
 
 	public boolean isConnected()
 	{
-		return client != null && client.isConnected();
+		return socket != null && socket.isConnected();
 	}
 
 	@NotNull
 	static String randomClientID()
 	{
 		return "j" + MathUtil.shortHex(Rand.nextShort()) + MathUtil.longHex(System.currentTimeMillis());
-	}
-
-	public static class Will
-	{
-		@NotNull
-		private final String topic;
-		private final byte @NotNull [] message;
-		private byte qos;
-		private boolean retain;
-
-		/**
-		 * default will with a QOS of 1 and to retain flag off
-		 *
-		 * @param topic the will topic to publish
-		 * @param message the will message to publish
-		 */
-		public Will(@NotNull String topic, @NotNull String message)
-		{
-			this(topic, message, 1, false);
-		}
-
-		/**
-		 * default will with a QOS of 1 and to retain flag off
-		 *
-		 * @param topic the will topic to publish
-		 * @param message the will message to publish
-		 */
-		public Will(@NotNull String topic, byte @NotNull [] message)
-		{
-			this(topic, message, 1, false);
-		}
-
-		public Will(@NotNull String topic, @NotNull String message, @Range(from=0, to=2) int qos, boolean retain)
-		{
-			this.topic = Objects.requireNonNull(topic);
-			this.message = message.getBytes(StandardCharsets.UTF_8);
-			setQos(qos).setRetain(retain);
-		}
-
-		public Will(@NotNull String topic, byte @NotNull [] message, @Range(from=0, to=2)int qos, boolean retain)
-		{
-			this.topic = Objects.requireNonNull(topic);
-			this.message = Arrays.copyOf(message, message.length);
-			setQos(qos).setRetain(retain);
-		}
-
-		@Range(from=0, to=2)
-		public int getQos()
-		{
-			return qos;
-		}
-
-		public Will setNoQos()
-		{
-			return setQos(0);
-		}
-
-		public Will setQos(@Range(from=0, to=2) int qos)
-		{
-			if(qos < 0 || qos > 2)
-				throw new IllegalArgumentException("qos must be between 0 and 2");
-			this.qos = (byte) qos;
-			return this;
-		}
-
-		public boolean isRetain()
-		{
-			return retain;
-		}
-
-		public Will setToRetain()
-		{
-			return setRetain(true);
-		}
-
-		public Will setNotRetain()
-		{
-			return setRetain(false);
-		}
-
-		public Will setRetain(boolean retain)
-		{
-			this.retain = retain;
-			return this;
-		}
-
-		@NotNull
-		public String getTopic()
-		{
-			return topic;
-		}
-
-		public byte @NotNull [] getRawMessage()
-		{
-			return message;
-		}
-
-		@NotNull
-		public String getMessage()
-		{
-			return new String(message, StandardCharsets.UTF_8);
-		}
 	}
 
 	public enum Status

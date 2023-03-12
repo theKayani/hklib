@@ -1,14 +1,29 @@
 package com.hk.io.mqtt.engine;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+
 public class BasicMQTTEngine implements MQTTEngine
 {
+	private final Map<String, Session> sessionMap;
+	/**
+	 * Creates a new session given a client id
+	 */
+	private Function<String, Session> sessionFactory;
 	private Authentication authentication;
 
 	public BasicMQTTEngine()
-	{}
+	{
+		sessionMap = Collections.synchronizedMap(new HashMap<>());
+		setSessionFactory(null);
+	}
 
 	@Nullable
 	public Authentication getAuthentication()
@@ -22,20 +37,49 @@ public class BasicMQTTEngine implements MQTTEngine
 		return this;
 	}
 
-	@Override
-	public boolean tryClientID(String clientID)
+	@NotNull
+	public Function<String, Session> getSessionFactory()
 	{
-		return auth().tryClientID(clientID);
+		return sessionFactory;
+	}
+
+	@Contract("_ -> this")
+	public BasicMQTTEngine setSessionFactory(@Nullable Function<String, Session> sessionFactory)
+	{
+		this.sessionFactory = sessionFactory == null ? SimpleSession::new : sessionFactory;
+		return this;
 	}
 
 	@Override
-	public boolean requireUsername(String clientID)
+	public boolean tryClientID(@NotNull String clientID)
+	{
+		return true;
+	}
+
+	@Override
+	@Nullable
+	public Session getSession(@NotNull String clientID)
+	{
+		return sessionMap.get(clientID);
+	}
+
+	@Override
+	@NotNull
+	public Session createSession(@NotNull String clientID)
+	{
+		Session session = sessionFactory.apply(clientID);
+		sessionMap.put(clientID, Objects.requireNonNull(session));
+		return session;
+	}
+
+	@Override
+	public boolean requireUsername(@NotNull String clientID)
 	{
 		return auth().requireUsername();
 	}
 
 	@Override
-	public boolean requirePassword(String clientID)
+	public boolean requirePassword(@NotNull String clientID)
 	{
 		return auth().requirePassword();
 	}
@@ -43,7 +87,7 @@ public class BasicMQTTEngine implements MQTTEngine
 	@Override
 	public boolean attemptAuthenticate(@NotNull String clientID, @Nullable String username, byte @Nullable [] password)
 	{
-		return auth().attemptAuthenticate(username, password);
+		return auth().attemptAuthenticate(clientID, username, password);
 	}
 
 	private Authentication auth()
@@ -68,12 +112,6 @@ public class BasicMQTTEngine implements MQTTEngine
 		{}
 
 		@Override
-		public boolean tryClientID(String clientID)
-		{
-			return true;
-		}
-
-		@Override
 		public boolean requireUsername()
 		{
 			return false;
@@ -86,7 +124,7 @@ public class BasicMQTTEngine implements MQTTEngine
 		}
 
 		@Override
-		public boolean attemptAuthenticate(@Nullable String username, byte @Nullable [] password)
+		public boolean attemptAuthenticate(@NotNull String clientID, @Nullable String username, byte @Nullable [] password)
 		{
 			return true;
 		}
@@ -94,12 +132,10 @@ public class BasicMQTTEngine implements MQTTEngine
 
 	public interface Authentication
 	{
-		boolean tryClientID(String clientID);
-
 		boolean requireUsername();
 
 		boolean requirePassword();
 
-		boolean attemptAuthenticate(@Nullable String username, byte @Nullable [] password);
+		boolean attemptAuthenticate(String clientID, @Nullable String username, byte @Nullable [] password);
 	}
 }

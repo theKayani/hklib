@@ -19,7 +19,32 @@ public interface MQTTEngine
 	 * @param clientID the id to test for authorization
 	 * @return false if any client connecting with this ID will be rejected
 	 */
-	boolean tryClientID(String clientID);
+	boolean tryClientID(@NotNull String clientID);
+
+	/**
+	 * Get the session attached to the provided client identifier. Can
+	 * be null if no prior session found.
+	 *
+	 * This can either be server-provided or provided from a previous
+	 * connection where the clean-session flag was set to false.
+	 *
+	 * @param clientID The client identifier to check for
+	 * @return a session if is present for the client ID provided
+	 */
+	@Nullable
+	Session getSession(@NotNull String clientID);
+
+	/**
+	 * Creates a new empty session instantiated with the given client
+	 * identifier and store it itself. The created session can be
+	 * retrieved using {@link #getSession(String)} and the client
+	 * identifier.
+	 *
+	 * @param clientID to pair the session with
+	 * @return a new session matching with the client ID
+	 */
+	@NotNull
+	Session createSession(@NotNull String clientID);
 
 	/**
 	 * If connecting clients should have a username, otherwise the
@@ -29,7 +54,7 @@ public interface MQTTEngine
 	 * @return true to automatically disconnect incoming clients with
 	 * 			no usernames
 	 */
-	boolean requireUsername(String clientID);
+	boolean requireUsername(@NotNull String clientID);
 
 	/**
 	 * If connecting clients should have a password with each username,
@@ -40,7 +65,7 @@ public interface MQTTEngine
 	 * @return true to automatically disconnect incoming clients with
 	 * 			no usernames or passwords
 	 */
-	boolean requirePassword(String clientID);
+	boolean requirePassword(@NotNull String clientID);
 
 	/**
 	 * Authenticate a client attempting to connect with the given

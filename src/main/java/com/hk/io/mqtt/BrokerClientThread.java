@@ -1,5 +1,6 @@
 package com.hk.io.mqtt;
 
+import com.hk.io.mqtt.engine.Session;
 import com.hk.math.MathUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,23 +12,30 @@ import java.net.SocketAddress;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 
 class BrokerClientThread extends Thread
 {
 	private final Broker broker;
-	private final Socket client;
-	private final AtomicBoolean globalStop, localStop, sentClose;
+	private final Socket socket;
+	private final AtomicBoolean globalStop, localStop, sentClose, gotConnect;
+	private final AtomicInteger keepAlive;
+	private final AtomicLong connectTime;
 	private final SocketAddress address;
 	private final int internalID;
+	private final Object writeLock = new Object();
 
 	BrokerClientThread(Broker broker, Socket client, int internalID)
 	{
 		this.broker = broker;
-		this.client = client;
+		this.socket = client;
 		globalStop = broker.globalStop;
 		localStop = new AtomicBoolean(false);
 		sentClose = new AtomicBoolean(false);
+		gotConnect = new AtomicBoolean(false);
+		keepAlive = new AtomicInteger(-1);
+		connectTime = new AtomicLong(System.currentTimeMillis());
 		address = client.getRemoteSocketAddress();
 		this.internalID = internalID;
 	}
@@ -37,7 +45,7 @@ class BrokerClientThread extends Thread
 	{
 		try
 		{
-			InputStream in = client.getInputStream();
+			InputStream in = socket.getInputStream();
 			byte b;
 			while(!globalStop.get() && !localStop.get())
 			{
@@ -49,7 +57,7 @@ class BrokerClientThread extends Thread
 				{
 					if(broker.getLogger().isLoggable(Level.WARNING))
 						broker.getLogger().warning("[" + address + "] Unknown packet header: " + MathUtil.byteBin(b & 0xFF));
-					client.close();
+					socket.close();
 					break;
 				}
 
@@ -77,22 +85,32 @@ class BrokerClientThread extends Thread
 					case UNSUBSCRIBE:
 						throw new Error("TODO UNSUBSCRIBE");
 					case PINGREQ:
-						throw new Error("TODO PINGREQ");
+						synchronized (writeLock)
+						{
+
+						}
+						break;
 					case DISCONNECT:
-						throw new Error("TODO DISCONNECT");
+						localStop.set(true);
+						break;
 					case CONNACK:
 					case SUBACK:
 					case UNSUBACK:
 					case PINGRESP:
 						throw new IOException("unexpected packet type: " + type);
 				}
+				connectTime.set(System.currentTimeMillis());
 			}
 		}
 		catch (IOException e)
 		{
-			// TODO: publish last will testament
-			if(broker.exceptionHandler != null)
-				broker.exceptionHandler.accept(e);
+			if(!globalStop.get() && !localStop.get())
+			{
+				// TODO: publish last will testament
+				if (broker.exceptionHandler != null)
+					broker.exceptionHandler.accept(e);
+			}
+			// otherwise, must be a planned disconnect
 		}
 		finally
 		{
@@ -103,6 +121,12 @@ class BrokerClientThread extends Thread
 
 	private void handleConnectPacket(InputStream in, AtomicInteger remLen) throws IOException
 	{
+		if(gotConnect.getAndSet(true))
+		{
+			broker.getLogger().fine("[" + address + "] duplicate connect, disconnecting");
+			localStop.set(true);
+			return;
+		}
 		// variable header
 		byte[] bs = new byte[7];
 		if(in.read(bs) != 7 || remLen.addAndGet(-7) < 0)
@@ -209,32 +233,65 @@ class BrokerClientThread extends Thread
 			sendConnackPacket(false, Common.ConnectReturn.UNAUTHORIZED);
 			localStop.set(true);
 		}
+
+		broker.getLogger().fine("[" + address + "] successfully authorized!");
+		Session session = broker.getEngine().getSession(clientID);
+		if(cleanSession || (session != null && session.hasExpired()))
+			session = null;
+		sendConnackPacket(session != null, Common.ConnectReturn.ACCEPTED);
+		broker.getLogger().info("[" + address + "] Client #" + internalID + " connected with id: " + clientID + (username != null ? " and username: " + username : ""));
+
+		this.keepAlive.set(keepAlive);
+		if(session == null)
+		{
+			Session newSess = broker.getEngine().createSession(clientID);
+
+
+		}
 	}
 
 	void sendConnackPacket(boolean sessionPresent, @NotNull Common.ConnectReturn result) throws IOException
 	{
-		broker.getLogger().fine("[" + address + "] Sending packet CONNACK: " + result + (result == Common.ConnectReturn.ACCEPTED ? ", SP: " + sessionPresent : ""));
-		OutputStream out = client.getOutputStream();
+		broker.getLogger().fine("[" + address + "] Sending packet: CONNACK " + result + (result == Common.ConnectReturn.ACCEPTED ? ", SP: " + sessionPresent : ""));
+		OutputStream out = socket.getOutputStream();
 
-		out.write(0x20);
-		out.write(0x2);
+		synchronized (writeLock)
+		{
+			out.write(0x20);
+			out.write(0x2);
 
-		if(result == Common.ConnectReturn.ACCEPTED)
-		{
-			out.write(sessionPresent ? 0x1 : 0x0);
-			out.write(0x0);
+			if(result == Common.ConnectReturn.ACCEPTED)
+			{
+				out.write(sessionPresent ? 0x1 : 0x0);
+				out.write(0x0);
+			}
+			else
+			{
+				out.write(0x0);
+				out.write(result.ordinal());
+			}
+			out.flush();
 		}
-		else
+	}
+
+	public void checkGotConnect()
+	{
+		long elapsed = System.currentTimeMillis() - connectTime.get();
+		if(gotConnect.get() && elapsed > keepAlive.get() * 1500L)
 		{
-			out.write(0x0);
-			out.write(result.ordinal());
+			broker.getLogger().fine("[" + address + "] exceeded keep-alive by %150, disconnecting");
+			close(false);
 		}
-		out.flush();
+		else if(!gotConnect.get() && elapsed > broker.options.connectWaitTimeout)
+		{
+			broker.getLogger().fine("[" + address + "] did not receive CONNECT in time, disconnecting");
+			close(false);
+		}
 	}
 
 	void close(boolean now)
 	{
-		if(client.isClosed() || sentClose.get())
+		if(socket.isClosed() || sentClose.get())
 			return;
 
 		localStop.set(true);
@@ -242,8 +299,8 @@ class BrokerClientThread extends Thread
 		Runnable closer = () -> {
 			try
 			{
-				if (!client.isClosed())
-					client.close();
+				if (!socket.isClosed())
+					socket.close();
 			}
 			catch (IOException e)
 			{
@@ -252,8 +309,8 @@ class BrokerClientThread extends Thread
 			}
 			finally
 			{
-				if(broker.currentClients.remove(this) && broker.getLogger().isLoggable(Level.FINE))
-					broker.getLogger().fine("[" + address + "] Client disconnected: #" + internalID);
+				if(broker.currentClients.remove(this))
+					broker.getLogger().info("[" + address + "] Client disconnected: #" + internalID);
 			}
 		};
 

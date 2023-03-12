@@ -12,12 +12,10 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -170,6 +168,7 @@ public class Broker implements Runnable
 
 			globalStop = new AtomicBoolean(false);
 			executorService = Executors.newScheduledThreadPool(options.threadPoolSize);
+			executorService.scheduleWithFixedDelay(() -> forAll(BrokerClientThread::checkGotConnect), 0, 1, TimeUnit.SECONDS);
 			logger.fine("Creating thread pool: " + options.threadPoolSize);
 			logger.warning("Attempting to bind to host: " + host);
 			socket.bind(host, options.socketBacklog);
@@ -230,6 +229,17 @@ public class Broker implements Runnable
 			{
 				// TODO: Cleanly close connected clients?
 			}
+			logger.fine("Closing executor service, rejecting new tasks");
+			executorService.shutdown();
+			try
+			{
+				if(!executorService.awaitTermination(10, TimeUnit.SECONDS))
+					logger.warning("Tasks remaining in executor service, closing anyway");
+			}
+			catch (InterruptedException e)
+			{
+				logger.log(Level.WARNING, "Exception during closing executor service", e);
+			}
 
 			socket.close();
 			logger.fine("Closed socket");
@@ -264,6 +274,14 @@ public class Broker implements Runnable
 		if(handler != null)
 			handler.accept(thread);
 		thread.start();
+	}
+
+	private void forAll(Consumer<BrokerClientThread> consumer)
+	{
+		synchronized (currentClients)
+		{
+			currentClients.forEach(consumer);
+		}
 	}
 
 	public void stop(boolean soft)
