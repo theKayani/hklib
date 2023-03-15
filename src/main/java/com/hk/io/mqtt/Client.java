@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -30,7 +31,7 @@ public class Client
 	private final InetSocketAddress host;
 	public final ClientOptions options;
 	private final Logger logger;
-	final ScheduledExecutorService executorService;
+	ScheduledExecutorService executorService;
 	final AtomicReference<Status> status;
 	Consumer<IOException> exceptionHandler;
 	@NotNull
@@ -56,7 +57,6 @@ public class Client
 	{
 		this.host = host;
 		this.options = new ClientOptions();
-		executorService = Executors.newSingleThreadScheduledExecutor();
 
 		clientID = randomClientID();
 		cleanSession = true;
@@ -271,18 +271,59 @@ public class Client
 			logger.fine("Socket: " + socket);
 
 			status.set(Status.CONNECTED);
+			executorService = Executors.newSingleThreadScheduledExecutor();
 			clientThread = new ClientThread(this, socket, keepAlive);
 			clientThread.setDaemon(true);
 			clientThread.start();
 			logger.fine("Starting thread for socket");
 
 			executorService.submit(clientThread::sendConnectPacket);
+			executorService.scheduleWithFixedDelay(clientThread::checkGotConnect, 0, 1, TimeUnit.SECONDS);
 		}
 		catch (IOException e)
 		{
 			if(exceptionHandler != null)
 				exceptionHandler.accept(e);
 		}
+	}
+
+	/**
+	 * Time how long it takes to send a PINGREQ packet and receive a
+	 * PINGRESP packet back.
+	 *
+	 * The result is the total transaction time in milliseconds.
+	 *
+	 * THIS METHOD BLOCKS UNTIL A RESPONSE IS RECEIVED
+	 *
+	 * @return the time in milliseconds or -1 if PINGRESP wasn't received
+	 */
+	public double ping()
+	{
+		if(status.get() != Status.AUTHORIZED)
+			return -1D;
+
+		long start = System.nanoTime();
+		synchronized (clientThread.lastPacket)
+		{
+			clientThread.sendPingRequestPacket();
+
+			long waitEnd = System.currentTimeMillis() + 10000;
+			do {
+				try
+				{
+					clientThread.lastPacket.wait(Math.max(100, waitEnd - System.currentTimeMillis()));
+				}
+				catch (InterruptedException e)
+				{
+					logger.log(Level.WARNING, "interrupted waiting for ping response", e);
+				}
+			} while (waitEnd > System.currentTimeMillis());
+		}
+
+		if(clientThread.lastPacket.get() == PacketType.PINGRESP)
+			return (System.nanoTime() - start) / 1E6D;
+		else
+			return -1D;
 	}
 
 	public void disconnect(boolean hard)
@@ -294,6 +335,27 @@ public class Client
 	public boolean isConnected()
 	{
 		return socket != null && socket.isConnected();
+	}
+
+	public boolean isAuthorized()
+	{
+		return clientThread != null && clientThread.gotConnAck.get() && status.get() == Status.AUTHORIZED;
+	}
+
+	public boolean hasPriorSession()
+	{
+		if(clientThread.gotConnAck.get())
+			return clientThread.hasPriorSession;
+		else
+			throw new IllegalStateException("Client has not received ack (CONNACK)");
+	}
+
+	public Common.ConnectReturn getConnectReturn()
+	{
+		if(clientThread.gotConnAck.get())
+			return clientThread.connectReturn;
+		else
+			throw new IllegalStateException("Client has not received ack (CONNACK)");
 	}
 
 	@NotNull

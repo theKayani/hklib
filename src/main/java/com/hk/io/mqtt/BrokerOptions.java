@@ -14,6 +14,8 @@ public class BrokerOptions
 	// client that doesn't send a CONNECT packet
 	int connectWaitTimeout;
 	// executor service pool size
+	// more than 8 is overdoing it. 1 might be enough but not if many
+	// clients will be connecting and PUB/SUB-ing
 	int threadPoolSize;
 	// maximum amount of connections to hold at once
 	int maxClients;
@@ -23,7 +25,7 @@ public class BrokerOptions
 		socketBacklog = 5;
 		useSSL = false;
 		connectWaitTimeout = 10000;
-		threadPoolSize = 4;
+		threadPoolSize = 2;
 		maxClients = 128;
 	}
 

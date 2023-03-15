@@ -128,6 +128,11 @@ public class Broker implements Runnable
 		return logger;
 	}
 
+	public ScheduledExecutorService getScheduler()
+	{
+		return executorService;
+	}
+
 	@NotNull
 	public Status getStatus()
 	{
@@ -292,6 +297,7 @@ public class Broker implements Runnable
 		if(logger.isLoggable(Level.FINE))
 			logger.fine("Signaling broker to stop");
 		globalStop.set(true);
+		forAll(thread -> thread.close(!soft));
 		hardStop = new AtomicBoolean(!soft);
 	}
 

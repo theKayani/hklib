@@ -7,17 +7,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Consumer;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
 class ClientThread extends Thread
 {
 	private final Client client;
 	private final Socket socket;
-	private final AtomicBoolean globalStop, sentClose, gotConnAck;
+	private final AtomicBoolean globalStop, sentClose;
+	final AtomicReference<PacketType> lastPacket = new AtomicReference<>();
+	final AtomicBoolean gotConnAck;
+	boolean hasPriorSession;
+	Common.ConnectReturn connectReturn;
 	private final AtomicLong connectTime;
 	private final int keepAlive;
 
@@ -29,7 +34,7 @@ class ClientThread extends Thread
 		globalStop = client.globalStop;
 		sentClose = new AtomicBoolean(false);
 		gotConnAck = new AtomicBoolean(false);
-		connectTime = new AtomicLong();
+		connectTime = new AtomicLong(-1L);
 	}
 
 	@Override
@@ -43,14 +48,19 @@ class ClientThread extends Thread
 			{
 				// fixed header
 				b = Common.read(in);
-				PacketType type = PacketType.getFromHeader(b);
-
-				System.out.println("RECEIVED PACKET: " + type);
-				if(type == null)
+				PacketType type;
+				synchronized (lastPacket)
 				{
-					client.getLogger().warning("Unknown packet header: " + MathUtil.byteBin(b & 0xFF));
-					socket.close();
-					break;
+					type = PacketType.getFromHeader(b);
+					if(type == null)
+					{
+						client.getLogger().warning("Unknown packet header: " + MathUtil.byteBin(b & 0xFF));
+						socket.close();
+						break;
+					}
+
+					lastPacket.set(type);
+					lastPacket.notifyAll();
 				}
 
 				int remLen = Common.readRemainingField(in);
@@ -76,7 +86,8 @@ class ClientThread extends Thread
 					case UNSUBACK:
 						throw new Error("TODO UNSUBACK");
 					case PINGRESP:
-						throw new Error("TODO PINGRESP");
+						// handled by lastPacket
+						break;
 					case DISCONNECT:
 						globalStop.set(true);
 						break;
@@ -106,15 +117,21 @@ class ClientThread extends Thread
 	private void handleConnackPacket(InputStream in, AtomicInteger remLen) throws IOException
 	{
 		// variable header
-		byte b;
-		while(remLen.get() > 0)
+		hasPriorSession = (Common.read(in, remLen) & 1) != 0;
+		connectReturn = Common.ConnectReturn.values()[Common.read(in, remLen)];
+
+		if(connectReturn == Common.ConnectReturn.ACCEPTED)
+			client.status.set(Client.Status.AUTHORIZED);
+
+		if(remLen.get() != 0)
 		{
-			b = Common.read(in, remLen);
-
-			System.out.println(MathUtil.byteBin(b & 0xFF));
+			client.getLogger().fine("remaining length overflow, disconnecting");
+			globalStop.set(true);
 		}
+		else
+			gotConnAck.set(true);
 
-		// payload
+		client.getLogger().info("Connect Acknowledged with connect return: " + connectReturn);
 	}
 
 	void sendConnectPacket()
@@ -184,6 +201,7 @@ class ClientThread extends Thread
 			Common.writeRemainingField(out, bout.size());
 			bout.writeTo(out);
 			out.flush();
+			connectTime.set(System.currentTimeMillis());
 
 			if(client.getLogger().isLoggable(Level.FINE))
 			{
@@ -198,11 +216,40 @@ class ClientThread extends Thread
 		}
 	}
 
-	void sendPingRequestPacket() throws IOException
+	void sendPingRequestPacket()
 	{
-		OutputStream out = socket.getOutputStream();
-		out.write(0b11000000);
-		out.write(0x0);
+		client.executorService.submit(() -> {
+			try
+			{
+				client.getLogger().fine("Sending packet: PINGREQ");
+
+				OutputStream out = socket.getOutputStream();
+				out.write(0xC0);
+				out.write(0x0);
+				out.flush();
+				connectTime.set(System.currentTimeMillis());
+			}
+			catch (IOException ex)
+			{
+				if(client.exceptionHandler != null)
+					client.exceptionHandler.accept(ex);
+			}
+		});
+	}
+
+	void checkGotConnect()
+	{
+		long elapsed = System.currentTimeMillis() - connectTime.get();
+		if(gotConnAck.get() && elapsed > keepAlive * 1000L)
+		{
+			client.getLogger().fine("exceeding keep-alive, sending PINGREQ");
+			sendPingRequestPacket();
+		}
+		else if(connectTime.get() != -1 && !gotConnAck.get() && elapsed > client.options.connectWaitTimeout)
+		{
+			client.getLogger().fine("did not receive CONNACK in time, disconnecting");
+			close(false);
+		}
 	}
 
 	void close(boolean now)
@@ -247,8 +294,21 @@ class ClientThread extends Thread
 				}
 			});
 			client.executorService.submit(closer);
+			client.executorService.shutdown();
 		}
 		else
+		{
+			client.executorService.shutdown();
+			try
+			{
+				if(!client.executorService.awaitTermination(10, TimeUnit.SECONDS))
+					client.getLogger().warning("executor service did not finish in 10 seconds");
+			}
+			catch (InterruptedException e)
+			{
+				client.getLogger().log(Level.WARNING, "interrupted while waiting for executor service to close");
+			}
 			closer.run();
+		}
 	}
 }

@@ -19,7 +19,8 @@ class BrokerClientThread extends Thread
 {
 	private final Broker broker;
 	private final Socket socket;
-	private final AtomicBoolean globalStop, localStop, sentClose, gotConnect;
+//	private final AtomicBoolean globalStop, localStop, sentClose, gotConnect;
+	private final AtomicBoolean localStop, sentClose, gotConnect;
 	private final AtomicInteger keepAlive;
 	private final AtomicLong connectTime;
 	private final SocketAddress address;
@@ -30,7 +31,6 @@ class BrokerClientThread extends Thread
 	{
 		this.broker = broker;
 		this.socket = client;
-		globalStop = broker.globalStop;
 		localStop = new AtomicBoolean(false);
 		sentClose = new AtomicBoolean(false);
 		gotConnect = new AtomicBoolean(false);
@@ -47,7 +47,7 @@ class BrokerClientThread extends Thread
 		{
 			InputStream in = socket.getInputStream();
 			byte b;
-			while(!globalStop.get() && !localStop.get())
+			while(!localStop.get())
 			{
 				// fixed header
 				b = Common.read(in);
@@ -85,9 +85,14 @@ class BrokerClientThread extends Thread
 					case UNSUBSCRIBE:
 						throw new Error("TODO UNSUBSCRIBE");
 					case PINGREQ:
+						broker.getLogger().fine("[" + address + "] Sending packet: PINGRESP");
+						OutputStream out = socket.getOutputStream();
+
 						synchronized (writeLock)
 						{
-
+							out.write(0xD0);
+							out.write(0x0);
+							out.flush();
 						}
 						break;
 					case DISCONNECT:
@@ -104,7 +109,7 @@ class BrokerClientThread extends Thread
 		}
 		catch (IOException e)
 		{
-			if(!globalStop.get() && !localStop.get())
+			if(!localStop.get())
 			{
 				// TODO: publish last will testament
 				if (broker.exceptionHandler != null)
@@ -291,10 +296,10 @@ class BrokerClientThread extends Thread
 
 	void close(boolean now)
 	{
+		localStop.set(true);
 		if(socket.isClosed() || sentClose.get())
 			return;
 
-		localStop.set(true);
 		sentClose.set(true);
 		Runnable closer = () -> {
 			try
