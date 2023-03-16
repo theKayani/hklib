@@ -1,9 +1,11 @@
 package com.hk.io.mqtt;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -135,6 +137,98 @@ class Common
 		{
 			logger.log(Level.WARNING, message, e);
 //			throw new UncheckedIOException(e);
+		}
+	}
+
+	static final class PublishPacket implements Runnable
+	{
+		private final Message message;
+		private final AtomicInteger pid;
+		private final Logger logger;
+		private final OutputStream out;
+		private Consumer<IOException> exceptionHandler;
+		private Runnable onComplete;
+		private boolean duplicate = false;
+
+		PublishPacket(Message message, AtomicInteger pid, Logger logger, OutputStream out)
+		{
+			this.message = Objects.requireNonNull(message);
+			this.pid = pid;
+			this.logger = Objects.requireNonNull(logger);
+			this.out = Objects.requireNonNull(out);
+
+			if(pid != null && message.getQos() == 0)
+				throw new IllegalArgumentException("pid should be null with a 0 QoS message");
+			if(pid == null && message.getQos() != 0)
+				throw new IllegalArgumentException("pid should NOT be null with a non-zero QoS message");
+		}
+
+		public PublishPacket setExceptionHandler(Consumer<IOException> exceptionHandler)
+		{
+			this.exceptionHandler = exceptionHandler;
+			return this;
+		}
+
+		public PublishPacket setOnComplete(Runnable onComplete)
+		{
+			this.onComplete = Objects.requireNonNull(onComplete);
+			return this;
+		}
+
+		public PublishPacket setDuplicate()
+		{
+			this.duplicate = true;
+			return this;
+		}
+
+		@Override
+		public void run()
+		{
+			try
+			{
+
+				int flags = 0;
+				if(message.isRetain())
+					flags |= 0x1;
+				flags |= message.getQos() << 1;
+				if(duplicate)
+					flags |= 0x8;
+				out.write(0x30 | (flags & 0xF));
+				byte[] topicBytes = message.getTopic().getBytes(StandardCharsets.UTF_8);
+				int payloadLength = message.getSize();
+				ByteArrayOutputStream bout = null;
+				if(payloadLength < 0)
+				{
+					bout = new ByteArrayOutputStream();
+					message.writeTo(bout);
+					payloadLength = bout.size();
+				}
+				int total = payloadLength + topicBytes.length;
+				if(pid != null)
+					total += 2;
+				if(total > 268435455)
+					throw new IOException("packet size overflow: " + total + " > 268435455 (max packet size)");
+
+				logger.fine("Sending packet: PUBLISH (" + total + " byte" + (total == 1 ? "" : "s") + ")");
+				Common.writeRemainingField(out, total);
+				Common.writeBytes(out, topicBytes);
+				if(pid != null)
+					Common.writeShort(out, pid.get());
+
+				if(bout != null)
+					bout.writeTo(out);
+				else
+					message.writeTo(out);
+				out.flush();
+
+				if(onComplete != null)
+					onComplete.run();
+			}
+			catch (IOException ex)
+			{
+				if(exceptionHandler != null)
+					exceptionHandler.accept(ex);
+			}
 		}
 	}
 }

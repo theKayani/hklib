@@ -1,7 +1,6 @@
 package com.hk.io.mqtt;
 
 import com.hk.args.Arguments;
-import com.hk.io.mqtt.engine.Message;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -21,7 +20,8 @@ public class TestClient
 
         String cmd;
         Scanner in = new Scanner(System.in);
-        while(true)
+        boolean connected = false;
+        while(!connected || client.isConnected())
         {
             System.out.print("\ncmd: ");
             cmd = in.nextLine();
@@ -39,6 +39,7 @@ public class TestClient
 
                 System.out.println("Connecting!");
                 client.connect();
+                connected = true;
             }
             else if(args.getArg(0).equalsIgnoreCase("id"))
             {
@@ -61,7 +62,7 @@ public class TestClient
                 String message = args.option("message");
                 Objects.requireNonNull(topic);
                 Objects.requireNonNull(message);
-                Message will = new Message(topic, message);
+                Message will = new Message(topic, message, 0, false);
                 String qos = args.option("qos");
                 if (qos != null)
                     will.setQos(Integer.parseInt(qos));
@@ -75,6 +76,21 @@ public class TestClient
             {
                 client.setKeepAlive(Integer.parseInt(args.getArg(1)));
                 System.out.println("Set Keep Alive: " + client.getKeepAlive());
+            }
+            else if(args.getArg(0).equalsIgnoreCase("publish"))
+            {
+                int qos = 0;
+                String qosOption = args.option("qos");
+                if(qosOption != null)
+                    qos = Integer.parseInt(qosOption);
+                boolean retain = args.flag("retain");
+
+                boolean published = client.publish(args.getArg(1), args.getArg(2), qos, retain);
+
+                if(published)
+                    System.out.println("Published!");
+                else
+                    System.out.println("Not published!");
             }
             else if(args.getArg(0).equalsIgnoreCase("ping"))
             {

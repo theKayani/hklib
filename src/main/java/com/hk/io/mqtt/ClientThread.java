@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -187,7 +190,12 @@ class ClientThread extends Thread
 			if(client.lastWill != null)
 			{
 				Common.writeUTFString(bout, client.lastWill.getTopic());
-				Common.writeBytes(bout, client.lastWill.getRawMessage());
+				int size = client.lastWill.getSize();
+				if(size > 65535)
+					throw new UnsupportedOperationException("last will message size cannot be greater than 65535");
+
+				Common.writeShort(bout, size);
+				client.lastWill.writeTo(bout);
 			}
 
 			if(client.username != null)
@@ -201,7 +209,7 @@ class ClientThread extends Thread
 			Common.writeRemainingField(out, bout.size());
 			bout.writeTo(out);
 			out.flush();
-			connectTime.set(System.currentTimeMillis());
+			connectTime.set(System.nanoTime() / 1000000);
 
 			if(client.getLogger().isLoggable(Level.FINE))
 			{
@@ -227,7 +235,7 @@ class ClientThread extends Thread
 				out.write(0xC0);
 				out.write(0x0);
 				out.flush();
-				connectTime.set(System.currentTimeMillis());
+				connectTime.set(System.nanoTime() / 1000000);
 			}
 			catch (IOException ex)
 			{
@@ -237,9 +245,29 @@ class ClientThread extends Thread
 		});
 	}
 
+	void publish(Message message, AtomicInteger pid)
+	{
+		try
+		{
+			Common.PublishPacket packet = new Common.PublishPacket(message, pid, client.getLogger(), socket.getOutputStream());
+			packet.setExceptionHandler(client.exceptionHandler);
+			packet.setOnComplete(() -> {
+				connectTime.set(System.nanoTime() / 1000000);
+				if(pid != null)
+					client.incompletePackets.put(pid, message);
+			});
+			client.executorService.submit(packet);
+		}
+		catch (IOException e)
+		{
+			if(client.exceptionHandler != null)
+				client.exceptionHandler.accept(e);
+		}
+	}
+
 	void checkGotConnect()
 	{
-		long elapsed = System.currentTimeMillis() - connectTime.get();
+		long elapsed = System.nanoTime() / 1000000 - connectTime.get();
 		if(gotConnAck.get() && elapsed > keepAlive * 1000L)
 		{
 			client.getLogger().fine("exceeding keep-alive, sending PINGREQ");

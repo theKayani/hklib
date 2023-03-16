@@ -1,18 +1,20 @@
 package com.hk.io.mqtt;
 
+import com.hk.file.FileUtil;
 import com.hk.io.mqtt.engine.Session;
 import com.hk.math.MathUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 
 class BrokerClientThread extends Thread
@@ -23,9 +25,12 @@ class BrokerClientThread extends Thread
 	private final AtomicBoolean localStop, sentClose, gotConnect;
 	private final AtomicInteger keepAlive;
 	private final AtomicLong connectTime;
+	private final AtomicReference<Session> currentSession;
 	private final SocketAddress address;
 	private final int internalID;
 	private final Object writeLock = new Object();
+	// pretty much thread local anyway
+	private Message will;
 
 	BrokerClientThread(Broker broker, Socket client, int internalID)
 	{
@@ -35,7 +40,8 @@ class BrokerClientThread extends Thread
 		sentClose = new AtomicBoolean(false);
 		gotConnect = new AtomicBoolean(false);
 		keepAlive = new AtomicInteger(-1);
-		connectTime = new AtomicLong(System.currentTimeMillis());
+		connectTime = new AtomicLong(System.nanoTime() / 1000000L);
+		currentSession = new AtomicReference<>(null);
 		address = client.getRemoteSocketAddress();
 		this.internalID = internalID;
 	}
@@ -64,14 +70,22 @@ class BrokerClientThread extends Thread
 				int remLen = Common.readRemainingField(in);
 				if(broker.getLogger().isLoggable(Level.FINER))
 					broker.getLogger().finer("[" + address + "] Received packet: " + type + ", remaining length: " + remLen);
+
+				if(type != PacketType.CONNECT && currentSession == null)
+				{
+					broker.getLogger().fine("[" + address + "] unexpected publish before auth, disconnecting");
+					localStop.set(true);
+					break;
+				}
+
 				switch (type)
 				{
 					case CONNECT:
 						handleConnectPacket(in, new AtomicInteger(remLen));
 						break;
 					case PUBLISH:
-//						handlePublishPacket(in, remLen, b);
-						throw new Error("TODO PUBLISH");
+						handlePublishPacket(in, new AtomicInteger(remLen), b & 0xF);
+						break;
 					case PUBACK:
 						throw new Error("TODO PUBACK");
 					case PUBREC:
@@ -104,7 +118,7 @@ class BrokerClientThread extends Thread
 					case PINGRESP:
 						throw new IOException("unexpected packet type: " + type);
 				}
-				connectTime.set(System.currentTimeMillis());
+				connectTime.set(System.nanoTime() / 1000000L);
 			}
 		}
 		catch (IOException e)
@@ -172,11 +186,6 @@ class BrokerClientThread extends Thread
 		}
 		int keepAlive = Common.readShort(in, remLen);
 
-		System.out.println("hasWill = " + hasWill);
-		System.out.println("willQos = " + willQos);
-		System.out.println("willRetain = " + willRetain);
-		System.out.println("keepAlive = " + keepAlive);
-
 		// payload
 		String clientID = Common.readUTFString(in, remLen);
 		if(!Broker.isValidClientID(clientID) || !broker.engine.tryClientID(clientID))
@@ -186,7 +195,6 @@ class BrokerClientThread extends Thread
 			localStop.set(true);
 			return;
 		}
-		System.out.println("clientID = " + clientID);
 
 		if(!hasUsername && broker.engine.requireUsername(clientID) || !hasPassword && broker.engine.requirePassword(clientID))
 		{
@@ -196,15 +204,12 @@ class BrokerClientThread extends Thread
 			return;
 		}
 
-		String willTopic;
-		byte[] willMessage;
+		String willTopic = null;
+		byte[] willMessage = null;
 		if(hasWill)
 		{
 			willTopic = Common.readUTFString(in, remLen);
 			willMessage = Common.readBytes(in, remLen);
-
-			System.out.println("willTopic = " + willTopic);
-			System.out.println("willMessage = " + Arrays.toString(willMessage));
 		}
 
 		String username = null;
@@ -212,18 +217,15 @@ class BrokerClientThread extends Thread
 		if(hasUsername)
 		{
 			username = Common.readUTFString(in, remLen);
-			System.out.println("username = " + username);
 			if(hasPassword)
-			{
 				password = Common.readBytes(in, remLen);
-				System.out.println("password = " + Arrays.toString(password));
-			}
 		}
 
 		if(remLen.get() != 0)
 		{
 			broker.getLogger().fine("[" + address + "] remaining length overflow, disconnecting");
 			localStop.set(true);
+			return;
 		}
 
 		if(broker.getLogger().isLoggable(Level.FINE))
@@ -237,9 +239,17 @@ class BrokerClientThread extends Thread
 			broker.getLogger().fine("[" + address + "] failed authentication, disconnecting with ack");
 			sendConnackPacket(false, Common.ConnectReturn.UNAUTHORIZED);
 			localStop.set(true);
+			return;
 		}
 
 		broker.getLogger().fine("[" + address + "] successfully authorized!");
+		broker.forAll(client -> {
+			if(client.currentSession.get() != null && clientID.equals(client.currentSession.get().getClientID()))
+			{
+				broker.getLogger().info("[" + address + "] Client #" + client.internalID + " has similar id, disconnecting");
+				client.close(false);
+			}
+		});
 		Session session = broker.getEngine().getSession(clientID);
 		if(cleanSession || (session != null && session.hasExpired()))
 			session = null;
@@ -248,10 +258,55 @@ class BrokerClientThread extends Thread
 
 		this.keepAlive.set(keepAlive);
 		if(session == null)
+			session = broker.getEngine().createSession(clientID);
+		if(hasWill)
+			this.will = new Message(willTopic, willMessage, willQos, willRetain);
+
+		currentSession.set(session);
+	}
+
+	private void handlePublishPacket(InputStream in, AtomicInteger remLen, int flags) throws IOException
+	{
+		boolean dup = (flags & 8) != 0;
+		int qos = flags & 6;
+		boolean retain = (flags & 1) != 0;
+
+		String topic = Common.readUTFString(in, remLen);
+		AtomicInteger pid = null;
+		if(qos > 0)
+			pid = new AtomicInteger(Common.readShort(in, remLen));
+
+		int size = remLen.get();
+		Message msg;
+		if(broker.options.maxVolatileMessageSize >= 0 && size > broker.options.maxVolatileMessageSize)
 		{
-			Session newSess = broker.getEngine().createSession(clientID);
+			// write to file, link to message
+			File file = File.createTempFile("mqtt_message_", Long.toHexString(System.nanoTime()) + ".dat");
+			if(!file.exists())
+				throw new FileNotFoundException("cannot create temp file: " + file);
 
+			OutputStream out = Files.newOutputStream(file.toPath());
+			byte[] arr = new byte[1024];
+			while(size > 0)
+			{
+				file.deleteOnExit();
+				int len = Math.min(1024, size);
+				if(in.read(arr, 0, len) != len)
+					throw new IOException(Common.EOF);
+				size -= len;
+				out.write(arr, 0, len);
+			}
+			out.close();
+			msg = new Message(topic, file, qos, retain);
+		}
+		else
+		{
+			// read to memory, link to message
+			byte[] arr = new byte[size];
+			if(in.read(arr) != size)
+				throw new IOException(Common.EOF);
 
+			msg = new Message(topic, arr, qos, retain);
 		}
 	}
 
@@ -281,7 +336,7 @@ class BrokerClientThread extends Thread
 
 	public void checkGotConnect()
 	{
-		long elapsed = System.currentTimeMillis() - connectTime.get();
+		long elapsed = System.nanoTime() / 1000000L - connectTime.get();
 		if(gotConnect.get() && elapsed > keepAlive.get() * 1500L)
 		{
 			broker.getLogger().fine("[" + address + "] exceeded keep-alive by %150, disconnecting");

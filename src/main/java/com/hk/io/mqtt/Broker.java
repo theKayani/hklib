@@ -281,7 +281,7 @@ public class Broker implements Runnable
 		thread.start();
 	}
 
-	private void forAll(Consumer<BrokerClientThread> consumer)
+	void forAll(Consumer<BrokerClientThread> consumer)
 	{
 		synchronized (currentClients)
 		{

@@ -1,6 +1,5 @@
 package com.hk.io.mqtt;
 
-import com.hk.io.mqtt.engine.Message;
 import com.hk.math.MathUtil;
 import com.hk.math.Rand;
 import org.jetbrains.annotations.Contract;
@@ -13,12 +12,12 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.logging.ConsoleHandler;
@@ -33,6 +32,8 @@ public class Client
 	private final Logger logger;
 	ScheduledExecutorService executorService;
 	final AtomicReference<Status> status;
+	final Map<AtomicInteger, Message> incompletePackets;
+	int packetID;
 	Consumer<IOException> exceptionHandler;
 	@NotNull
 	String clientID;
@@ -63,10 +64,12 @@ public class Client
 		keepAlive = 60;
 		status = new AtomicReference<>(Status.NOT_CONNECTED);
 		globalStop = new AtomicBoolean(false);
+		packetID = -1;
 		logger = Logger.getLogger("MQTT-Client");
 		logger.setLevel(Level.INFO);
 		logger.setUseParentHandlers(false);
 		logger.addHandler(new ConsoleHandler());
+		incompletePackets = Collections.synchronizedMap(new HashMap<>());
 	}
 
 	public String getID()
@@ -157,6 +160,13 @@ public class Client
 	@Contract("_ -> this")
 	public Client setLastWill(@Nullable Message lastWill)
 	{
+		if (lastWill != null)
+		{
+			if (lastWill.getSize() == -1)
+				throw new IllegalStateException("last will message cannot be unknown");
+			else if (lastWill.getSize() > 65535)
+				throw new IllegalStateException("last will message is too large");
+		}
 		if(status.get() != Status.NOT_CONNECTED)
 			throw new IllegalStateException("cannot change last will after attempting to connect");
 
@@ -260,7 +270,7 @@ public class Client
 				throw new IllegalStateException("client already tried on socket");
 
 			logger.info("Creating" + (options.useSSL ? " SSL" : "") + " socket");
-			if(options.useSSL)
+			if(options.isUsingSSL())
 				socket = SSLSocketFactory.getDefault().createSocket();
 			else
 				socket = new Socket();
@@ -288,12 +298,12 @@ public class Client
 	}
 
 	/**
-	 * Time how long it takes to send a PINGREQ packet and receive a
-	 * PINGRESP packet back.
+	 * <p>Time how long it takes to send a PINGREQ packet and receive a
+	 * PINGRESP packet back.</p>
 	 *
-	 * The result is the total transaction time in milliseconds.
+	 * <p>The result is the total transaction time in milliseconds.</p>
 	 *
-	 * THIS METHOD BLOCKS UNTIL A RESPONSE IS RECEIVED
+	 * <p>THIS METHOD BLOCKS UNTIL A RESPONSE IS RECEIVED</p>
 	 *
 	 * @return the time in milliseconds or -1 if PINGRESP wasn't received
 	 */
@@ -307,23 +317,90 @@ public class Client
 		{
 			clientThread.sendPingRequestPacket();
 
-			long waitEnd = System.currentTimeMillis() + 10000;
+			long waitEnd = System.nanoTime() / 1000000L + 10000;
 			do {
 				try
 				{
-					clientThread.lastPacket.wait(Math.max(100, waitEnd - System.currentTimeMillis()));
+					clientThread.lastPacket.wait(Math.max(100, waitEnd - System.nanoTime() / 1000000L));
+					break;
 				}
 				catch (InterruptedException e)
 				{
 					logger.log(Level.WARNING, "interrupted waiting for ping response", e);
 				}
-			} while (waitEnd > System.currentTimeMillis());
+			} while (waitEnd > System.nanoTime() / 1000000L);
 		}
 
 		if(clientThread.lastPacket.get() == PacketType.PINGRESP)
 			return (System.nanoTime() - start) / 1E6D;
 		else
 			return -1D;
+	}
+
+	public boolean publish(@NotNull String topic, @NotNull String message)
+	{
+		return publish(new Message(topic, message, options.defaultQos.get(), options.defaultRetain.get()));
+	}
+
+	public boolean publish(@NotNull String topic, byte @NotNull [] message)
+	{
+		return publish(new Message(topic, message, options.defaultQos.get(), options.defaultRetain.get()));
+	}
+
+	public boolean publish(@NotNull String topic, @NotNull String message, @Range(from=0, to=2) int qos, boolean retain)
+	{
+		return publish(new Message(topic, message, qos, retain));
+	}
+
+	public boolean publish(@NotNull String topic, byte @NotNull [] message, @Range(from=0, to=2) int qos, boolean retain)
+	{
+		return publish(new Message(topic, message, qos, retain));
+	}
+
+	@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
+	public boolean publish(@NotNull Message message)
+	{
+		if(!options.exploitFreedom && !isAuthorized())
+			throw new IllegalStateException("client hasn't authenticated with broker yet");
+		if(!isConnected())
+			throw new IllegalStateException("client hasn't connected with broker yet");
+
+		Objects.requireNonNull(message);
+
+		if (message.getQos() != 0 && options.waitForPubAck)
+		{
+			AtomicInteger pid = nextPid();
+			synchronized (pid)
+			{
+				clientThread.publish(message, pid);
+				long waitEnd = System.nanoTime() / 1000000L + options.qosAckTimeout;
+
+				do {
+					try
+					{
+						pid.wait(Math.max(100, waitEnd - System.nanoTime() / 1000000L));
+						break;
+					}
+					catch (InterruptedException e)
+					{
+						logger.log(Level.WARNING, "interrupted waiting for publish response", e);
+					}
+				} while (waitEnd > System.nanoTime() / 1000000L);
+			}
+		}
+		else
+		{
+			clientThread.publish(message, message.getQos() == 0 ? null : nextPid());
+			return true;
+		}
+
+		return false;
+	}
+
+	private synchronized AtomicInteger nextPid()
+	{
+		packetID = packetID == 65535 ? 0 : packetID + 1;
+		return new AtomicInteger(packetID);
 	}
 
 	public void disconnect(boolean hard)
@@ -334,7 +411,7 @@ public class Client
 
 	public boolean isConnected()
 	{
-		return socket != null && socket.isConnected();
+		return clientThread != null && socket.isConnected();
 	}
 
 	public boolean isAuthorized()

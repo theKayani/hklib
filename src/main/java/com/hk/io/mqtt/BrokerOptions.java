@@ -19,6 +19,8 @@ public class BrokerOptions
 	int threadPoolSize;
 	// maximum amount of connections to hold at once
 	int maxClients;
+	// non-volatile payload threshold
+	int maxVolatileMessageSize;
 
 	public BrokerOptions()
 	{
@@ -27,6 +29,7 @@ public class BrokerOptions
 		connectWaitTimeout = 10000;
 		threadPoolSize = 2;
 		maxClients = 128;
+		maxVolatileMessageSize = 1048576; // 1MB
 	}
 
 	public BrokerOptions(BrokerOptions options)
@@ -59,6 +62,11 @@ public class BrokerOptions
 		return maxClients;
 	}
 
+	public int getMaxVolatileMessageSize()
+	{
+		return maxVolatileMessageSize;
+	}
+
 	public BrokerOptions setSocketBacklog(int socketBacklog)
 	{
 		this.socketBacklog = socketBacklog;
@@ -89,6 +97,11 @@ public class BrokerOptions
 		return this;
 	}
 
+	public void setMaxVolatileMessageSize(int maxVolatileMessageSize)
+	{
+		this.maxVolatileMessageSize = maxVolatileMessageSize;
+	}
+
 	public BrokerOptions set(BrokerOptions options)
 	{
 		socketBacklog = options.socketBacklog;
@@ -96,6 +109,7 @@ public class BrokerOptions
 		connectWaitTimeout = options.connectWaitTimeout;
 		threadPoolSize = options.threadPoolSize;
 		maxClients = options.maxClients;
+		maxVolatileMessageSize = options.maxVolatileMessageSize;
 		return this;
 	}
 }
