@@ -32,6 +32,7 @@ public class Broker implements Runnable
 {
 	private final InetSocketAddress host;
 	final List<BrokerClientThread> currentClients;
+	final Map<String, BrokerClientThread> clientIDThreadMap;
 	public final BrokerOptions options;
 	private final AtomicReference<Status> status;
 	private final Logger logger;
@@ -59,6 +60,7 @@ public class Broker implements Runnable
 		this.host = host;
 		this.options = new BrokerOptions();
 		currentClients = Collections.synchronizedList(new ArrayList<>());
+		clientIDThreadMap = Collections.synchronizedMap(new HashMap<>());
 		status = new AtomicReference<>(Status.NOT_BOUND);
 		logger = Logger.getLogger("MQTT-Broker");
 		logger.setLevel(Level.INFO);
@@ -229,11 +231,12 @@ public class Broker implements Runnable
 		{
 			status.set(Status.STOPPING);
 			logger.warning("Stopping broker");
-			logger.fine("Closing connected clients");
 			if(hardStop == null || !hardStop.get())
 			{
-				// TODO: Cleanly close connected clients?
+				logger.fine("Closing connected clients");
+				forAll(clientThread -> clientThread.close(true));
 			}
+
 			logger.fine("Closing executor service, rejecting new tasks");
 			executorService.shutdown();
 			try
@@ -281,12 +284,43 @@ public class Broker implements Runnable
 		thread.start();
 	}
 
+	boolean removeClient(BrokerClientThread clientThread)
+	{
+		if(currentClients.remove(clientThread))
+		{
+			Session sess = clientThread.currentSession.get();
+			if(sess != null)
+			{
+				BrokerClientThread clientThread1 = clientIDThreadMap.get(sess.clientID);
+				if(clientThread == clientThread1)
+					clientIDThreadMap.remove(sess.clientID);
+			}
+			return true;
+		}
+		return false;
+	}
+
 	void forAll(Consumer<BrokerClientThread> consumer)
 	{
 		synchronized (currentClients)
 		{
 			currentClients.forEach(consumer);
 		}
+	}
+
+	void beginForward(Message message)
+	{
+		forAll(clientThread -> {
+			Session sess = clientThread.sess();
+			if(sess != null)
+			{
+				int qos = sess.getDesiredQoS(message.getTopic());
+				if(qos >= 0)
+				{
+
+				}
+			}
+		});
 	}
 
 	public void stop(boolean soft)

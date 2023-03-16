@@ -212,6 +212,32 @@ public final class Message implements Cloneable
 		}
 	}
 
+	@Override
+	public String toString()
+	{
+		int size = getSize();
+		String s =  "Message{" +
+				"topic='" + topic + '\'' +
+				", qos=" + qos +
+				", retain=" + retain +
+				", size=" + (size == -1 ? "'unknown'" : size);
+
+		switch (type)
+		{
+			case BYTE_ARRAY:
+				s += ", messageBytes=" + Arrays.toString(byteArrMessage);
+				break;
+			case STREAM:
+				s += ", messageStream=" + streamMessage;
+				break;
+			case PATH:
+				s += ", messageFile=" + pathMessage;
+				break;
+		}
+		s += '}';
+		return s;
+	}
+
 	enum Datatype
 	{
 		BYTE_ARRAY, STREAM, PATH

@@ -32,7 +32,8 @@ public class Client
 	private final Logger logger;
 	ScheduledExecutorService executorService;
 	final AtomicReference<Status> status;
-	final Map<AtomicInteger, Message> incompletePackets;
+	final Map<AtomicInteger, PublishPacket.Transaction> unfinishedSend;
+	final Map<AtomicInteger, PublishPacket.Transaction> unfinishedRecv;
 	int packetID;
 	Consumer<IOException> exceptionHandler;
 	@NotNull
@@ -69,7 +70,8 @@ public class Client
 		logger.setLevel(Level.INFO);
 		logger.setUseParentHandlers(false);
 		logger.addHandler(new ConsoleHandler());
-		incompletePackets = Collections.synchronizedMap(new HashMap<>());
+		unfinishedSend = Collections.synchronizedMap(new HashMap<>());
+		unfinishedRecv = Collections.synchronizedMap(new HashMap<>());
 	}
 
 	public String getID()
@@ -367,7 +369,7 @@ public class Client
 
 		Objects.requireNonNull(message);
 
-		if (message.getQos() != 0 && options.waitForPubAck)
+		if (options.waitForPubAck)
 		{
 			AtomicInteger pid = nextPid();
 			synchronized (pid)
@@ -386,6 +388,7 @@ public class Client
 						logger.log(Level.WARNING, "interrupted waiting for publish response", e);
 					}
 				} while (waitEnd > System.nanoTime() / 1000000L);
+				return !unfinishedSend.containsKey(pid);
 			}
 		}
 		else
@@ -393,14 +396,17 @@ public class Client
 			clientThread.publish(message, message.getQos() == 0 ? null : nextPid());
 			return true;
 		}
-
-		return false;
 	}
 
 	private synchronized AtomicInteger nextPid()
 	{
-		packetID = packetID == 65535 ? 0 : packetID + 1;
-		return new AtomicInteger(packetID);
+		AtomicInteger a;
+		do
+		{
+			packetID = packetID == 65535 ? 0 : packetID + 1;
+			a = new AtomicInteger(packetID);
+		} while(unfinishedSend.containsKey(a));
+		return a;
 	}
 
 	public void disconnect(boolean hard)

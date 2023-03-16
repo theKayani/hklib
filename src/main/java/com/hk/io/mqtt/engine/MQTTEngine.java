@@ -1,5 +1,7 @@
 package com.hk.io.mqtt.engine;
 
+import com.hk.io.mqtt.Message;
+import com.hk.io.mqtt.Session;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,31 +22,6 @@ public interface MQTTEngine
 	 * @return false if any client connecting with this ID will be rejected
 	 */
 	boolean tryClientID(@NotNull String clientID);
-
-	/**
-	 * Get the session attached to the provided client identifier. Can
-	 * be null if no prior session found.
-	 *
-	 * This can either be server-provided or provided from a previous
-	 * connection where the clean-session flag was set to false.
-	 *
-	 * @param clientID The client identifier to check for
-	 * @return a session if is present for the client ID provided
-	 */
-	@Nullable
-	Session getSession(@NotNull String clientID);
-
-	/**
-	 * Creates a new empty session instantiated with the given client
-	 * identifier and store it itself. The created session can be
-	 * retrieved using {@link #getSession(String)} and the client
-	 * identifier.
-	 *
-	 * @param clientID to pair the session with
-	 * @return a new session matching with the client ID
-	 */
-	@NotNull
-	Session createSession(@NotNull String clientID);
 
 	/**
 	 * If connecting clients should have a username, otherwise the
@@ -79,4 +56,44 @@ public interface MQTTEngine
 	 * 				authorized to connect to the given broker.
 	 */
 	boolean attemptAuthenticate(@NotNull String clientID, @Nullable String username, byte @Nullable [] password);
+
+	/**
+	 * Get the session attached to the provided client identifier. Can
+	 * be null if no prior session found.
+	 *
+	 * This can either be server-provided or provided from a previous
+	 * connection where the clean-session flag was set to false.
+	 *
+	 * @param clientID The client identifier to check for
+	 * @return a session if is present for the client ID provided
+	 */
+	@Nullable
+	Session getSession(@NotNull String clientID);
+
+	/**
+	 * Creates a new empty session instantiated with the given client
+	 * identifier and store it itself. The created session can be
+	 * retrieved using {@link #getSession(String)} and the client
+	 * identifier.
+	 *
+	 * @param clientID to pair the session with
+	 * @return a new session matching with the client ID
+	 */
+	@NotNull
+	Session createSession(@NotNull String clientID);
+
+	/**
+	 * Check whether this engine will allow the following message to
+	 * be forwarded to the provided client matching with the ID. This
+	 * is only called if the client has previously subscribed to the
+	 * topic.
+	 *
+	 * @param message the message to be forwarded
+	 * @param clientID the client ID that the message is forwarded to
+	 *
+	 * @return true whether this client is allowed to receive this message.
+	 * 		or false if for some reason the client is prohibited from
+	 * 		receiving this message.
+	 */
+	boolean canSendTo(@NotNull Message message, @NotNull String clientID);
 }

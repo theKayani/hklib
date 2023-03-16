@@ -1,7 +1,5 @@
 package com.hk.io.mqtt;
 
-import com.hk.file.FileUtil;
-import com.hk.io.mqtt.engine.Session;
 import com.hk.math.MathUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,8 +7,6 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -25,17 +21,19 @@ class BrokerClientThread extends Thread
 	private final AtomicBoolean localStop, sentClose, gotConnect;
 	private final AtomicInteger keepAlive;
 	private final AtomicLong connectTime;
-	private final AtomicReference<Session> currentSession;
 	private final SocketAddress address;
 	private final int internalID;
 	private final Object writeLock = new Object();
 	// pretty much thread local anyway
 	private Message will;
+	final AtomicReference<Session> currentSession;
+	private int packetID;
 
 	BrokerClientThread(Broker broker, Socket client, int internalID)
 	{
 		this.broker = broker;
 		this.socket = client;
+		this.internalID = internalID;
 		localStop = new AtomicBoolean(false);
 		sentClose = new AtomicBoolean(false);
 		gotConnect = new AtomicBoolean(false);
@@ -43,7 +41,7 @@ class BrokerClientThread extends Thread
 		connectTime = new AtomicLong(System.nanoTime() / 1000000L);
 		currentSession = new AtomicReference<>(null);
 		address = client.getRemoteSocketAddress();
-		this.internalID = internalID;
+		packetID = -1;
 	}
 
 	@Override
@@ -63,7 +61,7 @@ class BrokerClientThread extends Thread
 				{
 					if(broker.getLogger().isLoggable(Level.WARNING))
 						broker.getLogger().warning("[" + address + "] Unknown packet header: " + MathUtil.byteBin(b & 0xFF));
-					socket.close();
+					localStop.set(true);
 					break;
 				}
 
@@ -125,7 +123,8 @@ class BrokerClientThread extends Thread
 		{
 			if(!localStop.get())
 			{
-				// TODO: publish last will testament
+				broker.beginForward(will);
+
 				if (broker.exceptionHandler != null)
 					broker.exceptionHandler.accept(e);
 			}
@@ -243,13 +242,12 @@ class BrokerClientThread extends Thread
 		}
 
 		broker.getLogger().fine("[" + address + "] successfully authorized!");
-		broker.forAll(client -> {
-			if(client.currentSession.get() != null && clientID.equals(client.currentSession.get().getClientID()))
-			{
-				broker.getLogger().info("[" + address + "] Client #" + client.internalID + " has similar id, disconnecting");
-				client.close(false);
-			}
-		});
+		BrokerClientThread prevThread = broker.clientIDThreadMap.get(clientID);
+		if(prevThread != null && clientID.equals(prevThread.sess().clientID))
+		{
+			broker.getLogger().info("[" + address + "] Client #" + prevThread.internalID + " has similar id, disconnecting");
+			prevThread.close(false);
+		}
 		Session session = broker.getEngine().getSession(clientID);
 		if(cleanSession || (session != null && session.hasExpired()))
 			session = null;
@@ -259,16 +257,18 @@ class BrokerClientThread extends Thread
 		this.keepAlive.set(keepAlive);
 		if(session == null)
 			session = broker.getEngine().createSession(clientID);
+
 		if(hasWill)
 			this.will = new Message(willTopic, willMessage, willQos, willRetain);
 
 		currentSession.set(session);
+		broker.clientIDThreadMap.put(clientID, this);
 	}
 
 	private void handlePublishPacket(InputStream in, AtomicInteger remLen, int flags) throws IOException
 	{
 		boolean dup = (flags & 8) != 0;
-		int qos = flags & 6;
+		int qos = (flags & 6) >> 1;
 		boolean retain = (flags & 1) != 0;
 
 		String topic = Common.readUTFString(in, remLen);
@@ -282,7 +282,7 @@ class BrokerClientThread extends Thread
 		{
 			// write to file, link to message
 			File file = File.createTempFile("mqtt_message_", Long.toHexString(System.nanoTime()) + ".dat");
-			if(!file.exists())
+			if(!file.exists() && !file.createNewFile())
 				throw new FileNotFoundException("cannot create temp file: " + file);
 
 			OutputStream out = Files.newOutputStream(file.toPath());
@@ -308,9 +308,41 @@ class BrokerClientThread extends Thread
 
 			msg = new Message(topic, arr, qos, retain);
 		}
+
+		if(broker.getLogger().isLoggable(Level.FINEST))
+			broker.getLogger().finest("[" + address + "] received: " + msg);
+
+		if(qos == 1)
+		{
+			broker.getLogger().fine("[" + address + "] Sending packet: PUBACK (pid: " + MathUtil.shortHex(pid.get()) + ")");
+			OutputStream out = socket.getOutputStream();
+
+			// forward to subscribers
+			broker.beginForward(msg);
+
+			synchronized (writeLock)
+			{
+				Common.sendPuback(out, pid);
+			}
+		}
+		else if(qos == 2)
+		{
+			broker.getLogger().fine("[" + address + "] Sending packet: PUBREC (pid: " + MathUtil.shortHex(pid.get()) + ")");
+			OutputStream out = socket.getOutputStream();
+
+			// await pubrel before forwarding
+
+			synchronized (writeLock)
+			{
+				Common.sendPubrec(out, pid);
+				sess().unfinishedRecv.put(pid, new PublishPacket.Transaction(msg, pid).setLastPacket(PacketType.PUBREC));
+			}
+		}
+		else
+			throw new AssertionError("should not be possible");
 	}
 
-	void sendConnackPacket(boolean sessionPresent, @NotNull Common.ConnectReturn result) throws IOException
+	private void sendConnackPacket(boolean sessionPresent, @NotNull Common.ConnectReturn result) throws IOException
 	{
 		broker.getLogger().fine("[" + address + "] Sending packet: CONNACK " + result + (result == Common.ConnectReturn.ACCEPTED ? ", SP: " + sessionPresent : ""));
 		OutputStream out = socket.getOutputStream();
@@ -349,11 +381,31 @@ class BrokerClientThread extends Thread
 		}
 	}
 
+	Session sess()
+	{
+		return currentSession.get();
+	}
+
+	private synchronized AtomicInteger nextPid()
+	{
+		if(sess() == null)
+			throw new IllegalStateException("no need for a pid before a session has be established");
+
+		do
+		{
+			packetID = packetID == 65535 ? 0 : packetID + 1;
+		} while(sess().unfinishedSend.containsKey(new AtomicInteger(packetID)));
+		return new AtomicInteger(packetID);
+	}
+
 	void close(boolean now)
 	{
 		localStop.set(true);
 		if(socket.isClosed() || sentClose.get())
+		{
+			sentClose.set(true);
 			return;
+		}
 
 		sentClose.set(true);
 		Runnable closer = () -> {
@@ -369,7 +421,7 @@ class BrokerClientThread extends Thread
 			}
 			finally
 			{
-				if(broker.currentClients.remove(this))
+				if(broker.removeClient(this))
 					broker.getLogger().info("[" + address + "] Client disconnected: #" + internalID);
 			}
 		};

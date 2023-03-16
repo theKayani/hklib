@@ -1,5 +1,7 @@
 package com.hk.io.mqtt;
 
+import com.hk.math.MathUtil;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,6 +111,42 @@ class Common
 		return (byte) i;
 	}
 
+	static void sendPuback(OutputStream out, AtomicInteger pid) throws IOException
+	{
+		Objects.requireNonNull(pid);
+		out.write(0x40);
+		out.write(0x2);
+		writeShort(out, pid.get());
+		out.flush();
+	}
+
+	static void sendPubrec(OutputStream out, AtomicInteger pid) throws IOException
+	{
+		Objects.requireNonNull(pid);
+		out.write(0x50);
+		out.write(0x2);
+		writeShort(out, pid.get());
+		out.flush();
+	}
+
+	static void sendPubrel(OutputStream out, AtomicInteger pid) throws IOException
+	{
+		Objects.requireNonNull(pid);
+		out.write(0x62);
+		out.write(0x2);
+		writeShort(out, pid.get());
+		out.flush();
+	}
+
+	static void sendPubcomp(OutputStream out, AtomicInteger pid) throws IOException
+	{
+		Objects.requireNonNull(pid);
+		out.write(0x70);
+		out.write(0x2);
+		writeShort(out, pid.get());
+		out.flush();
+	}
+
 	static final String EOF = "end of stream reached";
 
 	enum ConnectReturn
@@ -137,98 +175,6 @@ class Common
 		{
 			logger.log(Level.WARNING, message, e);
 //			throw new UncheckedIOException(e);
-		}
-	}
-
-	static final class PublishPacket implements Runnable
-	{
-		private final Message message;
-		private final AtomicInteger pid;
-		private final Logger logger;
-		private final OutputStream out;
-		private Consumer<IOException> exceptionHandler;
-		private Runnable onComplete;
-		private boolean duplicate = false;
-
-		PublishPacket(Message message, AtomicInteger pid, Logger logger, OutputStream out)
-		{
-			this.message = Objects.requireNonNull(message);
-			this.pid = pid;
-			this.logger = Objects.requireNonNull(logger);
-			this.out = Objects.requireNonNull(out);
-
-			if(pid != null && message.getQos() == 0)
-				throw new IllegalArgumentException("pid should be null with a 0 QoS message");
-			if(pid == null && message.getQos() != 0)
-				throw new IllegalArgumentException("pid should NOT be null with a non-zero QoS message");
-		}
-
-		public PublishPacket setExceptionHandler(Consumer<IOException> exceptionHandler)
-		{
-			this.exceptionHandler = exceptionHandler;
-			return this;
-		}
-
-		public PublishPacket setOnComplete(Runnable onComplete)
-		{
-			this.onComplete = Objects.requireNonNull(onComplete);
-			return this;
-		}
-
-		public PublishPacket setDuplicate()
-		{
-			this.duplicate = true;
-			return this;
-		}
-
-		@Override
-		public void run()
-		{
-			try
-			{
-
-				int flags = 0;
-				if(message.isRetain())
-					flags |= 0x1;
-				flags |= message.getQos() << 1;
-				if(duplicate)
-					flags |= 0x8;
-				out.write(0x30 | (flags & 0xF));
-				byte[] topicBytes = message.getTopic().getBytes(StandardCharsets.UTF_8);
-				int payloadLength = message.getSize();
-				ByteArrayOutputStream bout = null;
-				if(payloadLength < 0)
-				{
-					bout = new ByteArrayOutputStream();
-					message.writeTo(bout);
-					payloadLength = bout.size();
-				}
-				int total = payloadLength + topicBytes.length;
-				if(pid != null)
-					total += 2;
-				if(total > 268435455)
-					throw new IOException("packet size overflow: " + total + " > 268435455 (max packet size)");
-
-				logger.fine("Sending packet: PUBLISH (" + total + " byte" + (total == 1 ? "" : "s") + ")");
-				Common.writeRemainingField(out, total);
-				Common.writeBytes(out, topicBytes);
-				if(pid != null)
-					Common.writeShort(out, pid.get());
-
-				if(bout != null)
-					bout.writeTo(out);
-				else
-					message.writeTo(out);
-				out.flush();
-
-				if(onComplete != null)
-					onComplete.run();
-			}
-			catch (IOException ex)
-			{
-				if(exceptionHandler != null)
-					exceptionHandler.accept(ex);
-			}
 		}
 	}
 }

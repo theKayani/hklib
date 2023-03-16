@@ -7,9 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -249,12 +246,17 @@ class ClientThread extends Thread
 	{
 		try
 		{
-			Common.PublishPacket packet = new Common.PublishPacket(message, pid, client.getLogger(), socket.getOutputStream());
+			PublishPacket packet = new PublishPacket(message, pid, client.getLogger(), socket.getOutputStream(), null);
 			packet.setExceptionHandler(client.exceptionHandler);
-			packet.setOnComplete(() -> {
+			packet.setOnComplete(transaction -> {
 				connectTime.set(System.nanoTime() / 1000000);
-				if(pid != null)
-					client.incompletePackets.put(pid, message);
+				synchronized (pid)
+				{
+					if (message.getQos() > 0)
+						client.unfinishedSend.put(pid, transaction);
+					else
+						pid.notifyAll();
+				}
 			});
 			client.executorService.submit(packet);
 		}
@@ -277,6 +279,13 @@ class ClientThread extends Thread
 		{
 			client.getLogger().fine("did not receive CONNACK in time, disconnecting");
 			close(false);
+		}
+
+		synchronized (client.unfinishedSend)
+		{
+			client.unfinishedSend.forEach((key, value) -> {
+
+			});
 		}
 	}
 

@@ -1,5 +1,7 @@
 package com.hk.io.mqtt.engine;
 
+import com.hk.io.mqtt.Message;
+import com.hk.io.mqtt.Session;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -57,6 +59,24 @@ public class BasicMQTTEngine implements MQTTEngine
 	}
 
 	@Override
+	public boolean requireUsername(@NotNull String clientID)
+	{
+		return auth().requireUsername();
+	}
+
+	@Override
+	public boolean requirePassword(@NotNull String clientID)
+	{
+		return auth().requirePassword();
+	}
+
+	@Override
+	public boolean attemptAuthenticate(@NotNull String clientID, @Nullable String username, byte @Nullable [] password)
+	{
+		return auth().attemptAuthenticate(clientID, username, password);
+	}
+
+	@Override
 	@Nullable
 	public Session getSession(@NotNull String clientID)
 	{
@@ -73,21 +93,9 @@ public class BasicMQTTEngine implements MQTTEngine
 	}
 
 	@Override
-	public boolean requireUsername(@NotNull String clientID)
+	public boolean canSendTo(@NotNull Message message, @NotNull String clientID)
 	{
-		return auth().requireUsername();
-	}
-
-	@Override
-	public boolean requirePassword(@NotNull String clientID)
-	{
-		return auth().requirePassword();
-	}
-
-	@Override
-	public boolean attemptAuthenticate(@NotNull String clientID, @Nullable String username, byte @Nullable [] password)
-	{
-		return auth().attemptAuthenticate(clientID, username, password);
+		return true;
 	}
 
 	private Authentication auth()
