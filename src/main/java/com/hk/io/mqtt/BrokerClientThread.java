@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.nio.file.Files;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -26,7 +27,7 @@ class BrokerClientThread extends Thread
 	private final Object writeLock = new Object();
 	// pretty much thread local anyway
 	private Message will;
-	final AtomicReference<Session> currentSession;
+	private final AtomicReference<Session> currentSession;
 	private int packetID;
 
 	BrokerClientThread(Broker broker, Socket client, int internalID)
@@ -65,11 +66,11 @@ class BrokerClientThread extends Thread
 					break;
 				}
 
-				int remLen = Common.readRemainingField(in);
+				AtomicInteger remLen = new AtomicInteger(Common.readRemainingField(in));
 				if(broker.getLogger().isLoggable(Level.FINER))
 					broker.getLogger().finer("[" + address + "] Received packet: " + type + ", remaining length: " + remLen);
 
-				if(type != PacketType.CONNECT && currentSession == null)
+				if(type != PacketType.CONNECT && sess() == null)
 				{
 					broker.getLogger().fine("[" + address + "] unexpected publish before auth, disconnecting");
 					localStop.set(true);
@@ -79,17 +80,18 @@ class BrokerClientThread extends Thread
 				switch (type)
 				{
 					case CONNECT:
-						handleConnectPacket(in, new AtomicInteger(remLen));
+						handleConnectPacket(in, remLen);
 						break;
 					case PUBLISH:
-						handlePublishPacket(in, new AtomicInteger(remLen), b & 0xF);
+						handlePublishPacket(in, remLen, b & 0xF);
 						break;
 					case PUBACK:
 						throw new Error("TODO PUBACK");
 					case PUBREC:
 						throw new Error("TODO PUBREC");
 					case PUBREL:
-						throw new Error("TODO PUBREL");
+						handlePubrelPacket(in, remLen);
+						break;
 					case PUBCOMP:
 						throw new Error("TODO PUBCOMP");
 					case SUBSCRIBE:
@@ -97,11 +99,11 @@ class BrokerClientThread extends Thread
 					case UNSUBSCRIBE:
 						throw new Error("TODO UNSUBSCRIBE");
 					case PINGREQ:
-						broker.getLogger().fine("[" + address + "] Sending packet: PINGRESP");
 						OutputStream out = socket.getOutputStream();
 
 						synchronized (writeLock)
 						{
+							broker.getLogger().fine("[" + address + "] Sending packet: PINGRESP");
 							out.write(0xD0);
 							out.write(0x0);
 							out.flush();
@@ -117,22 +119,27 @@ class BrokerClientThread extends Thread
 						throw new IOException("unexpected packet type: " + type);
 				}
 				connectTime.set(System.nanoTime() / 1000000L);
+				if(remLen.get() != 0)
+				{
+					broker.getLogger().fine("[" + address + "] remaining length overflow, disconnecting");
+					localStop.set(true);
+				}
 			}
 		}
 		catch (IOException e)
 		{
 			if(!localStop.get())
 			{
-				broker.beginForward(will);
-
 				if (broker.exceptionHandler != null)
 					broker.exceptionHandler.accept(e);
 			}
-			// otherwise, must be a planned disconnect
 		}
 		finally
 		{
-			localStop.set(true);
+			// must not be a planned disconnect
+			if(!localStop.get() && will != null)
+				broker.beginForward(will);
+
 			close(true);
 		}
 	}
@@ -149,7 +156,7 @@ class BrokerClientThread extends Thread
 		byte[] bs = new byte[7];
 		if(in.read(bs) != 7 || remLen.addAndGet(-7) < 0)
 			throw new IOException(Common.EOF);
-		byte[] expected = { 0x0, 0x4, 0x4D, 0x51, 0x55, 0x55, 0x4 };
+		byte[] expected = { 0x0, 0x4, 0x4D, 0x51, 0x54, 0x54, 0x4 };
 		for (int i = 0; i < 7; i++)
 		{
 			if(bs[i] != expected[i])
@@ -272,9 +279,9 @@ class BrokerClientThread extends Thread
 		boolean retain = (flags & 1) != 0;
 
 		String topic = Common.readUTFString(in, remLen);
-		AtomicInteger pid = null;
+		Common.PacketID pid = null;
 		if(qos > 0)
-			pid = new AtomicInteger(Common.readShort(in, remLen));
+			pid = new Common.PacketID(Common.readShort(in, remLen));
 
 		int size = remLen.get();
 		Message msg;
@@ -308,47 +315,71 @@ class BrokerClientThread extends Thread
 
 			msg = new Message(topic, arr, qos, retain);
 		}
+		remLen.set(0);
 
 		if(broker.getLogger().isLoggable(Level.FINEST))
 			broker.getLogger().finest("[" + address + "] received: " + msg);
 
-		if(qos == 1)
+		if(qos == 0 || qos == 1)
 		{
-			broker.getLogger().fine("[" + address + "] Sending packet: PUBACK (pid: " + MathUtil.shortHex(pid.get()) + ")");
-			OutputStream out = socket.getOutputStream();
-
 			// forward to subscribers
 			broker.beginForward(msg);
 
-			synchronized (writeLock)
+			if(qos == 1)
 			{
-				Common.sendPuback(out, pid);
-			}
-		}
-		else if(qos == 2)
-		{
-			broker.getLogger().fine("[" + address + "] Sending packet: PUBREC (pid: " + MathUtil.shortHex(pid.get()) + ")");
-			OutputStream out = socket.getOutputStream();
-
-			// await pubrel before forwarding
-
-			synchronized (writeLock)
-			{
-				Common.sendPubrec(out, pid);
-				sess().unfinishedRecv.put(pid, new PublishPacket.Transaction(msg, pid).setLastPacket(PacketType.PUBREC));
+				OutputStream out = socket.getOutputStream();
+				synchronized (writeLock)
+				{
+					broker.getLogger().fine("[" + address + "] Sending packet: PUBACK (pid: " + pid + ")");
+					Common.sendPuback(out, pid);
+				}
 			}
 		}
 		else
-			throw new AssertionError("should not be possible");
+		{
+			// await pubrel before forwarding
+			sess().unfinishedRecv.put(pid, new PublishPacket.Transaction(msg, pid, 2).setLastPacket(PacketType.PUBREC));
+
+			OutputStream out = socket.getOutputStream();
+			synchronized (writeLock)
+			{
+				broker.getLogger().fine("[" + address + "] Sending packet: PUBREC (pid: " + pid + ")");
+				Common.sendPubrec(out, pid);
+			}
+		}
+	}
+
+	private void handlePubrelPacket(InputStream in, AtomicInteger remLen) throws IOException
+	{
+		Session sess = sess();
+
+		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
+		PublishPacket.Transaction transaction = sess.unfinishedRecv.remove(pid);
+		if(transaction == null || transaction.qos != 2 || transaction.lastPacket != PacketType.PUBREC)
+		{
+			broker.getLogger().warning("unexpected PUBREL, disconnecting");
+			localStop.set(true);
+		}
+		else
+		{
+			broker.beginForward(transaction.message);
+
+			OutputStream out = socket.getOutputStream();
+			synchronized (writeLock)
+			{
+				broker.getLogger().fine("[" + address + "] Sending packet: PUBCOMP (pid: " + pid + ")");
+				Common.sendPubcomp(out, pid);
+			}
+		}
 	}
 
 	private void sendConnackPacket(boolean sessionPresent, @NotNull Common.ConnectReturn result) throws IOException
 	{
-		broker.getLogger().fine("[" + address + "] Sending packet: CONNACK " + result + (result == Common.ConnectReturn.ACCEPTED ? ", SP: " + sessionPresent : ""));
 		OutputStream out = socket.getOutputStream();
 
 		synchronized (writeLock)
 		{
+			broker.getLogger().fine("[" + address + "] Sending packet: CONNACK " + result + (result == Common.ConnectReturn.ACCEPTED ? ", SP: " + sessionPresent : ""));
 			out.write(0x20);
 			out.write(0x2);
 
@@ -366,6 +397,29 @@ class BrokerClientThread extends Thread
 		}
 	}
 
+	void publish(Message message, int qos)
+	{
+		try
+		{
+			Common.PacketID pid = nextPid();
+
+			PublishPacket packet = new PublishPacket(message, pid, broker.getLogger(), socket.getOutputStream(), writeLock);
+			packet.setPrefix("[" + address + "] ");
+			packet.setExceptionHandler(broker.exceptionHandler);
+			packet.setDesiredQos(qos);
+			packet.setOnComplete(transaction -> {
+				if (qos > 0)
+					sess().unfinishedSend.put(pid, transaction);
+			});
+			broker.executorService.submit(packet);
+		}
+		catch (IOException e)
+		{
+			if(broker.exceptionHandler != null)
+				broker.exceptionHandler.accept(e);
+		}
+	}
+
 	public void checkGotConnect()
 	{
 		long elapsed = System.nanoTime() / 1000000L - connectTime.get();
@@ -379,6 +433,39 @@ class BrokerClientThread extends Thread
 			broker.getLogger().fine("[" + address + "] did not receive CONNECT in time, disconnecting");
 			close(false);
 		}
+
+		Session sess = sess();
+		if(sess != null)
+		{
+			synchronized (sess.unfinishedSend)
+			{
+				for (Map.Entry<Common.PacketID, PublishPacket.Transaction> entry : sess.unfinishedSend.entrySet())
+				{
+					Common.PacketID key = entry.getKey();
+					PublishPacket.Transaction value = entry.getValue();
+					if (value.isPast(broker.options.qosAckTimeout))
+					{
+						broker.getLogger().warning("[" + address + "] did not receive ACK in time, disconnecting");
+						close(false);
+						return;
+					}
+				}
+			}
+			synchronized (sess.unfinishedRecv)
+			{
+				for (Map.Entry<Common.PacketID, PublishPacket.Transaction> entry : sess.unfinishedRecv.entrySet())
+				{
+					Common.PacketID key = entry.getKey();
+					PublishPacket.Transaction value = entry.getValue();
+					if (value.isPast(broker.options.qosAckTimeout))
+					{
+						broker.getLogger().warning("[" + address + "] did not receive ACK in time, disconnecting");
+						close(false);
+						return;
+					}
+				}
+			}
+		}
 	}
 
 	Session sess()
@@ -386,16 +473,18 @@ class BrokerClientThread extends Thread
 		return currentSession.get();
 	}
 
-	private synchronized AtomicInteger nextPid()
+	private synchronized Common.PacketID nextPid()
 	{
 		if(sess() == null)
 			throw new IllegalStateException("no need for a pid before a session has be established");
 
+		Common.PacketID a;
 		do
 		{
 			packetID = packetID == 65535 ? 0 : packetID + 1;
-		} while(sess().unfinishedSend.containsKey(new AtomicInteger(packetID)));
-		return new AtomicInteger(packetID);
+			a = new Common.PacketID(packetID);
+		} while(sess().unfinishedSend.containsKey(a));
+		return a;
 	}
 
 	void close(boolean now)

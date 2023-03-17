@@ -31,6 +31,6 @@ public class Test1 extends TestCase
 	@Override
 	protected void tearDown() throws Exception
 	{
-		broker.stop(true);
+		broker.stop();
 	}
 }

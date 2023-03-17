@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -63,20 +65,22 @@ class ClientThread extends Thread
 					lastPacket.notifyAll();
 				}
 
-				int remLen = Common.readRemainingField(in);
+				AtomicInteger remLen = new AtomicInteger(Common.readRemainingField(in));
 				if(client.getLogger().isLoggable(Level.FINER))
 					client.getLogger().finer("Received packet: " + type + ", remaining length: " + remLen);
 				switch (type)
 				{
 					case CONNACK:
-						handleConnackPacket(in, new AtomicInteger(remLen));
+						handleConnackPacket(in, remLen);
 						break;
 					case PUBLISH:
 						throw new Error("TODO PUBLISH");
 					case PUBACK:
-						throw new Error("TODO PUBACK");
+						handlePuback(in, remLen);
+						break;
 					case PUBREC:
-						throw new Error("TODO PUBREC");
+						handlePubrec(in, remLen);
+						break;
 					case PUBREL:
 						throw new Error("TODO PUBREL");
 					case PUBCOMP:
@@ -96,6 +100,11 @@ class ClientThread extends Thread
 					case UNSUBSCRIBE:
 					case PINGREQ:
 						throw new IOException("unexpected packet type: " + type);
+				}
+				if(remLen.get() != 0)
+				{
+					client.getLogger().fine("remaining length overflow, disconnecting");
+					globalStop.set(true);
 				}
 			}
 		}
@@ -134,6 +143,53 @@ class ClientThread extends Thread
 		client.getLogger().info("Connect Acknowledged with connect return: " + connectReturn);
 	}
 
+	private void handlePuback(InputStream in, AtomicInteger remLen) throws IOException
+	{
+		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
+		PublishPacket.Transaction transaction = client.unfinishedSend.remove(pid);
+		if(transaction == null || transaction.qos != 1 || transaction.lastPacket != PacketType.PUBLISH)
+		{
+			client.getLogger().warning("unexpected PUBACK, disconnecting");
+			globalStop.set(true);
+		}
+		else
+		{
+			synchronized (transaction.pid)
+			{
+				transaction.pid.notifyAll();
+			}
+		}
+	}
+
+	private void handlePubrec(InputStream in, AtomicInteger remLen) throws IOException
+	{
+		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
+		PublishPacket.Transaction transaction = client.unfinishedSend.get(pid);
+		if(transaction == null || transaction.qos != 2 || transaction.lastPacket != PacketType.PUBLISH)
+		{
+			client.getLogger().warning("unexpected PUBREC, disconnecting");
+			globalStop.set(true);
+		}
+		else
+		{
+			client.unfinishedSend.put(pid, transaction.setLastPacket(PacketType.PUBREL));
+
+			OutputStream out = socket.getOutputStream();
+			client.executorService.submit(() -> {
+				try
+				{
+					client.getLogger().fine("Sending packet: PUBREC (pid: " + pid + ")");
+					Common.sendPubrel(out, pid);
+				}
+				catch (IOException e)
+				{
+					if(client.exceptionHandler != null)
+						client.exceptionHandler.accept(e);
+				}
+			});
+		}
+	}
+
 	void sendConnectPacket()
 	{
 		try
@@ -149,12 +205,12 @@ class ClientThread extends Thread
 			// variable header
 
 			// protocol name and level
-			bout.write(0x0);
-			bout.write(0x4);
+			bout.write(0x0); // string
+			bout.write(0x4); // length of 4
 			bout.write(0x4D); // M
 			bout.write(0x51); // Q
-			bout.write(0x55); // T
-			bout.write(0x55); // T
+			bout.write(0x54); // T
+			bout.write(0x54); // T
 			bout.write(0x4); // v3.1.1
 
 			// connect flags
@@ -242,7 +298,7 @@ class ClientThread extends Thread
 		});
 	}
 
-	void publish(Message message, AtomicInteger pid)
+	void publish(Message message, Common.PacketID pid)
 	{
 		try
 		{
@@ -277,15 +333,38 @@ class ClientThread extends Thread
 		}
 		else if(connectTime.get() != -1 && !gotConnAck.get() && elapsed > client.options.connectWaitTimeout)
 		{
-			client.getLogger().fine("did not receive CONNACK in time, disconnecting");
+			client.getLogger().warning("did not receive CONNACK in time, disconnecting");
 			close(false);
+			return;
 		}
 
 		synchronized (client.unfinishedSend)
 		{
-			client.unfinishedSend.forEach((key, value) -> {
-
-			});
+			for (Map.Entry<Common.PacketID, PublishPacket.Transaction> entry : client.unfinishedSend.entrySet())
+			{
+				Common.PacketID key = entry.getKey();
+				PublishPacket.Transaction value = entry.getValue();
+				if (value.isPast(client.options.qosAckTimeout))
+				{
+					client.getLogger().warning("did not receive ACK in time, disconnecting");
+					close(false);
+					return;
+				}
+			}
+		}
+		synchronized (client.unfinishedRecv)
+		{
+			for (Map.Entry<Common.PacketID, PublishPacket.Transaction> entry : client.unfinishedRecv.entrySet())
+			{
+				Common.PacketID key = entry.getKey();
+				PublishPacket.Transaction value = entry.getValue();
+				if (value.isPast(client.options.qosAckTimeout))
+				{
+					client.getLogger().warning("did not receive ACK in time, disconnecting");
+					close(false);
+					return;
+				}
+			}
 		}
 	}
 

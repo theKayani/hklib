@@ -32,8 +32,8 @@ public class Client
 	private final Logger logger;
 	ScheduledExecutorService executorService;
 	final AtomicReference<Status> status;
-	final Map<AtomicInteger, PublishPacket.Transaction> unfinishedSend;
-	final Map<AtomicInteger, PublishPacket.Transaction> unfinishedRecv;
+	final Map<Common.PacketID, PublishPacket.Transaction> unfinishedSend;
+	final Map<Common.PacketID, PublishPacket.Transaction> unfinishedRecv;
 	int packetID;
 	Consumer<IOException> exceptionHandler;
 	@NotNull
@@ -371,7 +371,7 @@ public class Client
 
 		if (options.waitForPubAck)
 		{
-			AtomicInteger pid = nextPid();
+			Common.PacketID pid = nextPid();
 			synchronized (pid)
 			{
 				clientThread.publish(message, pid);
@@ -398,13 +398,13 @@ public class Client
 		}
 	}
 
-	private synchronized AtomicInteger nextPid()
+	private synchronized Common.PacketID nextPid()
 	{
-		AtomicInteger a;
+		Common.PacketID a;
 		do
 		{
 			packetID = packetID == 65535 ? 0 : packetID + 1;
-			a = new AtomicInteger(packetID);
+			a = new Common.PacketID(packetID);
 		} while(unfinishedSend.containsKey(a));
 		return a;
 	}

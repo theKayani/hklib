@@ -1,9 +1,5 @@
 package com.hk.io.mqtt;
 
-import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Predicate;
-
 public class BrokerOptions
 {
 	// amount of connections to backlog before accepting
@@ -21,6 +17,8 @@ public class BrokerOptions
 	int maxClients;
 	// non-volatile payload threshold
 	int maxVolatileMessageSize;
+	// amount of millis to wait for an ACK response for a packet of QoS > 0
+	int qosAckTimeout;
 
 	public BrokerOptions()
 	{
@@ -30,6 +28,7 @@ public class BrokerOptions
 		threadPoolSize = 2;
 		maxClients = 128;
 		maxVolatileMessageSize = 1048576; // 1MB
+		qosAckTimeout = 15000;
 	}
 
 	public BrokerOptions(BrokerOptions options)
@@ -67,6 +66,11 @@ public class BrokerOptions
 		return maxVolatileMessageSize;
 	}
 
+	public int getQosAckTimeout()
+	{
+		return qosAckTimeout;
+	}
+
 	public BrokerOptions setSocketBacklog(int socketBacklog)
 	{
 		this.socketBacklog = socketBacklog;
@@ -97,9 +101,16 @@ public class BrokerOptions
 		return this;
 	}
 
-	public void setMaxVolatileMessageSize(int maxVolatileMessageSize)
+	public BrokerOptions setMaxVolatileMessageSize(int maxVolatileMessageSize)
 	{
 		this.maxVolatileMessageSize = maxVolatileMessageSize;
+		return this;
+	}
+
+	public BrokerOptions setQosAckTimeout(int qosAckTimeout)
+	{
+		this.qosAckTimeout = qosAckTimeout;
+		return this;
 	}
 
 	public BrokerOptions set(BrokerOptions options)
@@ -110,6 +121,7 @@ public class BrokerOptions
 		threadPoolSize = options.threadPoolSize;
 		maxClients = options.maxClients;
 		maxVolatileMessageSize = options.maxVolatileMessageSize;
+		qosAckTimeout = options.qosAckTimeout;
 		return this;
 	}
 }

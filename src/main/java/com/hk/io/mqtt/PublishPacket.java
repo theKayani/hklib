@@ -1,6 +1,7 @@
 package com.hk.io.mqtt;
 
 import com.hk.math.MathUtil;
+import org.jetbrains.annotations.Range;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,24 +16,33 @@ import java.util.logging.Logger;
 final class PublishPacket implements Runnable
 {
 	private final Message message;
-	private final AtomicInteger pid;
+	private final Common.PacketID pid;
 	private final Logger logger;
 	private final OutputStream out;
 	private final Object writeLock;
 	private Consumer<IOException> exceptionHandler;
 	private Consumer<Transaction> onComplete;
+	private int desiredQos;
 	private boolean duplicate = false;
+	private String prefix;
 
-	PublishPacket(Message message, AtomicInteger pid, Logger logger, OutputStream out, Object writeLock)
+	PublishPacket(Message message, Common.PacketID pid, Logger logger, OutputStream out, Object writeLock)
 	{
 		this.message = Objects.requireNonNull(message);
 		this.pid = pid;
 		this.logger = Objects.requireNonNull(logger);
 		this.out = Objects.requireNonNull(out);
 		this.writeLock = writeLock == null ? new Object() : writeLock;
+		desiredQos = -1;
 
 		if (pid == null && message.getQos() != 0)
 			throw new IllegalArgumentException("pid should NOT be null with a non-zero QoS message");
+	}
+
+	public PublishPacket setPrefix(String prefix)
+	{
+		this.prefix = prefix;
+		return this;
 	}
 
 	public PublishPacket setExceptionHandler(Consumer<IOException> exceptionHandler)
@@ -44,6 +54,17 @@ final class PublishPacket implements Runnable
 	public PublishPacket setOnComplete(Consumer<Transaction> onComplete)
 	{
 		this.onComplete = Objects.requireNonNull(onComplete);
+		return this;
+	}
+
+	public PublishPacket setDesiredQos(@Range(from=0, to=2) int desiredQos)
+	{
+		if(desiredQos < 0 || desiredQos > 2)
+			throw new IllegalArgumentException("qos should be 0 to 2");
+		if (pid == null && desiredQos != 0)
+			throw new IllegalArgumentException("pid should NOT be null with a non-zero QoS message");
+
+		this.desiredQos = desiredQos;
 		return this;
 	}
 
@@ -60,10 +81,11 @@ final class PublishPacket implements Runnable
 		{
 			synchronized (writeLock)
 			{
+				int qos = desiredQos < 0 ? message.getQos() : desiredQos;
 				int flags = 0;
 				if (message.isRetain())
 					flags |= 0x1;
-				flags |= (message.getQos() & 3) << 1;
+				flags |= (qos & 3) << 1;
 				if (duplicate)
 					flags |= 0x8;
 				out.write(0x30 | flags);
@@ -77,15 +99,15 @@ final class PublishPacket implements Runnable
 					payloadLength = bout.size();
 				}
 				int total = payloadLength + topicBytes.length + 2;
-				if (message.getQos() > 0)
+				if (qos > 0)
 					total += 2;
 				if (total > 268435455)
 					throw new IOException("packet size overflow: " + total + " > 268435455 (max packet size)");
 
-				logger.fine("Sending packet: PUBLISH (QoS: " + message.getQos() + ", " + (pid == null ? "no pid" : MathUtil.shortHex(pid.get())) + ", " + total + " b)");
+				logger.fine((prefix == null ? "" : prefix) + "Sending packet: PUBLISH (QoS: " + qos + ", " + (pid == null ? "no pid" : MathUtil.shortHex(pid.get())) + ", " + total + " b)");
 				Common.writeRemainingField(out, total);
 				Common.writeBytes(out, topicBytes);
-				if (message.getQos() > 0)
+				if (qos > 0)
 					Common.writeShort(out, Objects.requireNonNull(pid).get());
 
 				if (bout != null)
@@ -94,7 +116,7 @@ final class PublishPacket implements Runnable
 					message.writeTo(out);
 
 				if (onComplete != null)
-					onComplete.accept(new Transaction(message, pid));
+					onComplete.accept(new Transaction(message, pid, qos));
 
 				out.flush();
 
@@ -112,15 +134,17 @@ final class PublishPacket implements Runnable
 	static class Transaction
 	{
 		final Message message;
-		final AtomicInteger pid;
+		final Common.PacketID pid;
+		final int qos;
 		PacketType lastPacket;
 		long timestamp;
 
-		Transaction(Message message, AtomicInteger pid)
+		Transaction(Message message, Common.PacketID pid, int qos)
 		{
 			this.message = message;
 			this.pid = pid;
-			updateTimestamp();
+			this.qos = qos;
+			setLastPacket(PacketType.PUBLISH);
 		}
 
 		public Transaction setLastPacket(PacketType lastPacket)
@@ -129,7 +153,7 @@ final class PublishPacket implements Runnable
 			return updateTimestamp();
 		}
 
-		private Transaction updateTimestamp()
+		Transaction updateTimestamp()
 		{
 			timestamp = System.nanoTime() / 1000000L;
 			return this;
@@ -139,5 +163,6 @@ final class PublishPacket implements Runnable
 		{
 			return System.nanoTime() / 1000000L - timestamp > timeout;
 		}
+
 	}
 }

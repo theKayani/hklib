@@ -23,6 +23,9 @@ public class ClientOptions
 	boolean exploitFreedom;
 	// amount of millis to wait for an ACK response for a packet of QoS > 0
 	int qosAckTimeout;
+	// true if publish methods will block until packets are delivered/received
+	// false if everything is treated like fire-and-forget
+	// not receiving ack will still result in the connection being closed
 	boolean waitForPubAck;
 
 	public ClientOptions()
@@ -30,7 +33,7 @@ public class ClientOptions
 		useSSL = false;
 		connectWaitTimeout = 10000;
 		exploitFreedom = false;
-		qosAckTimeout = 10000;
+		qosAckTimeout = 15000;
 		waitForPubAck = true;
 	}
 

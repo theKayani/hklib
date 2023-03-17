@@ -1,8 +1,8 @@
 package com.hk.io.mqtt;
 
 import com.hk.math.MathUtil;
+import org.jetbrains.annotations.Range;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -111,7 +112,7 @@ class Common
 		return (byte) i;
 	}
 
-	static void sendPuback(OutputStream out, AtomicInteger pid) throws IOException
+	static void sendPuback(OutputStream out, Common.PacketID pid) throws IOException
 	{
 		Objects.requireNonNull(pid);
 		out.write(0x40);
@@ -120,7 +121,7 @@ class Common
 		out.flush();
 	}
 
-	static void sendPubrec(OutputStream out, AtomicInteger pid) throws IOException
+	static void sendPubrec(OutputStream out, Common.PacketID pid) throws IOException
 	{
 		Objects.requireNonNull(pid);
 		out.write(0x50);
@@ -129,7 +130,7 @@ class Common
 		out.flush();
 	}
 
-	static void sendPubrel(OutputStream out, AtomicInteger pid) throws IOException
+	static void sendPubrel(OutputStream out, Common.PacketID pid) throws IOException
 	{
 		Objects.requireNonNull(pid);
 		out.write(0x62);
@@ -138,7 +139,7 @@ class Common
 		out.flush();
 	}
 
-	static void sendPubcomp(OutputStream out, AtomicInteger pid) throws IOException
+	static void sendPubcomp(OutputStream out, Common.PacketID pid) throws IOException
 	{
 		Objects.requireNonNull(pid);
 		out.write(0x70);
@@ -175,6 +176,47 @@ class Common
 		{
 			logger.log(Level.WARNING, message, e);
 //			throw new UncheckedIOException(e);
+		}
+	}
+
+	/**
+	 * custom short integer wrapper because {@link AtomicInteger#hashCode} doesn't work right breaking hashmaps
+	 */
+	static class PacketID implements Supplier<Integer>
+	{
+		final int id;
+
+		PacketID(int id)
+		{
+			this.id = id;
+
+			if((id & 0xFFFF0000) != 0)
+				throw new IllegalArgumentException("expected pid between 0x0000 and 0xFFFF");
+		}
+
+		@Range(from=0, to=65535)
+		@Override
+		public Integer get()
+		{
+			return id;
+		}
+
+		@Override
+		public boolean equals(Object o)
+		{
+			return o instanceof PacketID && id == ((PacketID) o).id;
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return id;
+		}
+
+		@Override
+		public String toString()
+		{
+			return MathUtil.shortHex(id);
 		}
 	}
 }

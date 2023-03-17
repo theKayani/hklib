@@ -2,9 +2,7 @@ package com.hk.io.mqtt;
 
 import com.hk.args.Arguments;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.logging.Level;
 
 public class TestClient
@@ -14,7 +12,14 @@ public class TestClient
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tb %1$td, %1$tY %1$tl:%1$tM:%1$tS %4$s]: %5$s%6$s%n");
 
         Client client;
-        client = new Client("localhost", 21999);
+//        client = new Client("localhost", 21999);
+        client = new Client("192.168.0.238", 21999);
+//        client = new Client("broker.hivemq.com", 1883);
+//        client = new Client("broker.emqx.io", 1883);
+//        client = new Client("test.mosquitto.org", 1883);
+//        client = new Client("mqtt.flespi.io", 1883);
+//        client = new Client("mqtt.dioty.co", 1883);
+//        client = new Client("mqtt.fluux.io", 1883);
         client.setLogLevel(Level.ALL);
         client.setDefaultExceptionHandler();
 
@@ -84,13 +89,18 @@ public class TestClient
                 if(qosOption != null)
                     qos = Integer.parseInt(qosOption);
                 boolean retain = args.flag("retain");
+                String repOption = args.option("rep");
+                int repeats = repOption == null ? 1 : Integer.parseInt(repOption);
 
-                boolean published = client.publish(args.getArg(1), args.getArg(2), qos, retain);
+                for (int i = 0; i < repeats; i++)
+                {
+                    boolean published = client.publish(args.getArg(1), args.getArg(2), qos, retain);
 
-                if(published)
-                    System.out.println("Published!");
-                else
-                    System.out.println("Not published!");
+                    if(published)
+                        System.out.println("Published!");
+                    else
+                        System.out.println("Not published!");
+                }
             }
             else if(args.getArg(0).equalsIgnoreCase("ping"))
             {
@@ -109,7 +119,7 @@ public class TestClient
                     do
                     {
                         System.out.print('.');
-                    } while (client.getStatus() == Client.Status.DISCONNECTED);
+                    } while (client.getStatus() != Client.Status.DISCONNECTED);
                     System.out.println("!");
                 }
                 break;

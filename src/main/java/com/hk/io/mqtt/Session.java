@@ -14,8 +14,8 @@ public abstract class Session
 	 * The client identifier that was used to create this session.
 	 */
 	public final String clientID;
-	final Map<AtomicInteger, PublishPacket.Transaction> unfinishedSend;
-	final Map<AtomicInteger, PublishPacket.Transaction> unfinishedRecv;
+	final Map<Common.PacketID, PublishPacket.Transaction> unfinishedSend;
+	final Map<Common.PacketID, PublishPacket.Transaction> unfinishedRecv;
 
 	public Session(String clientID)
 	{
@@ -48,6 +48,8 @@ public abstract class Session
 
 	public static boolean matches(String topic, String subscription)
 	{
+		System.out.println("topic = " + topic);
+		System.out.println("subscription = " + subscription);
 		// TODO: vvv
 		throw new Error("FINISH HIM");
 	}

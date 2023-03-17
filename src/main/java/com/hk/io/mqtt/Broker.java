@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.logging.ConsoleHandler;
@@ -217,15 +218,19 @@ public class Broker implements Runnable
 			}
 			catch (IOException e)
 			{
-				logger.warning("Issue occurred connecting client: " + clientAddr);
-				if(exceptionHandler != null)
-					exceptionHandler.accept(e);
+				if(!globalStop.get())
+				{
+					logger.warning("Issue occurred connecting client: " + clientAddr);
+					if(exceptionHandler != null)
+						exceptionHandler.accept(e);
+				}
 			}
 			finally
 			{
 				status.set(Status.BOUND);
 			}
 		}
+		globalStop.set(true);
 
 		try
 		{
@@ -249,8 +254,11 @@ public class Broker implements Runnable
 				logger.log(Level.WARNING, "Exception during closing executor service", e);
 			}
 
-			socket.close();
-			logger.fine("Closed socket");
+			if(!socket.isClosed())
+			{
+				socket.close();
+				logger.fine("Closed socket");
+			}
 		}
 		catch (IOException e)
 		{
@@ -288,7 +296,7 @@ public class Broker implements Runnable
 	{
 		if(currentClients.remove(clientThread))
 		{
-			Session sess = clientThread.currentSession.get();
+			Session sess = clientThread.sess();
 			if(sess != null)
 			{
 				BrokerClientThread clientThread1 = clientIDThreadMap.get(sess.clientID);
@@ -310,29 +318,47 @@ public class Broker implements Runnable
 
 	void beginForward(Message message)
 	{
+		AtomicInteger count = new AtomicInteger(0);
 		forAll(clientThread -> {
 			Session sess = clientThread.sess();
 			if(sess != null)
 			{
 				int qos = sess.getDesiredQoS(message.getTopic());
-				if(qos >= 0)
+				if(qos >= 0 && engine.canSendTo(message, sess.clientID))
 				{
-
+					count.incrementAndGet();
+					clientThread.publish(message, qos);
 				}
 			}
 		});
+
+		if(logger.isLoggable(Level.INFO))
+		{
+			int size = message.getSize();
+			logger.info("publishing " + (size == -1 ? "" : size + "b ") + "message with topic " + message.getTopic() + " to " + count + " clients");
+		}
 	}
 
-	public void stop(boolean soft)
+	public void stop()
 	{
 		if(!isRunning())
 			throw new IllegalStateException("broker is not running");
 
-		if(logger.isLoggable(Level.FINE))
+		try
+		{
 			logger.fine("Signaling broker to stop");
-		globalStop.set(true);
-		forAll(thread -> thread.close(!soft));
-		hardStop = new AtomicBoolean(!soft);
+			globalStop.set(true);
+			List<BrokerClientThread> clientThreads = new ArrayList<>(currentClients);
+			clientThreads.forEach(clientThread -> clientThread.close(true));
+
+			socket.close();
+			logger.fine("Closed socket");
+		}
+		catch (IOException e)
+		{
+			if(exceptionHandler != null)
+				exceptionHandler.accept(e);
+		}
 	}
 
 	static boolean isValidClientID(String id)
