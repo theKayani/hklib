@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Range;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Session
 {
@@ -46,11 +45,42 @@ public abstract class Session
 	@Range(from=-1, to=2)
 	public abstract int getDesiredQoS(@NotNull String topic);
 
-	public static boolean matches(String topic, String subscription)
+	/**
+	 * Add or modify a subscription with the provided topic filter and
+	 * desired QoS.
+	 *
+	 * @param topicFilter the filter that was subscribed to
+	 * @param desiredQos the desired QoS that messages should be sent at
+	 */
+	public abstract void subscribe(@NotNull String topicFilter, @Range(from=0, to=2) int desiredQos);
+
+	/**
+	 * Remove a subscription matching the provided topic filter.
+	 *
+	 * @param topicFilter the filter that was unsubscribed to
+	 */
+	public abstract void unsubscribe(@NotNull String topicFilter);
+
+	/**
+	 * Check whether the subscription matches the topic provided given
+	 * the MQTT spec.
+	 *
+	 * @param topic the pure topic to test
+	 * @param topicFilter the topic filter to check against
+	 * @return true if the topic filter matches the topic.
+	 */
+	public static boolean matches(String topic, String topicFilter)
 	{
-		System.out.println("topic = " + topic);
-		System.out.println("subscription = " + subscription);
-		// TODO: vvv
-		throw new Error("FINISH HIM");
+		System.out.println("topic = '" + topic + "'");
+		System.out.println("topicFilter = '" + topicFilter + "'");
+		if(Common.isInvalidTopic(topicFilter))
+		{
+			// TODO: wildcard check
+			throw new Error("FINISH HIM");
+		}
+		else
+		{
+			return topic.equals(topicFilter);
+		}
 	}
 }

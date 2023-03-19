@@ -1,12 +1,14 @@
 package com.hk.io.mqtt.engine;
 
 import com.hk.io.mqtt.Session;
+import com.hk.util.Requirements;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class SimpleSession extends Session
 {
@@ -37,6 +39,24 @@ public class SimpleSession extends Session
 					max = Math.max(max, entry.getValue());
 			}
 		}
-		return -1;
+		return max;
+	}
+
+	@Override
+	public void subscribe(@NotNull String topicFilter, @Range(from=0, to=2) int desiredQos)
+	{
+		Objects.requireNonNull(topicFilter);
+		if(desiredQos < 0 || desiredQos > 2)
+			throw new IllegalArgumentException("expected qos between 0 and 2, not " + desiredQos);
+
+		desiredTopics.put(topicFilter, desiredQos);
+	}
+
+	@Override
+	public void unsubscribe(@NotNull String topicFilter)
+	{
+		Objects.requireNonNull(topicFilter);
+
+		desiredTopics.remove(topicFilter);
 	}
 }

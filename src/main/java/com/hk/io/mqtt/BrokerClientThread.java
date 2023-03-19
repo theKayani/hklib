@@ -95,7 +95,8 @@ class BrokerClientThread extends Thread
 					case PUBCOMP:
 						throw new Error("TODO PUBCOMP");
 					case SUBSCRIBE:
-						throw new Error("TODO SUBSCRIBE");
+						handleSubscribePacket(in, remLen);
+						break;
 					case UNSUBSCRIBE:
 						throw new Error("TODO UNSUBSCRIBE");
 					case PINGREQ:
@@ -119,7 +120,7 @@ class BrokerClientThread extends Thread
 						throw new IOException("unexpected packet type: " + type);
 				}
 				connectTime.set(System.nanoTime() / 1000000L);
-				if(remLen.get() != 0)
+				if(!localStop.get() && remLen.get() != 0)
 				{
 					broker.getLogger().fine("[" + address + "] remaining length overflow, disconnecting");
 					localStop.set(true);
@@ -216,6 +217,13 @@ class BrokerClientThread extends Thread
 		{
 			willTopic = Common.readUTFString(in, remLen);
 			willMessage = Common.readBytes(in, remLen);
+
+			if(Common.isInvalidTopic(willTopic))
+			{
+				broker.getLogger().fine("[" + address + "] invalid will topic, disconnecting");
+				localStop.set(true);
+				return;
+			}
 		}
 
 		String username = null;
@@ -279,6 +287,14 @@ class BrokerClientThread extends Thread
 		boolean retain = (flags & 1) != 0;
 
 		String topic = Common.readUTFString(in, remLen);
+
+		if(Common.isInvalidTopic(topic))
+		{
+			broker.getLogger().fine("[" + address + "] invalid publish topic, disconnecting");
+			localStop.set(true);
+			return;
+		}
+
 		Common.PacketID pid = null;
 		if(qos > 0)
 			pid = new Common.PacketID(Common.readShort(in, remLen));
@@ -330,7 +346,8 @@ class BrokerClientThread extends Thread
 				OutputStream out = socket.getOutputStream();
 				synchronized (writeLock)
 				{
-					broker.getLogger().fine("[" + address + "] Sending packet: PUBACK (pid: " + pid + ")");
+					if(broker.getLogger().isLoggable(Level.FINE))
+						broker.getLogger().fine("[" + address + "] Sending packet: PUBACK (pid: " + pid + ")");
 					Common.sendPuback(out, pid);
 				}
 			}
@@ -343,7 +360,8 @@ class BrokerClientThread extends Thread
 			OutputStream out = socket.getOutputStream();
 			synchronized (writeLock)
 			{
-				broker.getLogger().fine("[" + address + "] Sending packet: PUBREC (pid: " + pid + ")");
+				if(broker.getLogger().isLoggable(Level.FINE))
+					broker.getLogger().fine("[" + address + "] Sending packet: PUBREC (pid: " + pid + ")");
 				Common.sendPubrec(out, pid);
 			}
 		}
@@ -362,14 +380,76 @@ class BrokerClientThread extends Thread
 		}
 		else
 		{
-			broker.beginForward(transaction.message);
+			broker.beginForward((Message) transaction.message);
 
 			OutputStream out = socket.getOutputStream();
 			synchronized (writeLock)
 			{
-				broker.getLogger().fine("[" + address + "] Sending packet: PUBCOMP (pid: " + pid + ")");
+				if(broker.getLogger().isLoggable(Level.FINE))
+					broker.getLogger().fine("[" + address + "] Sending packet: PUBCOMP (pid: " + pid + ")");
 				Common.sendPubcomp(out, pid);
 			}
+		}
+	}
+
+	private void handleSubscribePacket(InputStream in, AtomicInteger remLen) throws IOException
+	{
+		Session sess = sess();
+
+		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
+		if(remLen.get() == 0)
+		{
+			broker.getLogger().warning("empty subscribe packet not allowed, disconnecting");
+			localStop.set(true);
+			return;
+		}
+
+		ByteArrayOutputStream returnCodes = new ByteArrayOutputStream();
+		do {
+			String topicFilter = Common.readUTFString(in, remLen);
+			int desiredQos = Common.read(in, remLen);
+			if(desiredQos < 0 || desiredQos > 2)
+			{
+				broker.getLogger().warning("qos for subscribe is out of bounds: " + desiredQos + ", disconnecting");
+				localStop.set(true);
+				return;
+			}
+			if(broker.getEngine().canSubscribe(sess, topicFilter))
+			{
+				int maxQos = broker.getEngine().transformDesiredQos(sess, topicFilter, desiredQos);
+				switch (maxQos)
+				{
+					case 0:
+					case 1:
+					case 2:
+					case 128:
+						desiredQos = maxQos;
+						break;
+					default:
+						desiredQos = 0x80;
+						broker.getLogger().log(Level.SEVERE, "engine should only return 0x0, 0x1, 0x2, or 0x80, defaulting to 0x80");
+				}
+
+				returnCodes.write(desiredQos);
+				if(desiredQos != 0x80)
+					sess.subscribe(topicFilter, desiredQos);
+			}
+			else
+				returnCodes.write(0x80);
+		} while(remLen.get() > 0);
+
+		OutputStream out = socket.getOutputStream();
+
+		synchronized (writeLock)
+		{
+			if(broker.getLogger().isLoggable(Level.FINE))
+				broker.getLogger().fine("[" + address + "] Sending packet: SUBACK for " + returnCodes.size() + " topic(s)");
+
+			out.write(0x90);
+			Common.writeRemainingField(out, 2 + returnCodes.size());
+			Common.writeShort(out, pid.get());
+			returnCodes.writeTo(out);
+			out.flush();
 		}
 	}
 

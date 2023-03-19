@@ -2,6 +2,7 @@ package com.hk.io.mqtt;
 
 import com.hk.math.MathUtil;
 import com.hk.math.Rand;
+import com.hk.util.KeyValue;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +18,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.logging.ConsoleHandler;
@@ -32,6 +32,7 @@ public class Client
 	private final Logger logger;
 	ScheduledExecutorService executorService;
 	final AtomicReference<Status> status;
+	final Map<String, Integer> subscribedTopicFilters;
 	final Map<Common.PacketID, PublishPacket.Transaction> unfinishedSend;
 	final Map<Common.PacketID, PublishPacket.Transaction> unfinishedRecv;
 	int packetID;
@@ -63,6 +64,7 @@ public class Client
 		clientID = randomClientID();
 		cleanSession = true;
 		keepAlive = 60;
+		subscribedTopicFilters = new HashMap<>();
 		status = new AtomicReference<>(Status.NOT_CONNECTED);
 		globalStop = new AtomicBoolean(false);
 		packetID = -1;
@@ -395,6 +397,97 @@ public class Client
 		{
 			clientThread.publish(message, message.getQos() == 0 ? null : nextPid());
 			return true;
+		}
+	}
+
+	public int subscribe(String topic)
+	{
+		return subscribe(new KeyValue<>(topic, options.defaultQos.get()));
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	public int[] subscribe(String... topicFilters)
+	{
+		KeyValue[] kvs = new KeyValue[topicFilters.length];
+		for (int i = 0; i < kvs.length; i++)
+		{
+			kvs[i] = new KeyValue<>(topicFilters[i], options.defaultQos.get());
+		}
+		return subscribe(kvs);
+	}
+
+	public int subscribe(String topicFilter, int qos)
+	{
+		return subscribe(new KeyValue<>(topicFilter, qos));
+	}
+
+	@SuppressWarnings("unchecked")
+	public int subscribe(KeyValue<Integer> topicFilter)
+	{
+		int[] result = subscribe(new KeyValue[]{topicFilter});
+		return result == null ? -1 : result[0];
+	}
+
+	@SafeVarargs
+	@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
+	public final int[] subscribe(KeyValue<Integer>... topicFilters)
+	{
+		if(status.get() != Status.AUTHORIZED)
+			return null;
+		if(topicFilters == null || topicFilters.length == 0)
+			throw new IllegalArgumentException("expected one or more topic filters");
+
+		for (int i = 0; i < topicFilters.length; i++)
+		{
+			KeyValue<Integer> topicFilter = topicFilters[i];
+			String topic = topicFilter.getKey();
+			if (topic == null)
+				throw new IllegalArgumentException("topic filter #" + i + " missing Topic Filter (key): " + topicFilter);
+			if(Common.utfBytesLength(topic) > 65535)
+				throw new IllegalArgumentException("topic filter #" + i + " too long: " + topicFilter);
+			Integer dqos = topicFilter.getValue();
+			if (dqos == null)
+				throw new IllegalArgumentException("topic filter #" + i + " missing QoS (value): " + topicFilter);
+			if (dqos < 0 || dqos > 2)
+				throw new IllegalArgumentException("topic filter #" + i + " QoS (value) out of bounds: " + topicFilter);
+		}
+
+		if (options.waitForSubAck)
+		{
+			Common.PacketID pid = nextPid();
+			synchronized (pid)
+			{
+				clientThread.subscribe(topicFilters, pid);
+				long waitEnd = System.nanoTime() / 1000000L + options.qosAckTimeout;
+
+				do {
+					try
+					{
+						pid.wait(Math.max(100, waitEnd - System.nanoTime() / 1000000L));
+						break;
+					}
+					catch (InterruptedException e)
+					{
+						logger.log(Level.WARNING, "interrupted waiting for subscribe response", e);
+					}
+				} while (waitEnd > System.nanoTime() / 1000000L);
+
+				synchronized (subscribedTopicFilters)
+				{
+					int[] result = new int[topicFilters.length];
+					for (int i = 0; i < topicFilters.length; i++)
+					{
+						Integer maxQos = subscribedTopicFilters.get(topicFilters[i].getKey());
+						result[i] = maxQos == null ? 0x80 : maxQos;
+					}
+					return result;
+				}
+			}
+		}
+		else
+		{
+			clientThread.subscribe(topicFilters, nextPid());
+			return null;
 		}
 	}
 

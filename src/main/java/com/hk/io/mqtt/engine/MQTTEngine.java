@@ -4,6 +4,7 @@ import com.hk.io.mqtt.Message;
 import com.hk.io.mqtt.Session;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 /**
  * SHOULD BE THREAD-SAFE
@@ -89,11 +90,36 @@ public interface MQTTEngine
 	 * topic.
 	 *
 	 * @param message the message to be forwarded
-	 * @param clientID the client ID that the message is forwarded to
+	 * @param client the client that the message is forwarded to
 	 *
 	 * @return true whether this client is allowed to receive this message.
 	 * 		or false if for some reason the client is prohibited from
 	 * 		receiving this message.
 	 */
-	boolean canSendTo(@NotNull Message message, @NotNull String clientID);
+	boolean canSendTo(@NotNull Message message, @NotNull Session client);
+
+	/**
+	 * Check whether this engine will allow the provided client to
+	 * subscribe to the given topic filter. This is usually called in
+	 * response to a SUBSCRIBE packet. If false, will result in a
+	 * 'subscribe return' of 0x80 which is a failure.
+	 *
+	 * @param client the client attempting to subscribe
+	 * @param topicFilter the topic filter being subscribed to
+	 * @return true if the subscription should be allowed
+	 */
+	boolean canSubscribe(@NotNull Session client, @NotNull String topicFilter);
+
+	/**
+	 * Transform the desired QoS a client is attempting to subscribe
+	 * to a topic filter with. This is usually called in response to a
+	 * SUBSCRIBE packet. This can also be used to send a 0x80 (FAILURE)
+	 * subscribe return.
+	 *
+	 * @param client the client attempting to subscribe
+	 * @param topicFilter the topic filter being subscribed to
+	 * @param desiredQos the qos the client is attempting to subscribe with
+	 * @return a new or same value as provided within the QoS field
+	 */
+	int transformDesiredQos(@NotNull Session client, @NotNull String topicFilter, @Range(from=0, to=2) int desiredQos);
 }

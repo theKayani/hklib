@@ -27,6 +27,8 @@ public class ClientOptions
 	// false if everything is treated like fire-and-forget
 	// not receiving ack will still result in the connection being closed
 	boolean waitForPubAck;
+	// similar to waitForPubAck but for SUBSCRIBE and UNSUBSCRIBE packets
+	boolean waitForSubAck;
 
 	public ClientOptions()
 	{
@@ -35,6 +37,7 @@ public class ClientOptions
 		exploitFreedom = false;
 		qosAckTimeout = 15000;
 		waitForPubAck = true;
+		waitForSubAck = true;
 	}
 
 	public ClientOptions(ClientOptions options)
@@ -75,6 +78,11 @@ public class ClientOptions
 	public boolean willWaitForPubAck()
 	{
 		return waitForPubAck;
+	}
+
+	public boolean willWaitForSubAck()
+	{
+		return waitForSubAck;
 	}
 
 	@Contract("_ -> this")
@@ -141,6 +149,13 @@ public class ClientOptions
 	}
 
 	@Contract("_ -> this")
+	public ClientOptions setWaitForSubAck(boolean waitForSubAck)
+	{
+		this.waitForSubAck = waitForSubAck;
+		return this;
+	}
+
+	@Contract("_ -> this")
 	public ClientOptions set(ClientOptions options)
 	{
 		useSSL = options.useSSL;
@@ -150,6 +165,7 @@ public class ClientOptions
 		exploitFreedom = options.exploitFreedom;
 		qosAckTimeout = options.qosAckTimeout;
 		waitForPubAck = options.waitForPubAck;
+		waitForSubAck = options.waitForSubAck;
 		return this;
 	}
 }

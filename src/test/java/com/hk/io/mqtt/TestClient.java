@@ -1,6 +1,7 @@
 package com.hk.io.mqtt;
 
 import com.hk.args.Arguments;
+import com.hk.math.MathUtil;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -11,9 +12,13 @@ public class TestClient
     {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tb %1$td, %1$tY %1$tl:%1$tM:%1$tS %4$s]: %5$s%6$s%n");
 
+        // publish abc 123 --qos 0
+        // publish def 456 --qos 1
+        // publish ghi 789 --qos 2
+
         Client client;
-//        client = new Client("localhost", 21999);
-        client = new Client("192.168.0.238", 21999);
+        client = new Client("localhost", 21999);
+//        client = new Client("192.168.0.238", 21999);
 //        client = new Client("broker.hivemq.com", 1883);
 //        client = new Client("broker.emqx.io", 1883);
 //        client = new Client("test.mosquitto.org", 1883);
@@ -101,6 +106,15 @@ public class TestClient
                     else
                         System.out.println("Not published!");
                 }
+            }
+            else if(args.getArg(0).equalsIgnoreCase("subscribe"))
+            {
+                int qos = 2;
+                if(args.count() > 2)
+                    qos = Integer.parseInt(args.getArg(2));
+                String topicFilter = args.getArg(1);
+
+                System.out.println("Subscribe result: 0x" + MathUtil.byteHex(client.subscribe(topicFilter, qos)));
             }
             else if(args.getArg(0).equalsIgnoreCase("ping"))
             {

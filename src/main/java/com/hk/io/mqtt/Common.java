@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Range;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -146,6 +147,54 @@ class Common
 		out.write(0x2);
 		writeShort(out, pid.get());
 		out.flush();
+	}
+
+	/**
+	 * Test whether this topic contains wildcards and can not be used
+	 * to publish messages and wills. Returns false if the provided
+	 * topic is pure.
+	 *
+	 * @param topic the topic to test
+	 * @return false if this topic contains no wildcards and is pure
+	 */
+	static boolean isInvalidTopic(String topic)
+	{
+		char c;
+		for (int i = 0; i < topic.length(); i++)
+		{
+			c = topic.charAt(i);
+			if(c == '+' || c == '#')
+				return true;
+		}
+		return false;
+	}
+
+	static int utfBytesLength(String s)
+	{
+		// absolutely definitely not taken from ObjectOutputStream :D
+		char[] cbuf = new char[256];
+		int len = s.length();
+		int utflen = 0;
+		for (int off = 0; off < len; )
+		{
+			int csize = Math.min(len - off, cbuf.length);
+			s.getChars(off, off + csize, cbuf, 0);
+			for (int cpos = 0; cpos < csize; cpos++) {
+				char c = cbuf[cpos];
+				if (c >= 0x0001 && c <= 0x007F) {
+					utflen++;
+				} else if (c > 0x07FF) {
+					utflen += 3;
+				} else {
+					utflen += 2;
+				}
+
+				if(utflen > 65535)
+					return 65536;
+			}
+			off += csize;
+		}
+		return utflen;
 	}
 
 	static final String EOF = "end of stream reached";

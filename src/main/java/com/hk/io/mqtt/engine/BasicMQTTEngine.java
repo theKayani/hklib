@@ -5,6 +5,7 @@ import com.hk.io.mqtt.Session;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -93,9 +94,21 @@ public class BasicMQTTEngine implements MQTTEngine
 	}
 
 	@Override
-	public boolean canSendTo(@NotNull Message message, @NotNull String clientID)
+	public boolean canSendTo(@NotNull Message message, @NotNull Session client)
 	{
 		return true;
+	}
+
+	@Override
+	public boolean canSubscribe(@NotNull Session client, @NotNull String topicFilter)
+	{
+		return true;
+	}
+
+	@Override
+	public int transformDesiredQos(@NotNull Session client, @NotNull String topicFilter, @Range(from=0, to=2) int desiredQos)
+	{
+		return desiredQos;
 	}
 
 	private Authentication auth()

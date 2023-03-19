@@ -133,13 +133,13 @@ final class PublishPacket implements Runnable
 
 	static class Transaction
 	{
-		final Message message;
+		final Object message;
 		final Common.PacketID pid;
 		final int qos;
 		PacketType lastPacket;
 		long timestamp;
 
-		Transaction(Message message, Common.PacketID pid, int qos)
+		Transaction(Object message, Common.PacketID pid, int qos)
 		{
 			this.message = message;
 			this.pid = pid;

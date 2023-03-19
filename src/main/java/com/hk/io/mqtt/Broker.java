@@ -324,7 +324,7 @@ public class Broker implements Runnable
 			if(sess != null)
 			{
 				int qos = sess.getDesiredQoS(message.getTopic());
-				if(qos >= 0 && engine.canSendTo(message, sess.clientID))
+				if(qos >= 0 && engine.canSendTo(message, sess))
 				{
 					count.incrementAndGet();
 					clientThread.publish(message, qos);
