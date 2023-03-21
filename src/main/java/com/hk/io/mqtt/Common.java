@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -70,15 +71,32 @@ class Common
 	static byte[] readBytes(InputStream in, AtomicInteger remLen) throws IOException
 	{
 		int len = readShort(in, remLen);
-		if(len == 0)
-			return new byte[0];
-
 		byte[] bs = new byte[len];
-		if(in.read(bs) != len)
-			throw new IOException(EOF);
-		if(remLen != null && remLen.addAndGet(-len) < 0)
+		if(len == 0)
+			return bs;
+		readBytes(in, bs);
+		if(remLen != null && remLen.addAndGet(-bs.length) < 0)
 			throw new IOException(EOF);
 		return bs;
+	}
+
+	static void readBytes(InputStream in, byte[] bs) throws IOException
+	{
+		readBytes(in, bs, bs.length);
+	}
+
+	static void readBytes(InputStream in, byte[] bs, int len) throws IOException
+	{
+		int lenBef = len;
+		while(len > 0)
+		{
+			int r = in.read(bs, lenBef - len, len);
+			if(r == -1)
+				throw new IOException(EOF);
+			len -= r;
+		}
+
+		// max-volatile-message-size 8
 	}
 
 	static void writeShort(OutputStream out, int i) throws IOException
@@ -89,13 +107,9 @@ class Common
 
 	static int readShort(InputStream in, AtomicInteger remLen) throws IOException
 	{
-		byte[] i = new byte[2];
-		if(in.read(i) != 2)
-			throw new IOException(EOF);
-		if(remLen != null && remLen.addAndGet(-2) < 0)
-			throw new IOException(EOF);
-
-		return ((i[0] << 8) | i[1]) & 0xFFFF;
+		int a = read(in, remLen) & 0xFF;
+		int b = read(in, remLen) & 0xFF;
+		return (a << 8) | b;
 	}
 
 	static byte read(InputStream in) throws IOException

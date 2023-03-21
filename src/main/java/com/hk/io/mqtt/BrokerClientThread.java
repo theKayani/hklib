@@ -7,6 +7,8 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -52,7 +54,7 @@ class BrokerClientThread extends Thread
 		{
 			InputStream in = socket.getInputStream();
 			byte b;
-			while(!localStop.get())
+			while(!localStop.get() && socket.isConnected())
 			{
 				// fixed header
 				b = Common.read(in);
@@ -86,14 +88,17 @@ class BrokerClientThread extends Thread
 						handlePublishPacket(in, remLen, b & 0xF);
 						break;
 					case PUBACK:
-						throw new Error("TODO PUBACK");
+						handlePubackPacket(in, remLen);
+						break;
 					case PUBREC:
-						throw new Error("TODO PUBREC");
+						handlePubrecPacket(in, remLen);
+						break;
 					case PUBREL:
 						handlePubrelPacket(in, remLen);
 						break;
 					case PUBCOMP:
-						throw new Error("TODO PUBCOMP");
+						handlePubcompPacket(in, remLen);
+						break;
 					case SUBSCRIBE:
 						handleSubscribePacket(in, remLen);
 						break;
@@ -312,22 +317,19 @@ class BrokerClientThread extends Thread
 			byte[] arr = new byte[1024];
 			while(size > 0)
 			{
-				file.deleteOnExit();
 				int len = Math.min(1024, size);
-				if(in.read(arr, 0, len) != len)
-					throw new IOException(Common.EOF);
+				Common.readBytes(in, arr, len);
 				size -= len;
 				out.write(arr, 0, len);
 			}
 			out.close();
-			msg = new Message(topic, file, qos, retain);
+			msg = new Message(topic, file, -1, qos, retain);
 		}
 		else
 		{
 			// read to memory, link to message
 			byte[] arr = new byte[size];
-			if(in.read(arr) != size)
-				throw new IOException(Common.EOF);
+			Common.readBytes(in, arr);
 
 			msg = new Message(topic, arr, qos, retain);
 		}
@@ -367,6 +369,44 @@ class BrokerClientThread extends Thread
 		}
 	}
 
+	private void handlePubackPacket(InputStream in, AtomicInteger remLen) throws IOException
+	{
+		Session sess = sess();
+
+		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
+		PublishPacket.Transaction transaction = sess.unfinishedSend.remove(pid);
+		if(transaction == null || transaction.qos != 1 || transaction.lastPacket != PacketType.PUBLISH)
+		{
+			broker.getLogger().warning("[" + address + "] unexpected PUBACK, disconnecting");
+			localStop.set(true);
+		}
+	}
+
+	private void handlePubrecPacket(InputStream in, AtomicInteger remLen) throws IOException
+	{
+		Session sess = sess();
+
+		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
+		PublishPacket.Transaction transaction = sess.unfinishedSend.get(pid);
+		if(transaction == null || transaction.qos != 2 || transaction.lastPacket != PacketType.PUBLISH)
+		{
+			broker.getLogger().warning("[" + address + "] unexpected PUBREC, disconnecting");
+			localStop.set(true);
+		}
+		else
+		{
+			sess.unfinishedSend.put(pid, transaction.setLastPacket(PacketType.PUBREL));
+
+			OutputStream out = socket.getOutputStream();
+			synchronized (writeLock)
+			{
+				if(broker.getLogger().isLoggable(Level.FINE))
+					broker.getLogger().fine("[" + address + "] Sending packet: PUBREL (pid: " + pid + ")");
+				Common.sendPubrel(out, pid);
+			}
+		}
+	}
+
 	private void handlePubrelPacket(InputStream in, AtomicInteger remLen) throws IOException
 	{
 		Session sess = sess();
@@ -375,7 +415,7 @@ class BrokerClientThread extends Thread
 		PublishPacket.Transaction transaction = sess.unfinishedRecv.remove(pid);
 		if(transaction == null || transaction.qos != 2 || transaction.lastPacket != PacketType.PUBREC)
 		{
-			broker.getLogger().warning("unexpected PUBREL, disconnecting");
+			broker.getLogger().warning("[" + address + "] unexpected PUBREL, disconnecting");
 			localStop.set(true);
 		}
 		else
@@ -392,6 +432,19 @@ class BrokerClientThread extends Thread
 		}
 	}
 
+	private void handlePubcompPacket(InputStream in, AtomicInteger remLen) throws IOException
+	{
+		Session sess = sess();
+
+		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
+		PublishPacket.Transaction transaction = sess.unfinishedSend.remove(pid);
+		if(transaction == null || transaction.qos != 2 || transaction.lastPacket != PacketType.PUBREL)
+		{
+			broker.getLogger().warning("unexpected PUBCOMP, disconnecting");
+			localStop.set(true);
+		}
+	}
+
 	private void handleSubscribePacket(InputStream in, AtomicInteger remLen) throws IOException
 	{
 		Session sess = sess();
@@ -399,18 +452,19 @@ class BrokerClientThread extends Thread
 		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
 		if(remLen.get() == 0)
 		{
-			broker.getLogger().warning("empty subscribe packet not allowed, disconnecting");
+			broker.getLogger().warning("[" + address + "] empty subscribe packet not allowed, disconnecting");
 			localStop.set(true);
 			return;
 		}
 
 		ByteArrayOutputStream returnCodes = new ByteArrayOutputStream();
+		List<Message> retained = new ArrayList<>();
 		do {
 			String topicFilter = Common.readUTFString(in, remLen);
 			int desiredQos = Common.read(in, remLen);
 			if(desiredQos < 0 || desiredQos > 2)
 			{
-				broker.getLogger().warning("qos for subscribe is out of bounds: " + desiredQos + ", disconnecting");
+				broker.getLogger().warning("[" + address + "] qos for subscribe is out of bounds: " + desiredQos + ", disconnecting");
 				localStop.set(true);
 				return;
 			}
@@ -427,12 +481,15 @@ class BrokerClientThread extends Thread
 						break;
 					default:
 						desiredQos = 0x80;
-						broker.getLogger().log(Level.SEVERE, "engine should only return 0x0, 0x1, 0x2, or 0x80, defaulting to 0x80");
+						broker.getLogger().severe("[" + address + "] engine should only return 0x0, 0x1, 0x2, or 0x80, defaulting to 0x80");
 				}
 
 				returnCodes.write(desiredQos);
 				if(desiredQos != 0x80)
+				{
 					sess.subscribe(topicFilter, desiredQos);
+					broker.matchRetained(retained, topicFilter);
+				}
 			}
 			else
 				returnCodes.write(0x80);
@@ -451,6 +508,9 @@ class BrokerClientThread extends Thread
 			returnCodes.writeTo(out);
 			out.flush();
 		}
+
+		for (Message message : retained)
+			publish(message, message.getQos(), true);
 	}
 
 	private void sendConnackPacket(boolean sessionPresent, @NotNull Common.ConnectReturn result) throws IOException
@@ -477,19 +537,21 @@ class BrokerClientThread extends Thread
 		}
 	}
 
-	void publish(Message message, int qos)
+	void publish(Message message, int qos, boolean retain)
 	{
 		try
 		{
 			Common.PacketID pid = nextPid();
+			Session sess = sess();
 
 			PublishPacket packet = new PublishPacket(message, pid, broker.getLogger(), socket.getOutputStream(), writeLock);
 			packet.setPrefix("[" + address + "] ");
 			packet.setExceptionHandler(broker.exceptionHandler);
 			packet.setDesiredQos(qos);
+			packet.setDesiredRetain(retain);
 			packet.setOnComplete(transaction -> {
 				if (qos > 0)
-					sess().unfinishedSend.put(pid, transaction);
+					sess.unfinishedSend.put(pid, transaction);
 			});
 			broker.executorService.submit(packet);
 		}

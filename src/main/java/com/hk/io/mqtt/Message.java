@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,6 +25,7 @@ public final class Message implements Cloneable
 	private final InputStream streamMessage;
 	private final int streamLength;
 	private final Path pathMessage;
+	int maxReads = -1;
 
 	public Message(@NotNull String topic, @NotNull String message, @Range(from=0, to=2) int qos, boolean retain)
 	{
@@ -61,6 +63,12 @@ public final class Message implements Cloneable
 		streamLength = size;
 		pathMessage = null;
 		setQos(qos).setRetain(retain);
+	}
+
+	Message(@NotNull String topic, @NotNull File message, int maxReads, @Range(from=0, to=2) int qos, boolean retain) throws FileNotFoundException
+	{
+		this(topic, message.toPath(), qos, retain);
+		this.maxReads = maxReads;
 	}
 
 	public Message(@NotNull String topic, @NotNull File message, @Range(from=0, to=2) int qos, boolean retain) throws FileNotFoundException
@@ -174,6 +182,13 @@ public final class Message implements Cloneable
 				InputStream in = Files.newInputStream(pathMessage);
 				IOUtil.copyTo(in, out, 256);
 				in.close();
+				if(maxReads > 0)
+				{
+					maxReads--;
+					if(maxReads == 0)
+						Files.delete(pathMessage);
+				}
+				break;
 			default:
 				throw new AssertionError("unexpected");
 		}

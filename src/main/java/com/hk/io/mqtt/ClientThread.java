@@ -6,6 +6,7 @@ import com.hk.util.KeyValue;
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -44,7 +45,7 @@ class ClientThread extends Thread
 		{
 			InputStream in = socket.getInputStream();
 			byte b;
-			while(!globalStop.get())
+			while(!globalStop.get() && socket.isConnected())
 			{
 				// fixed header
 				b = Common.read(in);
@@ -72,7 +73,8 @@ class ClientThread extends Thread
 						handleConnackPacket(in, remLen);
 						break;
 					case PUBLISH:
-						throw new Error("TODO PUBLISH");
+						handlePublishPacket(in, remLen, b);
+						break;
 					case PUBACK:
 						handlePubackPacket(in, remLen);
 						break;
@@ -80,12 +82,13 @@ class ClientThread extends Thread
 						handlePubrecPacket(in, remLen);
 						break;
 					case PUBREL:
-						throw new Error("TODO PUBREL");
+						handlePubrelPacket(in, remLen);
+						break;
 					case PUBCOMP:
-						handlePubcomp(in, remLen);
+						handlePubcompPacket(in, remLen);
 						break;
 					case SUBACK:
-						handleSuback(in, remLen);
+						handleSubackPacket(in, remLen);
 						break;
 					case UNSUBACK:
 						throw new Error("TODO UNSUBACK");
@@ -164,69 +167,60 @@ class ClientThread extends Thread
 
 		int size = remLen.get();
 		Message msg;
-		if(broker.options.maxVolatileMessageSize >= 0 && size > broker.options.maxVolatileMessageSize)
+		if(client.options.maxVolatileMessageSize >= 0 && size > client.options.maxVolatileMessageSize)
 		{
 			// write to file, link to message
 			File file = File.createTempFile("mqtt_message_", Long.toHexString(System.nanoTime()) + ".dat");
 			if(!file.exists() && !file.createNewFile())
 				throw new FileNotFoundException("cannot create temp file: " + file);
+			file.deleteOnExit();
 
 			OutputStream out = Files.newOutputStream(file.toPath());
 			byte[] arr = new byte[1024];
 			while(size > 0)
 			{
-				file.deleteOnExit();
 				int len = Math.min(1024, size);
-				if(in.read(arr, 0, len) != len)
-					throw new IOException(Common.EOF);
+				Common.readBytes(in, arr, len);
 				size -= len;
 				out.write(arr, 0, len);
 			}
 			out.close();
-			msg = new Message(topic, file, qos, retain);
+			msg = new Message(topic, file, 1, qos, retain);
 		}
 		else
 		{
 			// read to memory, link to message
 			byte[] arr = new byte[size];
-			if(in.read(arr) != size)
-				throw new IOException(Common.EOF);
+			Common.readBytes(in, arr);
 
 			msg = new Message(topic, arr, qos, retain);
 		}
 		remLen.set(0);
 
-		if(broker.getLogger().isLoggable(Level.FINEST))
-			broker.getLogger().finest("[" + address + "] received: " + msg);
+		if(client.getLogger().isLoggable(Level.FINEST))
+			client.getLogger().finest("received: " + msg);
 
 		if(qos == 0 || qos == 1)
 		{
-			// forward to subscribers
-			broker.beginForward(msg);
+			client.deliver(msg);
 
 			if(qos == 1)
 			{
 				OutputStream out = socket.getOutputStream();
-				synchronized (writeLock)
-				{
-					if(broker.getLogger().isLoggable(Level.FINE))
-						broker.getLogger().fine("[" + address + "] Sending packet: PUBACK (pid: " + pid + ")");
-					Common.sendPuback(out, pid);
-				}
+				if(client.getLogger().isLoggable(Level.FINE))
+					client.getLogger().fine("Sending packet: PUBACK (pid: " + pid + ")");
+				Common.sendPuback(out, pid);
 			}
 		}
 		else
 		{
-			// await pubrel before forwarding
-			sess().unfinishedRecv.put(pid, new PublishPacket.Transaction(msg, pid, 2).setLastPacket(PacketType.PUBREC));
+			// await pubrel before delivering
+			client.unfinishedRecv.put(pid, new PublishPacket.Transaction(msg, pid, 2).setLastPacket(PacketType.PUBREC));
 
 			OutputStream out = socket.getOutputStream();
-			synchronized (writeLock)
-			{
-				if(broker.getLogger().isLoggable(Level.FINE))
-					broker.getLogger().fine("[" + address + "] Sending packet: PUBREC (pid: " + pid + ")");
-				Common.sendPubrec(out, pid);
-			}
+			if(client.getLogger().isLoggable(Level.FINE))
+				client.getLogger().fine("Sending packet: PUBREC (pid: " + pid + ")");
+			Common.sendPubrec(out, pid);
 		}
 	}
 
@@ -279,30 +273,25 @@ class ClientThread extends Thread
 
 	private void handlePubrelPacket(InputStream in, AtomicInteger remLen) throws IOException
 	{
-		Session sess = sess();
-
 		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
-		PublishPacket.Transaction transaction = sess.unfinishedRecv.remove(pid);
+		PublishPacket.Transaction transaction = client.unfinishedRecv.remove(pid);
 		if(transaction == null || transaction.qos != 2 || transaction.lastPacket != PacketType.PUBREC)
 		{
-			broker.getLogger().warning("unexpected PUBREL, disconnecting");
-			localStop.set(true);
+			client.getLogger().warning("unexpected PUBREL, disconnecting");
+			globalStop.set(true);
 		}
 		else
 		{
-			broker.beginForward((Message) transaction.message);
+			client.deliver((Message) transaction.message);
 
 			OutputStream out = socket.getOutputStream();
-			synchronized (writeLock)
-			{
-				if(broker.getLogger().isLoggable(Level.FINE))
-					broker.getLogger().fine("[" + address + "] Sending packet: PUBCOMP (pid: " + pid + ")");
-				Common.sendPubcomp(out, pid);
-			}
+			if(client.getLogger().isLoggable(Level.FINE))
+				client.getLogger().fine("Sending packet: PUBCOMP (pid: " + pid + ")");
+			Common.sendPubcomp(out, pid);
 		}
 	}
 
-	private void handlePubcomp(InputStream in, AtomicInteger remLen) throws IOException
+	private void handlePubcompPacket(InputStream in, AtomicInteger remLen) throws IOException
 	{
 		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
 		PublishPacket.Transaction transaction = client.unfinishedSend.remove(pid);
@@ -321,7 +310,7 @@ class ClientThread extends Thread
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
-	private void handleSuback(InputStream in, AtomicInteger remLen) throws IOException
+	private void handleSubackPacket(InputStream in, AtomicInteger remLen) throws IOException
 	{
 		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
 		PublishPacket.Transaction transaction = client.unfinishedSend.remove(pid);
@@ -523,6 +512,8 @@ class ClientThread extends Thread
 			{
 				client.getLogger().fine("Sending packet: SUBSCRIBE with " + topicFilters.length + " topic(s)");
 
+
+				client.unfinishedSend.put(pid, new PublishPacket.Transaction(topicFilters, pid, 1).setLastPacket(PacketType.SUBSCRIBE));
 				OutputStream out = socket.getOutputStream();
 				out.write(0x82);
 				int remlen = 0;
@@ -536,8 +527,6 @@ class ClientThread extends Thread
 					Common.writeUTFString(out, topicFilter.key);
 					out.write(topicFilter.value & 3);
 				}
-
-				client.unfinishedSend.put(pid, new PublishPacket.Transaction(topicFilters, pid, 1).setLastPacket(PacketType.SUBSCRIBE));
 
 				out.flush();
 				connectTime.set(System.nanoTime() / 1000000);

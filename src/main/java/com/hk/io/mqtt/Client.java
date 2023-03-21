@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
 import javax.net.ssl.SSLSocketFactory;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -488,6 +489,24 @@ public class Client
 		{
 			clientThread.subscribe(topicFilters, nextPid());
 			return null;
+		}
+	}
+
+	void deliver(Message msg)
+	{
+//		System.out.println("Delivered!!! " + msg);
+		try
+		{
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			msg.writeTo(bout);
+			bout.close();
+
+//			System.out.println(msg.getTopic() + " = " + bout.toString("UTF-8"));
+			System.out.println(msg.getTopic());
+		}
+		catch (IOException ex)
+		{
+			ex.printStackTrace();
 		}
 	}
 

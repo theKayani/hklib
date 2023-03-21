@@ -29,6 +29,8 @@ public class ClientOptions
 	boolean waitForPubAck;
 	// similar to waitForPubAck but for SUBSCRIBE and UNSUBSCRIBE packets
 	boolean waitForSubAck;
+	// non-volatile payload threshold
+	int maxVolatileMessageSize;
 
 	public ClientOptions()
 	{
@@ -38,6 +40,7 @@ public class ClientOptions
 		qosAckTimeout = 15000;
 		waitForPubAck = true;
 		waitForSubAck = true;
+		maxVolatileMessageSize = 524288; // 512KB
 	}
 
 	public ClientOptions(ClientOptions options)
@@ -166,6 +169,7 @@ public class ClientOptions
 		qosAckTimeout = options.qosAckTimeout;
 		waitForPubAck = options.waitForPubAck;
 		waitForSubAck = options.waitForSubAck;
+		maxVolatileMessageSize = options.maxVolatileMessageSize;
 		return this;
 	}
 }

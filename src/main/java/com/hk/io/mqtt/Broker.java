@@ -34,6 +34,7 @@ public class Broker implements Runnable
 	private final InetSocketAddress host;
 	final List<BrokerClientThread> currentClients;
 	final Map<String, BrokerClientThread> clientIDThreadMap;
+	final Map<String, Message> retained;
 	public final BrokerOptions options;
 	private final AtomicReference<Status> status;
 	private final Logger logger;
@@ -62,6 +63,7 @@ public class Broker implements Runnable
 		this.options = new BrokerOptions();
 		currentClients = Collections.synchronizedList(new ArrayList<>());
 		clientIDThreadMap = Collections.synchronizedMap(new HashMap<>());
+		retained = Collections.synchronizedMap(new HashMap<>());
 		status = new AtomicReference<>(Status.NOT_BOUND);
 		logger = Logger.getLogger("MQTT-Broker");
 		logger.setLevel(Level.INFO);
@@ -190,7 +192,7 @@ public class Broker implements Runnable
 
 		status.set(Status.BOUND);
 		logger.info("Successfully bound and listening!");
-		while(!globalStop.get())
+		while(!globalStop.get() && socket.isBound())
 		{
 			SocketAddress clientAddr = null;
 			try
@@ -318,6 +320,17 @@ public class Broker implements Runnable
 
 	void beginForward(Message message)
 	{
+		if(Common.isInvalidTopic(message.getTopic()))
+			throw new IllegalStateException("unexpected message topic: " + message);
+
+		if(message.isRetain())
+		{
+			if(message.getSize() == 0)
+				retained.remove(message.getTopic());
+			else
+				retained.put(message.getTopic(), message);
+		}
+
 		AtomicInteger count = new AtomicInteger(0);
 		forAll(clientThread -> {
 			Session sess = clientThread.sess();
@@ -327,7 +340,7 @@ public class Broker implements Runnable
 				if(qos >= 0 && engine.canSendTo(message, sess))
 				{
 					count.incrementAndGet();
-					clientThread.publish(message, qos);
+					clientThread.publish(message, Math.max(qos, message.getQos()), false);
 				}
 			}
 		});
@@ -336,6 +349,18 @@ public class Broker implements Runnable
 		{
 			int size = message.getSize();
 			logger.info("publishing " + (size == -1 ? "" : size + "b ") + "message with topic " + message.getTopic() + " to " + count + " clients");
+		}
+	}
+
+	void matchRetained(List<Message> lst, String topicFilter)
+	{
+		synchronized (retained)
+		{
+			for (Map.Entry<String, Message> entry : retained.entrySet())
+			{
+				if(Session.matches(entry.getKey(), topicFilter))
+					lst.add(entry.getValue());
+			}
 		}
 	}
 

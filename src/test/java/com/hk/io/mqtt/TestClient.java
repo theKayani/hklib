@@ -2,6 +2,7 @@ package com.hk.io.mqtt;
 
 import com.hk.args.Arguments;
 import com.hk.math.MathUtil;
+import com.hk.math.StorageUtils;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -65,6 +66,16 @@ public class TestClient
             {
                 client.setPassword(args.getArg(1));
                 System.out.println("Set Super Secret Password!");
+            }
+            else if(args.getArg(0).equalsIgnoreCase("log-level"))
+            {
+                client.setLogLevel(Level.parse(args.getArg(1).toUpperCase(Locale.ROOT)));
+                System.out.println("Set Log Level: " + client.getLogger().getLevel());
+            }
+            else if(args.getArg(0).equalsIgnoreCase("max-volatile-message-size"))
+            {
+                client.options.maxVolatileMessageSize = Integer.parseInt(args.getArg(1));
+                System.out.println("Set Max Volatile Message Size: " + client.options.maxVolatileMessageSize);
             }
             else if(args.getArg(0).equalsIgnoreCase("will"))
             {

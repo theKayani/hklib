@@ -23,6 +23,7 @@ final class PublishPacket implements Runnable
 	private Consumer<IOException> exceptionHandler;
 	private Consumer<Transaction> onComplete;
 	private int desiredQos;
+	private Boolean desiredRetain;
 	private boolean duplicate = false;
 	private String prefix;
 
@@ -34,30 +35,43 @@ final class PublishPacket implements Runnable
 		this.out = Objects.requireNonNull(out);
 		this.writeLock = writeLock == null ? new Object() : writeLock;
 		desiredQos = -1;
+		desiredRetain = null;
 
 		if (pid == null && message.getQos() != 0)
 			throw new IllegalArgumentException("pid should NOT be null with a non-zero QoS message");
 	}
 
-	public PublishPacket setPrefix(String prefix)
+	PublishPacket setPrefix(String prefix)
 	{
 		this.prefix = prefix;
 		return this;
 	}
 
-	public PublishPacket setExceptionHandler(Consumer<IOException> exceptionHandler)
+	PublishPacket setExceptionHandler(Consumer<IOException> exceptionHandler)
 	{
 		this.exceptionHandler = exceptionHandler;
 		return this;
 	}
 
-	public PublishPacket setOnComplete(Consumer<Transaction> onComplete)
+	PublishPacket setOnComplete(Consumer<Transaction> onComplete)
 	{
 		this.onComplete = Objects.requireNonNull(onComplete);
 		return this;
 	}
 
-	public PublishPacket setDesiredQos(@Range(from=0, to=2) int desiredQos)
+	PublishPacket setDesiredRetain(boolean desiredRetain)
+	{
+		this.desiredRetain = desiredRetain;
+		return this;
+	}
+
+	PublishPacket setNoDesiredRetain()
+	{
+		this.desiredRetain = null;
+		return this;
+	}
+
+	PublishPacket setDesiredQos(@Range(from=0, to=2) int desiredQos)
 	{
 		if(desiredQos < 0 || desiredQos > 2)
 			throw new IllegalArgumentException("qos should be 0 to 2");
@@ -68,7 +82,7 @@ final class PublishPacket implements Runnable
 		return this;
 	}
 
-	public PublishPacket setDuplicate()
+	PublishPacket setDuplicate()
 	{
 		this.duplicate = true;
 		return this;
@@ -83,7 +97,7 @@ final class PublishPacket implements Runnable
 			{
 				int qos = desiredQos < 0 ? message.getQos() : desiredQos;
 				int flags = 0;
-				if (message.isRetain())
+				if (desiredRetain == null && message.isRetain() || desiredRetain != null && desiredRetain)
 					flags |= 0x1;
 				flags |= (qos & 3) << 1;
 				if (duplicate)
@@ -105,6 +119,10 @@ final class PublishPacket implements Runnable
 					throw new IOException("packet size overflow: " + total + " > 268435455 (max packet size)");
 
 				logger.fine((prefix == null ? "" : prefix) + "Sending packet: PUBLISH (QoS: " + qos + ", " + (pid == null ? "no pid" : MathUtil.shortHex(pid.get())) + ", " + total + " b)");
+
+				if (onComplete != null)
+					onComplete.accept(new Transaction(message, pid, qos));
+
 				Common.writeRemainingField(out, total);
 				Common.writeBytes(out, topicBytes);
 				if (qos > 0)
@@ -115,13 +133,10 @@ final class PublishPacket implements Runnable
 				else
 					message.writeTo(out);
 
-				if (onComplete != null)
-					onComplete.accept(new Transaction(message, pid, qos));
-
 				out.flush();
 
 				if (logger.isLoggable(Level.FINEST))
-					logger.finest("published: " + message);
+					logger.finest((prefix == null ? "" : prefix) + "published: " + message);
 			}
 		}
 		catch (IOException ex)
@@ -147,7 +162,7 @@ final class PublishPacket implements Runnable
 			setLastPacket(PacketType.PUBLISH);
 		}
 
-		public Transaction setLastPacket(PacketType lastPacket)
+		Transaction setLastPacket(PacketType lastPacket)
 		{
 			this.lastPacket = lastPacket;
 			return updateTimestamp();
