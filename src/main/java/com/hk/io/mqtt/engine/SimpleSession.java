@@ -1,7 +1,6 @@
 package com.hk.io.mqtt.engine;
 
 import com.hk.io.mqtt.Session;
-import com.hk.util.Requirements;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
@@ -56,7 +55,6 @@ public class SimpleSession extends Session
 	public void unsubscribe(@NotNull String topicFilter)
 	{
 		Objects.requireNonNull(topicFilter);
-
 		desiredTopics.remove(topicFilter);
 	}
 }

@@ -5,10 +5,10 @@ import org.jetbrains.annotations.Range;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -52,9 +52,9 @@ class Common
 
 	static String readUTFString(InputStream in, AtomicInteger remLen) throws IOException
 	{
-		// TODO: MQTT-1.5.3-1
-		// TODO: MQTT-1.5.3-2
-		// TODO: MQTT-1.5.3-3
+		// TODO: (MQTT-1.5.3-1, MQTT-1.5.3-2, MQTT-1.5.3-3)
+		// 	probably more efficient to read it manually
+		// 	into a string anyway instead of bytes first
 
 		return new String(readBytes(in, remLen), StandardCharsets.UTF_8);
 	}
@@ -161,26 +161,6 @@ class Common
 		out.write(0x2);
 		writeShort(out, pid.get());
 		out.flush();
-	}
-
-	/**
-	 * Test whether this topic contains wildcards and can not be used
-	 * to publish messages and wills. Returns false if the provided
-	 * topic is pure.
-	 *
-	 * @param topic the topic to test
-	 * @return false if this topic contains no wildcards and is pure
-	 */
-	static boolean isInvalidTopic(String topic)
-	{
-		char c;
-		for (int i = 0; i < topic.length(); i++)
-		{
-			c = topic.charAt(i);
-			if(c == '+' || c == '#')
-				return true;
-		}
-		return false;
 	}
 
 	static int utfBytesLength(String s)

@@ -97,4 +97,9 @@ public class MessageInput
     {
         return message.isRetain();
     }
+
+    public boolean canRead()
+    {
+        return message.maxReads != 0;
+    }
 }

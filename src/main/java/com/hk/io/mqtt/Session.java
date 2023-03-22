@@ -3,9 +3,7 @@ package com.hk.io.mqtt;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Session
 {
@@ -62,8 +60,83 @@ public abstract class Session
 	public abstract void unsubscribe(@NotNull String topicFilter);
 
 	/**
+	 * Test whether this topic does not contain wildcards and can be
+	 * used to publish messages and wills. Returns true if the provided
+	 * topic is pure.
+	 *
+	 * @param topic the topic to test
+	 * @return true if this topic contains no wildcards and is pure
+	 */
+	public static boolean isValidTopic(String topic)
+	{
+		if(topic.isEmpty())
+			return false;
+
+		char c;
+		for (int i = 0; i < topic.length(); i++)
+		{
+			c = topic.charAt(i);
+			if(c == '+' || c == '#')
+				return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Test whether this topic filter is valid and could be
+	 * subscribed to.
+	 *
+	 * @param topicFilter the topic filter to test
+	 * @return false if this topic filter is valid
+	 */
+	public static boolean isValidTopicFilter(String topicFilter)
+	{
+		return split(topicFilter) != null;
+	}
+
+	/**
+	 * Split the topic or filter into the levels
+	 *
+	 * @param topicFilter the topic filter to test
+	 * @return false if this topic filter is valid
+	 */
+	public static String[] split(String topicFilter)
+	{
+		if(topicFilter.isEmpty())
+			return null; // invalid
+
+		List<String> lst = new ArrayList<>();
+		StringBuilder level = new StringBuilder();
+		char c;
+		boolean has = false;
+		for (int i = 0; i < topicFilter.length(); i++)
+		{
+			has = false;
+			c = topicFilter.charAt(i);
+
+			if (c == '/')
+			{
+				lst.add(level.toString());
+				level.setLength(0);
+				has = true;
+			}
+			else
+			{
+				if((c == '+' || c == '#') && level.length() > 0)
+					return null; // invalid
+				if(c == '#' && i < topicFilter.length() - 1)
+					return null; // invalid
+				level.append(c);
+			}
+		}
+		if(has || level.length() > 0)
+			lst.add(level.toString());
+		return lst.toArray(new String[0]);
+	}
+
+	/**
 	 * Check whether the subscription matches the topic provided given
-	 * the MQTT spec.
+	 * the MQTT spec: http://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html#_Toc398718106
 	 *
 	 * @param topic the pure topic to test
 	 * @param topicFilter the topic filter to check against
@@ -71,16 +144,50 @@ public abstract class Session
 	 */
 	public static boolean matches(String topic, String topicFilter)
 	{
-		System.out.println("topic = '" + topic + "'");
-		System.out.println("topicFilter = '" + topicFilter + "'");
-		if(Common.isInvalidTopic(topicFilter))
+		if(!isValidTopic(topic))
+			throw new IllegalArgumentException("invalid topic: " + topic);
+		if(topic.equals(topicFilter))
+			return true;
+
+		boolean tpcHasSysChar = topic.charAt(0) == '$';
+		boolean fltHasSysChar = topicFilter.charAt(0) == '$';
+
+		if(tpcHasSysChar != fltHasSysChar)
+			return false;
+		String[] fltLvls = split(topicFilter);
+		if(fltLvls == null)
+			throw new IllegalArgumentException("invalid topic filter: " + topicFilter);
+
+		String[] tpcLvls = split(topic);
+		if(tpcLvls == null)
+			throw new Error("not possibru"); // all conditions covered in isValidTopic(topic)
+
+		int i;
+		for (i = 0; i < tpcLvls.length; i++)
 		{
-			// TODO: wildcard check
-			throw new Error("FINISH HIM");
+			if(i == fltLvls.length)
+			{
+				// have remaining levels that haven't been matched
+				return false;
+			}
+			if(fltLvls[i].equals("+"))
+			{
+				// match single-level wildcard for level
+				continue;
+			}
+			if(fltLvls[i].equals("#"))
+			{
+				// match multi-level wildcard for rest of topic
+				return true;
+			}
+			if(tpcLvls[i].equals(fltLvls[i]))
+			{
+				// match level as case-sensitive string
+				continue;
+			}
+			// match multi-level wildcard for parent topic too
+			return i < fltLvls.length - 1 && fltLvls[i + 1].equals("#");
 		}
-		else
-		{
-			return topic.equals(topicFilter);
-		}
+		return true;
 	}
 }

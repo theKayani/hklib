@@ -103,7 +103,8 @@ class BrokerClientThread extends Thread
 						handleSubscribePacket(in, remLen);
 						break;
 					case UNSUBSCRIBE:
-						throw new Error("TODO UNSUBSCRIBE");
+						handleUnsubscribePacket(in, remLen);
+						break;
 					case PINGREQ:
 						OutputStream out = socket.getOutputStream();
 
@@ -223,7 +224,7 @@ class BrokerClientThread extends Thread
 			willTopic = Common.readUTFString(in, remLen);
 			willMessage = Common.readBytes(in, remLen);
 
-			if(Common.isInvalidTopic(willTopic))
+			if(!Session.isValidTopic(willTopic))
 			{
 				broker.getLogger().fine("[" + address + "] invalid will topic, disconnecting");
 				localStop.set(true);
@@ -293,7 +294,7 @@ class BrokerClientThread extends Thread
 
 		String topic = Common.readUTFString(in, remLen);
 
-		if(Common.isInvalidTopic(topic))
+		if(!Session.isValidTopic(topic))
 		{
 			broker.getLogger().fine("[" + address + "] invalid publish topic, disconnecting");
 			localStop.set(true);
@@ -461,6 +462,12 @@ class BrokerClientThread extends Thread
 		List<Message> retained = new ArrayList<>();
 		do {
 			String topicFilter = Common.readUTFString(in, remLen);
+			if(!Session.isValidTopicFilter(topicFilter))
+			{
+				broker.getLogger().warning("[" + address + "] invalid topic filter, disconnecting");
+				localStop.set(true);
+				return;
+			}
 			int desiredQos = Common.read(in, remLen);
 			if(desiredQos < 0 || desiredQos > 2)
 			{
@@ -511,6 +518,44 @@ class BrokerClientThread extends Thread
 
 		for (Message message : retained)
 			publish(message, message.getQos(), true);
+	}
+
+	private void handleUnsubscribePacket(InputStream in, AtomicInteger remLen) throws IOException
+	{
+		Session sess = sess();
+
+		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
+		if(remLen.get() == 0)
+		{
+			broker.getLogger().warning("[" + address + "] empty unsubscribe packet not allowed, disconnecting");
+			localStop.set(true);
+			return;
+		}
+
+		String topicFilter;
+		do {
+			topicFilter = Common.readUTFString(in, remLen);
+			if(!Session.isValidTopicFilter(topicFilter))
+			{
+				broker.getLogger().warning("[" + address + "] invalid topic filter, disconnecting");
+				localStop.set(true);
+				return;
+			}
+			sess.unsubscribe(topicFilter);
+		} while(remLen.get() > 0);
+
+		OutputStream out = socket.getOutputStream();
+
+		synchronized (writeLock)
+		{
+			if(broker.getLogger().isLoggable(Level.FINE))
+				broker.getLogger().fine("[" + address + "] Sending packet: UNSUBACK");
+
+			out.write(0xB0);
+			Common.writeRemainingField(out, 2);
+			Common.writeShort(out, pid.get());
+			out.flush();
+		}
 	}
 
 	private void sendConnackPacket(boolean sessionPresent, @NotNull Common.ConnectReturn result) throws IOException

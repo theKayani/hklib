@@ -167,6 +167,11 @@ public final class Message implements Cloneable
 		}
 	}
 
+	public MessageInput toInput()
+	{
+		return new MessageInput(this);
+	}
+
 	void writeTo(OutputStream out) throws IOException
 	{
 		switch (type)

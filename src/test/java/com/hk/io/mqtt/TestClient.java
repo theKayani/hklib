@@ -2,7 +2,6 @@ package com.hk.io.mqtt;
 
 import com.hk.args.Arguments;
 import com.hk.math.MathUtil;
-import com.hk.math.StorageUtils;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -26,8 +25,10 @@ public class TestClient
 //        client = new Client("mqtt.flespi.io", 1883);
 //        client = new Client("mqtt.dioty.co", 1883);
 //        client = new Client("mqtt.fluux.io", 1883);
+//        client = new Client("mqtt.fluux.io", 1883);
         client.setLogLevel(Level.ALL);
         client.setDefaultExceptionHandler();
+        client.setMessageConsumer(message -> System.out.println(message.getTopic() + " = " + message.toInput()));
 
         String cmd;
         Scanner in = new Scanner(System.in);
@@ -126,6 +127,13 @@ public class TestClient
                 String topicFilter = args.getArg(1);
 
                 System.out.println("Subscribe result: 0x" + MathUtil.byteHex(client.subscribe(topicFilter, qos)));
+            }
+            else if(args.getArg(0).equalsIgnoreCase("unsubscribe"))
+            {
+                String topicFilter = args.getArg(1);
+                client.unsubscribe(topicFilter);
+
+                System.out.println("Unsubscribed!");
             }
             else if(args.getArg(0).equalsIgnoreCase("ping"))
             {

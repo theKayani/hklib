@@ -320,7 +320,7 @@ public class Broker implements Runnable
 
 	void beginForward(Message message)
 	{
-		if(Common.isInvalidTopic(message.getTopic()))
+		if(!Session.isValidTopic(message.getTopic()))
 			throw new IllegalStateException("unexpected message topic: " + message);
 
 		if(message.isRetain())

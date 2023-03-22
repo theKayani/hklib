@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
 import javax.net.ssl.SSLSocketFactory;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -21,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -50,6 +50,8 @@ public class Client
 	private Socket socket;
 	private ClientThread clientThread;
 	private AtomicBoolean hardStop;
+	private MessageConsumer messageConsumer;
+	private Predicate<String> topicPredicate;
 	AtomicBoolean globalStop;
 
 	public Client(String host, int port)
@@ -215,6 +217,32 @@ public class Client
 		if(keepAlive < 1 || keepAlive > 65535)
 			throw new IllegalArgumentException("keep alive timeout should be 1 to 65535");
 		this.keepAlive = keepAlive;
+		return this;
+	}
+
+	@Nullable
+	public MessageConsumer getMessageConsumer()
+	{
+		return messageConsumer;
+	}
+
+	@Contract("_ -> this")
+	public Client setMessageConsumer(MessageConsumer messageConsumer)
+	{
+		this.messageConsumer = messageConsumer;
+		return this;
+	}
+
+	@Nullable
+	public Predicate<String> getTopicPredicate()
+	{
+		return topicPredicate;
+	}
+
+	@Contract("_ -> this")
+	public Client setTopicPredicate(Predicate<String> topicPredicate)
+	{
+		this.topicPredicate = topicPredicate;
 		return this;
 	}
 
@@ -446,6 +474,8 @@ public class Client
 				throw new IllegalArgumentException("topic filter #" + i + " missing Topic Filter (key): " + topicFilter);
 			if(Common.utfBytesLength(topic) > 65535)
 				throw new IllegalArgumentException("topic filter #" + i + " too long: " + topicFilter);
+			if(!Session.isValidTopicFilter(topic))
+				throw new IllegalArgumentException("topic filter #" + i + " isn't a valid topic filter: " + topicFilter);
 			Integer dqos = topicFilter.getValue();
 			if (dqos == null)
 				throw new IllegalArgumentException("topic filter #" + i + " missing QoS (value): " + topicFilter);
@@ -492,17 +522,59 @@ public class Client
 		}
 	}
 
+	@SuppressWarnings("SynchronizationOnLocalVariableOrMethodParameter")
+	public void unsubscribe(String... topicFilters)
+	{
+		if(status.get() != Status.AUTHORIZED)
+			return;
+		if(topicFilters == null || topicFilters.length == 0)
+			throw new IllegalArgumentException("expected one or more topic filters");
+
+		for (int i = 0; i < topicFilters.length; i++)
+		{
+			String topicFilter = topicFilters[i];
+			if (topicFilter == null)
+				throw new IllegalArgumentException("topic filter #" + i + " is null");
+			if(Common.utfBytesLength(topicFilter) > 65535)
+				throw new IllegalArgumentException("topic filter #" + i + " too long: " + topicFilter);
+			if(!Session.isValidTopicFilter(topicFilter))
+				throw new IllegalArgumentException("topic filter #" + i + " isn't a valid topic filter: " + topicFilter);
+		}
+
+		if (options.waitForSubAck)
+		{
+			Common.PacketID pid = nextPid();
+			synchronized (pid)
+			{
+				clientThread.unsubscribe(topicFilters, pid);
+				long waitEnd = System.nanoTime() / 1000000L + options.qosAckTimeout;
+
+				do {
+					try
+					{
+						pid.wait(Math.max(100, waitEnd - System.nanoTime() / 1000000L));
+						break;
+					}
+					catch (InterruptedException e)
+					{
+						logger.log(Level.WARNING, "interrupted waiting for subscribe response", e);
+					}
+				} while (waitEnd > System.nanoTime() / 1000000L);
+			}
+		}
+		else
+			clientThread.unsubscribe(topicFilters, nextPid());
+	}
+
 	void deliver(Message msg)
 	{
-//		System.out.println("Delivered!!! " + msg);
+		if(msg == null)
+			throw new NullPointerException("really should not happen");
+
 		try
 		{
-			ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			msg.writeTo(bout);
-			bout.close();
-
-//			System.out.println(msg.getTopic() + " = " + bout.toString("UTF-8"));
-			System.out.println(msg.getTopic());
+			if(messageConsumer != null)
+				messageConsumer.consume(msg);
 		}
 		catch (IOException ex)
 		{

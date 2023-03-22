@@ -6,7 +6,6 @@ import com.hk.util.KeyValue;
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -91,7 +90,7 @@ class ClientThread extends Thread
 						handleSubackPacket(in, remLen);
 						break;
 					case UNSUBACK:
-						throw new Error("TODO UNSUBACK");
+						handleUnsubackPacket(in, remLen);
 					case PINGRESP:
 						// handled by lastPacket
 						break;
@@ -154,7 +153,7 @@ class ClientThread extends Thread
 
 		String topic = Common.readUTFString(in, remLen);
 
-		if(Common.isInvalidTopic(topic))
+		if(!Session.isValidTopic(topic))
 		{
 			client.getLogger().fine("invalid publish topic, disconnecting");
 			globalStop.set(true);
@@ -166,8 +165,25 @@ class ClientThread extends Thread
 			pid = new Common.PacketID(Common.readShort(in, remLen));
 
 		int size = remLen.get();
-		Message msg;
-		if(client.options.maxVolatileMessageSize >= 0 && size > client.options.maxVolatileMessageSize)
+		Message msg = null;
+		if(client.getTopicPredicate() != null && !client.getTopicPredicate().test(topic))
+		{
+			int zeroes = 0;
+			while(size > 0)
+			{
+				long skipped = in.skip(size);
+				if(skipped == 0)
+				{
+					zeroes++;
+					if(zeroes == 100)
+						break;
+				}
+				else
+					zeroes = 0;
+				size -= skipped;
+			}
+		}
+		else if(client.options.maxVolatileMessageSize >= 0 && size > client.options.maxVolatileMessageSize)
 		{
 			// write to file, link to message
 			File file = File.createTempFile("mqtt_message_", Long.toHexString(System.nanoTime()) + ".dat");
@@ -202,7 +218,8 @@ class ClientThread extends Thread
 
 		if(qos == 0 || qos == 1)
 		{
-			client.deliver(msg);
+			if(msg != null)
+				client.deliver(msg);
 
 			if(qos == 1)
 			{
@@ -282,7 +299,8 @@ class ClientThread extends Thread
 		}
 		else
 		{
-			client.deliver((Message) transaction.message);
+			if(transaction.message != null)
+				client.deliver((Message) transaction.message);
 
 			OutputStream out = socket.getOutputStream();
 			if(client.getLogger().isLoggable(Level.FINE))
@@ -354,6 +372,24 @@ class ClientThread extends Thread
 						}
 					}
 				}
+				transaction.pid.notifyAll();
+			}
+		}
+	}
+
+	private void handleUnsubackPacket(InputStream in, AtomicInteger remLen) throws IOException
+	{
+		Common.PacketID pid = new Common.PacketID(Common.readShort(in, remLen));
+		PublishPacket.Transaction transaction = client.unfinishedSend.remove(pid);
+		if(transaction == null || transaction.qos != 1 || transaction.lastPacket != PacketType.UNSUBSCRIBE)
+		{
+			client.getLogger().warning("unexpected UNSUBACK, disconnecting");
+			globalStop.set(true);
+		}
+		else
+		{
+			synchronized (transaction.pid)
+			{
 				transaction.pid.notifyAll();
 			}
 		}
@@ -516,9 +552,9 @@ class ClientThread extends Thread
 				client.unfinishedSend.put(pid, new PublishPacket.Transaction(topicFilters, pid, 1).setLastPacket(PacketType.SUBSCRIBE));
 				OutputStream out = socket.getOutputStream();
 				out.write(0x82);
-				int remlen = 0;
+				int remlen = 2;
 				for (KeyValue<Integer> topicFilter : topicFilters)
-					remlen += Common.utfBytesLength(topicFilter.key) + 5;
+					remlen += Common.utfBytesLength(topicFilter.key) + 3;
 				Common.writeRemainingField(out, remlen);
 				Common.writeShort(out, pid.get());
 
@@ -527,6 +563,37 @@ class ClientThread extends Thread
 					Common.writeUTFString(out, topicFilter.key);
 					out.write(topicFilter.value & 3);
 				}
+
+				out.flush();
+				connectTime.set(System.nanoTime() / 1000000);
+			}
+			catch (IOException ex)
+			{
+				if(client.exceptionHandler != null)
+					client.exceptionHandler.accept(ex);
+			}
+		});
+	}
+
+	void unsubscribe(String[] topicFilters, Common.PacketID pid)
+	{
+		client.executorService.submit(() -> {
+			try
+			{
+				client.getLogger().fine("Sending packet: UNSUBSCRIBE with " + topicFilters.length + " topic(s)");
+
+
+				client.unfinishedSend.put(pid, new PublishPacket.Transaction(topicFilters, pid, 1).setLastPacket(PacketType.UNSUBSCRIBE));
+				OutputStream out = socket.getOutputStream();
+				out.write(0xA2);
+				int remlen = 2;
+				for (String topicFilter : topicFilters)
+					remlen += Common.utfBytesLength(topicFilter) + 2;
+				Common.writeRemainingField(out, remlen);
+				Common.writeShort(out, pid.get());
+
+				for (String topicFilter : topicFilters)
+					Common.writeUTFString(out, topicFilter);
 
 				out.flush();
 				connectTime.set(System.nanoTime() / 1000000);
