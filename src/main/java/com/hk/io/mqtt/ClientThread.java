@@ -91,6 +91,7 @@ class ClientThread extends Thread
 						break;
 					case UNSUBACK:
 						handleUnsubackPacket(in, remLen);
+						break;
 					case PINGRESP:
 						// handled by lastPacket
 						break;
@@ -519,8 +520,9 @@ class ClientThread extends Thread
 	{
 		try
 		{
-			PublishPacket packet = new PublishPacket(message, pid, client.getLogger(), socket.getOutputStream(), null);
+			PublishPacket packet = new PublishPacket(message, pid, client.getLogger(), socket.getOutputStream(), this);
 			packet.setExceptionHandler(client.exceptionHandler);
+			packet.setLocalStop(globalStop);
 			packet.setOnComplete(transaction -> {
 				connectTime.set(System.nanoTime() / 1000000);
 				synchronized (pid)

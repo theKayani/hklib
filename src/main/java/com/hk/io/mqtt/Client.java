@@ -71,7 +71,7 @@ public class Client
 		status = new AtomicReference<>(Status.NOT_CONNECTED);
 		globalStop = new AtomicBoolean(false);
 		packetID = -1;
-		logger = Logger.getLogger("MQTT-Client");
+		logger = Logger.getLogger("MQTT-Client-" + clientID);
 		logger.setLevel(Level.INFO);
 		logger.setUseParentHandlers(false);
 		logger.addHandler(new ConsoleHandler());
@@ -570,16 +570,20 @@ public class Client
 	{
 		if(msg == null)
 			throw new NullPointerException("really should not happen");
+		if(globalStop.get())
+			return;
 
-		try
-		{
-			if(messageConsumer != null)
-				messageConsumer.consume(msg);
-		}
-		catch (IOException ex)
-		{
-			ex.printStackTrace();
-		}
+		executorService.submit(() -> {
+			try
+			{
+				if(messageConsumer != null)
+					messageConsumer.consume(msg);
+			}
+			catch (IOException ex)
+			{
+				ex.printStackTrace();
+			}
+		});
 	}
 
 	private synchronized Common.PacketID nextPid()

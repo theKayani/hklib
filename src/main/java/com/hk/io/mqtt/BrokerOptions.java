@@ -28,7 +28,7 @@ public class BrokerOptions
 		threadPoolSize = 2;
 		maxClients = 128;
 		maxVolatileMessageSize = 1048576; // 1MB
-		qosAckTimeout = 15000;
+		qosAckTimeout = 20000;
 	}
 
 	public BrokerOptions(BrokerOptions options)

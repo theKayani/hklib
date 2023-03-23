@@ -74,7 +74,7 @@ class BrokerClientThread extends Thread
 
 				if(type != PacketType.CONNECT && sess() == null)
 				{
-					broker.getLogger().fine("[" + address + "] unexpected publish before auth, disconnecting");
+					broker.getLogger().warning("[" + address + "] unexpected publish before auth, disconnecting");
 					localStop.set(true);
 					break;
 				}
@@ -85,7 +85,7 @@ class BrokerClientThread extends Thread
 						handleConnectPacket(in, remLen);
 						break;
 					case PUBLISH:
-						handlePublishPacket(in, remLen, b & 0xF);
+						handlePublishPacket(in, remLen, b);
 						break;
 					case PUBACK:
 						handlePubackPacket(in, remLen);
@@ -128,7 +128,7 @@ class BrokerClientThread extends Thread
 				connectTime.set(System.nanoTime() / 1000000L);
 				if(!localStop.get() && remLen.get() != 0)
 				{
-					broker.getLogger().fine("[" + address + "] remaining length overflow, disconnecting");
+					broker.getLogger().warning("[" + address + "] remaining length overflow, disconnecting");
 					localStop.set(true);
 				}
 			}
@@ -155,20 +155,21 @@ class BrokerClientThread extends Thread
 	{
 		if(gotConnect.getAndSet(true))
 		{
-			broker.getLogger().fine("[" + address + "] duplicate connect, disconnecting");
+			broker.getLogger().warning("[" + address + "] duplicate connect, disconnecting");
 			localStop.set(true);
 			return;
 		}
 		// variable header
 		byte[] bs = new byte[7];
-		if(in.read(bs) != 7 || remLen.addAndGet(-7) < 0)
+		Common.readBytes(in, bs);
+		if(remLen.addAndGet(-7) < 0)
 			throw new IOException(Common.EOF);
 		byte[] expected = { 0x0, 0x4, 0x4D, 0x51, 0x54, 0x54, 0x4 };
 		for (int i = 0; i < 7; i++)
 		{
 			if(bs[i] != expected[i])
 			{
-				broker.getLogger().fine("[" + address + "] Incorrect protocol or version, disconnecting with ack");
+				broker.getLogger().warning("[" + address + "] Incorrect protocol or version, disconnecting with ack");
 				sendConnackPacket(false, Common.ConnectReturn.UNACCEPTABLE_PROTOCOL_VERSION);
 				localStop.set(true);
 				return;
@@ -193,7 +194,7 @@ class BrokerClientThread extends Thread
 
 		if(breach)
 		{
-			broker.getLogger().fine("[" + address + "] Unexpected connect flags: " + MathUtil.byteBin(connectFlags));
+			broker.getLogger().warning("[" + address + "] Unexpected connect flags: " + MathUtil.byteBin(connectFlags) + ", disconnecting");
 			localStop.set(true);
 			return;
 		}
@@ -203,7 +204,7 @@ class BrokerClientThread extends Thread
 		String clientID = Common.readUTFString(in, remLen);
 		if(!Broker.isValidClientID(clientID) || !broker.engine.tryClientID(clientID))
 		{
-			broker.getLogger().fine("[" + address + "] invalid client identifier, disconnecting with ack");
+			broker.getLogger().warning("[" + address + "] invalid client identifier, disconnecting with ack");
 			sendConnackPacket(false, Common.ConnectReturn.IDENTIFIER_REJECTED);
 			localStop.set(true);
 			return;
@@ -211,7 +212,7 @@ class BrokerClientThread extends Thread
 
 		if(!hasUsername && broker.engine.requireUsername(clientID) || !hasPassword && broker.engine.requirePassword(clientID))
 		{
-			broker.getLogger().fine("[" + address + "] no username/password provided, disconnecting with ack");
+			broker.getLogger().warning("[" + address + "] no username/password provided, disconnecting with ack");
 			sendConnackPacket(false, Common.ConnectReturn.BAD_USERNAME_OR_PASSWORD);
 			localStop.set(true);
 			return;
@@ -226,7 +227,7 @@ class BrokerClientThread extends Thread
 
 			if(!Session.isValidTopic(willTopic))
 			{
-				broker.getLogger().fine("[" + address + "] invalid will topic, disconnecting");
+				broker.getLogger().warning("[" + address + "] invalid will topic, disconnecting");
 				localStop.set(true);
 				return;
 			}
@@ -243,7 +244,7 @@ class BrokerClientThread extends Thread
 
 		if(remLen.get() != 0)
 		{
-			broker.getLogger().fine("[" + address + "] remaining length overflow, disconnecting");
+			broker.getLogger().warning("[" + address + "] remaining length overflow, disconnecting");
 			localStop.set(true);
 			return;
 		}
@@ -256,7 +257,7 @@ class BrokerClientThread extends Thread
 
 		if(!broker.getEngine().attemptAuthenticate(clientID, username, password))
 		{
-			broker.getLogger().fine("[" + address + "] failed authentication, disconnecting with ack");
+			broker.getLogger().warning("[" + address + "] failed authentication, disconnecting with ack");
 			sendConnackPacket(false, Common.ConnectReturn.UNAUTHORIZED);
 			localStop.set(true);
 			return;
@@ -266,7 +267,7 @@ class BrokerClientThread extends Thread
 		BrokerClientThread prevThread = broker.clientIDThreadMap.get(clientID);
 		if(prevThread != null && clientID.equals(prevThread.sess().clientID))
 		{
-			broker.getLogger().info("[" + address + "] Client #" + prevThread.internalID + " has similar id, disconnecting");
+			broker.getLogger().warning("[" + address + "] Client #" + prevThread.internalID + " has similar id, disconnecting");
 			prevThread.close(false);
 		}
 		Session session = broker.getEngine().getSession(clientID);
@@ -292,11 +293,13 @@ class BrokerClientThread extends Thread
 		int qos = (flags & 6) >> 1;
 		boolean retain = (flags & 1) != 0;
 
+		System.out.println("Reading TOPIC");
 		String topic = Common.readUTFString(in, remLen);
+		System.out.println("Read TOPIC");
 
 		if(!Session.isValidTopic(topic))
 		{
-			broker.getLogger().fine("[" + address + "] invalid publish topic, disconnecting");
+			broker.getLogger().warning("[" + address + "] invalid publish topic, disconnecting");
 			localStop.set(true);
 			return;
 		}
@@ -378,6 +381,14 @@ class BrokerClientThread extends Thread
 		PublishPacket.Transaction transaction = sess.unfinishedSend.remove(pid);
 		if(transaction == null || transaction.qos != 1 || transaction.lastPacket != PacketType.PUBLISH)
 		{
+			broker.getLogger().warning("[" + address + "] pid = " + pid);
+			broker.getLogger().warning("[" + address + "] transaction = " + transaction);
+			if(transaction != null)
+			{
+				broker.getLogger().warning("[" + address + "] transaction.lastPacket = " + transaction.lastPacket);
+				broker.getLogger().warning("[" + address + "] transaction.qos = " + transaction.qos);
+				broker.getLogger().warning("[" + address + "] transaction.pid = " + transaction.pid);
+			}
 			broker.getLogger().warning("[" + address + "] unexpected PUBACK, disconnecting");
 			localStop.set(true);
 		}
@@ -584,6 +595,9 @@ class BrokerClientThread extends Thread
 
 	void publish(Message message, int qos, boolean retain)
 	{
+		if(localStop.get())
+			return;
+
 		try
 		{
 			Common.PacketID pid = nextPid();
@@ -594,6 +608,7 @@ class BrokerClientThread extends Thread
 			packet.setExceptionHandler(broker.exceptionHandler);
 			packet.setDesiredQos(qos);
 			packet.setDesiredRetain(retain);
+			packet.setLocalStop(localStop);
 			packet.setOnComplete(transaction -> {
 				if (qos > 0)
 					sess.unfinishedSend.put(pid, transaction);
@@ -617,7 +632,7 @@ class BrokerClientThread extends Thread
 		}
 		else if(!gotConnect.get() && elapsed > broker.options.connectWaitTimeout)
 		{
-			broker.getLogger().fine("[" + address + "] did not receive CONNECT in time, disconnecting");
+			broker.getLogger().warning("[" + address + "] did not receive CONNECT in time, disconnecting");
 			close(false);
 		}
 
@@ -662,7 +677,8 @@ class BrokerClientThread extends Thread
 
 	private synchronized Common.PacketID nextPid()
 	{
-		if(sess() == null)
+		Session sess = sess();
+		if(sess == null)
 			throw new IllegalStateException("no need for a pid before a session has be established");
 
 		Common.PacketID a;
@@ -670,7 +686,7 @@ class BrokerClientThread extends Thread
 		{
 			packetID = packetID == 65535 ? 0 : packetID + 1;
 			a = new Common.PacketID(packetID);
-		} while(sess().unfinishedSend.containsKey(a));
+		} while(sess.unfinishedSend.containsKey(a));
 		return a;
 	}
 

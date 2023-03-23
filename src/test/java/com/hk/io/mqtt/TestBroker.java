@@ -3,6 +3,7 @@ package com.hk.io.mqtt;
 import com.hk.args.Arguments;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -13,7 +14,7 @@ public class TestBroker
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tb %1$td, %1$tY %1$tl:%1$tM:%1$tS %4$s]: %5$s%6$s%n");
 
         Broker broker = new Broker("localhost", 21999);
-//        Broker broker = new Broker("192.168.0.238", 21999);
+//        Broker broker = new Broker("192.168.0.101", 21999);
         broker.setLogLevel(Level.ALL);
         broker.setDefaultExceptionHandler();
 
@@ -35,7 +36,12 @@ public class TestBroker
             if(args.count() == 0)
                 continue;
 
-            if(args.getArg(0).equalsIgnoreCase("exit"))
+            if(args.getArg(0).equalsIgnoreCase("log-level"))
+            {
+                broker.setLogLevel(Level.parse(args.getArg(1).toUpperCase(Locale.ROOT)));
+                System.out.println("Set Log Level: " + broker.getLogger().getLevel());
+            }
+            else if(args.getArg(0).equalsIgnoreCase("exit"))
             {
                 if(broker.getStatus() != Broker.Status.NOT_BOUND)
                 {

@@ -178,6 +178,7 @@ public class Broker implements Runnable
 
 			globalStop = new AtomicBoolean(false);
 			executorService = Executors.newScheduledThreadPool(options.threadPoolSize);
+//			executorService = Executors.newSingleThreadScheduledExecutor();
 			executorService.scheduleWithFixedDelay(() -> forAll(BrokerClientThread::checkGotConnect), 0, 1, TimeUnit.SECONDS);
 			logger.fine("Creating thread pool: " + options.threadPoolSize);
 			logger.warning("Attempting to bind to host: " + host);
@@ -340,7 +341,7 @@ public class Broker implements Runnable
 				if(qos >= 0 && engine.canSendTo(message, sess))
 				{
 					count.incrementAndGet();
-					clientThread.publish(message, Math.max(qos, message.getQos()), false);
+					clientThread.publish(message, Math.min(qos, message.getQos()), false);
 				}
 			}
 		});

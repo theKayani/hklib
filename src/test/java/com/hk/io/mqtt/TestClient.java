@@ -1,8 +1,14 @@
 package com.hk.io.mqtt;
 
+import com.hk.Assets;
 import com.hk.args.Arguments;
 import com.hk.math.MathUtil;
+import com.hk.math.Rand;
+import com.hk.str.StringUtil;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -18,7 +24,7 @@ public class TestClient
 
         Client client;
         client = new Client("localhost", 21999);
-//        client = new Client("192.168.0.238", 21999);
+//        client = new Client("192.168.0.101", 21999);
 //        client = new Client("broker.hivemq.com", 1883);
 //        client = new Client("broker.emqx.io", 1883);
 //        client = new Client("test.mosquitto.org", 1883);
@@ -28,7 +34,8 @@ public class TestClient
 //        client = new Client("mqtt.fluux.io", 1883);
         client.setLogLevel(Level.ALL);
         client.setDefaultExceptionHandler();
-        client.setMessageConsumer(message -> System.out.println(message.getTopic() + " = " + message.toInput()));
+        Map<String, Integer> publishedTopics = Collections.synchronizedMap(new TreeMap<>());
+        client.setMessageConsumer(message -> publishedTopics.compute(message.getTopic(), (s, integer) -> integer == null ? 1 : integer + 1));
 
         String cmd;
         Scanner in = new Scanner(System.in);
@@ -46,8 +53,9 @@ public class TestClient
 
             if(args.getArg(0).equalsIgnoreCase("connect"))
             {
-                if(args.flag("clean"))
-                    client.setCleanSession(true);
+                client.setCleanSession(true);
+                if(args.flag("persist"))
+                    client.setCleanSession(false);
 
                 System.out.println("Connecting!");
                 client.connect();
@@ -98,6 +106,39 @@ public class TestClient
             {
                 client.setKeepAlive(Integer.parseInt(args.getArg(1)));
                 System.out.println("Set Keep Alive: " + client.getKeepAlive());
+            }
+            else if(args.getArg(0).equalsIgnoreCase("published-topics-count"))
+            {
+                System.out.println("Published Topics Count: " + StringUtil.commaFormat(publishedTopics.size()));
+            }
+            else if(args.getArg(0).equalsIgnoreCase("published-topics-list"))
+            {
+                synchronized (publishedTopics)
+                {
+                    System.out.println("Listing " + publishedTopics.size() + " Published Topics:");
+                    for (Map.Entry<String, Integer> entry : publishedTopics.entrySet())
+                        System.out.printf("\t'%s' = %d%n", entry.getKey(), entry.getValue());
+                }
+            }
+            else if(args.getArg(0).equalsIgnoreCase("published-topics-export"))
+            {
+                File file = Assets.get("published-topics-export-" + MathUtil.longHex(Rand.nextLong()) + ".txt");
+                try
+                {
+                    System.out.println("Listing " + publishedTopics.size() + " topics to " + file);
+                    FileWriter wtr = new FileWriter(file);
+                    synchronized (publishedTopics)
+                    {
+                        wtr.write("Listing " + publishedTopics.size() + " topics");
+                        for (Map.Entry<String, Integer> entry : publishedTopics.entrySet())
+                            wtr.write(String.format("%n\t'%s' = %d", entry.getKey(), entry.getValue()));
+                    }
+                    wtr.close();
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
             }
             else if(args.getArg(0).equalsIgnoreCase("publish"))
             {

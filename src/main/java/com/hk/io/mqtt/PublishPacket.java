@@ -7,7 +7,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -26,6 +28,7 @@ final class PublishPacket implements Runnable
 	private Boolean desiredRetain;
 	private boolean duplicate = false;
 	private String prefix;
+	private AtomicBoolean localStop;
 
 	PublishPacket(Message message, Common.PacketID pid, Logger logger, OutputStream out, Object writeLock)
 	{
@@ -88,9 +91,18 @@ final class PublishPacket implements Runnable
 		return this;
 	}
 
+	PublishPacket setLocalStop(AtomicBoolean localStop)
+	{
+		this.localStop = localStop;
+		return this;
+	}
+
 	@Override
 	public void run()
 	{
+		if(localStop != null && localStop.get())
+			return;
+
 		try
 		{
 			synchronized (writeLock)
@@ -104,6 +116,7 @@ final class PublishPacket implements Runnable
 					flags |= 0x8;
 				out.write(0x30 | flags);
 				byte[] topicBytes = message.getTopic().getBytes(StandardCharsets.UTF_8);
+				System.out.println("topicBytes = " + Arrays.toString(topicBytes));
 				int payloadLength = message.getSize();
 				ByteArrayOutputStream bout = null;
 				if (payloadLength < 0)
@@ -123,17 +136,25 @@ final class PublishPacket implements Runnable
 				if (onComplete != null)
 					onComplete.accept(new Transaction(message, pid, qos));
 
+				System.out.println("rem field = " + total);
 				Common.writeRemainingField(out, total);
 				Common.writeBytes(out, topicBytes);
+				System.out.println("wrote topic " + topicBytes.length + "b");
 				if (qos > 0)
+				{
 					Common.writeShort(out, Objects.requireNonNull(pid).get());
+					System.out.println("wrote pid " + pid);
+				}
+				out.flush(); //idk...
 
 				if (bout != null)
 					bout.writeTo(out);
 				else
 					message.writeTo(out);
+				System.out.println("wrote message " + payloadLength + "b");
 
 				out.flush();
+				System.out.println("flushed");
 
 				if (logger.isLoggable(Level.FINEST))
 					logger.finest((prefix == null ? "" : prefix) + "published: " + message);
