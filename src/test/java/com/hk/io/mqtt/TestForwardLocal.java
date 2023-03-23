@@ -14,7 +14,7 @@ public class TestForwardLocal
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tb %1$td, %1$tY %1$tl:%1$tM:%1$tS %4$s]: %5$s%6$s%n");
         Client client1, client2;
 //        client1 = new Client("localhost", 21999);
-        client1 = new Client("192.168.0.101", 21999);
+        client1 = new Client("192.168.0.216", 21999);
         client1.setLogLevel(Level.INFO);
         client1.setDefaultExceptionHandler();
         client2 = new Client("broker.emqx.io", 1883);

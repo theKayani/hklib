@@ -217,6 +217,7 @@ class ClientThread extends Thread
 		if(client.getLogger().isLoggable(Level.FINEST))
 			client.getLogger().finest("received: " + msg);
 
+		Common.PacketID pid2 = pid;
 		if(qos == 0 || qos == 1)
 		{
 			if(msg != null)
@@ -225,9 +226,18 @@ class ClientThread extends Thread
 			if(qos == 1)
 			{
 				OutputStream out = socket.getOutputStream();
-				if(client.getLogger().isLoggable(Level.FINE))
-					client.getLogger().fine("Sending packet: PUBACK (pid: " + pid + ")");
-				Common.sendPuback(out, pid);
+				client.executorService.submit(() -> {
+					try
+					{
+						client.getLogger().fine("Sending packet: PUBACK (pid: " + pid2 + ")");
+						Common.sendPuback(out, pid2);
+					}
+					catch (IOException e)
+					{
+						if(client.exceptionHandler != null)
+							client.exceptionHandler.accept(e);
+					}
+				});
 			}
 		}
 		else
@@ -236,9 +246,18 @@ class ClientThread extends Thread
 			client.unfinishedRecv.put(pid, new PublishPacket.Transaction(msg, pid, 2).setLastPacket(PacketType.PUBREC));
 
 			OutputStream out = socket.getOutputStream();
-			if(client.getLogger().isLoggable(Level.FINE))
-				client.getLogger().fine("Sending packet: PUBREC (pid: " + pid + ")");
-			Common.sendPubrec(out, pid);
+			client.executorService.submit(() -> {
+				try
+				{
+					client.getLogger().fine("Sending packet: PUBREC (pid: " + pid2 + ")");
+					Common.sendPubrec(out, pid2);
+				}
+				catch (IOException e)
+				{
+					if(client.exceptionHandler != null)
+						client.exceptionHandler.accept(e);
+				}
+			});
 		}
 	}
 
@@ -304,9 +323,18 @@ class ClientThread extends Thread
 				client.deliver((Message) transaction.message);
 
 			OutputStream out = socket.getOutputStream();
-			if(client.getLogger().isLoggable(Level.FINE))
-				client.getLogger().fine("Sending packet: PUBCOMP (pid: " + pid + ")");
-			Common.sendPubcomp(out, pid);
+			client.executorService.submit(() -> {
+				try
+				{
+					client.getLogger().fine("Sending packet: PUBCOMP (pid: " + pid + ")");
+					Common.sendPubcomp(out, pid);
+				}
+				catch (IOException e)
+				{
+					if(client.exceptionHandler != null)
+						client.exceptionHandler.accept(e);
+				}
+			});
 		}
 	}
 
@@ -525,11 +553,11 @@ class ClientThread extends Thread
 			packet.setLocalStop(globalStop);
 			packet.setOnComplete(transaction -> {
 				connectTime.set(System.nanoTime() / 1000000);
+				if (message.getQos() > 0)
+					client.unfinishedSend.put(pid, transaction);
 				synchronized (pid)
 				{
-					if (message.getQos() > 0)
-						client.unfinishedSend.put(pid, transaction);
-					else
+					if (message.getQos() == 0)
 						pid.notifyAll();
 				}
 			});
@@ -674,7 +702,7 @@ class ClientThread extends Thread
 			finally
 			{
 				client.status.set(Client.Status.DISCONNECTED);
-				client.getLogger().info("Client disconnected");
+				client.getLogger().info("Client disconnected from " + socket.getRemoteSocketAddress());
 			}
 		};
 

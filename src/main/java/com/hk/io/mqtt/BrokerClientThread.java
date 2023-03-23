@@ -293,9 +293,7 @@ class BrokerClientThread extends Thread
 		int qos = (flags & 6) >> 1;
 		boolean retain = (flags & 1) != 0;
 
-		System.out.println("Reading TOPIC");
 		String topic = Common.readUTFString(in, remLen);
-		System.out.println("Read TOPIC");
 
 		if(!Session.isValidTopic(topic))
 		{

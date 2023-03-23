@@ -116,7 +116,6 @@ final class PublishPacket implements Runnable
 					flags |= 0x8;
 				out.write(0x30 | flags);
 				byte[] topicBytes = message.getTopic().getBytes(StandardCharsets.UTF_8);
-				System.out.println("topicBytes = " + Arrays.toString(topicBytes));
 				int payloadLength = message.getSize();
 				ByteArrayOutputStream bout = null;
 				if (payloadLength < 0)
@@ -136,14 +135,11 @@ final class PublishPacket implements Runnable
 				if (onComplete != null)
 					onComplete.accept(new Transaction(message, pid, qos));
 
-				System.out.println("rem field = " + total);
 				Common.writeRemainingField(out, total);
 				Common.writeBytes(out, topicBytes);
-				System.out.println("wrote topic " + topicBytes.length + "b");
 				if (qos > 0)
 				{
 					Common.writeShort(out, Objects.requireNonNull(pid).get());
-					System.out.println("wrote pid " + pid);
 				}
 				out.flush(); //idk...
 
@@ -151,10 +147,8 @@ final class PublishPacket implements Runnable
 					bout.writeTo(out);
 				else
 					message.writeTo(out);
-				System.out.println("wrote message " + payloadLength + "b");
 
 				out.flush();
-				System.out.println("flushed");
 
 				if (logger.isLoggable(Level.FINEST))
 					logger.finest((prefix == null ? "" : prefix) + "published: " + message);
@@ -162,7 +156,7 @@ final class PublishPacket implements Runnable
 		}
 		catch (IOException ex)
 		{
-			if (exceptionHandler != null)
+			if (exceptionHandler != null && !localStop.get())
 				exceptionHandler.accept(ex);
 		}
 	}
