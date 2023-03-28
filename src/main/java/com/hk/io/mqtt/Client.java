@@ -31,7 +31,7 @@ public class Client
 	private final InetSocketAddress host;
 	public final ClientOptions options;
 	private final Logger logger;
-	ScheduledExecutorService executorService;
+	ScheduledExecutorService executorService, consumerService;
 	final AtomicReference<Status> status;
 	final Map<String, Integer> subscribedTopicFilters;
 	final Map<Common.PacketID, PublishPacket.Transaction> unfinishedSend;
@@ -68,6 +68,7 @@ public class Client
 		cleanSession = true;
 		keepAlive = 60;
 		subscribedTopicFilters = new HashMap<>();
+		consumerService = Executors.newSingleThreadScheduledExecutor();
 		status = new AtomicReference<>(Status.NOT_CONNECTED);
 		globalStop = new AtomicBoolean(false);
 		packetID = -1;
@@ -284,6 +285,11 @@ public class Client
 	public Logger getLogger()
 	{
 		return logger;
+	}
+
+	public ScheduledExecutorService getScheduler()
+	{
+		return consumerService;
 	}
 
 	@NotNull
@@ -573,7 +579,7 @@ public class Client
 		if(globalStop.get())
 			return;
 
-		executorService.submit(() -> {
+		consumerService.submit(() -> {
 			try
 			{
 				if(messageConsumer != null)

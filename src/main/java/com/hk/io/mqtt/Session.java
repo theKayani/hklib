@@ -163,9 +163,14 @@ public abstract class Session
 			throw new Error("not possibru"); // all conditions covered in isValidTopic(topic)
 
 		int i;
-		for (i = 0; i < tpcLvls.length; i++)
+		for (i = 0; i < fltLvls.length; i++)
 		{
-			if(i == fltLvls.length)
+			if(fltLvls[i].equals("#"))
+			{
+				// match multi-level wildcard for parent topic too
+				return true;
+			}
+			if(i == tpcLvls.length)
 			{
 				// have remaining levels that haven't been matched
 				return false;
@@ -175,19 +180,9 @@ public abstract class Session
 				// match single-level wildcard for level
 				continue;
 			}
-			if(fltLvls[i].equals("#"))
-			{
-				// match multi-level wildcard for rest of topic
-				return true;
-			}
-			if(tpcLvls[i].equals(fltLvls[i]))
-			{
-				// match level as case-sensitive string
-				continue;
-			}
-			// match multi-level wildcard for parent topic too
-			return i < fltLvls.length - 1 && fltLvls[i + 1].equals("#");
+			// match level as case-sensitive string
+			return fltLvls[i].equals(tpcLvls[i]);
 		}
-		return true;
+		return i >= tpcLvls.length;
 	}
 }

@@ -9,6 +9,7 @@ import com.hk.str.StringUtil;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -24,7 +25,8 @@ public class TestClient
 
         Client client;
 //        client = new Client("localhost", 21999);
-        client = new Client("192.168.0.216", 21999);
+//        client = new Client("192.168.0.196", 21999);
+        client = new Client("192.168.0.192", 1883);
 //        client = new Client("broker.hivemq.com", 1883);
 //        client = new Client("broker.emqx.io", 1883);
 //        client = new Client("test.mosquitto.org", 1883);
@@ -85,6 +87,23 @@ public class TestClient
             {
                 client.options.maxVolatileMessageSize = Integer.parseInt(args.getArg(1));
                 System.out.println("Set Max Volatile Message Size: " + client.options.maxVolatileMessageSize);
+            }
+            else if(args.getArg(0).equalsIgnoreCase("start-count"))
+            {
+                System.out.println("Subscribed to 'counter/hklib/#' with QoS: " + client.subscribe("counter/hklib/#", 2));
+
+                Map<String, BigInteger> maximums = new HashMap<>();
+                client.setMessageConsumer(message -> {
+                    String extra = message.getTopic().length() > 13 ? message.getTopic().substring(14) : null;
+                    BigInteger input = new BigInteger(message.toInput().toString());
+                    BigInteger max = maximums.get(message.getTopic());
+                    if(max == null || max.compareTo(input) <= 0)
+                    {
+                        BigInteger next = input.add(BigInteger.ONE);
+                        maximums.put(message.getTopic(), next);
+                        client.publish("counter/hklib" + (extra == null ? "" : "/" + extra), next.toString(), Rand.nextInt(0, 3), true);
+                    }
+                });
             }
             else if(args.getArg(0).equalsIgnoreCase("will"))
             {

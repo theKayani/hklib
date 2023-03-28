@@ -314,6 +314,10 @@ public class CommonTest extends TestCase
 				{ "not/a/match", "$not/a/match" },
 				{ "$no", "no" },
 				{ "no", "$no" },
+				{ "random/topic", "+/mytopic/+" },
+				{ "random", "+/mytopic/+" },
+				{ "random/topic", "+/mytopic/#" },
+				{ "randomtopic", "+/mytopic/#" },
 		};
 		for (String[] pair : falseTopicFilterPairs)
 		{
