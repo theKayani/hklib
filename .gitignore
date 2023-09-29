@@ -39,3 +39,4 @@ argfile.txt
 src/test/resources/assets/lua/main.lua
 src/test/java/com/hk/TestMain.java
 src/test/resources/assets/published-topics-export-*.txt
+src/main/java/com/hk/MainCopy.java
