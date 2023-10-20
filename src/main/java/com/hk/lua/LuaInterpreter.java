@@ -4,10 +4,9 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.UncheckedIOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.function.BiConsumer;
 
@@ -33,6 +32,7 @@ public class LuaInterpreter implements Tokens
 	private final String mainSrc;
 	private LuaChunk mainChunk;
 	private Reader reader;
+	private final Map<String, Object> preloaded;
 	final Map<LuaObject, LuaObject> required;
 	final Stack<LuaThread> threads;
 	Environment global, env;
@@ -45,6 +45,7 @@ public class LuaInterpreter implements Tokens
 		global = new Environment(this, null, false);
 		extraData = new HashMap<>();
 		threads = new Stack<>();
+		preloaded = new HashMap<>();
 		required = new HashMap<>();
 
 		mainChunk = new LuaChunk(sts, source, global, false);
@@ -57,6 +58,7 @@ public class LuaInterpreter implements Tokens
 		global = new Environment(this, null, false);
 		extraData = new HashMap<>();
 		threads = new Stack<>();
+		preloaded = new HashMap<>();
 		required = new HashMap<>();
 
 		if(reader == null)
@@ -244,6 +246,69 @@ public class LuaInterpreter implements Tokens
 		return global;
 	}
 
+	public <T extends Enum<T> & BiConsumer<Environment, LuaObject>> void preload(@NotNull String module, @NotNull LuaLibrary<T> library)
+	{
+		preloaded.put(module, library);
+	}
+
+	public void preload(@NotNull LuaFactory factory)
+	{
+		preloaded.put(factory.source, factory.getSts());
+	}
+
+	public void preload(@NotNull String module, @NotNull LuaFactory factory)
+	{
+		preloaded.put(module, factory.getSts());
+	}
+
+	public void preload(@NotNull String module, @NotNull String source)
+	{
+		preload(module, new StringReader(source));
+	}
+
+	public void preload(@NotNull String module, @NotNull Path source)
+	{
+		try
+		{
+			preload(module, Files.newBufferedReader(source));
+		}
+		catch (IOException e)
+		{
+			throw new UncheckedIOException(e);
+		}
+	}
+
+	public void preload(@NotNull String module, @NotNull Reader reader)
+	{
+		try
+		{
+			Tokenizer tkz = new Tokenizer(reader);
+			LuaStatement[] sts;
+			try
+			{
+				sts = readStatements(tkz, module, 0);
+				if(tkz.next())
+					throw unexpected(tkz, module);
+			}
+			catch(LuaException e)
+			{
+				if(!e.primary)
+					throw e;
+				else
+					throw new LuaException(module, tkz.line(), e.getLocalizedMessage());
+			}
+			finally
+			{
+				reader.close();
+			}
+			preloaded.put(module, sts);
+		}
+		catch (IOException ex)
+		{
+			throw new UncheckedIOException(ex);
+		}
+	}
+
 	/**
 	 * Immediately execute a string of Lua code using this global
 	 * environment under a new Lua chunk.
@@ -290,24 +355,44 @@ public class LuaInterpreter implements Tokens
 	@NotNull
 	public LuaObject require(@Nullable String module, @NotNull Reader reader)
 	{
-		LuaObject result = module == null ? null : required.get(new LuaString(module));
+		LuaString lstr = module == null ? null : new LuaString(module);
+		LuaObject result = module == null ? null : required.get(lstr);
 		if(result == null)
 		{
 			LuaChunk chunk;
-			try
+			Object prel = preloaded.get(module);
+			if (module == null || prel == null)
 			{
-				chunk = readLua(reader, module == null ? Lua.STDIN : module, new Environment(this, global, true), true);
+				try
+				{
+					chunk = readLua(reader, module == null ? Lua.STDIN : module, new Environment(this, global, true), true);
+				}
+				catch(IOException e)
+				{
+					throw new LuaException(e.getLocalizedMessage());
+				}
 			}
-			catch(IOException e)
+			else if(prel instanceof LuaLibrary)
 			{
-				throw new LuaException(e.getLocalizedMessage());
+				LuaObject lib = importLib((LuaLibrary<?>) prel);
+				required.put(new LuaString(module), lib);
+				return lib;
 			}
+			else if(prel instanceof LuaStatement[])
+				chunk = new LuaChunk((LuaStatement[]) prel, module, new Environment(this, global, true), true);
+			else
+				throw new IllegalArgumentException("unexpected preload from module (" + module + "): " + prel);
 
 			result = (LuaObject) chunk.execute(this);
 			if(module != null)
 				required.put(new LuaString(module), result);
 		}
 		return result;
+	}
+
+	public boolean hasPreloaded(@NotNull String module)
+	{
+		return preloaded.containsKey(module);
 	}
 
 	public boolean hasModule(@NotNull String module)
@@ -330,7 +415,7 @@ public class LuaInterpreter implements Tokens
 	 * @param lib a {@link com.hk.lua.LuaLibrary} object
 	 * @param <T> a T class
 	 */
-	public <T extends Enum<T> & BiConsumer<Environment, LuaObject>> void importLib(@NotNull LuaLibrary<T> lib)
+	public <T extends Enum<T> & BiConsumer<Environment, LuaObject>> LuaObject importLib(@NotNull LuaLibrary<T> lib)
 	{
 		LuaObject tbl;
 		if(lib.table == null || lib.table.trim().isEmpty())
@@ -340,6 +425,8 @@ public class LuaInterpreter implements Tokens
 
 		for(BiConsumer<Environment, LuaObject> consumer : lib.consumers)
 			consumer.accept(global, tbl);
+
+		return tbl;
 	}
 
 	/**

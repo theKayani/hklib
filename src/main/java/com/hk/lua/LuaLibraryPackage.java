@@ -1,5 +1,6 @@
 package com.hk.lua;
 
+import com.hk.io.IOUtil;
 import com.hk.lua.Lua.LuaMethod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,6 +35,9 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 			LuaObject extra = interp.getExtraLua(EXKEY_PRELOAD_PREFIX + name);
 			if(!extra.isNil())
 				return extra;
+
+			if(interp.hasPreloaded(name))
+				return interp.require(name, IOUtil.emptyReader());
 
 			String split = interp.getExtraProp(EXKEY_TEMPLATE_SEP);
 			Objects.requireNonNull(split);

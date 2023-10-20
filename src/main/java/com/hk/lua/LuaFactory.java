@@ -22,7 +22,7 @@ import java.util.function.Consumer;
  */
 public class LuaFactory
 {
-	private final String source;
+	final String source;
 	private final List<LuaLibrary<?>> libs;
 	private final List<Consumer<LuaInterpreter>> handlers;
 	private Reader reader;
@@ -35,6 +35,11 @@ public class LuaFactory
 
 		libs = new LinkedList<>();
 		handlers = new LinkedList<>();
+	}
+
+	LuaStatement[] getSts()
+	{
+		return sts;
 	}
 
 	/**
