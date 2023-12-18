@@ -165,23 +165,21 @@ public abstract class Session
 		int i;
 		for (i = 0; i < fltLvls.length; i++)
 		{
+			// match multi-level wildcard for parent topic too
 			if(fltLvls[i].equals("#"))
-			{
-				// match multi-level wildcard for parent topic too
 				return true;
-			}
+
+			// have remaining levels that haven't been matched
 			if(i == tpcLvls.length)
-			{
-				// have remaining levels that haven't been matched
 				return false;
-			}
+
+			// match single-level wildcard for level
 			if(fltLvls[i].equals("+"))
-			{
-				// match single-level wildcard for level
 				continue;
-			}
+
 			// match level as case-sensitive string
-			return fltLvls[i].equals(tpcLvls[i]);
+			if(!fltLvls[i].equals(tpcLvls[i]))
+				return false;
 		}
 		return i >= tpcLvls.length;
 	}

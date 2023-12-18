@@ -24,9 +24,9 @@ public class TestClient
         // publish ghi 789 --qos 2
 
         Client client;
-//        client = new Client("localhost", 21999);
+        client = new Client("localhost", 21999);
 //        client = new Client("192.168.0.196", 21999);
-        client = new Client("192.168.0.192", 1883);
+//        client = new Client("192.168.0.192", 1883);
 //        client = new Client("broker.hivemq.com", 1883);
 //        client = new Client("broker.emqx.io", 1883);
 //        client = new Client("test.mosquitto.org", 1883);

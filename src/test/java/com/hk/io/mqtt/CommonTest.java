@@ -318,6 +318,9 @@ public class CommonTest extends TestCase
 				{ "random", "+/mytopic/+" },
 				{ "random/topic", "+/mytopic/#" },
 				{ "randomtopic", "+/mytopic/#" },
+				{ "astring/substring", "astring/stringtwo" },
+				{ "astring/substring", "astring/stringtwo/thirdstring" },
+				{ "astring/substring/thirdstring", "astring/stringtwo" }
 		};
 		for (String[] pair : falseTopicFilterPairs)
 		{
