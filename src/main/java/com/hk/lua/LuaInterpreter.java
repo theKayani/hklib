@@ -251,21 +251,49 @@ public class LuaInterpreter implements Tokens
 		preloaded.put(module, library);
 	}
 
+	/**
+	 * Preload a compiled Lua chunk from a factory to be loaded using
+	 * the {@link #require(String, Reader)} method. The module name is
+	 * the source of the Lua factory.
+	 *
+	 * @param factory the compiled factory to make ready to load.
+	 */
 	public void preload(@NotNull LuaFactory factory)
 	{
 		preloaded.put(factory.source, factory.getSts());
 	}
 
+	/**
+	 * Preload a compiled Lua chunk from a factory to be loaded using
+	 * the {@link #require(String, Reader)} method.
+	 *
+	 * @param module the name to assign to the loaded Lua chunk.
+	 * @param factory the compiled factory to make ready to load.
+	 */
 	public void preload(@NotNull String module, @NotNull LuaFactory factory)
 	{
 		preloaded.put(module, factory.getSts());
 	}
 
+	/**
+	 * Precompile a Lua chunk from a string to be loaded using
+	 * the {@link #require(String, Reader)} method.
+	 *
+	 * @param module the name to assign to the loaded Lua chunk.
+	 * @param source the Lua string to compile and make ready to load.
+	 */
 	public void preload(@NotNull String module, @NotNull String source)
 	{
 		preload(module, new StringReader(source));
 	}
 
+	/**
+	 * Precompile a Lua chunk from a file to be loaded using
+	 * the {@link #require(String, Reader)} method.
+	 *
+	 * @param module the name to assign to the loaded Lua chunk.
+	 * @param source the provided file to compile and make ready to load.
+	 */
 	public void preload(@NotNull String module, @NotNull Path source)
 	{
 		try
@@ -278,6 +306,13 @@ public class LuaInterpreter implements Tokens
 		}
 	}
 
+	/**
+	 * Precompile a Lua chunk from a reader to be loaded using
+	 * the {@link #require(String, Reader)} method.
+	 *
+	 * @param module the name to assign to the loaded Lua chunk.
+	 * @param reader the provided Lua code to compile and make ready to load.
+	 */
 	public void preload(@NotNull String module, @NotNull Reader reader)
 	{
 		try
@@ -292,10 +327,7 @@ public class LuaInterpreter implements Tokens
 			}
 			catch(LuaException e)
 			{
-				if(!e.primary)
-					throw e;
-				else
-					throw new LuaException(module, tkz.line(), e.getLocalizedMessage());
+				throw new LuaException(module, tkz.line(), e.getLocalizedMessage());
 			}
 			finally
 			{
@@ -344,7 +376,8 @@ public class LuaInterpreter implements Tokens
 	 * Lua code under a certain module, the result is then stored in
 	 * the case that this function is called again with the same
 	 * module. If so, the reader is ignored and the saved value is
-	 * returned instead.
+	 * returned instead. The readed is also ignored if there is a
+	 * preloaded module with a matching name.
 	 *
 	 * @param module a key to match the result object to
 	 * @param reader a {@link java.io.Reader} to provide the Lua code
@@ -353,7 +386,7 @@ public class LuaInterpreter implements Tokens
 	 * return statement.
 	 */
 	@NotNull
-	public LuaObject require(@Nullable String module, @NotNull Reader reader)
+	public LuaObject require(@Nullable String module, @Nullable Reader reader)
 	{
 		LuaString lstr = module == null ? null : new LuaString(module);
 		LuaObject result = module == null ? null : required.get(lstr);
@@ -363,6 +396,8 @@ public class LuaInterpreter implements Tokens
 			Object prel = preloaded.get(module);
 			if (module == null || prel == null)
 			{
+				if(reader == null)
+					throw new NullPointerException("provided reader is null and cannot be compiled");
 				try
 				{
 					chunk = readLua(reader, module == null ? Lua.STDIN : module, new Environment(this, global, true), true);
@@ -390,11 +425,27 @@ public class LuaInterpreter implements Tokens
 		return result;
 	}
 
+	/**
+	 * Check whether the specified module has been a preloaded chunk
+	 * or a linked library. If {@link #require(String, Reader)} is called
+	 * with the same module that has been preloaded, then the preloaded
+	 * module is loaded into the Lua environment.
+	 *
+	 * @param module the name of the module to check
+	 * @return true if the module is preloaded and is ready to be loaded.
+	 */
 	public boolean hasPreloaded(@NotNull String module)
 	{
 		return preloaded.containsKey(module);
 	}
 
+	/**
+	 * Check whether this module has been loaded by the {@link #require(Reader)}
+	 * or by the Lua executed code. This does not check preloaded modules/chunks.
+	 *
+	 * @param module the name of the module to check
+	 * @return true if the module has already been loaded.
+	 */
 	public boolean hasModule(@NotNull String module)
 	{
 		return required.containsKey(new LuaString(module));
