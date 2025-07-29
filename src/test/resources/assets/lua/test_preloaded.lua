@@ -24,4 +24,13 @@ for i = 1, 5 do
     assert(from_factory[i] == i * 10)
 end
 
+local from_preload = package.preload['8164/7033/9145/5917459']
+assert(type(from_preload) == 'function')
+from_preload = from_preload()
+assert(type(from_preload) == 'table')
+assert(from_preload.x == 10)
+assert(from_preload.y == 100)
+assert(from_preload.z == 1000)
+assert(from_preload == require('8164/7033/9145/5917459'))
+
 return true

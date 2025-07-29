@@ -46,17 +46,33 @@ public class LuaLibraryPackageTest extends TestCase
 		factory.compile();
 		interp.preload("6203/1920/3565/6150394", factory);
 
-
 		Lua.importStandard(interp);
 		interp.importLib(LuaLibrary.PACKAGE);
+
+		// compile Lua from string with package.preload
+		interp.preload("8164/7033/9145/5917459", new StringReader("return { x=10,y=100,z=1000 }"));
 
 		LuaObject obj = interp.execute();
 
 		// confirm that it's been loaded by the 'require' function
 		assertTrue(interp.hasModule("1767/3350/6427/1525189"));
+		assertTrue(interp.hasModule("8164/7033/9145/5917459"));
 
 		assertNotNull(obj);
 		assertTrue(obj.getBoolean());
+	}
+
+	// https://github.com/theKayani/hklib/issues/1
+	public void testIssue1()
+	{
+		LuaInterpreter interp = Lua.interpreter();
+		Lua.importStandard(interp);
+		interp.importLib(LuaLibrary.PACKAGE);
+
+		LuaObject result = interp.require("return json.write(package)");
+
+		assertTrue(result.isString());
+		System.out.println(result);
 	}
 
 	private enum LuaTestLibrary implements BiConsumer<Environment, LuaObject>

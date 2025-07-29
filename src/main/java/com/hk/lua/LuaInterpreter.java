@@ -32,7 +32,7 @@ public class LuaInterpreter implements Tokens
 	private final String mainSrc;
 	private LuaChunk mainChunk;
 	private Reader reader;
-	private final Map<String, Object> preloaded;
+	final Map<String, Object> preloaded;
 	final Map<LuaObject, LuaObject> required;
 	final Stack<LuaThread> threads;
 	Environment global, env;
@@ -260,7 +260,7 @@ public class LuaInterpreter implements Tokens
 	 */
 	public void preload(@NotNull LuaFactory factory)
 	{
-		preloaded.put(factory.source, factory.getSts());
+		putPreloaded(factory.source, factory.getSts());
 	}
 
 	/**
@@ -272,7 +272,7 @@ public class LuaInterpreter implements Tokens
 	 */
 	public void preload(@NotNull String module, @NotNull LuaFactory factory)
 	{
-		preloaded.put(module, factory.getSts());
+		putPreloaded(module, factory.getSts());
 	}
 
 	/**
@@ -333,11 +333,25 @@ public class LuaInterpreter implements Tokens
 			{
 				reader.close();
 			}
-			preloaded.put(module, sts);
+			putPreloaded(module, sts);
 		}
 		catch (IOException ex)
 		{
 			throw new UncheckedIOException(ex);
+		}
+	}
+
+	private void putPreloaded(@NotNull String module, LuaStatement[] sts)
+	{
+		preloaded.put(module, sts);
+		LuaObject preloadTable = getExtraLua(LuaLibraryPackage.EXKEY_PRELOAD_TBL);
+
+		if(preloadTable.isTable())
+		{
+			preloadTable.rawSet(module, Lua.newMethod(((interp, args) -> {
+				System.out.println("running require(" + module + ")");
+				return require(module);
+			})));
 		}
 	}
 
