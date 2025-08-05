@@ -12,10 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 /**
@@ -32,12 +29,20 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 			Lua.checkArgs(name(), args, LuaType.STRING);
 
 			String name = args[0].getString();
-			LuaObject extra = interp.getExtraLua(EXKEY_PRELOAD_PREFIX + name);
-			if(!extra.isNil())
-				return extra;
 
 			if(interp.hasPreloaded(name))
 				return interp.require(name, IOUtil.emptyReader());
+
+			LuaObject preloadTable = interp.getExtraLua(LuaLibraryPackage.EXKEY_PRELOAD_TBL);
+
+			if(preloadTable.isTable())
+			{
+				LuaObject lib = preloadTable.getIndex(interp, name);
+				if(lib.isTable())
+					return lib;
+				else if(lib.isFunction())
+					return lib.call(interp);
+			}
 
 			String split = interp.getExtraProp(EXKEY_TEMPLATE_SEP);
 			Objects.requireNonNull(split);
@@ -173,28 +178,9 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 		@Override
 		public void accept(Environment env, LuaObject table)
 		{
-			table.rawSet(new LuaString(name()), new LuaTable(null) {
-				@Override
-				public @NotNull LuaObject rawGet(@NotNull LuaObject key)
-				{
-					return LuaNil.NIL;
-				}
-
-				@Override
-				LuaObject doIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key)
-				{
-					if(key.isString())
-						return interp != null ? interp.getExtraLua(EXKEY_PRELOAD_PREFIX + key.getString()) : LuaNil.NIL;
-
-					return LuaNil.NIL;
-				}
-
-				@Override
-				public void rawSet(@NotNull LuaObject key, @NotNull LuaObject value) {}
-
-				@Override
-				void doNewIndex(@Nullable LuaInterpreter interp, @NotNull LuaObject key, @NotNull LuaObject value) {}
-			});
+			LuaObject preloadTable = new LuaTable();
+			env.interp.setExtra(EXKEY_PRELOAD_TBL, preloadTable);
+			table.rawSet(new LuaString(name()), preloadTable);
 		}
 	},
 	searchpath() {
@@ -280,6 +266,6 @@ public enum LuaLibraryPackage implements BiConsumer<Environment, LuaObject>, Lua
 	public static final String EXKEY_TEMPLATE_MARK = "package.template.mark";
 	/** Constant <code>EXKEY_PATH="package.path"</code> */
 	public static final String EXKEY_PATH = "package.path";
-	/** Constant <code>EXKEY_PRELOAD_PREFIX="package.preload."</code> */
-	public static final String EXKEY_PRELOAD_PREFIX = "package.preload.";
+	/** Constant <code>EXKEY_PRELOAD_TBL="package.preloadtbl"</code> */
+	public static final String EXKEY_PRELOAD_TBL = "package.preloadtbl";
 }
