@@ -348,10 +348,7 @@ public class LuaInterpreter implements Tokens
 
 		if(preloadTable.isTable())
 		{
-			preloadTable.rawSet(module, Lua.newMethod(((interp, args) -> {
-				System.out.println("running require(" + module + ")");
-				return require(module);
-			})));
+			preloadTable.rawSet(module, Lua.newMethod(((interp, args) -> LuaLibraryPackage.require.call(interp, new LuaObject[] { new LuaString(module) }))));
 		}
 	}
 

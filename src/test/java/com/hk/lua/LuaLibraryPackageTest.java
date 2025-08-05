@@ -3,6 +3,7 @@ package com.hk.lua;
 import com.hk.Assets;
 import com.hk.math.Rand;
 import junit.framework.TestCase;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -56,6 +57,9 @@ public class LuaLibraryPackageTest extends TestCase
 
 		// confirm that it's been loaded by the 'require' function
 		assertTrue(interp.hasModule("1767/3350/6427/1525189"));
+		assertTrue(interp.hasModule("2312/8616/2516/5097625"));
+		assertTrue(interp.hasModule("7392/4355/5670/3202062"));
+		assertTrue(interp.hasModule("6203/1920/3565/6150394"));
 		assertTrue(interp.hasModule("8164/7033/9145/5917459"));
 
 		assertNotNull(obj);
@@ -72,7 +76,6 @@ public class LuaLibraryPackageTest extends TestCase
 		LuaObject result = interp.require("return json.write(package)");
 
 		assertTrue(result.isString());
-		System.out.println(result);
 	}
 
 	private enum LuaTestLibrary implements BiConsumer<Environment, LuaObject>
