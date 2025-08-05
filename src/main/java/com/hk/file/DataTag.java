@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -113,6 +114,26 @@ public class DataTag implements Serializable
 		gout.finish();
 		gout.close();
 		out.close();
+	}
+
+	public Set<String> keys()
+	{
+		return objs.keySet();
+	}
+
+	public boolean isEmpty()
+	{
+		return objs.isEmpty();
+	}
+
+	public int size()
+	{
+		return objs.size();
+	}
+
+	@Override
+	public String toString() {
+		return "DataTag{" + objs + "}";
 	}
 
 	/** {@inheritDoc} */
